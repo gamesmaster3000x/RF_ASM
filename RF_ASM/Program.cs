@@ -1,7 +1,7 @@
 ﻿namespace RF_ASM {
 	
 	/// <summary>
-	/// Entry point class for FR_ASM.
+	/// Entry point class for RF_ASM.
 	/// </summary>
     class Program
     {
