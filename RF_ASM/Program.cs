@@ -1,4 +1,8 @@
 ﻿namespace RF_ASM {
+	
+	/// <summary>
+	/// Entry point class for FR_ASM.
+	/// </summary>
     class Program
     {
         static void Main(string[] args)
