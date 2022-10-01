@@ -17,15 +17,14 @@ namespace COMPILE_RF_ASM_BIN
     /// </summary>
     class RfAsmBinCompiler
     {
+        public const int DATA_WIDTH = 2;
+
+        private static Dictionary<string, byte[]> labels = new Dictionary<string, byte[]>();
+        private static Dictionary<string, byte[]> constants = new Dictionary<string, byte[]>();
+
         static void Main(string[] args)
         {
-            Console.Write("Enter the name of the file to be compiled (including the file extension): ");
-            string inputPath = Console.ReadLine();
-            FileInfo inputFileInfo = new FileInfo(inputPath);
-            if (!inputFileInfo.Exists)
-            {
-                throw new FileNotFoundException("Cannot file the file " + inputFileInfo.FullName);
-            }
+            string inputPath = GetInputFilePath();
 
             // The raw byte data from the given file
             byte[] bytes = CompileFile(inputPath);
@@ -35,6 +34,11 @@ namespace COMPILE_RF_ASM_BIN
             Utils.DisplayHexDump(bytes);
 
             // Write the bytes to the compiled file
+            WriteCompilation(inputPath, bytes);
+        }
+
+        private static void WriteCompilation(string inputPath, byte[] bytes)
+        {
             string outputPath = GetOutputFileName(inputPath);
             FileInfo outputFileInfo = new FileInfo(outputPath);
             Console.WriteLine("Storing compilation to " + outputFileInfo.FullName);
@@ -42,6 +46,19 @@ namespace COMPILE_RF_ASM_BIN
             writer.Write(bytes);
             writer.Flush();
             writer.Close();
+        }
+
+        private static string GetInputFilePath()
+        {
+            Console.Write("Enter the name of the file to be compiled (including the file extension): ");
+            string inputPath = Console.ReadLine();
+            FileInfo inputFileInfo = new FileInfo(inputPath);
+            if (!inputFileInfo.Exists)
+            {
+                throw new FileNotFoundException("Cannot file the file " + inputFileInfo.FullName);
+            }
+
+            return inputPath;
         }
 
         /// <summary>
@@ -52,21 +69,43 @@ namespace COMPILE_RF_ASM_BIN
         public static byte[] CompileFile(string inputPath)
         {
             Console.WriteLine("Compiling " + inputPath);
-            string[] lines = File.ReadAllLines(inputPath);
+            string[] rawLinesArr = File.ReadAllLines(inputPath);
 
-            // Each line will contain no more than 3 bytes (instruction, register A, register B)
             List<byte> compiledBytes = new List<byte>();
+            List<string> rawLines = rawLinesArr.ToList();
+
+            //
+            //FindConstants(rawLines);
+            //List<string> parsedLines = ReplaceConstants(rawLines, compiledBytes);
+            List<string> parsedLines = rawLines;
 
             // For each line of the file, byteify and append to the compiled bytes
-            for (int i = 0; i < lines.Length; i++)
+            Byteify(parsedLines, compiledBytes);
+
+            Console.WriteLine("Done compiling " + inputPath);
+
+            // Return as a byte[]
+            return compiledBytes.ToArray();
+
+
+        }
+
+        /// <summary>
+        /// Passes through all of the lines and converts the instructions to bytes.
+        /// </summary>
+        /// <param name="parsedLines"></param>
+        /// <param name="compiledBytes"></param>
+        private static void Byteify(List<string> parsedLines, List<byte> compiledBytes)
+        {
+            for (int i = 0; i < parsedLines.Count; i++)
             {
-                string line = lines[i];
+                string line = parsedLines[i];
 
                 // Line number, e.g. 1/300
-                Console.Write((i + 1) + "/" + lines.Length + " ");
+                Console.Write((i + 1) + "/" + parsedLines.Count + " ");
 
                 // The bytes, e.g. 01-04-a4
-                byte[] lineBytes = ByteifyLine(line);
+                byte[] lineBytes = Bytifier.ByteifyLine(line);
                 foreach (byte b in lineBytes)
                 {
                     Console.Write(b.ToString("X2") + " ");
@@ -78,12 +117,6 @@ namespace COMPILE_RF_ASM_BIN
                 // Stick these bytes onto the end of the list of compiled bytes
                 compiledBytes.AddRange(lineBytes);
             }
-            Console.WriteLine("Done compiling " + inputPath);
-
-            // Return as a byte[]
-            return compiledBytes.ToArray();
-
-
         }
 
         /// <summary>
@@ -100,151 +133,6 @@ namespace COMPILE_RF_ASM_BIN
             // () are a class
             // Searches for the final . , then takes everything after it and replaces with the new file ending
             return Regex.Replace(inputFileName, "([^.]+$)", RF_BIN_FileEnding); 
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line">The input line, for example: LDA 0xaf</param>
-        /// <returns>The bytes representing those commands, in the case of 'LDA 0xaf': 01 AF</returns>
-        /// <exception cref="CompilationException"></exception>
-        public static byte[] ByteifyLine(string line)
-        {
-            string[] cleanArgs = GenerateCleanArguments(line);
-            string instruction = cleanArgs[0];
-
-            // Protect against weird exceptions (can only throw CompilationException)
-            Instructions inst;
-            try
-            {
-                if(!Enum.TryParse(instruction, true, out inst))
-                {
-                    throw new CompilationException(line, "Could not parse instruction (" + instruction + ")");
-                }
-            } catch (Exception e)
-            {
-                throw new CompilationException(line, "Illegal arguments for parsing instruction " + instruction + " (" + e + ")");
-            }
-
-            byte b = (byte) inst;
-
-            // Switch the instruction
-            switch (inst)
-            {
-                // Halt
-                case Instructions.HLT:
-                    RequireLength(inst, cleanArgs, 1);
-                    return new byte[] { b };
-                // Load to A reg
-                case Instructions.LDA:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // Load to B reg
-                case Instructions.LDB:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // Store A + B in C
-                case Instructions.ADD:
-                    RequireLength(inst, cleanArgs, 1);
-                    return new byte[] { b };
-                // Store A - B in C
-                case Instructions.SUB:
-                    RequireLength(inst, cleanArgs, 1);
-                    return new byte[] { b };
-                // Compare value at α to β
-                case Instructions.CMP:
-                    RequireLength(inst, cleanArgs, 3);
-                    return new byte[] { b, ToByte(cleanArgs[1]), ToByte(cleanArgs[2]) };
-                // Jump to the memory address stored at address α
-                case Instructions.B:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // If CMP returns equal, jump to address α
-                case Instructions.BEQ:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // If CMP returns not-equal, jump to address α
-                case Instructions.BNE:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // If CMP returns greater-than, jump to address α
-                case Instructions.BGT:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // Push next memory address to stack and jump to address α
-                case Instructions.BSR:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // Pop from stack and jump there
-                case Instructions.RTN:
-                    RequireLength(inst, cleanArgs, 1);
-                    return new byte[] { b };
-                // Push value at address β into register α
-                case Instructions.LDR:
-                    RequireLength(inst, cleanArgs, 3);
-                    return new byte[] { b, ToByte(cleanArgs[1]), ToByte(cleanArgs[2]) };
-                // Move value of register C to α
-                case Instructions.CTM:
-                    RequireLength(inst, cleanArgs, 2);
-                    return new byte[] { b, ToByte(cleanArgs[1]) };
-                // Move value from register α to address β
-                case Instructions.RTM:
-                    RequireLength(inst, cleanArgs, 3);
-                    return new byte[] { b, ToByte(cleanArgs[1]), ToByte(cleanArgs[2]) };
-
-            }
-
-            //
-            throw new CompilationException(line, "Could not find definition for ");
-        }
-
-        public static void RequireLength(Instructions instruction, string[] arr, int requiredLength)
-        {
-            if (arr.Length != requiredLength)
-            {
-                throw new CompilationException(instruction + " requires at least " + requiredLength + " arguments (including the instruction itself)");
-            }
-        }
-
-        public static byte ToByte(string instruction)
-        {
-            if (instruction.StartsWith("0x"))
-            {
-                instruction = instruction.Substring(2);
-            }
-            byte output = Byte.Parse(instruction, System.Globalization.NumberStyles.HexNumber);
-            return output;
-        }
-
-        /// <summary>
-        /// Removes nasty things like comments from the arguments
-        /// </summary>
-        /// <param name="rawArgs"></param>
-        /// <returns></returns>
-        public static string[] GenerateCleanArguments(string rawLine)
-        {
-            // Split "LDA 0xaf" into { "LDA", "0xaf" }
-            // Split based on the phrase (\b): any number of spaces, followed by any character.
-            string[] rawArgs = Regex.Split(rawLine, " +(?=.)");
-
-            for (int i = 0; i < rawArgs.Length; i++)
-            {
-                string arg = rawArgs[i];
-
-                if (arg.StartsWith("//", StringComparison.Ordinal))
-                {
-
-                    // LDA 0x00 // Something here 
-                    // 5 long
-                    // // at index 2
-                    // So starting at index 0, take 2 (indices 0 and 1)
-
-                    return rawArgs.Take(i).ToArray();
-                }
-            }
-
-            // Guess they're clean
-            return rawArgs;
         }
     }
 }
