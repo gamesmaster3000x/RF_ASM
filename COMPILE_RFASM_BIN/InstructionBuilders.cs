@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RF_ASM;
 
-namespace RF_ASM
+namespace COMPILE_RF_ASM_BIN
 {
     public class InstructionBuilders
     {
