@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -37,7 +38,10 @@ namespace COMPILE_RF_ASM_BIN
             string outputPath = GetOutputFileName(inputPath);
             FileInfo outputFileInfo = new FileInfo(outputPath);
             Console.WriteLine("Storing compilation to " + outputFileInfo.FullName);
-            File.WriteAllBytes(outputPath, bytes);
+            BinaryWriter writer = new BinaryWriter(File.Open(outputPath, FileMode.OpenOrCreate));
+            writer.Write(bytes);
+            writer.Flush();
+            writer.Close();
         }
 
         /// <summary>
@@ -110,18 +114,83 @@ namespace COMPILE_RF_ASM_BIN
             string[] arguments = line.Split(" ");
             string instruction = arguments[0];
 
-            // HLT
-            if (instruction.Equals(Instructions.sHLT))
+            // Protect against weird exceptions (can only throw CompilationException)
+            Instructions inst;
+            try
             {
-                return InstructionBuilders.HLT(arguments);
-            }
-            // LDA
-            else if (instruction.Equals(Instructions.sLDA))
+                Enum.TryParse(instruction, true, out inst);
+            } catch (Exception e)
             {
-                return InstructionBuilders.LDA(arguments);
+                throw new CompilationException(line, "Could not parse instruction (" + e + ")");
             }
 
-            throw new CompilationException(line, "Invalid instruction");
+            // Switch the instruction
+            switch (inst)
+            {
+                // Halt
+                case Instructions.HLT:
+                    RequireLength(inst, arguments, 1);
+                    return new byte[] { (byte) inst };
+                // Load to A reg
+                case Instructions.LDA:
+                    RequireLength(inst, arguments, 2);
+                    return new byte[] { (byte) inst, ToByte(arguments[1]) };
+                // Load to B reg
+                case Instructions.LDB:
+                    RequireLength(inst, arguments, 3);
+                    return new byte[] { (byte) inst, ToByte(arguments[1]), ToByte(arguments[2])};
+                // Store A + B in C
+                case Instructions.ADD:
+                    RequireLength(inst, arguments, 1);
+                    return new byte[] { (byte)inst };
+                // Store A - B in C
+                case Instructions.SUB:
+                    RequireLength(inst, arguments, 1);
+                    return new byte[] { (byte)inst };
+                // Compare value at α to β
+                case Instructions.CMP:
+                // Jump to the memory address stored at address α
+                case Instructions.B:
+                // If CMP returns equal, jump to address α
+                case Instructions.BEQ:
+                // If CMP returns not-equal, jump to address α
+                case Instructions.BNE:
+                // If CMP returns greater-than, jump to address α
+                case Instructions.BGT:
+                // Push next memory address to stack and jump to address α
+                case Instructions.BSR:
+                // Pop from stack and jump there
+                case Instructions.RTN:
+                // Push value at address β into register α
+                case Instructions.LDR:
+                // Move value of register C to α
+                case Instructions.CTM:
+                // Move value from register α to address β
+                case Instructions.RTM:
+                    return null;
+
+            }
+
+            //
+            throw new CompilationException(line, "Could not find definition for ");
+        }
+
+        public static void RequireLength(Instructions instruction, string[] arr, int requiredLength)
+        {
+            if (arr.Length != requiredLength)
+            {
+                throw new CompilationException(instruction + " requires at least " + requiredLength + " arguments (including the instruction itself)");
+            }
+        }
+
+        public static byte ToByte(string instruction)
+        {
+            if (instruction.StartsWith("0x"))
+            {
+                instruction = instruction.Substring(2);
+            }
+            byte output = Byte.Parse(instruction, System.Globalization.NumberStyles.HexNumber);
+            return output;
         }
     }
 }

@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RF_ASM
 {
-    internal class Instructions
+    internal enum Instructions
     {
-        // Halt the program
-        // HLT
-        public static string sHLT = "HLT";
-        public static byte bHLT = 0x00;
-
-        // Load to the A register
-        // LDA α
-        public static string sLDA = "LDA";
-        public static byte bLDA = 0x01;
+        HLT,
+        LDA, 
+        LDB,
+        ADD,
+        SUB,
+        CMP,
+        B,
+        BEQ,
+        BNE,
+        BGT,
+        BSR,
+        RTN,
+        LDR,
+        CTM,
+        RTM
     }
 }
