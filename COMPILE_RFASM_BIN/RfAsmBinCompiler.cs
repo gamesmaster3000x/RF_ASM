@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace COMPILE_RF_ASM_BIN
 {
+    /// <summary>
+    /// Compiler for converting a list of RF ASM instructions into binary for interpretation. 
+    /// Each instruction (for example, "LDA 0xaf") should be on a new line, and arguments are seperated by a space.
+    /// </summary>
     class RfAsmBinCompiler
     {
         static void Main(string[] args)
@@ -94,19 +98,27 @@ namespace COMPILE_RF_ASM_BIN
             return Regex.Replace(inputFileName, "([^.]+$)", RF_BIN_FileEnding); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line">The input line, for example: LDA 0xaf</param>
+        /// <returns>The bytes representing those commands, in the case of 'LDA 0xaf': 01 AF</returns>
+        /// <exception cref="CompilationException"></exception>
         public static byte[] ByteifyLine(string line)
         {
-            // Start at 0 and take 3 characters
+            // Split "LDA 0xaf" into { "LDA", "0xaf" }
             string[] arguments = line.Split(" ");
             string instruction = arguments[0];
 
+            // HLT
             if (instruction.Equals(Instructions.sHLT))
             {
-                return new byte[] { Instructions.bHLT };
+                return InstructionBuilders.HLT(arguments);
             }
+            // LDA
             else if (instruction.Equals(Instructions.sLDA))
             {
-                return Instructions.LDA(arguments);
+                return InstructionBuilders.LDA(arguments);
             }
 
             throw new CompilationException(line, "Invalid instruction");

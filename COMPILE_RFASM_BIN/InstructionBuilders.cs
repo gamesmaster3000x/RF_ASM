@@ -7,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace RF_ASM
 {
-    public class Instructions
+    public class InstructionBuilders
     {
-        // Halt the program
-        // HLT
-        public static string sHLT = "HLT";
-        public static byte bHLT = 0x00;
-
-        // Load to the A register
-        // LDA α
-        public static string sLDA = "LDA";
-        public static byte bLDA = 0x01;
+        public static byte[] HLT(string[] strings)
+        {
+            return new byte[] { Instructions.bHLT };
+        }
         public static byte[] LDA(string[] strings)
         {
-            RequireLength(sLDA, strings, 2);
-            return new byte[] { bLDA, ToByte(strings[1]) };
+            RequireLength(Instructions.sLDA, strings, 2);
+            return new byte[] { Instructions.bLDA, ToByte(strings[1]) };
         }
 
         // Util
