@@ -7,25 +7,6 @@
     {
 
         /// <summary>
-        /// Takes a file containing binary data, converts the content to hex, and writes the data into a buffer.
-        /// </summary>
-        public static byte[] GetDataFromFile(string path)
-        {
-            // Open a handle to the file
-            BinaryReader reader = new BinaryReader(File.Open(path, FileMode.OpenOrCreate));
-            
-            // Read data from file into buffer
-            byte[] data = new byte[reader.BaseStream.Length];
-            for (int i = 0; i < data.Length; i++)
-            {
-                data[i] = reader.ReadByte();
-            }
-            
-            reader.Close();
-            return data;
-        }
-
-        /// <summary>
         /// Takes an array of bytes and writes them out to the console as hex values.
         /// </summary>
         public static void DisplayHexDump(byte[] data)
