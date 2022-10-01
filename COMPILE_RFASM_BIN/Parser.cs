@@ -17,7 +17,7 @@ namespace COMPILE_RFASM_BIN
     /// </summary>
     internal class Parser
     {
-        public static readonly Regex WHITESPACE = new Regex(@"\s");
+        public static readonly Regex WHITESPACE = new Regex(@"\s+");
         public static readonly Regex NON_WHITESPACE = new Regex(@"[^\s]");
         public static readonly Regex COMMENT = new Regex(@"//.+");
         public static readonly Regex LABEL_NAME = new Regex(@"(?<=::)(.*?)(?= )"); // Capture everything between "::" and " " // "::LABEL something" -> "LABEL"
@@ -120,20 +120,39 @@ namespace COMPILE_RFASM_BIN
             List<string> newLines = new List<string>();
             foreach(string line in lines)
             {
+                    string[] args = line.Split(' ');
+                    if (args.Length > 0 && args[0].Equals(".width"))
+                    {
+                        if (args.Length > 1)
+                        {
+                            meta.DATA_WIDTH = (int) Byte.Parse(args[1].Replace("0x", ""));
+                            widthIsNotSet = false;
 
-                if (widthIsNotSet && WIDTH_VALUE.IsMatch(line))
-                {
-                    meta.DATA_WIDTH = Int16.Parse(WIDTH_VALUE.Matches(line)[0].ToString());
+                            if (args.Length > 2)
+                            {
+                                throw new ParsingException(line, ".width must have exactly 3 arguments (" + args.Length + " provided)");
+                            }
+                        }
+                    }
                     continue; // Don't add line
-                } 
+
+                if (!widthIsNotSet)
+                {
+                    break;
+                }
                 
                 // Nothing has triggered and some values are not set. We must be missing data!!
                 if (widthIsNotSet)
                 {
                     throw new ParsingException("Missing required metadata (need .width)");
+                } else
+                {
+                    newLines.Add(line);
                 }
                 
             }
+
+            return newLines;
         }
 
         /// <summary>

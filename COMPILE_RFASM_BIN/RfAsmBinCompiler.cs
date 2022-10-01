@@ -81,7 +81,7 @@ namespace COMPILE_RF_ASM_BIN
             //
             //FindConstants(rawLines);
             //List<string> parsedLines = ReplaceConstants(rawLines, compiledBytes);
-            List<string> parsedLines = rawLines;
+            List<string> parsedLines = new Parser(meta).Parse(rawLines);
 
             // For each line of the file, byteify and append to the compiled bytes
             Byteify(parsedLines, compiledBytes);
