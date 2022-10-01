@@ -90,7 +90,7 @@ namespace COMPILE_RF_ASM_BIN
         public static string GetOutputFileName(string inputFileName)
         {
             // The input file extension and output file extension
-            string RF_BIN_FileEnding = "rfbin";
+            string RF_BIN_FileEnding = "rfb";
 
             // Fancy regular expression stuff to replace the .input with the .output
             // () are a class
