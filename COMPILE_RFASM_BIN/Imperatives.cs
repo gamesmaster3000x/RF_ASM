@@ -26,16 +26,11 @@ namespace COMPILE_RFASM_BIN
     ///         <term>MemAddr</term>
     ///         <term>Jumps the program to the given address in memory</term>
     ///     </item>
-    ///     <item>
-    ///         <term>.jump/term>
-    ///         <term>MemAddr</term>
-    ///         <term>Jumps the program to the given address in memory</term>
-    ///     </item>
     /// </list>
     /// </summary>
     enum Imperatives
     {
-        JUMP,
+        LABEL,
         WIDTH,
         VAL
     }

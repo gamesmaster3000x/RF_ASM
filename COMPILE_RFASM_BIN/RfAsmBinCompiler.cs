@@ -26,8 +26,12 @@ namespace COMPILE_RF_ASM_BIN
         {
             string inputPath = GetInputFilePath();
 
+            Metadata meta = new Metadata();
+            meta.INPUT_PATH = inputPath;
+            meta.DATA_WIDTH = 1;
+
             // The raw byte data from the given file
-            byte[] bytes = CompileFile(inputPath);
+            byte[] bytes = CompileFile(meta);
 
             // Dump
             Console.WriteLine("Dumping compiled bytes...");
@@ -66,10 +70,10 @@ namespace COMPILE_RF_ASM_BIN
         /// </summary>
         /// <param name="inputPath"></param>
         /// <returns></returns>
-        public static byte[] CompileFile(string inputPath)
+        public static byte[] CompileFile(Metadata meta)
         {
-            Console.WriteLine("Compiling " + inputPath);
-            string[] rawLinesArr = File.ReadAllLines(inputPath);
+            Console.WriteLine("Compiling " + meta.INPUT_PATH);
+            string[] rawLinesArr = File.ReadAllLines(meta.INPUT_PATH);
 
             List<byte> compiledBytes = new List<byte>();
             List<string> rawLines = rawLinesArr.ToList();
@@ -82,7 +86,7 @@ namespace COMPILE_RF_ASM_BIN
             // For each line of the file, byteify and append to the compiled bytes
             Byteify(parsedLines, compiledBytes);
 
-            Console.WriteLine("Done compiling " + inputPath);
+            Console.WriteLine("Done compiling " + meta.INPUT_PATH);
 
             // Return as a byte[]
             return compiledBytes.ToArray();
