@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <StartupObject>COMPILE_RF_ASM_BIN.RfAsmBinCompiler</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\RF_ASM\Instructions.cs" Link="Instructions.cs" />
+    <Compile Include="..\RF_ASM\Utils.cs" Link="Utils.cs" />
+  </ItemGroup>
+
+</Project>
