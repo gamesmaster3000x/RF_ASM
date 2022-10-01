@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\RF_ASM\Instructions.cs" Link="Instructions.cs" />
     <Compile Include="..\RF_ASM\Utils.cs" Link="Utils.cs" />
   </ItemGroup>
 
