@@ -38,7 +38,7 @@ namespace RF_ASM
 
         public int Peek
         {
-            get { return data[back]; }
+            get { return data[back];}
         }
     }
 }
