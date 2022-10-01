@@ -110,10 +110,8 @@ namespace COMPILE_RF_ASM_BIN
         /// <exception cref="CompilationException"></exception>
         public static byte[] ByteifyLine(string line)
         {
-            // Split "LDA 0xaf" into { "LDA", "0xaf" }
-            // Split based on the phrase (\b): any number of spaces, followed by any character.
-            string[] arguments = Regex.Split(line, " +(?=.)");
-            string instruction = arguments[0];
+            string[] cleanArgs = GenerateCleanArguments(line);
+            string instruction = cleanArgs[0];
 
             // Protect against weird exceptions (can only throw CompilationException)
             Instructions inst;
@@ -135,64 +133,64 @@ namespace COMPILE_RF_ASM_BIN
             {
                 // Halt
                 case Instructions.HLT:
-                    RequireLength(inst, arguments, 1);
+                    RequireLength(inst, cleanArgs, 1);
                     return new byte[] { b };
                 // Load to A reg
                 case Instructions.LDA:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // Load to B reg
                 case Instructions.LDB:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // Store A + B in C
                 case Instructions.ADD:
-                    RequireLength(inst, arguments, 1);
+                    RequireLength(inst, cleanArgs, 1);
                     return new byte[] { b };
                 // Store A - B in C
                 case Instructions.SUB:
-                    RequireLength(inst, arguments, 1);
+                    RequireLength(inst, cleanArgs, 1);
                     return new byte[] { b };
                 // Compare value at α to β
                 case Instructions.CMP:
-                    RequireLength(inst, arguments, 3);
-                    return new byte[] { b, ToByte(arguments[1]), ToByte(arguments[2]) };
+                    RequireLength(inst, cleanArgs, 3);
+                    return new byte[] { b, ToByte(cleanArgs[1]), ToByte(cleanArgs[2]) };
                 // Jump to the memory address stored at address α
                 case Instructions.B:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // If CMP returns equal, jump to address α
                 case Instructions.BEQ:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // If CMP returns not-equal, jump to address α
                 case Instructions.BNE:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // If CMP returns greater-than, jump to address α
                 case Instructions.BGT:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // Push next memory address to stack and jump to address α
                 case Instructions.BSR:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // Pop from stack and jump there
                 case Instructions.RTN:
-                    RequireLength(inst, arguments, 1);
+                    RequireLength(inst, cleanArgs, 1);
                     return new byte[] { b };
                 // Push value at address β into register α
                 case Instructions.LDR:
-                    RequireLength(inst, arguments, 3);
-                    return new byte[] { b, ToByte(arguments[1]), ToByte(arguments[2]) };
+                    RequireLength(inst, cleanArgs, 3);
+                    return new byte[] { b, ToByte(cleanArgs[1]), ToByte(cleanArgs[2]) };
                 // Move value of register C to α
                 case Instructions.CTM:
-                    RequireLength(inst, arguments, 2);
-                    return new byte[] { b, ToByte(arguments[1]) };
+                    RequireLength(inst, cleanArgs, 2);
+                    return new byte[] { b, ToByte(cleanArgs[1]) };
                 // Move value from register α to address β
                 case Instructions.RTM:
-                    RequireLength(inst, arguments, 3);
-                    return new byte[] { b, ToByte(arguments[1]), ToByte(arguments[2]) };
+                    RequireLength(inst, cleanArgs, 3);
+                    return new byte[] { b, ToByte(cleanArgs[1]), ToByte(cleanArgs[2]) };
 
             }
 
@@ -216,6 +214,37 @@ namespace COMPILE_RF_ASM_BIN
             }
             byte output = Byte.Parse(instruction, System.Globalization.NumberStyles.HexNumber);
             return output;
+        }
+
+        /// <summary>
+        /// Removes nasty things like comments from the arguments
+        /// </summary>
+        /// <param name="rawArgs"></param>
+        /// <returns></returns>
+        public static string[] GenerateCleanArguments(string rawLine)
+        {
+            // Split "LDA 0xaf" into { "LDA", "0xaf" }
+            // Split based on the phrase (\b): any number of spaces, followed by any character.
+            string[] rawArgs = Regex.Split(rawLine, " +(?=.)");
+
+            for (int i = 0; i < rawArgs.Length; i++)
+            {
+                string arg = rawArgs[i];
+
+                if (arg.StartsWith("//", StringComparison.Ordinal))
+                {
+
+                    // LDA 0x00 // Something here 
+                    // 5 long
+                    // // at index 2
+                    // So starting at index 0, take 2 (indices 0 and 1)
+
+                    return rawArgs.Take(i).ToArray();
+                }
+            }
+
+            // Guess they're clean
+            return rawArgs;
         }
     }
 }
