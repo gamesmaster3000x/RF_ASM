@@ -79,10 +79,7 @@ namespace COMPILE_RF_ASM_BIN
             List<byte> compiledBytes = new List<byte>();
             List<string> rawLines = rawLinesArr.ToList();
 
-            //
-            //FindConstants(rawLines);
-            //List<string> parsedLines = ReplaceConstants(rawLines, compiledBytes);
-            // List<string> parsedLines = new Parser(meta).Parse(rawLines);
+            // Get the tokens in the compilation
             List<Token> tokens = new TokenisedParser(meta).Parse(rawLines);
 
             // For each line of the file, byteify and append to the compiled bytes
