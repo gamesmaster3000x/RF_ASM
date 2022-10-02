@@ -1,4 +1,5 @@
 ﻿using COMPILE_RFASM_BIN;
+using COMPILE_RFASM_BIN.TokenisedParser;
 using RF_ASM;
 using System;
 using System.Collections.Generic;
@@ -81,10 +82,11 @@ namespace COMPILE_RF_ASM_BIN
             //
             //FindConstants(rawLines);
             //List<string> parsedLines = ReplaceConstants(rawLines, compiledBytes);
-            List<string> parsedLines = new Parser(meta).Parse(rawLines);
+            // List<string> parsedLines = new Parser(meta).Parse(rawLines);
+            List<Token> tokens = new TokenisedParser(meta).Parse(rawLines);
 
             // For each line of the file, byteify and append to the compiled bytes
-            Byteify(parsedLines, compiledBytes);
+            // Byteify(parsedLines, compiledBytes);
 
             Console.WriteLine("Done compiling " + meta.INPUT_PATH);
 
