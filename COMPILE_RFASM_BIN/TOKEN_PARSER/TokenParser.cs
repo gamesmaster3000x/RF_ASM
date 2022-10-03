@@ -10,59 +10,48 @@ namespace RFASM_COMPILER.TOKEN_PARSER
 {
     internal class TokenParser
     {
+        private Regex GOOD_TOKEN;
+        private Regex IGNORE_TOKEN;
+        private Regex BAD_TOKEN;
         private ITokenParserMetadata meta;
+        private ITokenGenerator generator;
 
-        public TokenParser(ITokenParserMetadata meta)
+        public TokenParser(Regex goodToken, Regex ignoreToken, Regex badToken, ITokenParserMetadata meta, ITokenGenerator generator)
         {
+            this.GOOD_TOKEN = goodToken;
+            this.IGNORE_TOKEN = ignoreToken;
+            this.BAD_TOKEN = badToken;
             this.meta = meta;
+            this.generator = generator;
         }
 
         public List<Token>? Parse(List<string> input)
         {
-            TokenReader reader = new TokenReader(input, new RFASMTokenGenerator(meta), meta);
             List<Token> tokens = new List<Token>();
 
-            foreach(string token in input)
+            foreach(string line in input)
             {
-                // Good Token: [A-Za-z0-9_]+((?=[ \n])|$) Match a string of alphanumeric characters (or underscore) followed by a space, newline or end of line
-                // Ignore: /.+ Anything after a slash
-                // Bad Token: [^A-Za-z0-9_] Contains anything which isn't alphanumeric (or underscore)
-                string line = token;
-                Regex GOOD_TOKEN = new Regex(@"[A-Za-z0-9_.:]+((?=[ \n])|$)");
-                Regex IGNORE = new Regex(@"/.+");
-                Regex BAD_TOKEN = new Regex(@"[^A-Za-z0-9_ .:]");
+                string line_ = IGNORE_TOKEN.Replace(line, "");
 
-                Console.WriteLine(line);
-
-                Console.WriteLine("Ignore: " + string.Join(" ", IGNORE.Matches(line).Cast<Match>().Select(m => m.Value).ToArray()));
-                line = IGNORE.Replace(line, "");
-
-                Console.WriteLine("Bad   : " + string.Join(" ", BAD_TOKEN.Matches(line).Cast<Match>().Select(m => m.Value).ToArray()));
-                if (BAD_TOKEN.IsMatch(line))
+                if (BAD_TOKEN.IsMatch(line_))
                 {
-                    Console.WriteLine("Bad line!");
+                    throw new TokenParsingException("Bad token on line: " + line_);
                 }
 
-                Console.WriteLine("Good  : " + string.Join(" ", GOOD_TOKEN.Matches(line).Cast<Match>().Select(m => m.Value).ToArray()));
-
-                Console.WriteLine("");
-            }
-
-            while (reader.HasNextLine())
-            {
-                while (reader.HasNextToken())
+                foreach (Match match in GOOD_TOKEN.Matches(line_))
                 {
-                    Token t = reader.NextToken();
-
-                    // If null, dont add!
-                    if (t != null && t.Value != "")
-                    {
-                        tokens.Add(t); 
-                    }
+                    Token token = generator.GetToken(match.Value, meta);
+                    tokens.Add(token);
                 }
-                reader.NextLine();
             }
 
+            List<string> strings = new List<string>();
+            foreach (Token token in tokens)
+            {
+                strings.Add(token.Value);
+            }
+
+            Console.WriteLine(String.Join(" ", strings));
             return tokens;
         }
     }
