@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace RFASM_COMPILER.TOKEN_PARSER
 {
+
+
+    // Good Token: [A-Za-z0-9_]+((?=[ \n])|$) Match a string of alphanumeric characters (or underscore) followed by a space, newline or end of line
+    // Ignore: /.+ Anything after a slash
+    // Bad Token: [^A-Za-z0-9_] Contains anything which isn't alphanumeric (or underscore)
+
     internal class TokenReader
     {
         private List<string> lines;
