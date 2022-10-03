@@ -1,7 +1,4 @@
-﻿using COMPILE_RF_ASM_BIN;
-using COMPILE_RFASM_BIN;
-using RF_ASM;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace COMPILE_RF_ASM_BIN
+namespace RFASM_COMPILER.RFASM_BIN
 {
     internal static class Bytifier
     {
@@ -157,7 +154,7 @@ namespace COMPILE_RF_ASM_BIN
             {
                 instruction = instruction.Substring(2);
             }
-            byte output = Byte.Parse(instruction, System.Globalization.NumberStyles.HexNumber);
+            byte output = byte.Parse(instruction, System.Globalization.NumberStyles.HexNumber);
             return output;
         }
     }

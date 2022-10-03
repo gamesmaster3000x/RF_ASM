@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>COMPILE_RF_ASM_BIN.RfAsmBinCompiler</StartupObject>
+    <StartupObject>RFASM_COMPILER.RFASM_BIN.RFASMCompiler</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,12 +6,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace COMPILE_RFASM_BIN.TokenisedParser
+namespace RFASM_COMPILER.TOKEN_PARSER
 {
     internal class TokenReader
     {
         private List<string> lines;
-        private Metadata meta;
+        private ITokenGenerator generator;
+        private ITokenParserMetadata meta;
         /// <summary>
         /// Sits at the "head" - the line which is about to be read but hasn't yet
         /// </summary>
@@ -23,10 +24,11 @@ namespace COMPILE_RFASM_BIN.TokenisedParser
 
         public static readonly Regex NON_WHITESPACE = new Regex(@"[^\s]");
 
-        public TokenReader(List<string> lines, Metadata meta)
+        public TokenReader(List<string> lines, ITokenGenerator generator, ITokenParserMetadata meta)
         {
-            this.meta = meta;
             this.lines = lines;
+            this.generator = generator;
+            this.meta = meta;
             Reset();
         }
 
@@ -69,7 +71,7 @@ namespace COMPILE_RFASM_BIN.TokenisedParser
                 charPointer = 0;
                 return lines[linePointer++];
             }
-            throw new ParsingException("Do not have the next line.");
+            throw new TokenParsingException("Do not have the next line.");
         }
 
         /// <summary>
@@ -82,7 +84,7 @@ namespace COMPILE_RFASM_BIN.TokenisedParser
             if (HasNextChar()) {
                 return lines[linePointer].ToCharArray()[charPointer++]; 
             }
-            throw new ParsingException("Do not have the next character.");
+            throw new TokenParsingException("Do not have the next character.");
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace COMPILE_RFASM_BIN.TokenisedParser
                     }
                     if (NON_WHITESPACE.IsMatch(value))
                     {
-                        Token to = Token.GetToken(value);
+                        Token to = generator.GetToken(value, meta);
                         return to;
                     }
 

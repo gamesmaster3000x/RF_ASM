@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RF_ASM
+namespace RFASM_COMPILER.RFASM_BIN
 {
     /// <summary>
     /// 
@@ -105,7 +105,7 @@ namespace RF_ASM
     internal enum Instructions
     {
         HLT,
-        LDA, 
+        LDA,
         LDB,
         ADD,
         SUB,

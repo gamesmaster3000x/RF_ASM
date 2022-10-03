@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace COMPILE_RFASM_BIN
+namespace RFASM_COMPILER.RFASM_BIN
 {
     /// <summary>
     /// 

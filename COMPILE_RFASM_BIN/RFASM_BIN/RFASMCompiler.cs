@@ -1,5 +1,4 @@
-﻿using COMPILE_RFASM_BIN;
-using COMPILE_RFASM_BIN.TokenisedParser;
+﻿using RFASM_COMPILER.TOKEN_PARSER;
 using RF_ASM;
 using System;
 using System.Collections.Generic;
@@ -10,13 +9,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace COMPILE_RF_ASM_BIN
+namespace RFASM_COMPILER.RFASM_BIN
 {
     /// <summary>
     /// Compiler for converting a list of RF ASM instructions into binary for interpretation. 
     /// Each instruction (for example, "LDA 0xaf") should be on a new line, and arguments are seperated by a space.
     /// </summary>
-    class RfAsmBinCompiler
+    class RFASMCompiler
     {
         public const int DATA_WIDTH = 2;
 
@@ -27,7 +26,7 @@ namespace COMPILE_RF_ASM_BIN
         {
             string inputPath = GetInputFilePath();
 
-            Metadata meta = new Metadata();
+            RFASMCompilerMetadata meta = new RFASMCompilerMetadata();
             meta.INPUT_PATH = inputPath;
             meta.DATA_WIDTH = 1;
 
@@ -71,7 +70,7 @@ namespace COMPILE_RF_ASM_BIN
         /// </summary>
         /// <param name="inputPath"></param>
         /// <returns></returns>
-        public static byte[] CompileFile(Metadata meta)
+        public static byte[] CompileFile(RFASMCompilerMetadata meta)
         {
             Console.WriteLine("Compiling " + meta.INPUT_PATH);
             string[] rawLinesArr = File.ReadAllLines(meta.INPUT_PATH);
@@ -80,7 +79,7 @@ namespace COMPILE_RF_ASM_BIN
             List<string> rawLines = rawLinesArr.ToList();
 
             // Get the tokens in the compilation
-            List<Token> tokens = new TokenisedParser(meta).Parse(rawLines);
+            List<Token> tokens = new TokenParser(meta).Parse(rawLines);
 
             // For each line of the file, byteify and append to the compiled bytes
             // Byteify(parsedLines, compiledBytes);
@@ -105,7 +104,7 @@ namespace COMPILE_RF_ASM_BIN
                 string line = parsedLines[i];
 
                 // Line number, e.g. 1/300
-                Console.Write((i + 1) + "/" + parsedLines.Count + " ");
+                Console.Write(i + 1 + "/" + parsedLines.Count + " ");
 
                 // The bytes, e.g. 01-04-a4
                 byte[] lineBytes = Bytifier.ByteifyLine(line);
@@ -135,7 +134,7 @@ namespace COMPILE_RF_ASM_BIN
             // Fancy regular expression stuff to replace the .input with the .output
             // () are a class
             // Searches for the final . , then takes everything after it and replaces with the new file ending
-            return Regex.Replace(inputFileName, "([^.]+$)", RF_BIN_FileEnding); 
+            return Regex.Replace(inputFileName, "([^.]+$)", RF_BIN_FileEnding);
         }
     }
 }

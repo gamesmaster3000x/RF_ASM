@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace COMPILE_RFASM_BIN.TokenisedParser
+namespace RFASM_COMPILER.TOKEN_PARSER
 {
-    internal enum TokenType
+    internal interface ITokenParserMetadata
     {
-        INSTRUCTION,
-        DIRECTIVE,
-        LABEL
+        int GetDataWidth();
     }
 }

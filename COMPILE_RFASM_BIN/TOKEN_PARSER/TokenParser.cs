@@ -1,23 +1,24 @@
-﻿using System;
+﻿using RFASM_COMPILER.RFASM_BIN;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace COMPILE_RFASM_BIN.TokenisedParser
+namespace RFASM_COMPILER.TOKEN_PARSER
 {
-    internal class TokenisedParser
+    internal class TokenParser
     {
-        private Metadata meta;
+        private ITokenParserMetadata meta;
 
-        public TokenisedParser(Metadata meta)
+        public TokenParser(ITokenParserMetadata meta)
         {
             this.meta = meta;
         }
 
         public List<Token>? Parse(List<string> input)
         {
-            TokenReader reader = new TokenReader(input, meta);
+            TokenReader reader = new TokenReader(input, new RFASMTokenGenerator(meta), meta);
             List<Token> tokens = new List<Token>();
 
             while (reader.HasNextLine())
