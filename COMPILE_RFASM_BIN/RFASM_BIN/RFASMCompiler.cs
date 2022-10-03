@@ -78,8 +78,16 @@ namespace RFASM_COMPILER.RFASM_BIN
             List<byte> compiledBytes = new List<byte>();
             List<string> rawLines = rawLinesArr.ToList();
 
+            // Good Token: [A-Za-z0-9_]+((?=[ \n])|$) Match a string of alphanumeric characters (or underscore) followed by a space, newline or end of line
+            // Ignore: /.+ Anything after a slash
+            // Bad Token: [^A-Za-z0-9_] Contains anything which isn't alphanumeric (or underscore)
+            Regex GOOD_TOKEN = new Regex(@"[A-Za-z0-9_.:]+((?=[ \n])|$)");
+            Regex IGNORE = new Regex(@"/.+");
+            Regex BAD_TOKEN = new Regex(@"[^A-Za-z0-9_ .:]");
+
             // Get the tokens in the compilation
-            List<Token> tokens = new TokenParser(meta).Parse(rawLines);
+            ITokenGenerator generator = new RFASMTokenGenerator(meta);
+            List<Token> tokens = new TokenParser(GOOD_TOKEN, IGNORE, BAD_TOKEN, meta, generator).Parse(rawLines);
 
             // For each line of the file, byteify and append to the compiled bytes
             // Byteify(parsedLines, compiledBytes);
@@ -88,8 +96,6 @@ namespace RFASM_COMPILER.RFASM_BIN
 
             // Return as a byte[]
             return compiledBytes.ToArray();
-
-
         }
 
         /// <summary>

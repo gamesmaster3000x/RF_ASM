@@ -3,39 +3,55 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RFASM_COMPILER.TOKEN_PARSER
 {
     internal class TokenParser
     {
+        private Regex GOOD_TOKEN;
+        private Regex IGNORE_TOKEN;
+        private Regex BAD_TOKEN;
         private ITokenParserMetadata meta;
+        private ITokenGenerator generator;
 
-        public TokenParser(ITokenParserMetadata meta)
+        public TokenParser(Regex goodToken, Regex ignoreToken, Regex badToken, ITokenParserMetadata meta, ITokenGenerator generator)
         {
+            this.GOOD_TOKEN = goodToken;
+            this.IGNORE_TOKEN = ignoreToken;
+            this.BAD_TOKEN = badToken;
             this.meta = meta;
+            this.generator = generator;
         }
 
         public List<Token>? Parse(List<string> input)
         {
-            TokenReader reader = new TokenReader(input, new RFASMTokenGenerator(meta), meta);
             List<Token> tokens = new List<Token>();
 
-            while (reader.HasNextLine())
+            foreach(string line in input)
             {
-                while (reader.HasNextToken())
-                {
-                    Token t = reader.NextToken();
+                string line_ = IGNORE_TOKEN.Replace(line, "");
 
-                    // If null, dont add!
-                    if (t != null && t.Value != "")
-                    {
-                        tokens.Add(t); 
-                    }
+                if (BAD_TOKEN.IsMatch(line_))
+                {
+                    throw new TokenParsingException("Bad token on line: " + line_);
                 }
-                reader.NextLine();
+
+                foreach (Match match in GOOD_TOKEN.Matches(line_))
+                {
+                    Token token = generator.GetToken(match.Value, meta);
+                    tokens.Add(token);
+                }
             }
 
+            List<string> strings = new List<string>();
+            foreach (Token token in tokens)
+            {
+                strings.Add(token.Value);
+            }
+
+            Console.WriteLine(String.Join(" ", strings));
             return tokens;
         }
     }
