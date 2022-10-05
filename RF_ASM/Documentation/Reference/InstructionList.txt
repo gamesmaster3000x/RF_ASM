@@ -20,8 +20,8 @@ RTN      0E    Jump to the last memory address in stack, and remove it.
 
 Addressing modes:
 
-Binary Info
-00     Raw Value
-01     Memory Address
-10     Register Address
-11     Unused
+Code Binary Info
+#    00     Raw Value
+*    01     Memory Address
+&    10     Register Address
+?    11     Unused
