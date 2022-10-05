@@ -1,3 +1,5 @@
+Instructions:
+
 Code     Hex   Info
 HLT      00    Immediately stop the execution of instructions. Next instruction will not be read.
 LDR α,β  01    Load the value from address β to the α register.
@@ -15,3 +17,11 @@ BOF α    0C    If the overflow flag is active, jump to the memory address at α
 BSR α    0D    Push the next memory address to Stack, and jump to the memory address at α.
 RTN      0E    Jump to the last memory address in stack, and remove it.
          0F    
+
+Addressing modes:
+
+Binary Info
+00     Raw Value
+01     Memory Address
+10     Register Address
+11     Unused
