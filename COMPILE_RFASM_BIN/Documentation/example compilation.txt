@@ -1,0 +1,96 @@
+===== Some example code
+// Comment
+.width    0x02
+LDA 0x01 //     Another comment
+.val VALUE 0x03
+
+::label
+LDB VALUE
+B       ::otherlabel
+.val CONST 0x05
+::otherlabel
+LDA      CONST
+
+B ::label
+
+
+===== Remove white space
+// Comment
+.width 0x02
+LDA 0x01 // Another comment
+.val VALUE 0x03
+
+::label
+LDB VALUE
+B ::otherlabel
+.val CONST 0x05
+::otherlabel
+LDA CONST
+
+B ::label
+
+
+===== Remove blank lines
+// Comment
+.width 0x02
+LDA 0x01 // Another comment
+.val VALUE 0x03
+::label
+LDB VALUE
+B ::otherlabel
+.val CONST 0x05
+::otherlabel
+LDA CONST
+B ::label
+
+
+
+===== Remove comments
+.width 0x02
+LDA 0x01
+.val VALUE 0x03
+::label
+LDB VALUE
+B ::otherlabel
+.val CONST 0x05
+::otherlabel
+LDA CONST
+B ::label
+
+
+===== Find constants (VALUE = 0x03, CONST = 0x05)
+.width 0x02
+LDA 0x01
+::label
+LDB VALUE
+B ::otherlabel
+::otherlabel
+LDA CONST
+B ::label
+
+
+===== Find labels (::label = 03, ::otherlabel = 05)
+.width 0x02
+LDA 0x01
+LDB VALUE      (<< label)
+B ::otherlabel
+LDA CONST      (<< otherlabel)
+B ::label
+
+
+===== Replace constants
+.width 0x02
+LDA 0x01
+LDB 0x03
+B ::otherlabel
+LDA 0x05
+B ::label
+
+
+===== Replace labels
+.width 0x02
+LDA 0x01
+LDB 0x03
+B 0x05
+LDA 0x05
+B 0x03
