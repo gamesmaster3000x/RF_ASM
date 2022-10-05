@@ -16,6 +16,14 @@ namespace RFASM_COMPILER.TOKEN_PARSER
         private ITokenParserMetadata meta;
         private ITokenGenerator generator;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="goodToken">A Regular-Expression which returns true for (and only for) a valid token.</param>
+        /// <param name="ignoreToken">A Regular-Expression which returns true for any token which should be ignored, for example comments (in C# that's anything after //)</param>
+        /// <param name="badToken">A Regular-Expression which returns true if the input contains an invalid token or character.</param>
+        /// <param name="meta"></param>
+        /// <param name="generator"></param>
         public TokenParser(Regex goodToken, Regex ignoreToken, Regex badToken, ITokenParserMetadata meta, ITokenGenerator generator)
         {
             this.GOOD_TOKEN = goodToken;
