@@ -9,26 +9,26 @@ namespace RF_ASM
     internal class Stack
     {
         //The max size of the stack
-        int capacity;
+        uint capacity;
 
         //The index of the previously added item.
-        int back;
+        uint back;
 
-        byte[] data;
+        Value[] data;
 
-        public Stack(int capacity)
+        public Stack(uint capacity)
         {
             this.capacity = capacity;
-            data = new byte[capacity];
+            data = new Value[capacity];
             back = 0;
         }
 
-        public void Push(byte b)
+        public void Push(Value b)
         {
             data[++back] = b;
         }
 
-        public int Pop
+        public Value Pop
         {
             get
             {
@@ -36,7 +36,7 @@ namespace RF_ASM
             }
         }
 
-        public int Peek
+        public Value Peek
         {
             get { return data[back];}
         }
