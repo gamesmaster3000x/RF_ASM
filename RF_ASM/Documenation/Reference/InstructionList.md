@@ -16,7 +16,7 @@ BGT α    0B    If CMP returns greater than, jump to the memory address at α.
 BOF α    0C    If the overflow flag is active, jump to the memory address at α.
 BSR α    0D    Push the next memory address to Stack, and jump to the memory address at α.
 RTN      0E    Jump to the last memory address in stack, and remove it.
-         0F    
+STB α,β  0F    Store the lowest byte of α to the memory address β.
 
 Addressing modes:
 
