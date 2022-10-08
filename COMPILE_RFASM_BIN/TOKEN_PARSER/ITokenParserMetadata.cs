@@ -8,6 +8,6 @@ namespace RFASM_COMPILER.TOKEN_PARSER
 {
     internal interface ITokenParserMetadata
     {
-        int GetDataWidth();
+        string GetValue(string key);
     }
 }

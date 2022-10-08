@@ -10,6 +10,9 @@ namespace RFASM_COMPILER.TOKEN_PARSER
     {
         INSTRUCTION,
         DIRECTIVE,
-        LABEL
+        LABEL,
+        RAW,
+        ADDRESS,
+        NAME
     }
 }
