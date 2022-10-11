@@ -21,5 +21,7 @@ STB α,β  0F    Store the lowest byte of α to the memory address β.
 Addressing modes:
 
 Code Binary Info
-#    0     Raw Value
-*    1     Register Address
+#    00     Raw Value
+*    01     Memory Address
+&    10     Register Address
+?    11     Unused
