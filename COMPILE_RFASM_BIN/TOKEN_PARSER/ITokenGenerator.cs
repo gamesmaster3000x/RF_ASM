@@ -8,6 +8,6 @@ namespace RFASM_COMPILER.TOKEN_PARSER
 {
     internal interface ITokenGenerator
     {
-        Token GetToken(string value, ITokenParserMetadata meta);
+       IToken GetToken(string value, ITokenParserMetadata meta);
     }
 }

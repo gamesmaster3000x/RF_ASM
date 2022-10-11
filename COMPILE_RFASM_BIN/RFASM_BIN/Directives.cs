@@ -28,9 +28,8 @@ namespace RFASM_COMPILER.RFASM_BIN
     ///     </item>
     /// </list>
     /// </summary>
-    enum Imperatives
+    enum Directives
     {
-        LABEL,
         WIDTH,
         VAL
     }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.TOKEN_PARSER
+namespace RFASM_COMPILER.RFASM_BIN.TOKENS
 {
-    internal interface ITokenParserMetadata
+    public enum AddressingMode
     {
-        string GetValue(string key);
+        RAW,
+        REGISTER
     }
 }

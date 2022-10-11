@@ -8,8 +8,4 @@
     <StartupObject>RFASM_COMPILER.RFASM_BIN.RFASMCompiler</StartupObject>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\RF_ASM\Utils.cs" Link="Utils.cs" />
-  </ItemGroup>
-
 </Project>
