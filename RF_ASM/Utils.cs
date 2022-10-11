@@ -1,4 +1,6 @@
-﻿namespace RF_ASM
+﻿using System.Collections;
+
+namespace RF_ASM
 {
     /// <summary>
     /// Static utility methods for RF_ASM
@@ -53,12 +55,13 @@
             }
         }
 
-        public static void PadBytes(int desiredLength, byte[] ba)
+        public static byte[] SetBitInByte(byte b, int bitIndex, bool bitValue)
         {
-            while (ba.Length < desiredLength)
-            {
-                ba.Prepend((byte) 0);
-            }
+            BitArray bitArr = new BitArray(b);
+            bitArr.Set(bitIndex, bitValue);
+            byte[] o = new byte[bitArr.Length];
+            bitArr.CopyTo(o, 0);
+            return o;
         }
     }
 }
