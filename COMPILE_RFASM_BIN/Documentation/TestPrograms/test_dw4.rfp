@@ -1,0 +1,27 @@
+.width #4
+
+LDR *0A0A0A0A &1B1B1B1B   // 00000001 0A0A0A0A 1B1B1B1B
+.val _VALUE #2C2C2C2C
+
+:label
+LDR _VALUE &3D3D3D3D      // 00000001 2C2C2C2C 3D3D3D3D << label @ 0003
+B _otherlabel             // 00000008 00000020(=32)
+.val _CONST #4E4E4E4E
+
+:otherlabel
+LDR _CONST &5F5F5F5F      // 00000001 4E4E4E4E 5F5F5F5F << otherlabel @ 08
+B _label                  // 00000008 0000000C(=12)
+
+// Expected
+//            00 00 00 01    0A 0A 0A 0A    1B 1B 1B 1B 
+//      label 00 00 00 01    2C 2C 2C 2C    3D 3D 3D 3D 
+//            00 00 00 08    00 00 00 20  
+// otherlabel 00 00 00 01    4E 4E 4E 4E    5F 5F 5F 5F 
+//            00 00 00 08    00 00 00 0C 
+
+// Actual
+//            00 00 00 01    0A 0A 0A 0A    1B 1B 1B 1B 
+//            00 00 00 01    2C 2C 2C 2C    3D 3D 3D 3D 
+//            00 00 00 08    00 00 00 20
+//            00 00 00 01    4E 4E 4E 4E    5F 5F 5F 5F 
+//            00 00 00 08    00 00 00 0C

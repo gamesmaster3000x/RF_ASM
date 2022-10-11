@@ -39,11 +39,12 @@ namespace RFASM_COMPILER.RFASM_BIN
             Console.WriteLine("");
             Console.WriteLine(" <==> Preparing");
 
-            bool USE_AUTOWIRED_ARGUMENTS = true;
+            bool USE_AUTOWIRED_ARGUMENTS = false;
             if (USE_AUTOWIRED_ARGUMENTS)
             {
                 Console.WriteLine("Using autowired program arguments (ignoring " + args.Length + " input arguments)");
-                args = new string[] { "-INPUT_PATH", "test_dw1.rfp", "-DATA_WIDTH", "1", "-RANDOM_ARG", "-OTHER_RANDOM_ARG", " ", "CONFUSION", "-" };
+                string testProgramsPath = "../../../Documentation/TestPrograms/"; // Escape bin, Debug, and net6.0
+                args = new string[] { "-INPUT_PATH", testProgramsPath + "test_dw1.rfp", "-DATA_WIDTH", "1", "-RANDOM_ARG", "-OTHER_RANDOM_ARG", " ", "CONFUSION", "-" };
             }
 
             Console.WriteLine("Parsing arguments");
