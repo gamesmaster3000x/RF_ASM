@@ -33,7 +33,7 @@ namespace RFASM_COMPILER.RFASM_BIN
             this.meta = meta;
         }
 
-        IToken ITokenGenerator.GetToken(string value, ITokenParserMetadata meta)
+        public IToken GetToken(string value, ITokenParserMetadata meta)
         {
             RFASMCompilerMetadata metadata = (RFASMCompilerMetadata)meta;
             // Raw value
@@ -41,13 +41,8 @@ namespace RFASM_COMPILER.RFASM_BIN
             {
                 return new RawValueToken(value, metadata);
             }
-            // Memory address
-            else if (value.StartsWith("*", StringComparison.Ordinal))
-            {
-                return new MemoryAddressToken(value, metadata);
-            }
             // Register address
-            else if (value.StartsWith("&", StringComparison.Ordinal))
+            else if (value.StartsWith("*", StringComparison.Ordinal))
             {
                 return new RegisterAddressToken(value, metadata);
             }

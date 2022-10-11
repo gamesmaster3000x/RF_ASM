@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace RFASM_COMPILER.RFASM_BIN.TOKENS
 {
-    internal class RawValueToken: AbstractToken
+    internal class RawValueToken: AbstractValueToken
     {
-        private RFASMCompilerMetadata meta;
-        public RawValueToken(string value, RFASMCompilerMetadata meta)
+        public RawValueToken(string value, RFASMCompilerMetadata meta) : base(value, meta, AddressingMode.RAW)
         {
-            this.meta = meta;
-            Type = TokenType.RAW;
-            RawValue = value.Replace("#", "", StringComparison.Ordinal);
+
         }
+
         public override byte[] GetBytes()
         {
             byte[] ba = Convert.FromHexString(RawValue);
@@ -23,10 +21,15 @@ namespace RFASM_COMPILER.RFASM_BIN.TOKENS
             {
                 throw new CompilationException("Data width " + ba.Length + " of RawValueToken " + RawValue + " does not match expected width " + meta.DataWidth);
             }
-            return Utils.FitToDataWidth(meta.DataWidth, ba);
+            return CompilerUtils.FitToDataWidth(meta.DataWidth, ba);
         }
 
-        public override bool HasCorrectSyntax(IToken[] following)
+        public override string ParseRawValue(string reallyRawValue)
+        {
+            return reallyRawValue.Replace("#", "", StringComparison.Ordinal);
+        }
+
+        public override bool CheckFollowing(IToken[] following)
         {
             return true;
         }

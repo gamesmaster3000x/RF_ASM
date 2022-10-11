@@ -7,23 +7,26 @@ using System.Threading.Tasks;
 
 namespace RFASM_COMPILER.RFASM_BIN.TOKENS
 {
-    internal class NameToken: AbstractToken
+    internal class NameToken: AbstractValueToken
     {
-        private RFASMCompilerMetadata meta;
-        public NameToken(string value, RFASMCompilerMetadata meta)
+        public NameToken(string value, RFASMCompilerMetadata meta) : base(value, meta, AddressingMode.RAW)
         {
-            this.meta = meta;
-            Type = TokenType.NAME;
-            RawValue = value.Replace("_", "", StringComparison.Ordinal);
+            meta.constants.TryGetValue(RawValue, out TokenTemplate template); // TODO Resolve type of NameToken at construction
         }
 
         public override byte[] GetBytes()
         {
-            meta.constants.TryGetValue(RawValue, out byte[]? val);
-            return Utils.FitToDataWidth(meta.DataWidth, val);
+            meta.constants.TryGetValue(RawValue, out TokenTemplate template);
+            AbstractValueToken token = template.CreateToken();
+            return CompilerUtils.FitToDataWidth(meta.DataWidth, token.GetBytes());
         }
 
-        public override bool HasCorrectSyntax(IToken[] following)
+        public override string ParseRawValue(string reallyRawValue)
+        {
+            return reallyRawValue.Replace("_", "", StringComparison.Ordinal);
+        }
+
+        public override bool CheckFollowing(IToken[] following)
         {
             return true;
         }

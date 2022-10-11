@@ -1,9 +1,10 @@
-﻿using RFASM_COMPILER.TOKEN_PARSER;
+﻿using RFASM_COMPILER.RFASM_BIN.TOKENS;
+using RFASM_COMPILER.TOKEN_PARSER;
 using System.Xml.Linq;
 
 namespace RFASM_COMPILER.RFASM_BIN
 {
-    internal class RFASMCompilerMetadata : ITokenParserMetadata
+    public class RFASMCompilerMetadata : ITokenParserMetadata
     {
 
         private Dictionary<string, string> metadata = new Dictionary<string, string>();
@@ -24,7 +25,7 @@ namespace RFASM_COMPILER.RFASM_BIN
         }
 
         // Constants
-        public Dictionary<string, byte[]> constants = new Dictionary<string, byte[]>();
+        public Dictionary<string, TokenTemplate> constants = new Dictionary<string, TokenTemplate>();
 
 
         public RFASMCompilerMetadata()

@@ -11,8 +11,7 @@ namespace RFASM_COMPILER.TOKEN_PARSER
         INSTRUCTION,
         DIRECTIVE,
         LABEL,
-        RAW,
-        ADDRESS,
+        VALUE,
         NAME
     }
 }

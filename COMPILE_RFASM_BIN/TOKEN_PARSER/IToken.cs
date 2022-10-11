@@ -10,13 +10,13 @@ namespace RFASM_COMPILER.TOKEN_PARSER
     /// For example: "LDA"=Token(INSTRUCTION, "LDA") or ".val"=Token(DIRECTIVE, ".val") or "::label"=Token(LABEL, "::label")
     /// </summary>
     internal interface IToken
-    { 
+    {
         TokenType GetType();
 
         string GetRawValue();
 
         byte[] GetBytes();
 
-        bool HasCorrectSyntax(IToken[] following);
+        bool CheckFollowing(IToken[] following);
     }
 }

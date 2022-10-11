@@ -11,12 +11,12 @@ namespace RFASM_COMPILER.TOKEN_PARSER
         private TokenType _tokenType;
         private string _rawValue;
 
-        public TokenType Type { get => _tokenType; set => _tokenType = value; }
+        public TokenType TokenType { get => _tokenType; set => _tokenType = value; }
         public string RawValue { get => _rawValue; set => _rawValue = value; }
 
         TokenType IToken.GetType()
         {
-            return Type;
+            return TokenType;
         }
 
         string IToken.GetRawValue()
@@ -29,7 +29,12 @@ namespace RFASM_COMPILER.TOKEN_PARSER
             return RawValue;
         }
 
-        public abstract bool HasCorrectSyntax(IToken[] following);
+        public abstract bool CheckFollowing(IToken[] following);
         public abstract byte[] GetBytes();
+
+        public AbstractToken Clone()
+        {
+            return (AbstractToken) this.MemberwiseClone();
+        }
     }
 }

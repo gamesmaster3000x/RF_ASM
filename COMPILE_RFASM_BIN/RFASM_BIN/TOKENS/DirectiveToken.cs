@@ -15,7 +15,7 @@ namespace RFASM_COMPILER.RFASM_BIN.TOKENS
         public DirectiveToken(Directives value, RFASMCompilerMetadata meta)
         {
             this.meta = meta;
-            Type = TokenType.DIRECTIVE;
+            TokenType = TokenType.DIRECTIVE;
             RawValue = Enum.GetName(value.GetType(), value);
             directive = value;
         }
@@ -26,7 +26,7 @@ namespace RFASM_COMPILER.RFASM_BIN.TOKENS
         }
 
         // TODO DirectiveToken syntax
-        public override bool HasCorrectSyntax(IToken[] following)
+        public override bool CheckFollowing(IToken[] following)
         {
             return true;
         }
@@ -73,9 +73,17 @@ namespace RFASM_COMPILER.RFASM_BIN.TOKENS
         private int ResolveVal(RFASMCompiler compiler, List<IToken> following)
         {
             string key = following[0].GetRawValue();
-            byte[] value = following[1].GetBytes();
-            meta.constants.Add(key, value);
-            Console.WriteLine("Directive: Set value " + key + "=" + BitConverter.ToString(value));
+
+            if (following[1] is not AbstractValueToken)
+            {
+                throw new NotImplementedException("ResolveVal Directive Token");
+            }
+
+            AbstractValueToken valueToken = (AbstractValueToken)following[1];
+            TokenTemplate template = new TokenTemplate(valueToken.ValueType, valueToken.RawValue, meta);
+
+            meta.constants.Add(key, template);
+            Console.WriteLine("Directive: Set value " + key + "=" + template.ToString());
 
             // Skip the next two tokens
             return 2;

@@ -1,11 +1,12 @@
 ﻿using RFASM_COMPILER.RFASM_BIN;
+using System.Collections;
 
 namespace RFASM_COMPILER
 {
     /// <summary>
     /// Static utility methods for RF_ASM
     /// </summary>
-    internal class Utils
+    internal class CompilerUtils
     {
 
         /// <summary>
@@ -67,6 +68,15 @@ namespace RFASM_COMPILER
             }
 
             return ba;
+        }
+
+        public static byte[] SetBitInByte(byte b, int bitIndex, bool bitValue)
+        {
+            BitArray bitArr = new BitArray(b);
+            bitArr.Set(bitIndex, bitValue);
+            byte[] o = new byte[bitArr.Length];
+            bitArr.CopyTo(o, 0);
+            return o;
         }
     }
 }
