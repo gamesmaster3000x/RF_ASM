@@ -1,0 +1,10 @@
+import utils from utils.crm
+
+package main {
+    function main [int] () {
+        int i;
+        allocate i 4;
+        i = 10;
+        return utils.multiply(i, 5);
+    }
+}

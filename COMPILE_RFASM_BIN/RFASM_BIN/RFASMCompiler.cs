@@ -23,13 +23,16 @@ namespace RFASM_COMPILER.RFASM_BIN
         private static Dictionary<string, byte[]> labels = new Dictionary<string, byte[]>();
         private static Dictionary<string, byte[]> constants = new Dictionary<string, byte[]>();
 
-        static void Main(string[] args)
+        static Task<int> Main(string[] args)
         {
-            RFASMCompiler compiler = new RFASMCompiler();
-            compiler.Start(args);
+            return Task.Run(() =>
+            {
+                RFASMCompiler compiler = new RFASMCompiler();
+                return compiler.Start(args);
+            });
         }
 
-        private void Start(string[] args)
+        private int Start(string[] args)
         {
             Console.WriteLine("");
             Console.WriteLine(" <==> RFASM Compiler, by GenElectrovise for Gamesmaster3000X");
@@ -97,6 +100,8 @@ namespace RFASM_COMPILER.RFASM_BIN
             Console.WriteLine(" <==> https://github.com/gamesmaster3000x/RF_ASM");
             Console.WriteLine(" <==> RFASM Compiler, by GenElectrovise for Gamesmaster3000X");
             Console.WriteLine("");
+
+            return 0;
         }
 
         private List<IToken> PreCompilationPass(List<IToken> tokens)

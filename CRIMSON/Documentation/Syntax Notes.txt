@@ -1,0 +1,41 @@
+// Comments are just double slash
+
+
+// Loops
+int i = 0;
+while (i < 5) {
+
+}
+while (i < 5; i++) {
+
+}
+
+
+// Function
+int main () {
+	// Nested functions are not allowed
+	return 0;
+}
+
+
+// Memory allocation 
+                                 Memory (set size)
+|------------------------------------------------------------------------------------------------------------|
+|--------------||--------------------------------------||----------------------------------------------------|
+  Memory index    Global variables (pre-computed size)              Local variables (remainder)
+
+Memory index is a list of free memory sections and their size.
+Global variables are known at compile time and references to them are replaced by their pointers.
+Local variables are not known at compile time, and are stored in a stack architecture within the local variable space.
+
+Memory index is a list of entries for which memory sections are free:
+           Free memory section
+|------------------------------------------|
+|-------------------||---------------------|
+  Pointer to memory    Size of free memory
+
+  Metadata            Value
+|----------|**|-----------------------|
+            ^^
+Pointers point to the first byte of the value
+Metadata includes the size of the value so that free knows how much to free.
