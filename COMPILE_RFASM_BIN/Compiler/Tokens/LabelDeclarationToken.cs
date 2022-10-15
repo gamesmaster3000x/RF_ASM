@@ -1,5 +1,5 @@
 ﻿
-using RFASM_COMPILER.TOKEN_PARSER;
+using RedFoxAssembly.TokenParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.RFASM_BIN.TOKENS
+namespace RedFoxAssembly.Compiler.Tokens
 {
     internal class LabelDeclarationToken: AbstractToken
     {

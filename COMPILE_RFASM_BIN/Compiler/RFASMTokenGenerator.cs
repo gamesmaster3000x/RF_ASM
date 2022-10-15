@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
-using RFASM_COMPILER.RFASM_BIN.TOKENS;
-using RFASM_COMPILER.TOKEN_PARSER;
+using RedFoxAssembly.Compiler.Tokens;
+using RedFoxAssembly.TokenParser;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace RFASM_COMPILER.RFASM_BIN
+namespace RedFoxAssembly.Compiler
 {
     internal class RFASMTokenGenerator : ITokenGenerator
     {

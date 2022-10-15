@@ -1,6 +1,6 @@
-﻿using RFASM_COMPILER.RFASM_BIN.TOKENS;
+﻿using RedFoxAssembly.Compiler.Tokens;
 
-namespace RFASM_COMPILER.RFASM_BIN
+namespace RedFoxAssembly.Compiler
 {
     public class TokenTemplate
     {

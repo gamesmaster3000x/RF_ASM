@@ -1,8 +1,8 @@
-﻿using RFASM_COMPILER.RFASM_BIN.TOKENS;
-using RFASM_COMPILER.TOKEN_PARSER;
+﻿using RedFoxAssembly.Compiler.Tokens;
+using RedFoxAssembly.TokenParser;
 using System.Xml.Linq;
 
-namespace RFASM_COMPILER.RFASM_BIN
+namespace RedFoxAssembly.Compiler
 {
     public class RFASMCompilerMetadata : ITokenParserMetadata
     {

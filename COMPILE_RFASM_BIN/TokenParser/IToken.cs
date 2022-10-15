@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.TOKEN_PARSER
+namespace RedFoxAssembly.TokenParser
 {
     /// <summary>
     /// For example: "LDA"=Token(INSTRUCTION, "LDA") or ".val"=Token(DIRECTIVE, ".val") or "::label"=Token(LABEL, "::label")

@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.RFASM_BIN
+namespace RedFoxAssembly.Compiler
 {
     /// <summary>
     /// 

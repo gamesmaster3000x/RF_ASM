@@ -1,16 +1,10 @@
-﻿using RFASM_COMPILER.TOKEN_PARSER;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
+﻿using RedFoxAssembly.TokenParser;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
-using RFASM_COMPILER.RFASM_BIN.TOKENS;
+using RedFoxAssembly.Compiler.Tokens;
 
-namespace RFASM_COMPILER.RFASM_BIN
+namespace RedFoxAssembly.Compiler
 {
     /// <summary>
     /// Compiler for converting a list of RF ASM instructions into binary for interpretation. 
@@ -68,7 +62,7 @@ namespace RFASM_COMPILER.RFASM_BIN
             Console.WriteLine("Found " + rawLinesArr.Length + " lines");
 
             ITokenGenerator generator = new RFASMTokenGenerator(meta);
-            TokenParser parser = new TokenParser(RFASMTokenGenerator.GOOD_TOKEN, RFASMTokenGenerator.IGNORE_TOKEN, RFASMTokenGenerator.BAD_TOKEN, meta, generator);
+            TokenParser.TokenParser parser = new TokenParser.TokenParser(RFASMTokenGenerator.GOOD_TOKEN, RFASMTokenGenerator.IGNORE_TOKEN, RFASMTokenGenerator.BAD_TOKEN, meta, generator);
             List<IToken> tokens = parser.Parse(rawLines);
             string tokenHash = ComputeTokenListHash(tokens);
             Console.WriteLine("Hash of token raw values: " + tokenHash);

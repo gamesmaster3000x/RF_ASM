@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.RFASM_BIN.TOKENS
+namespace RedFoxAssembly.Compiler.Tokens
 {
     public enum AddressingMode
     {

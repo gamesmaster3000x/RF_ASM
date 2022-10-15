@@ -1,4 +1,4 @@
-﻿using RFASM_COMPILER.RFASM_BIN;
+﻿using RedFoxAssembly.Compiler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.TOKEN_PARSER
+namespace RedFoxAssembly.TokenParser
 {
     internal class TokenParser
     {

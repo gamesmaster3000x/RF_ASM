@@ -1,11 +1,12 @@
-﻿using RFASM_COMPILER.TOKEN_PARSER;
+﻿using RedFoxAssembly.Compiler;
+using RedFoxAssembly.TokenParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.RFASM_BIN.TOKENS
+namespace RedFoxAssembly.Compiler.Tokens
 {
     internal abstract class AbstractValueToken : AbstractToken
     {

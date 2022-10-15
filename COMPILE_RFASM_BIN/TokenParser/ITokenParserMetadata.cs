@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.TOKEN_PARSER
+namespace RedFoxAssembly.TokenParser
 {
     internal interface ITokenParserMetadata
     {

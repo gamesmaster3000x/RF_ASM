@@ -1,7 +1,7 @@
-﻿using RFASM_COMPILER.RFASM_BIN;
+﻿using RedFoxAssembly.Compiler;
 using System.Collections;
 
-namespace RFASM_COMPILER
+namespace RedFoxAssembly.Compiler
 {
     /// <summary>
     /// Static utility methods for RF_ASM
