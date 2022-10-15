@@ -3,7 +3,7 @@ using NLog;
 using NLog.Fluent;
 using NLog.Layouts;
 
-namespace CRIMSON.MAIN
+namespace Crimson.Core
 {
     internal class CrimsonCompiler
     {
