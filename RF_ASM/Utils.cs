@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace RF_ASM
+namespace RedFoxVM
 {
     /// <summary>
     /// Static utility methods for RF_ASM
