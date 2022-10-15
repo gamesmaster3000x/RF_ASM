@@ -1,4 +1,4 @@
-﻿namespace RF_ASM {
+﻿namespace RedFoxVM {
     
     /// <summary>
     /// Entry point class for RF_ASM.
