@@ -23,5 +23,8 @@ namespace Crimson.Core
             "If not provided, will use a version packaged with the compiler. " +
             "If provided, but a required file is not found, the file will be created from the packaged library.")]
         public string NativeLibraryPath { get; set; }
+
+        [Option(longName: "clean", shortName: 'c', Required = false, Default = true, HelpText = "Should the compiler clean up its temporary files?")]
+        public bool CleanFiles { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using Crimson.Statements;
 using NLog;
 using NLog.Fluent;
 using NLog.Layouts;
@@ -21,7 +22,8 @@ namespace Crimson.Core
             bool useAutowiredArgs = true;
             if (useAutowiredArgs)
             {
-                args = new string[] { "-s" , "D:/ spaced thing", "-t", "out", "-n", "nope"};
+                string testProgramsPath = "../../../Documentation/Examples/"; // Escape bin, Debug, and net6.0
+                args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "nope"};
             }
 
             // Start
@@ -39,7 +41,7 @@ namespace Crimson.Core
                 Console.WriteLine("CompilationTargetPath: " + options.CompilationTargetPath);
                 Console.WriteLine("NativeLibraryPath: " + options.NativeLibraryPath);
                 CrimsonCompiler compiler = new CrimsonCompiler(options);
-                return Task.FromResult(compiler.Start());
+                return Task.FromResult(compiler.Start(options));
             },
             (error) => {
                 Console.Error.WriteLine("An issue occurred while parsing the program arguments (invalid arguments)");
@@ -47,9 +49,18 @@ namespace Crimson.Core
             });
         }
 
-        private int Start()
+        private int Start(CrimsonCmdArguments options)
         {
+            // Prepare
             ConfigureNLog();
+
+            // Pre-compilation
+            LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
+
+            if (options.CleanFiles)
+            {
+                Cleaner.CleanFiles();
+            }
             return 0;
         }
 

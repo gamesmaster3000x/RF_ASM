@@ -11,7 +11,6 @@
     - [DeclareFunction](#DeclareFunction) 
     - [DeclareIf](#DeclareIf) 
     - [DeclareLoop](#DeclareLoop) 
-    - [ImportPackage](#ImportPackage)
     - [CallFunction](#CallFunction)  
     - [SetVariable](#SetVariable) 
   - [Phrases](#Phrases) 
@@ -37,7 +36,7 @@
 A package is a group of functions and variables which can be accessed in other compilations via imports. All functions and variables must sit within a package. Package names are unique and duplicate package names will cause compilation to fail.
 ### Declaring packages
 ```
-packages program.utils {
+package program.utils (dependency(file.crm) dep, other(help.crm) help, ...) {
 
     int function_one() {
 
@@ -50,12 +49,12 @@ packages program.utils {
     etc...
 }
 ```
-### Importing packages
-Importing packages allows a programmer to use functions and variables in other compilations. 
+To include a package, pass it as a parameter to the package you want to use it in:
 ```
-import program.utils from otherprogram.crm;
+package mypackage ( name_of_package_to_import ( file_the_package_is_in ) custom_name, ...) { ..  }
+// See Crimson examples for in-context uses
 ```
-During compilation, importing a package has the same effect as copying the package into the active code. All packages, whether or not imported, will be compiled simultaneously.
+Including packages as dependencies allows a programmer to use functions and variables in other compilations. During compilation, including a package has the same effect as copying the package into the active code. All packages, whether or not imported, will be compiled simultaneously.
 
 ## Statements
 ### `DeclarePackage`
@@ -64,7 +63,6 @@ During compilation, importing a package has the same effect as copying the packa
 ### `DeclareIf`
 #### `DeclareElse`
 ### `DeclareLoop`
-### `ImportPackage`
 ### `CallFunction`
 ### `SetVariable`
 

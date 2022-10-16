@@ -1,10 +1,21 @@
-import utils from utils.crm
 
-package main {
-    function main [int] () {
+// Import packages:
+// - Package "utils" from the file "utils.crm", with the name "utils"
+// - Package "console" from the system library, with the name "stdout"
+package main (utils(utils.crm) utils, console(system) stdout) {
+
+    function main [int] () {}}}
+
+        // Declare and allocate memory for "i"
         int i;
         allocate i 4;
-        i = 10;
+
+        // Assign a value to "i"
+        i = 4;
+        
+        // Note usage of functions from imported packages
+        stdout.write(i);
         return utils.multiply(i, 5);
     }
+
 }
