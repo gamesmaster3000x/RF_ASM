@@ -1,12 +1,23 @@
 {
     "version": "0.2.0",
     "configurations": [
+
     {
-        "name": "Debug ANTLR4 grammar",
+        "name": "Crimson ANTLR",
         "type": "antlr-debug",
         "request": "launch",
         "input": "Crimson\\CSharp\\Antlr\\test.crm",
         "grammar": "Crimson\\CSharp\\Antlr\\crimson.g4",
+        "startRule": "program",
+        "printParseTree": true,
+        "visualParseTree": true
+    },
+    {
+        "name": "RFASM ANTLR",
+        "type": "antlr-debug",
+        "request": "launch",
+        "input": "RedFoxAssembly\\Documentation\\TestPrograms\\test_dw4.rfp",
+        "grammar": "RedFoxAssembly\\Compiler\\Antlr\\rfasm.g4",
         "startRule": "program",
         "printParseTree": true,
         "visualParseTree": true
