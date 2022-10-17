@@ -1,6 +1,10 @@
-package main (int thing, int otherthing) {
+package main (utilities(utilities.crm) utils, another(something.crm) other) {
     
-    name1;
-    name2;
+    function main [int] (bool in, int otherIn) {
+
+        utils.func();
+        return 0;
+        
+    }
     
 }

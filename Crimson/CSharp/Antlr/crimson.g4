@@ -1,39 +1,44 @@
 grammar crimson;
 
 // Parser rules
-
 program 
     : packageDefinitionList EOF
     ;
 
+// Package
 packageDefinitionList
     : packageDefinition*
     ;
-
 packageDefinition
-    : Package Identifier parameterList packageBody
+    : Package Identifier packageDependencyList packageBody
     ;
-    
-parameterList
-    : OpenBracket parameter? (Comma parameter)* CloseBracket
+packageDependencyList
+    : OpenBracket packageDependency? (Comma packageDependency)* CloseBracket
     ;
-
-parameter
-    : parameterType Identifier
+packageDependency
+    : Identifier OpenBracket Identifier CloseBracket Identifier
     ;
-
 packageBody
     : OpenBrace statement* CloseBrace 
     ;
 
+// Parameters
+parameterList
+    : OpenBracket parameter? (Comma parameter)* CloseBracket
+    ;
+parameter
+    : parameterType Identifier
+    ;
 parameterType
     : Integer | Boolean
     ;
-    
+
+// Statements
 statement
     : Identifier SemiColon
     ;
 
+// Lexicon
 Package: 'package';
 
 Integer: 'int';
@@ -50,5 +55,5 @@ Identifier
     : NonDigit+
     ;
 fragment NonDigit 
-    : [a-zA-Z_]
+    : [a-zA-Z_.]
     ;
