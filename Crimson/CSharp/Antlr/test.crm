@@ -1,8 +1,12 @@
 package main (utilities(utilities.crm) utils, another(something.crm) other) {
+
+    global bool boolean;
+    global int integer;
     
     function main [int] (bool in, int otherIn) {
 
-        utils.func();
+        int value = utils.func(in, otherIn);
+        int globalValue = another.doStuff(in, otherIn);
         return 0;
         
     }

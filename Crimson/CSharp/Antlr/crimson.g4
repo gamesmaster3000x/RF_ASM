@@ -19,12 +19,51 @@ packageDependency
     : Identifier OpenBracket Identifier CloseBracket Identifier
     ;
 packageBody
-    : OpenBrace statement* CloseBrace 
+    : OpenBrace topLevelStatement* CloseBrace 
+    ;
+
+// Top level statements
+topLevelStatement
+    : globalVariableDeclaration
+    | functionDeclaration
+    ;
+globalVariableDeclaration
+    : Global parameterType Identifier SemiColon // Need to add =value or =func()
+    ;
+functionDeclaration
+    : Function Identifier functionReturnType parameterList functionBody
+    ;
+functionReturnType
+    : OpenSquare parameterType CloseSquare
+    ;
+functionBody
+    : OpenBrace functionOnlyStatement* CloseBrace 
+    ;
+
+// Function-only statements
+functionOnlyStatement
+    : internalVariableDeclaration
+    | functionReturn
+    | functionCall
+    ;
+internalVariableDeclaration
+    : parameterType Identifier Equals (functionCall | Value) SemiColon // Need to add =value or =func()
+    ;
+ 
+// Function
+functionCall
+    : Identifier inputParameters
+    ;
+inputParameters
+    : OpenBracket Identifier? (Comma Identifier)* CloseBracket
+    ;
+functionReturn
+    : Return Value SemiColon
     ;
 
 // Parameters
 parameterList
-    : OpenBracket parameter? (Comma parameter)* CloseBracket
+    : OpenBracket parameter? (Comma parameter)* CloseBracket 
     ;
 parameter
     : parameterType Identifier
@@ -33,27 +72,38 @@ parameterType
     : Integer | Boolean
     ;
 
-// Statements
-statement
-    : Identifier SemiColon
-    ;
-
-// Lexicon
+// Lexicon 
 Package: 'package';
+Function: 'function';
+Global: 'global';
+Return: 'return';
 
 Integer: 'int';
 Boolean: 'bool';
 
+Equals: '=';
 OpenBracket: '(';
 CloseBracket: ')';
-OpenBrace: '{';
+OpenSquare: '[';
+CloseSquare: ']';
+OpenBrace: '{'; 
 CloseBrace: '}';
 Comma: ','; 
+Dot: '.'; 
 SemiColon: ';'; 
-    
+
 Identifier
-    : NonDigit+
+    : (Alphabetic | Punctuation) (Alphabetic | Digit | Punctuation)*
     ;
-fragment NonDigit 
-    : [a-zA-Z_.]
+Value
+    : (Alphabetic | Digit)+
+    ;
+fragment Alphabetic
+    : [a-zA-Z]
+    ;
+fragment Digit
+    : [0-9]
+    ;
+fragment Punctuation
+    : [_.]
     ;
