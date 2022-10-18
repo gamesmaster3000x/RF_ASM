@@ -28,7 +28,7 @@ topLevelStatement
     | functionDeclaration
     ;
 globalVariableDeclaration
-    : Global parameterType Identifier SemiColon // Need to add =value or =func()
+    : Global internalVariableDeclaration // Need to add =value or =func()
     ;
 functionDeclaration
     : Function Identifier functionReturnType parameterList functionBody
@@ -44,10 +44,13 @@ functionBody
 functionOnlyStatement
     : internalVariableDeclaration
     | functionReturn
-    | functionCall
+    | functionCall SemiColon
     ;
 internalVariableDeclaration
-    : parameterType Identifier Equals (functionCall | Value) SemiColon // Need to add =value or =func()
+    : parameterType Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
+    ;
+assignVariable
+    : Identifier Equals resolvableValue SemiColon
     ;
  
 // Function
@@ -58,7 +61,11 @@ inputParameters
     : OpenBracket Identifier? (Comma Identifier)* CloseBracket
     ;
 functionReturn
-    : Return Value SemiColon
+    : Return resolvableValue SemiColon
+    ;
+resolvableValue
+    : Value
+    | functionCall
     ;
 
 // Parameters
@@ -93,7 +100,7 @@ Dot: '.';
 SemiColon: ';'; 
 
 Identifier
-    : (Alphabetic | Punctuation) (Alphabetic | Digit | Punctuation)*
+    : (Alphabetic) (Alphabetic | Digit | Punctuation)* (Alphabetic | Digit)
     ;
 Value
     : (Alphabetic | Digit)+
