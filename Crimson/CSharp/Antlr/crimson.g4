@@ -13,7 +13,8 @@ packageDefinition
     : Package Identifier packageDependencyList packageBody
     ;
 packageDependencyList
-    : OpenBracket packageDependency? (Comma packageDependency)* CloseBracket
+    : OpenBracket CloseBracket
+    | OpenBracket packageDependency (Comma packageDependency)* CloseBracket
     ;
 packageDependency
     : Identifier OpenBracket Identifier CloseBracket Identifier
