@@ -46,7 +46,7 @@ functionOnlyStatement
     | functionReturn
     | functionCall SemiColon
     ;
-internalVariableDeclaration
+internalVariableDeclaration 
     : parameterType Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
     ;
 assignVariable
@@ -70,7 +70,8 @@ resolvableValue
 
 // Parameters
 parameterList
-    : OpenBracket parameter? (Comma parameter)* CloseBracket 
+    : OpenBracket CloseBracket
+    | OpenBracket parameter (Comma parameter)* CloseBracket 
     ;
 parameter
     : parameterType Identifier
