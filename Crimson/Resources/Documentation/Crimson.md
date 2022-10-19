@@ -38,11 +38,11 @@ A package is a group of functions and variables which can be accessed in other c
 ```
 package program.utils (dependency(file.crm) dep, other(help.crm) help, ...) {
 
-    int function_one() {
+    function function_one int () {
 
     }
 
-    void function_two() {
+    function function_two null () {
     
     }
 

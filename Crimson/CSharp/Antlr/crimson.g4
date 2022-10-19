@@ -26,16 +26,14 @@ packageBody
 // Top level statements
 topLevelStatement
     : globalVariableDeclaration
-    | functionDeclaration
+    | functionDeclaration 
+    | structureDeclaration
     ;
 globalVariableDeclaration
     : Global internalVariableDeclaration // Need to add =value or =func()
     ;
 functionDeclaration
-    : Function Identifier functionReturnType parameterList functionBody
-    ;
-functionReturnType
-    : OpenSquare parameterType CloseSquare
+    : Function Identifier type parameterList functionBody
     ;
 functionBody
     : OpenBrace functionOnlyStatement* CloseBrace 
@@ -46,16 +44,30 @@ functionOnlyStatement
     : internalVariableDeclaration
     | functionReturn
     | functionCall SemiColon
+    | ifBlock
     ;
 internalVariableDeclaration 
-    : parameterType Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
+    : type Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
     ;
 assignVariable
     : Identifier Equals resolvableValue SemiColon
     ;
+ifBlock
+    : If condition functionBody (elseBlock | elifBlock)?
+    ;
+condition
+    : OpenBracket BooleanValue CloseBracket
+    | OpenBracket resolvableValue Comparator resolvableValue CloseBracket
+    ;
+elifBlock
+    : Elif condition functionBody (elseBlock | elifBlock)?
+    ;
+elseBlock
+    : Else functionBody
+    ;
  
 // Function
-functionCall
+functionCall 
     : Identifier inputParameters
     ;
 inputParameters
@@ -63,22 +75,43 @@ inputParameters
     ;
 functionReturn
     : Return resolvableValue SemiColon
+    | Return SemiColon
     ;
 resolvableValue
-    : Value
+    : Identifier
+    | Number
     | functionCall
+    | Null
+    | BooleanValue
     ;
 
-// Parameters
-parameterList
+// Parameters 
+parameterList 
     : OpenBracket CloseBracket
     | OpenBracket parameter (Comma parameter)* CloseBracket 
     ;
 parameter
-    : parameterType Identifier
+    : type Identifier
     ;
-parameterType
-    : Integer | Boolean
+
+// Structures
+structureDeclaration
+    : Structure Identifier structureBody
+    ;
+structureBody
+    : OpenBrace internalVariableDeclaration* CloseBrace
+    ;
+
+// Types 
+type
+    : Integer
+    | Boolean
+    | Identifier
+    | array
+    | Null
+    ;
+array
+    : OpenSquare type CloseSquare
     ;
 
 // Lexicon 
@@ -86,9 +119,23 @@ Package: 'package';
 Function: 'function';
 Global: 'global';
 Return: 'return';
+Structure: 'structure';
+If: 'if';
+Else: 'else';
+Elif: 'elif';
 
 Integer: 'int';
 Boolean: 'bool';
+Null: 'null';
+
+fragment True: 'true';
+fragment False: 'false';
+BooleanValue: True | False;
+
+fragment Less: '<';
+fragment Greater: '>';
+fragment EqualTo: '==';
+Comparator: Less | Greater | EqualTo;
 
 Equals: '=';
 OpenBracket: '(';
@@ -100,12 +147,13 @@ CloseBrace: '}';
 Comma: ','; 
 Dot: '.'; 
 SemiColon: ';'; 
+Underscore: '_'; 
 
-Identifier
-    : (Alphabetic) (Alphabetic | Digit | Punctuation)* (Alphabetic | Digit)
+Number
+    : Digit+
     ;
-Value
-    : (Alphabetic | Digit)+
+Identifier
+    : (Alphabetic) (Alphabetic | Number | Underscore | Dot)* (Alphabetic | Number)
     ;
 fragment Alphabetic
     : [a-zA-Z]
