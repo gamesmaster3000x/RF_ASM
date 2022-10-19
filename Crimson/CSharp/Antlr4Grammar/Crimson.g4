@@ -1,8 +1,20 @@
-grammar crimson;
+﻿
+// Default Namespace: $([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))
+
+/*
+ * CRIMSON GRAMMAR
+ */
+grammar Crimson;
+
+/*
+ * =
+ * PARSER 
+ * =
+ */
 
 // Parser rules
 program 
-    : packageDefinitionList EOF
+    : packageDefinitionList EOF 
     ;
 
 // Package
@@ -114,7 +126,12 @@ array
     : OpenSquare type CloseSquare
     ;
 
-// Lexicon 
+/*
+ * =
+ * LEXER 
+ * =
+ */
+
 Package: 'package';
 Function: 'function';
 Global: 'global';

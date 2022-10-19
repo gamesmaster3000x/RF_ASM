@@ -3,6 +3,7 @@ using Crimson.Statements;
 using NLog;
 using NLog.Fluent;
 using NLog.Layouts;
+using Crimson.ANTLR.Crimson;
 
 namespace Crimson.Core
 {
@@ -53,6 +54,8 @@ namespace Crimson.Core
         {
             // Prepare
             ConfigureNLog();
+
+            CrimsonBaseVisitor<bool> visitor = new CrimsonBaseVisitor<bool>(); // TODO: Extend visitor from here
 
             // Pre-compilation
             LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);

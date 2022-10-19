@@ -8,13 +8,33 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Antlr3.Runtime" Version="3.5.1" />
+    <Compile Remove="Resources\Antlr\**" />
+    <EmbeddedResource Remove="Resources\Antlr\**" />
+    <None Remove="Resources\Antlr\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Remove="CSharp\Antlr4Grammar\ANTLR Language Support Extension\Crimson.g4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Antlr4.CodeGenerator" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="NLog" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Antlr\" />
+    <Antlr4 Update="CSharp\Antlr4Grammar\Crimson.g4">
+      <CustomToolNamespace>Crimson.ANTLR.Crimson</CustomToolNamespace>
+    </Antlr4>
   </ItemGroup>
 
 </Project>
