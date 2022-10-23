@@ -6,8 +6,8 @@
         "name": "Crimson ANTLR",
         "type": "antlr-debug",
         "request": "launch",
-        "input": "Crimson\\CSharp\\Antlr\\test.crm",
-        "grammar": "Crimson\\CSharp\\Antlr\\crimson.g4",
+        "input": "Crimson\\Resources\\Documentation\\Examples\\Main_Utils\\main.crm",
+        "grammar": "Crimson\\CSharp\\Antlr4Grammar\\Crimson.g4",
         "startRule": "program",
         "printParseTree": true,
         "visualParseTree": true

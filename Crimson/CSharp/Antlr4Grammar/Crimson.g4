@@ -1,32 +1,20 @@
-﻿
-// Default Namespace: $([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))
-
-/*
- * CRIMSON GRAMMAR
- */
-grammar Crimson;
-
-/*
- * =
- * PARSER 
- * =
- */
+﻿grammar Crimson;
 
 // Parser rules
 program 
-    : packageDefinitionList EOF 
+    : packageDefinitions=packageDefinitionList eof=EOF 
     ;
 
 // Package
 packageDefinitionList
-    : packageDefinition*
+    : (definitions+=packageDefinition)*
     ;
 packageDefinition
-    : Package Identifier packageDependencyList packageBody
+    : Package name=Identifier dependencies=packageDependencyList packageBody
     ;
 packageDependencyList
     : OpenBracket CloseBracket
-    | OpenBracket packageDependency (Comma packageDependency)* CloseBracket
+    | OpenBracket dependencies+=packageDependency (Comma dependencies+=packageDependency)* CloseBracket
     ;
 packageDependency
     : Identifier OpenBracket Identifier CloseBracket Identifier

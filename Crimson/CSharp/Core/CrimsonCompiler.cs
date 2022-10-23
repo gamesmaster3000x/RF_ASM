@@ -4,6 +4,9 @@ using NLog;
 using NLog.Fluent;
 using NLog.Layouts;
 using Crimson.ANTLR.Crimson;
+using Antlr4.Runtime;
+using Crimson.CSharp.Core;
+using Crimson.CSharp.Reflection;
 
 namespace Crimson.Core
 {
@@ -36,7 +39,7 @@ namespace Crimson.Core
             Console.WriteLine("");
 
             Console.WriteLine("Parsing program arguments");
-            return Parser.Default.ParseArguments<CrimsonCmdArguments>(args).MapResult((CrimsonCmdArguments options) =>
+            return CommandLine.Parser.Default.ParseArguments<CrimsonCmdArguments>(args).MapResult((CrimsonCmdArguments options) =>
             {
                 Console.WriteLine("CompilationSourcePath: " + options.CompilationSourcePath);
                 Console.WriteLine("CompilationTargetPath: " + options.CompilationTargetPath);
@@ -55,7 +58,7 @@ namespace Crimson.Core
             // Prepare
             ConfigureNLog();
 
-            CrimsonBaseVisitor<bool> visitor = new CrimsonBaseVisitor<bool>(); // TODO: Extend visitor from here
+            Compilation program = ParseProgram("");
 
             // Pre-compilation
             LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
@@ -90,6 +93,28 @@ namespace Crimson.Core
             Logger.Trace("Testing trace level logging...");
             Logger.Fatal("Testing fatal level logging...");
             Console.WriteLine("Did you see *both* of the *two* test messages? If not, you should report this to the developer!");
+        }
+
+        private Compilation ParseProgram(string textIn)
+        {
+            // Get Antlr context
+            AntlrInputStream a4is = new AntlrInputStream(textIn);
+            CrimsonLexer lexer = new CrimsonLexer(a4is);
+            CommonTokenStream cts = new CommonTokenStream(lexer);
+            CrimsonParser parser = new CrimsonParser(cts);
+            CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
+
+            Compilation compilation = new Compilation();
+
+            // Create packages
+            CrimsonParser.ProgramContext _program = parser.program();
+            foreach(CrimsonParser.PackageDefinitionContext _package in _program.packageDefinitions._definitions)
+            {
+                Package package = new Package(compilation, _package);
+                compilation.packages.Add(package.name, package);
+            }
+
+            return compilation;
         }
     }
 }
