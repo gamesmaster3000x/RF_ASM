@@ -10,6 +10,7 @@ namespace Crimson.CSharp.Reflection
 {
     internal class Package
     {
+        public Compilation Compilation { get; }
         public CrimsonParser.PackageDefinitionContext Context { get; }
         public string Name { get; }
         public Dictionary<string, Dependency> Dependencies { get; }
@@ -19,6 +20,7 @@ namespace Crimson.CSharp.Reflection
 
         public Package(Compilation compilation, CrimsonParser.PackageDefinitionContext context)
         {
+            Compilation = compilation;
             Context = context;
             Dependencies = ResolveDependencies();
             Structures = ResolveStructures();
