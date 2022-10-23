@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Core
     {
         public override Compilation VisitProgram([NotNull] CrimsonParser.ProgramContext context)
         {
-            PackageDefinitionListContext list = context.list;
+            PackageDefinitionListContext list = context.packageDefinitions;
             IList<PackageDefinitionContext> definitions = list._definitions;
 
             // Extract metadata from package definition

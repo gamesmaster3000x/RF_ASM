@@ -111,7 +111,7 @@ namespace Crimson.Core
             foreach(CrimsonParser.PackageDefinitionContext _package in _program.packageDefinitions._definitions)
             {
                 Package package = new Package(compilation, _package);
-                compilation.packages.Add(package.name, package);
+                compilation.packages.Add(package.Name, package);
             }
 
             return compilation;

@@ -10,17 +10,40 @@ namespace Crimson.CSharp.Reflection
 {
     internal class Package
     {
-        public string name;
-        public Dictionary<string, Dependency> dependencies = new Dictionary<string, Dependency>();
-        public Dictionary<string, Structure> structures = new Dictionary<string, Structure>();
-        public Dictionary<string, Function> functions = new Dictionary<string, Function>();
-        public Dictionary<string, GlobalVariable> globals = new Dictionary<string, GlobalVariable>();
+        public CrimsonParser.PackageDefinitionContext Context { get; }
+        public string Name { get; }
+        public Dictionary<string, Dependency> Dependencies { get; }
+        public Dictionary<string, Structure> Structures { get; }
+        public Dictionary<string, Function> Functions { get; }
+        public Dictionary<string, GlobalVariable> Globals { get; }
 
         public Package(Compilation compilation, CrimsonParser.PackageDefinitionContext context)
         {
             Context = context;
+            Dependencies = ResolveDependencies();
+            Structures = ResolveStructures();
+            Functions = ResolveFunctions();
+            Globals = ResolveGlobalVariables();
         }
 
-        public CrimsonParser.PackageDefinitionContext Context { get; }
+        private Dictionary<string, Dependency>? ResolveDependencies()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Dictionary<string, Structure>? ResolveStructures()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Dictionary<string, Function>? ResolveFunctions()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Dictionary<string, GlobalVariable>? ResolveGlobalVariables()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
