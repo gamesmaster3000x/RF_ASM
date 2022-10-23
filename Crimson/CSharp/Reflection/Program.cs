@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Reflection
 {
-    internal class Compilation
+    internal class CompilationUnit
     {
         public Dictionary<string, Package> packages = new Dictionary<string, Package>();
     }

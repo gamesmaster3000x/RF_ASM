@@ -5,47 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Crimson.ANTLR.Crimson.CrimsonParser;
 
 namespace Crimson.CSharp.Reflection
 {
     internal class Package
     {
-        public Compilation Compilation { get; }
-        public CrimsonParser.PackageDefinitionContext Context { get; }
-        public string Name { get; }
-        public Dictionary<string, Dependency> Dependencies { get; }
-        public Dictionary<string, Structure> Structures { get; }
-        public Dictionary<string, Function> Functions { get; }
-        public Dictionary<string, GlobalVariable> Globals { get; }
-
-        public Package(Compilation compilation, CrimsonParser.PackageDefinitionContext context)
-        {
-            Compilation = compilation;
-            Context = context;
-            Dependencies = ResolveDependencies();
-            Structures = ResolveStructures();
-            Functions = ResolveFunctions();
-            Globals = ResolveGlobalVariables();
-        }
-
-        private Dictionary<string, Dependency>? ResolveDependencies()
-        {
-            throw new NotImplementedException();
-        }
-
-        private Dictionary<string, Structure>? ResolveStructures()
-        {
-            throw new NotImplementedException();
-        }
-
-        private Dictionary<string, Function>? ResolveFunctions()
-        {
-            throw new NotImplementedException();
-        }
-
-        private Dictionary<string, GlobalVariable>? ResolveGlobalVariables()
-        {
-            throw new NotImplementedException();
-        }
+        public CompilationUnit Compilation { get; set; }
+        public CrimsonParser.PackageDefinitionContext Context { get; set; }
+        public string PackageName { get; set; }
+        public string Path { get; set; }
+        public string QualifiedName { get => Path + PackageName; }
+        public Dictionary<string, Dependency> Dependencies { get; set; }
+        public Dictionary<string, Structure> Structures { get; set; }
+        public Dictionary<string, Function> Functions { get; set; }
+        public Dictionary<string, GlobalVariable> Globals { get; set; }      
     }
 }

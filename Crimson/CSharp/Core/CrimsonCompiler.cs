@@ -58,7 +58,7 @@ namespace Crimson.Core
             // Prepare
             ConfigureNLog();
 
-            Compilation program = ParseProgram("");
+            CompilationUnit program = ParseProgram("");
 
             // Pre-compilation
             LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
@@ -95,7 +95,7 @@ namespace Crimson.Core
             Console.WriteLine("Did you see *both* of the *two* test messages? If not, you should report this to the developer!");
         }
 
-        private Compilation ParseProgram(string textIn)
+        private CompilationUnit ParseProgram(string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
@@ -104,15 +104,9 @@ namespace Crimson.Core
             CrimsonParser parser = new CrimsonParser(cts);
             CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
 
-            Compilation compilation = new Compilation();
+            CompilationUnit compilation = (CompilationUnit) visitor.VisitCompilationUnit(parser.compilationUnit());
 
             // Create packages
-            CrimsonParser.ProgramContext _program = parser.program();
-            foreach(CrimsonParser.PackageDefinitionContext _package in _program.packageDefinitions._definitions)
-            {
-                Package package = new Package(compilation, _package);
-                compilation.packages.Add(package.Name, package);
-            }
 
             return compilation;
         }

@@ -1,7 +1,7 @@
 ﻿grammar Crimson;
 
 // Parser rules
-program 
+compilationUnit 
     : packageDefinitions=packageDefinitionList eof=EOF 
     ;
 
@@ -10,17 +10,17 @@ packageDefinitionList
     : (definitions+=packageDefinition)*
     ;
 packageDefinition
-    : Package name=Identifier dependencies=packageDependencyList packageBody
+    : Package name=Identifier dependencies=packageDependencyList body=packageBody
     ;
 packageDependencyList
     : OpenBracket CloseBracket
     | OpenBracket dependencies+=packageDependency (Comma dependencies+=packageDependency)* CloseBracket
     ;
 packageDependency
-    : Identifier OpenBracket Identifier CloseBracket Identifier
+    : packageName=Identifier OpenBracket path=Identifier CloseBracket customName=Identifier
     ;
 packageBody
-    : OpenBrace topLevelStatement* CloseBrace 
+    : OpenBrace (topLevelStatements+=topLevelStatement)* CloseBrace 
     ;
 
 // Top level statements
@@ -30,13 +30,13 @@ topLevelStatement
     | structureDeclaration
     ;
 globalVariableDeclaration
-    : Global internalVariableDeclaration // Need to add =value or =func()
+    : Global declaration=internalVariableDeclaration // Need to add =value or =func()
     ;
 functionDeclaration
-    : Function Identifier type parameterList functionBody
+    : Function name=Identifier returnType=type parameters=parameterList body=functionBody
     ;
 functionBody
-    : OpenBrace functionOnlyStatement* CloseBrace 
+    : OpenBrace (statements+=functionOnlyStatement)* CloseBrace 
     ;
 
 // Function-only statements

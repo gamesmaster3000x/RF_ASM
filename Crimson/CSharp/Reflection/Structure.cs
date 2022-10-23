@@ -2,5 +2,6 @@
 {
     internal class Structure
     {
+        public string Name { get; set; }
     }
 }

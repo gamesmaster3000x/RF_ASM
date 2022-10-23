@@ -11,6 +11,7 @@ namespace Crimson.CSharp.Reflection
     /// </summary>
     internal class Function
     {
+       public string Name { get; set; }
         Dictionary<string, Parameter> parameters = new Dictionary<string, Parameter>();
         Dictionary<string, FunctionOnlyStatement> statements = new Dictionary<string, FunctionOnlyStatement>();
     }
