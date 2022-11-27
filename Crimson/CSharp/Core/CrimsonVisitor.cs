@@ -23,7 +23,7 @@ namespace Crimson.CSharp.Core
             //PackageDefinitionListContext packageDefinitionListContext = context.packageDefinitions;
 
             Console.WriteLine("COMPILATION UNIT");
-            foreach (PackageDefinitionContext c in context.packageDefinitions._definitions)
+            foreach (CrimsonParser.PackageDefinitionContext c in context.packageDefinitions._definitions)
             {
                 Console.WriteLine(c);
             }
@@ -40,9 +40,9 @@ namespace Crimson.CSharp.Core
             Dictionary<string, Package> packages = new Dictionary<string, Package>();
 
             // No need to get context._packageDefinition (part of _definitions)
-            IList<PackageDefinitionContext> packageDefinitionContexts = packageDefinitionListContext._definitions;
+            IList<CrimsonParser.PackageDefinitionContext> packageDefinitionContexts = packageDefinitionListContext._definitions;
 
-            foreach(PackageDefinitionContext packageDefinitionContext in packageDefinitionContexts)
+            foreach(CrimsonParser.PackageDefinitionContext packageDefinitionContext in packageDefinitionContexts)
             {
                 Package p = VisitPackageDefinition(packageDefinitionContext);
                 packages[p.QualifiedName] = p;
@@ -86,30 +86,6 @@ namespace Crimson.CSharp.Core
             }
 
             return p;
-        }
-
-        public override List<TopLevelStatementContext> VisitPackageBody([NotNull] PackageBodyContext context)
-        {
-            List<TopLevelStatementContext> statements = new List<TopLevelStatementContext>(context._topLevelStatements);
-            return statements;
-        }
-
-        //TODO VisitGlobalVariableDeclaration
-        public override object VisitGlobalVariableDeclaration([NotNull] GlobalVariableDeclarationContext context)
-        {
-            return base.VisitGlobalVariableDeclaration(context);
-        }
-
-        //TODO VisitStructureDeclaration
-        public override object VisitStructureDeclaration([NotNull] StructureDeclarationContext context)
-        {
-            return base.VisitStructureDeclaration(context);
-        }
-
-        //TODO VisitFunctionDeclaration
-        public override object VisitFunctionDeclaration([NotNull] FunctionDeclarationContext context)
-        {
-            return base.VisitFunctionDeclaration(context);
         }
     }
 }

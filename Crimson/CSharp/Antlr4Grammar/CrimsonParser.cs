@@ -91,6 +91,8 @@ public partial class CrimsonParser : Parser {
 
 	public override string SerializedAtn { get { return new string(_serializedATN); } }
 
+	public override string[] TokenNames => throw new NotImplementedException();
+
 	static CrimsonParser() {
 		decisionToDFA = new DFA[_ATN.NumberOfDecisions];
 		for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
