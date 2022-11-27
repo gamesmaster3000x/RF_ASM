@@ -8,7 +8,7 @@
         "request": "launch",
         "input": "Crimson\\Resources\\Documentation\\Examples\\Main_Utils\\main.crm",
         "grammar": "Crimson\\CSharp\\Antlr4Grammar\\Crimson.g4",
-        "startRule": "program",
+        "startRule": "compilationUnit",
         "printParseTree": true,
         "visualParseTree": true
     },

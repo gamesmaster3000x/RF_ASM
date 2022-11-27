@@ -1,4 +1,4 @@
-﻿grammar Crimson;
+grammar Crimson;
 
 // Parser rules
 compilationUnit 
@@ -43,6 +43,8 @@ functionBody
 functionOnlyStatement
     : internalVariableDeclaration
     | functionReturn
+    | assignVariable
+    | allocateMemory
     | functionCall SemiColon
     | ifBlock
     ;
@@ -71,7 +73,10 @@ functionCall
     : Identifier inputParameters
     ;
 inputParameters
-    : OpenBracket Identifier? (Comma Identifier)* CloseBracket
+    : OpenBracket (Identifier | Number)? (Comma (Identifier | Number))* CloseBracket
+    ;
+allocateMemory
+    : Allocate Identifier Number SemiColon
     ;
 functionReturn
     : Return resolvableValue SemiColon
@@ -120,10 +125,15 @@ array
  * =
  */
 
+LineComment
+    : '//' ~[\r\n]* -> skip
+;
+
 Package: 'package';
 Function: 'function';
 Global: 'global';
 Return: 'return';
+Allocate: 'allocate';
 Structure: 'structure';
 If: 'if';
 Else: 'else';
@@ -158,12 +168,13 @@ Number
     : Digit+
     ;
 Identifier
-    : (Alphabetic) (Alphabetic | Number | Underscore | Dot)* (Alphabetic | Number)
+    : (Alphabetic) 
+    | (Alphabetic) (Alphabetic | Number | Underscore | Dot)* (Alphabetic | Number)
     ;
 fragment Alphabetic
     : [a-zA-Z]
     ;
-fragment Digit
+fragment Digit 
     : [0-9]
     ;
 fragment Punctuation

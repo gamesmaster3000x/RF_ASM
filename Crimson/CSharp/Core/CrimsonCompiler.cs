@@ -106,15 +106,14 @@ namespace Crimson.Core
             CrimsonParser parser = new CrimsonParser(cts);
 
             CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
-            CompilationUnit unit = null;
-            // CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
-            // CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
-            CrimsonListener listener = new CrimsonListener();
-            ParseTreeWalker.Default.Walk(listener, cuCtx);
+            CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
+            CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
+            //CrimsonListener listener = new CrimsonListener();
+            //ParseTreeWalker.Default.Walk(listener, cuCtx);
 
             // Create packages
 
-            return unit;
+            return compilation;
         }
     }
 }

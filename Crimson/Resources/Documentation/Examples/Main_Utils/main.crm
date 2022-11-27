@@ -4,7 +4,7 @@
 // - Package "console" from the system library, with the name "stdout"
 package main (utils(utils.crm) utils, console(system) stdout) {
 
-    function main [int] () {}}}
+    function main [int] () {
 
         // Declare and allocate memory for "i"
         int i;
