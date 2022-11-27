@@ -1,6 +1,7 @@
 ﻿using Crimson.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,29 +25,35 @@ namespace Crimson.Statements
         private static NLog.Logger LOGGER = NLog.LogManager.GetCurrentClassLogger();
 
         public CrimsonCmdArguments Options { get; }
-        private string Path { get; set; }
+        private string Target { get; set; }
         private Dictionary<string, LazyPackage> Packages { get; set; }
 
         public LazySourceFile(string path, CrimsonCmdArguments options)
         {
             LOGGER.Debug("Creating LazySourceFile for " + path);
             Options = options;
-            Path = path;
+            Target = GetAbsoluteTargetPath(path);
             Packages = GenerateLazyPackages();
+        }
+
+        public string GetAbsoluteTargetPath(string relativePath)
+        {
+            string combined = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), relativePath);
+            return Path.GetFullPath(combined);
         }
 
         public Dictionary<string, LazyPackage> GenerateLazyPackages()
         {
-            if (!File.Exists(Path))
+            if (!File.Exists(Target))
             {
-                throw new FileNotFoundException("Cannot find file to compile: " + Path);
+                throw new FileNotFoundException("Cannot find file to compile: " + Target);
             }
 
-            List<string> allText = File.ReadAllLines(Path).ToList();
+            List<string> allText = File.ReadAllLines(Target).ToList();
             string cleanText = SanitizeString(allText);
 
             // Temporary file
-            string cleanPath = Path + ".clean";
+            string cleanPath = Target + ".clean";
             File.WriteAllText(cleanPath, cleanText);
             LOGGER.Debug("Created temporary file: " + cleanPath);
             Cleaner.AddFile(cleanPath);
@@ -97,7 +104,7 @@ namespace Crimson.Statements
                     value.Add(c);
                 } else
                 {
-                    throw new IndexOutOfRangeException("Improper bracket count at character index " + i + " of " + Path);
+                    throw new IndexOutOfRangeException("Improper bracket count at character index " + i + " of " + Target);
                 }
             }
 

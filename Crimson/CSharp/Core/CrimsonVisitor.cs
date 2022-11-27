@@ -15,33 +15,43 @@ namespace Crimson.CSharp.Core
 {
     internal class CrimsonProgramVisitor: CrimsonBaseVisitor<object>
     {
-        public override object VisitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context)
+        public override CompilationUnit VisitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context)
         {
             CompilationUnit compilation = new CompilationUnit();
 
-            List<Package> packageDefinitions = (List<Package>) VisitPackageDefinitionList(context.packageDefinitions);
+            // Get all available context fields
+            //PackageDefinitionListContext packageDefinitionListContext = context.packageDefinitions;
 
-            foreach(Package p in packageDefinitions)
+            Console.WriteLine("COMPILATION UNIT");
+            foreach (PackageDefinitionContext c in context.packageDefinitions._definitions)
             {
-                compilation.packages[p.QualifiedName] = p;
+                Console.WriteLine(c);
             }
+            
+            // Populate output fields
+            //Dictionary<string, Package> packageDefinitions = VisitPackageDefinitionList(packageDefinitionListContext);
+            //compilation.packages = packageDefinitions;
+
             return compilation;
         }
 
-        public override object VisitPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext context)
+        public override Dictionary<string, Package> VisitPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext packageDefinitionListContext)
         {
             Dictionary<string, Package> packages = new Dictionary<string, Package>();
 
-            foreach(PackageDefinitionContext def in context._definitions)
+            // No need to get context._packageDefinition (part of _definitions)
+            IList<PackageDefinitionContext> packageDefinitionContexts = packageDefinitionListContext._definitions;
+
+            foreach(PackageDefinitionContext packageDefinitionContext in packageDefinitionContexts)
             {
-                Package p = (Package) VisitPackageDefinition(def);
+                Package p = VisitPackageDefinition(packageDefinitionContext);
                 packages[p.QualifiedName] = p;
             }
 
             return packages;
         }
 
-        public override object VisitPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context)
+        public override Package VisitPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context)
         {
             Package p = new Package();
 
@@ -78,11 +88,12 @@ namespace Crimson.CSharp.Core
             return p;
         }
 
-        public override object VisitPackageBody([NotNull] PackageBodyContext context)
+        public override List<TopLevelStatementContext> VisitPackageBody([NotNull] PackageBodyContext context)
         {
             List<TopLevelStatementContext> statements = new List<TopLevelStatementContext>(context._topLevelStatements);
             return statements;
         }
+
         //TODO VisitGlobalVariableDeclaration
         public override object VisitGlobalVariableDeclaration([NotNull] GlobalVariableDeclarationContext context)
         {

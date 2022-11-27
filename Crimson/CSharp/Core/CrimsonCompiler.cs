@@ -7,6 +7,7 @@ using Crimson.ANTLR.Crimson;
 using Antlr4.Runtime;
 using Crimson.CSharp.Core;
 using Crimson.CSharp.Reflection;
+using Antlr4.Runtime.Tree;
 
 namespace Crimson.Core
 {
@@ -26,7 +27,7 @@ namespace Crimson.Core
             bool useAutowiredArgs = true;
             if (useAutowiredArgs)
             {
-                string testProgramsPath = "../../../Documentation/Examples/"; // Escape bin, Debug, and net6.0
+                string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
                 args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "nope"};
             }
 
@@ -58,10 +59,11 @@ namespace Crimson.Core
             // Prepare
             ConfigureNLog();
 
-            CompilationUnit program = ParseProgram("");
+            string programText = string.Join(Environment.NewLine, File.ReadLines(Options.CompilationSourcePath));
+            CompilationUnit program = ParseProgram(programText);
 
             // Pre-compilation
-            LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
+            // LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
 
             if (options.CleanFiles)
             {
@@ -102,13 +104,17 @@ namespace Crimson.Core
             CrimsonLexer lexer = new CrimsonLexer(a4is);
             CommonTokenStream cts = new CommonTokenStream(lexer);
             CrimsonParser parser = new CrimsonParser(cts);
-            CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
 
-            CompilationUnit compilation = (CompilationUnit) visitor.VisitCompilationUnit(parser.compilationUnit());
+            CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
+            CompilationUnit unit = null;
+            // CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
+            // CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
+            CrimsonListener listener = new CrimsonListener();
+            ParseTreeWalker.Default.Walk(listener, cuCtx);
 
             // Create packages
 
-            return compilation;
+            return unit;
         }
     }
 }
