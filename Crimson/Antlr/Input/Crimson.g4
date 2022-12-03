@@ -10,9 +10,9 @@ importUnit
     : Hashtag Using path=String As identifier=Identifier
     ;
 compilationUnitStatement
-    : globalVariableDeclaration
-    | functionDeclaration 
-    | structureDeclaration
+    : globalVariableDeclaration #GlobalVariableUnitStatement
+    | functionDeclaration       #FunctionUnitStatement
+    | structureDeclaration      #StructureUnitStatement
     ;
 globalVariableDeclaration
     : Global declaration=internalVariableDeclaration // Need to add =value or =func()

@@ -45,11 +45,26 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitImportUnit([NotNull] CrimsonParser.ImportUnitContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
+	/// Visit a parse tree produced by the <c>GlobalVariableUnitStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context);
+	Result VisitGlobalVariableUnitStatement([NotNull] CrimsonParser.GlobalVariableUnitStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionUnitStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.compilationUnitStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionUnitStatement([NotNull] CrimsonParser.FunctionUnitStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>StructureUnitStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.compilationUnitStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructureUnitStatement([NotNull] CrimsonParser.StructureUnitStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
 	/// </summary>

@@ -6,6 +6,8 @@
 #using "utils.crm" as utils
 #using "console" as stdout
 
+global int counter;
+
 function main [int] () {
 
     // Declare and allocate memory for "i"
@@ -18,4 +20,8 @@ function main [int] () {
     // Note usage of functions from imported packages
     stdout.write(i);
     return utils.multiply(i, 5);
+}
+
+structure Person {
+	int age;
 }

@@ -56,7 +56,8 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitImportUnit([NotNull] CrimsonParser.ImportUnitContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
+	/// Visit a parse tree produced by the <c>GlobalVariableUnitStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -64,7 +65,29 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitGlobalVariableUnitStatement([NotNull] CrimsonParser.GlobalVariableUnitStatementContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionUnitStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.compilationUnitStatement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitFunctionUnitStatement([NotNull] CrimsonParser.FunctionUnitStatementContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>StructureUnitStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.compilationUnitStatement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitStructureUnitStatement([NotNull] CrimsonParser.StructureUnitStatementContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
 	/// <para>
