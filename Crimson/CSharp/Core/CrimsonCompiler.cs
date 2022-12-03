@@ -1,13 +1,9 @@
 ﻿using CommandLine;
-using Crimson.Statements;
 using NLog;
-using NLog.Fluent;
-using NLog.Layouts;
-using Crimson.ANTLR.Crimson;
 using Antlr4.Runtime;
 using Crimson.CSharp.Core;
 using Crimson.CSharp.Reflection;
-using Antlr4.Runtime.Tree;
+using Crimson.AntlrBuild;
 
 namespace Crimson.Core
 {
@@ -103,7 +99,7 @@ namespace Crimson.Core
             AntlrInputStream a4is = new AntlrInputStream(textIn);
             CrimsonLexer lexer = new CrimsonLexer(a4is);
             CommonTokenStream cts = new CommonTokenStream(lexer);
-            CrimsonParser parser = new CrimsonParser(cts);
+            CrimsonParser parser = new CrimsonParser(cts); 
 
             CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
             CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();

@@ -1,7 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using Crimson.ANTLR.Crimson;
+using Crimson.AntlrBuild;
 using Crimson.CSharp.Reflection;
 using System;
 using System.Collections;
@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Crimson.ANTLR.Crimson.CrimsonParser;
 
 namespace Crimson.CSharp.Core
 {

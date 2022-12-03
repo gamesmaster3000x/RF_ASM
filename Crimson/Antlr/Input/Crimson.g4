@@ -125,10 +125,6 @@ array
  * =
  */
 
-LineComment
-    : '//' ~[\r\n]* -> skip
-;
-
 Package: 'package';
 Function: 'function';
 Global: 'global';
@@ -164,6 +160,12 @@ Dot: '.';
 SemiColon: ';'; 
 Underscore: '_'; 
 
+SkipTokens
+    : (WhiteSpace | Newline | LineComment) -> skip
+    ;
+LineComment 
+    : '//' ~('\r' | '\n')*
+    ;
 Number
     : Digit+
     ;
@@ -179,4 +181,11 @@ fragment Digit
     ;
 fragment Punctuation
     : [_.]
+    ;
+fragment WhiteSpace
+    : [ \t]+
+    ;
+fragment Newline
+    : [\r\n]+
+    | EOF
     ;
