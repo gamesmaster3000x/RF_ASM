@@ -39,41 +39,17 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.packageDefinitionList"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext context);
+	Result VisitImportUnit([NotNull] CrimsonParser.ImportUnitContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.packageDefinition"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.packageDependencyList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPackageDependencyList([NotNull] CrimsonParser.PackageDependencyListContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.packageDependency"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPackageDependency([NotNull] CrimsonParser.PackageDependencyContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.packageBody"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPackageBody([NotNull] CrimsonParser.PackageBodyContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.topLevelStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTopLevelStatement([NotNull] CrimsonParser.TopLevelStatementContext context);
+	Result VisitCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
 	/// </summary>
@@ -93,11 +69,11 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.functionOnlyStatement"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionOnlyStatement([NotNull] CrimsonParser.FunctionOnlyStatementContext context);
+	Result VisitFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
 	/// </summary>

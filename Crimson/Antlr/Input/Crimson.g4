@@ -2,29 +2,14 @@ grammar Crimson;
 
 // Parser rules
 compilationUnit 
-    : packageDefinitions=packageDefinitionList eof=EOF 
+    : (imports+=importUnit)* (statements+=compilationUnitStatement)* eof=EOF
     ;
 
-// Package
-packageDefinitionList
-    : (definitions+=packageDefinition)*
+// Compilation-Unit statements
+importUnit
+    : Hashtag Using path=String As identifier=Identifier
     ;
-packageDefinition
-    : Package name=Identifier dependencies=packageDependencyList body=packageBody
-    ;
-packageDependencyList
-    : OpenBracket CloseBracket
-    | OpenBracket dependencies+=packageDependency (Comma dependencies+=packageDependency)* CloseBracket
-    ;
-packageDependency
-    : packageName=Identifier OpenBracket path=Identifier CloseBracket customName=Identifier
-    ;
-packageBody
-    : OpenBrace (topLevelStatements+=topLevelStatement)* CloseBrace 
-    ;
-
-// Top level statements
-topLevelStatement
+compilationUnitStatement
     : globalVariableDeclaration
     | functionDeclaration 
     | structureDeclaration
@@ -34,13 +19,13 @@ globalVariableDeclaration
     ;
 functionDeclaration
     : Function name=Identifier returnType=type parameters=parameterList body=functionBody
-    ;
+    ; 
 functionBody
-    : OpenBrace (statements+=functionOnlyStatement)* CloseBrace 
-    ;
+    : OpenBrace (statements+=functionStatement)* CloseBrace 
+    ; 
 
 // Function-only statements
-functionOnlyStatement
+functionStatement
     : internalVariableDeclaration
     | functionReturn
     | assignVariable
@@ -125,12 +110,13 @@ array
  * =
  */
 
-Package: 'package';
 Function: 'function';
 Global: 'global';
 Return: 'return';
 Allocate: 'allocate';
 Structure: 'structure';
+Using: 'using';
+As: 'as';
 If: 'if';
 Else: 'else';
 Elif: 'elif';
@@ -159,6 +145,8 @@ Comma: ',';
 Dot: '.'; 
 SemiColon: ';'; 
 Underscore: '_'; 
+Hashtag: '#'; 
+Quote: '"'; 
 
 SkipTokens
     : (WhiteSpace | Newline | LineComment) -> skip
@@ -168,6 +156,9 @@ LineComment
     ;
 Number
     : Digit+
+    ;
+String
+    : Quote ~('"')* Quote
     ;
 Identifier
     : (Alphabetic) 

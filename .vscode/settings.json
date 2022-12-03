@@ -1,8 +1,10 @@
 {
     "antlr4.generation": {
-        "mode": "external",
+        "mode": "internal",
         "language": "CSharp",
         "listeners": true,
-        "visitors": true
+        "visitors": true,
+        "alternativeJar": "Antlr/antlr-4.11.1-complete.jar",
+        "additionalParameters": "-package Crimson.AntlrBuild"
     }
 }

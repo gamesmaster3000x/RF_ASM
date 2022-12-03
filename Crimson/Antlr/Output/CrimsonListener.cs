@@ -42,65 +42,25 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDefinitionList"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext context);
+	void EnterImportUnit([NotNull] CrimsonParser.ImportUnitContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDefinitionList"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext context);
+	void ExitImportUnit([NotNull] CrimsonParser.ImportUnitContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDefinition"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context);
+	void EnterCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDefinition"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDependencyList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPackageDependencyList([NotNull] CrimsonParser.PackageDependencyListContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDependencyList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPackageDependencyList([NotNull] CrimsonParser.PackageDependencyListContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDependency"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPackageDependency([NotNull] CrimsonParser.PackageDependencyContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDependency"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPackageDependency([NotNull] CrimsonParser.PackageDependencyContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageBody"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPackageBody([NotNull] CrimsonParser.PackageBodyContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageBody"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPackageBody([NotNull] CrimsonParser.PackageBodyContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.topLevelStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterTopLevelStatement([NotNull] CrimsonParser.TopLevelStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.topLevelStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitTopLevelStatement([NotNull] CrimsonParser.TopLevelStatementContext context);
+	void ExitCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
 	/// </summary>
@@ -132,15 +92,15 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.functionOnlyStatement"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFunctionOnlyStatement([NotNull] CrimsonParser.FunctionOnlyStatementContext context);
+	void EnterFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.functionOnlyStatement"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFunctionOnlyStatement([NotNull] CrimsonParser.FunctionOnlyStatementContext context);
+	void ExitFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
 	/// </summary>

@@ -49,77 +49,29 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDefinitionList"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext context) { }
+	public virtual void EnterImportUnit([NotNull] CrimsonParser.ImportUnitContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDefinitionList"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPackageDefinitionList([NotNull] CrimsonParser.PackageDefinitionListContext context) { }
+	public virtual void ExitImportUnit([NotNull] CrimsonParser.ImportUnitContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDefinition"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context) { }
+	public virtual void EnterCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDefinition"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.compilationUnitStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPackageDefinition([NotNull] CrimsonParser.PackageDefinitionContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDependencyList"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPackageDependencyList([NotNull] CrimsonParser.PackageDependencyListContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDependencyList"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPackageDependencyList([NotNull] CrimsonParser.PackageDependencyListContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageDependency"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPackageDependency([NotNull] CrimsonParser.PackageDependencyContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageDependency"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPackageDependency([NotNull] CrimsonParser.PackageDependencyContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.packageBody"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPackageBody([NotNull] CrimsonParser.PackageBodyContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.packageBody"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPackageBody([NotNull] CrimsonParser.PackageBodyContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.topLevelStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTopLevelStatement([NotNull] CrimsonParser.TopLevelStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.topLevelStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTopLevelStatement([NotNull] CrimsonParser.TopLevelStatementContext context) { }
+	public virtual void ExitCompilationUnitStatement([NotNull] CrimsonParser.CompilationUnitStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -157,17 +109,17 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.functionOnlyStatement"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionOnlyStatement([NotNull] CrimsonParser.FunctionOnlyStatementContext context) { }
+	public virtual void EnterFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.functionOnlyStatement"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionOnlyStatement([NotNull] CrimsonParser.FunctionOnlyStatementContext context) { }
+	public virtual void ExitFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>

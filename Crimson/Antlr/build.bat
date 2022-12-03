@@ -1,7 +1,7 @@
 @echo off
 
 :setup
-set "java_path=D:\Java\jdk-17.0.3.1\bin\java.exe"
+set "java_path=java"
 set "input_file=Input/Crimson.g4"
 set "output_dir=Output"
 set "package=Crimson.AntlrBuild"

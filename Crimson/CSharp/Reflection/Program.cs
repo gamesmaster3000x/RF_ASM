@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,11 @@ namespace Crimson.CSharp.Reflection
 {
     internal class CompilationUnit
     {
-        public Dictionary<string, Package> packages = new Dictionary<string, Package>();
+        private IList<Import> imports = new List<Import>();
+
+        public void AddImport(Import import)
+        {
+            imports.Add(import);
+        }
     }
 }
