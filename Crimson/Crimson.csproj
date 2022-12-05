@@ -26,12 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Antlr4.Runtime">
-      <HintPath>Antlr\antlr-csharp-runtime-4.5\Antlr4.Runtime.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Antlr4 Update="CSharp\Antlr4Grammar\Crimson.g4">
       <CustomToolNamespace>Crimson.ANTLR.Crimson</CustomToolNamespace>
       <Package>Crimson.Antlr</Package>
