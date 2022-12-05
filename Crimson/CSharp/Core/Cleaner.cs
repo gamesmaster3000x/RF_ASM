@@ -1,33 +1,62 @@
-﻿using NLog;
+﻿using Antlr4.Runtime.Misc;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace Crimson.Core
 {
     internal class Cleaner
     {
-        private static NLog.Logger LOGGER = NLog.LogManager.GetCurrentClassLogger();
+        private NLog.Logger LOGGER = NLog.LogManager.GetCurrentClassLogger();
 
-        private static List<string> _files = new List<string>();
+        private Dictionary<string, FileInfo> _files = new Dictionary<string, FileInfo>();
 
-        public static void AddFile(string file)
+        string RootPath { get; }
+
+        public Cleaner(string rootPath)
         {
-            LOGGER.Debug("Added " + file + " to list for cleaning");
-            _files.Add(file);
+            RootPath = rootPath;
         }
 
-        public static void CleanFiles()
+        public FileInfo GetFile(string friendlyName)
         {
-            foreach(string file in _files)
+            FileInfo info;
+            if (!_files.ContainsKey(friendlyName))
             {
-                if (File.Exists(file))
+                info = new FileInfo(RootPath + friendlyName + ".crm_clnr");
+                if (info.Exists)
                 {
-                    File.Delete(file);
+                    LOGGER.Warn("File " + info + " already exists! (may be overwritten - who needs that one anyway?)");
+                }
+                _files.Add(friendlyName, info);
+            }
+
+            _files.TryGetValue(friendlyName, out info);
+            return info;
+        }
+
+        public void CleanFiles()
+        {
+            LOGGER.Info("Cleaning " + _files.Count + " temporary files in " + RootPath);
+            foreach(KeyValuePair<string, FileInfo> pair in _files)
+            {
+                if (pair.Value != null ? pair.Value.Exists : false)
+                {
+                    LOGGER.Info("Removing temporary file " + pair.Key + ":", pair.Value);
+                    pair.Value.Delete();
+                } else
+                {
+                    LOGGER.Warn("Unable to remove temporary file " + pair.Key + ":", pair.Value);
                 }
             }
+            _files.Clear();
+
+            LOGGER.Info("Removing temporary directory " + RootPath);
+            File.Delete(RootPath);
         }
     }
 }

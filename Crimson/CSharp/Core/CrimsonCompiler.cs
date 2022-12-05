@@ -10,12 +10,14 @@ namespace Crimson.Core
     internal class CrimsonCompiler
     {
         public CrimsonCmdArguments Options { get; }
+        public Cleaner Cleaner { get; }
 
         private static NLog.Logger Logger;
 
         public CrimsonCompiler(CrimsonCmdArguments options)
         {
             Options = options;
+            Cleaner = new Cleaner(options.CompilationSourcePath + Path.PathSeparator + "compiler_cleaner_temp");
         }
 
         static Task<int> Main(string[] args)
@@ -88,9 +90,10 @@ namespace Crimson.Core
             Console.WriteLine("NLog configured!");
 
             Logger = NLog.LogManager.GetCurrentClassLogger();
+            Console.WriteLine("Testing TRACE and FATAL level logging...");
             Logger.Trace("Testing trace level logging...");
             Logger.Fatal("Testing fatal level logging...");
-            Console.WriteLine("Did you see *both* of the *two* test messages? If not, you should report this to the developer!");
+            Console.WriteLine("Did you see the TRACE and FATAL test messages?");
         }
 
         private CompilationUnit ParseProgram(string textIn)
