@@ -1,4 +1,4 @@
-﻿using RFASM_COMPILER.RFASM_BIN;
+﻿using RedFoxAssembly.Compiler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.TOKEN_PARSER
+namespace RedFoxAssembly.TokenParser
 {
     internal class TokenParser
     {
@@ -33,9 +33,9 @@ namespace RFASM_COMPILER.TOKEN_PARSER
             this.generator = generator;
         }
 
-        public List<Token>? Parse(List<string> input)
+        public List<IToken>? Parse(List<string> input)
         {
-            List<Token> tokens = new List<Token>();
+            List<IToken> tokens = new List<IToken>();
 
             foreach(string line in input)
             {
@@ -48,18 +48,18 @@ namespace RFASM_COMPILER.TOKEN_PARSER
 
                 foreach (Match match in GOOD_TOKEN.Matches(line_))
                 {
-                    Token token = generator.GetToken(match.Value, meta);
+                    IToken token = generator.GetToken(match.Value, meta);
                     tokens.Add(token);
                 }
             }
 
             List<string> strings = new List<string>();
-            foreach (Token token in tokens)
+            foreach (IToken token in tokens)
             {
-                strings.Add(token.Value);
+                strings.Add(token.GetRawValue());
             }
 
-            Console.WriteLine(String.Join(" ", strings));
+            Console.WriteLine(String.Format("Found {0} tokens", strings.Count));
             return tokens;
         }
     }

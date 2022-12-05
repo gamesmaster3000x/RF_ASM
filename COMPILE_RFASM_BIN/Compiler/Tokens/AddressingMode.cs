@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.TOKEN_PARSER
+namespace RedFoxAssembly.Compiler.Tokens
 {
-    internal enum TokenType
+    public enum AddressingMode
     {
-        INSTRUCTION,
-        DIRECTIVE,
-        LABEL
+        RAW,
+        REGISTER
     }
 }

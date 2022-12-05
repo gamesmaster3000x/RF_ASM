@@ -1,4 +1,4 @@
-﻿Instructions:
+Instructions:
 
 Code Operands       Hex Name                Info
 HLT  -              00  Halt                Immediately stop the execution of instructions. Next instruction will not be read.
@@ -33,6 +33,7 @@ SFG  Byte α, Byte β 1C  Set Flag            Sets the flag α to the Least Sign
 AND  -              1D  Logical AND         Performs a logical AND operation on registers S1 and S2 and stores the result in register S0.
 LOR  -              1E  Logical OR          Performs a logical OR operation on registers S1 and S2 and stores the result in register S0.
 XOR  -              1F  Logical XOR         Performs a logical XOR operation on registers S1 and S2 and stores the result in register S0.
+
 
 Addressing modes:
 

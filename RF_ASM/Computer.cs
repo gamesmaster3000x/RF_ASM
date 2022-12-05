@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RF_ASM
+namespace RedFoxVM
 {
     internal class Computer
     {

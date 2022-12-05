@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFASM_COMPILER.RFASM_BIN
+namespace RedFoxAssembly.Compiler
 {
     /// <summary>
     /// 
@@ -28,9 +28,8 @@ namespace RFASM_COMPILER.RFASM_BIN
     ///     </item>
     /// </list>
     /// </summary>
-    enum Imperatives
+    enum Directives
     {
-        LABEL,
         WIDTH,
         VAL
     }

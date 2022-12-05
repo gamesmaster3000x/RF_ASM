@@ -1,0 +1,15 @@
+// Metadata
+.width    #2
+
+// :Start regular code:
+LDR *0A0A &1B1B//     Another comment
+.val _VALUE #2C2C
+//&&
+:label
+LDR _VALUE &3D3D
+B       _otherlabel
+.val _CONST #4E4E
+:otherlabel
+LDR      _CONST &5F5F
+
+B _label

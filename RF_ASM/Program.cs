@@ -1,5 +1,4 @@
-﻿namespace RF_ASM {
-
+namespace RF_ASM {
     /// <summary>
     /// Entry point class for RF_ASM.
     /// </summary>
