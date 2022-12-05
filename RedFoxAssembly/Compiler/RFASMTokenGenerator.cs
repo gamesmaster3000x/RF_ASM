@@ -41,15 +41,11 @@ namespace RedFoxAssembly.Compiler
             {
                 return new RawValueToken(value, metadata);
             }
+            
             // Register address
             else if (value.StartsWith("*", StringComparison.Ordinal))
             {
                 return new RegisterAddressToken(value, metadata);
-            }
-            // Other address
-            else if (value.StartsWith("?", StringComparison.Ordinal))
-            {
-                throw new NotImplementedException("? is a placeholder! Cannot use to address memory!");
             }
             // Label
             else if (value.StartsWith(":", StringComparison.Ordinal))
@@ -78,7 +74,7 @@ namespace RedFoxAssembly.Compiler
                 return new InstructionToken(instruction, metadata);
             }
 
-            throw new NullReferenceException("Cannot create Token!");
+            throw new NullReferenceException("Cannot create Token from value " + value + " (is the data or instruction type #*:_. declared?)");
         }
     }
 }

@@ -1,0 +1,10 @@
+Package=1
+Identifier=2
+OpenBracket=3
+Comma=4
+CloseBracket=5
+OpenBrace=6
+CloseBrace=7
+Integer=8
+Boolean=9
+SemiColon=10
