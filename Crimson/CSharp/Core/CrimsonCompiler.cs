@@ -17,7 +17,7 @@ namespace Crimson.Core
         public CrimsonCompiler(CrimsonCmdArguments options)
         {
             Options = options;
-            Cleaner = new Cleaner(options.CompilationSourcePath + Path.PathSeparator + "compiler_cleaner_temp");
+            Cleaner = new Cleaner(Path.GetDirectoryName(options.CompilationSourcePath) + "/" + Path.GetFileNameWithoutExtension(options.CompilationSourcePath) + "_compiler_cleaner_temp/");
         }
 
         static Task<int> Main(string[] args)

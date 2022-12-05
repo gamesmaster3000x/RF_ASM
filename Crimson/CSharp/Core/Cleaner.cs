@@ -55,8 +55,14 @@ namespace Crimson.Core
             }
             _files.Clear();
 
-            LOGGER.Info("Removing temporary directory " + RootPath);
-            File.Delete(RootPath);
+            if (File.Exists(RootPath))
+            {
+                LOGGER.Info("Removing temporary directory " + RootPath);
+                File.Delete(RootPath);
+            } else
+            {
+                LOGGER.Info("Failed to remove temporary directory " + RootPath);
+            }
         }
     }
 }
