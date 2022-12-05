@@ -7,7 +7,7 @@
     {
 
         /// <summary>
-        /// Takes a file containing binary data, converts the content to hex, and writes the data into a buffer.
+        /// Takes a file containing binary data, and writes it into a buffer.
         /// </summary>
         public static byte[] GetDataFromFile(string path)
         {

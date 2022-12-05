@@ -9,14 +9,14 @@ namespace RF_ASM
     internal class Stack
     {
         //The max size of the stack
-        uint capacity;
+        int capacity;
 
         //The index of the previously added item.
-        uint back;
+        int back;
 
         Value[] data;
 
-        public Stack(uint capacity)
+        public Stack(int capacity)
         {
             this.capacity = capacity;
             data = new Value[capacity];

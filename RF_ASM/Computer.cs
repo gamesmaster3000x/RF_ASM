@@ -11,18 +11,18 @@ namespace RF_ASM
     {
         public byte[] memory;
 
-        //Must be at least 4 elements, which are registers A, B, C and the top of the stack.
-        public Value[] registers;
+        public Value[] generalRegisters;
+        public Value[] specialisedRegisters;
 
         public Stack stack;
 
-        public Computer(uint dataWidth, uint memorySize, uint registerCount = 4, uint stackSize = 256)
+        public Computer(int dataWidth, int memorySize, int registerCount = 4, int stackSize = 256)
         {
             memory = new byte[memorySize];
-            registers = new Value[registerCount];
+            generalRegisters = new Value[registerCount];
             for (int i = 0; i < registerCount; i++)
             {
-                registers[i] = new Value(dataWidth);
+                generalRegisters[i] = new Value(dataWidth);
             }
             stack = new Stack(stackSize);
         }

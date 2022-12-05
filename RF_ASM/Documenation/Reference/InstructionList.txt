@@ -1,0 +1,41 @@
+﻿Instructions:
+
+Code Operands       Hex Name                Info
+HLT  -              00  Halt                Immediately stop the execution of instructions. Next instruction will not be read.
+NOP  -              01  No Operation        Does not perform an operation, moves to the next address.
+ADD  -              02  Add                 Adds registers S1 and S2 and stores the result in S0.
+SUB  -              03  Subtract            Subtracts register S2 from register S1 and stores the result in S0.
+LSL  -              04  Logical Shift Left  Shifts the value of the register S1 to the left and stores the result in S0.
+LSR  -              05  Logical Shift Right Shifts the value of the register S1 to the right and stores the result in S0.
+NEG  -              06  Negate              Subtracts the register S1 from #0 and stores the result in S0.
+NOT  -              07  Logical NOT         Performs a logical NOT operation on register S1 and stores the result in S0.
+CMP  -              08  Compare             Compares register S1 to register S2. The registers are treated as 2's complement.
+JMP  Word α         09  Jump                Sets the memory address α as the next to be executed.
+BFG  Word α, Byte β 0A  Branch Flag         Sets the memory address α as the next to be executed, if flag β is active.
+BEQ  Word α         0B  Branch Equal        Sets the memory address α as the next to be executed, if the result of the previous compare was equal.
+BLT  Word α         0C  Branch Less Than    Sets the memory address α as the next to be executed, if the result of the previous compare was less than.
+BGT  Word α         0D  Branch Greater Than Sets the memory address α as the next to be executed, if the result of the previous compare was greater than.
+BSR  Word α         0E  Branch Subroutine   Sets the memory address α as the next to be executed, and pushes the current instruction's address + 1 to the stack.
+RTN  -              0F  Return              Jumps to the address that the top of the stack points to and pops that value out of the stack.
+RRB  Word α, Byte β 10  Read Register Byte  Reads the byte β from the register α. (β == 0 -> Least Significant Byte)
+RRW  Word α         11  Read Register Word  Reads the word from the register α.
+RMB  Word α, Byte β 12  Read Memory Byte    Reads the byte β from the memory address α. (β == 0 -> Least Significant Byte)
+RMW  Word α         13  Read Memory Word    Reads the word starting at memory address α.
+WRB  Word α, Byte β 14  Write Register Byte Writes the selected byte β to the register α. (β == 0 -> Least Significant Byte)
+WRW  Word α         15  Write Register Word Writes the selected word to the register α.
+WMB  Word α, Byte β 16  Write Memory Byte   Writes the selected byte β to the memory address α. (β == 0 -> Least Significant Byte)
+WMW  Word α         17  Write Memory Word   Writes the selected word to the memory addresses starting at α.
+RVB  Byte α         18  Read Value Byte     Reads the byte α.
+RVW  Word α         19  Read Value Word     Reads the word α.
+SIN  Word α, Byte β 1A  Set Interrupt       Sets the address of the interrupt β to the memory address α. (α cannot be 0, as this will cause the device to halt upon trigger of the interrupt.)
+INT  Byte α         1B  Interrupt           Triggers the interrupt α.
+SFG  Byte α, Byte β 1C  Set Flag            Sets the flag α to the Least Significant Bit of β.
+AND  -              1D  Logical AND         Performs a logical AND operation on registers S1 and S2 and stores the result in register S0.
+LOR  -              1E  Logical OR          Performs a logical OR operation on registers S1 and S2 and stores the result in register S0.
+XOR  -              1F  Logical XOR         Performs a logical XOR operation on registers S1 and S2 and stores the result in register S0.
+
+Addressing modes:
+
+Code Binary Info
+#    0      Raw Value
+R    1      Register Address
