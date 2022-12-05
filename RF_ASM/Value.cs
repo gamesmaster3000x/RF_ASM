@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace RedFoxVM
     {
         public byte[] data;
 
-        public Value(uint size)
+        public Value(int size)
         {
             data = new byte[size];
         }
@@ -18,6 +19,11 @@ namespace RedFoxVM
         public Value(byte[] data)
         {
             this.data = data;
+        }
+
+        public byte GetByte(int i)
+        {
+            return data[i];
         }
     }
 }
