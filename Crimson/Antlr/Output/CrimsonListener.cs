@@ -118,15 +118,89 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
+	/// Enter a parse tree produced by the <c>FunctionVariableDeclarationStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context);
+	void EnterFunctionVariableDeclarationStatement([NotNull] CrimsonParser.FunctionVariableDeclarationStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.functionStatement"/>.
+	/// Exit a parse tree produced by the <c>FunctionVariableDeclarationStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFunctionStatement([NotNull] CrimsonParser.FunctionStatementContext context);
+	void ExitFunctionVariableDeclarationStatement([NotNull] CrimsonParser.FunctionVariableDeclarationStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionReturnStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionReturnStatement([NotNull] CrimsonParser.FunctionReturnStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionReturnStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionReturnStatement([NotNull] CrimsonParser.FunctionReturnStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionAssignVariableStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionAssignVariableStatement([NotNull] CrimsonParser.FunctionAssignVariableStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionAssignVariableStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionAssignVariableStatement([NotNull] CrimsonParser.FunctionAssignVariableStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionFunctionCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionFunctionCallStatement([NotNull] CrimsonParser.FunctionFunctionCallStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionFunctionCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionFunctionCallStatement([NotNull] CrimsonParser.FunctionFunctionCallStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionIfStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionIfStatement([NotNull] CrimsonParser.FunctionIfStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionIfStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionIfStatement([NotNull] CrimsonParser.FunctionIfStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionAssemblyCallStatement([NotNull] CrimsonParser.FunctionAssemblyCallStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.functionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionAssemblyCallStatement([NotNull] CrimsonParser.FunctionAssemblyCallStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
 	/// </summary>
@@ -187,6 +261,16 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitElseBlock([NotNull] CrimsonParser.ElseBlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.assemblyCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.assemblyCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.functionCall"/>.
 	/// </summary>

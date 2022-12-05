@@ -26,12 +26,13 @@ functionBody
 
 // Function-only statements
 functionStatement
-    : internalVariableDeclaration
-    | functionReturn
-    | assignVariable
-    | allocateMemory
-    | functionCall SemiColon
-    | ifBlock
+    : internalVariableDeclaration #FunctionVariableDeclarationStatement
+    | functionReturn #FunctionReturnStatement
+    | assignVariable #FunctionAssignVariableStatement
+    | allocateMemory #FunctionAllocateMemoryStatement
+    | functionCall SemiColon #FunctionFunctionCallStatement
+    | ifBlock #FunctionIfStatement
+    | assemblyCall #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
     : type Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
@@ -51,6 +52,9 @@ elifBlock
     ;
 elseBlock
     : Else functionBody
+    ;
+assemblyCall
+    : Tilda ~('\r' | '\n')*
     ;
  
 // Function
@@ -134,6 +138,7 @@ fragment Greater: '>';
 fragment EqualTo: '==';
 Comparator: Less | Greater | EqualTo;
 
+Tilda: '~';
 Equals: '=';
 OpenBracket: '(';
 CloseBracket: ')';
