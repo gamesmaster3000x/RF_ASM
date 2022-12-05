@@ -1,0 +1,27 @@
+
+// Import packages:
+// - Package "utils" from the file "utils.crm", with the name "utils"
+// - Package "console" from the system library, with the name "stdout"
+
+#using "utils.crm" as utils
+#using "console" as stdout
+
+global int counter;
+
+function main [int] () {
+
+    // Declare and allocate memory for "i"
+    int i;
+    allocate i 4;
+
+    // Assign a value to "i"
+    i = 4;
+        
+    // Note usage of functions from imported packages
+    stdout.write(i);
+    return utils.multiply(i, 5);
+}
+
+structure Person {
+	int age;
+}

@@ -1,0 +1,12 @@
+// Utility package
+package utils () {
+    function multiply [int] ( int num1, int num2 ) {
+        return num1 * num2;
+    }
+}
+
+package help (utils(utils.crm) utils) {
+    function time [int] ( int num1, int num2 ) {
+        return utils.multiply(num1, num2);
+    }
+}
