@@ -9,7 +9,13 @@ namespace Crimson.CSharp.Reflection
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.
     /// </summary>
-    internal class GlobalVariable: GlobalStatement
+    internal class GlobalVariable : GlobalStatement
     {
+        public GlobalVariable(InternalVariable intern)
+        {
+            Intern = intern;
+        }
+
+        public InternalVariable Intern { get; }
     }
 }
