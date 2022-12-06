@@ -4,6 +4,7 @@ using Antlr4.Runtime.Tree;
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Reflection;
+using Crimson.CSharp.Statements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace Crimson.CSharp.Core
                 string name = declaration.name.Text;
                 CrimsonType returnType = VisitType(declaration.returnType);
                 IList<FunctionOnlyStatement> statements = VisitFunctionBody(declaration.body);
-                IList<Parameter> parameters = VisitParameterList(declaration.parameters);
+                IList<Function.Parameter> parameters = VisitParameterList(declaration.parameters);
                 return new Function(returnType, name, parameters, statements);
             } 
             else if (context is CrimsonParser.StructureUnitStatementContext)
@@ -84,14 +85,14 @@ namespace Crimson.CSharp.Core
             return new CrimsonType(context.GetText());
         }
 
-        public override IList<Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
+        public override IList<Function.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
         {
-            List<Parameter> parameters = new List<Parameter>();
+            List<Function.Parameter> parameters = new List<Function.Parameter>();
             foreach (CrimsonParser.ParameterContext paCxt in context.parameter())
             {
                 CrimsonType type = VisitType(paCxt.type());
                 string identifier = paCxt.Identifier().GetText();
-                Parameter parameter = new Parameter(type, identifier);
+                Function.Parameter parameter = new Function.Parameter(type, identifier);
                 parameters.Add(parameter);
             }
             return parameters;
@@ -133,18 +134,44 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.AssignVariableContext asvCtx = context.assignVariable();
                 string identifier = asvCtx.Identifier().GetText();
                 ResolvableValue value = VisitResolvableValue(asvCtx.resolvableValue());
+                VariableAssignment assignment = new VariableAssignment(identifier, value);
+                return assignment;
             }
             else if (stCtx is CrimsonParser.FunctionAllocateMemoryStatementContext)
             {
-
+                CrimsonParser.FunctionAllocateMemoryStatementContext context = (CrimsonParser.FunctionAllocateMemoryStatementContext)stCtx;
+                CrimsonParser.AllocateMemoryContext almCtx = context.allocateMemory();
+                string identifier = almCtx.Identifier().GetText();
+                string numberText = almCtx.Number().GetText();
+                int number;
+                try
+                {
+                    number = Int32.Parse(numberText);
+                } catch (FormatException f)
+                {
+                    throw new StatementParseException("Failed to parse string->int " + numberText + " while allocating memory for " + identifier, f);
+                }
+                return new MemoryAllocation(identifier, number);
             }
             else if (stCtx is CrimsonParser.FunctionFunctionCallStatementContext)
             {
-
+                CrimsonParser.FunctionFunctionCallStatementContext context = (CrimsonParser.FunctionFunctionCallStatementContext)stCtx;
+                CrimsonParser.FunctionCallContext fncCtx = context.functionCall();
+                string identifier = fncCtx.Identifier().GetText();
+                IList<FunctionArgument> arguments = VisitInputParameters(fncCtx.inputParameters());
+                FunctionCall call = new FunctionCall(identifier, arguments);
+                return call;
             }
             else if (stCtx is CrimsonParser.FunctionIfStatementContext)
             {
-
+                CrimsonParser.FunctionIfStatementContext context = (CrimsonParser.FunctionIfStatementContext)stCtx;
+                CrimsonParser.IfBlockContext ifCtx = context.ifBlock();
+                Condition condition = VisitCondition(ifCtx.condition());
+                IList<FunctionOnlyStatement> body = VisitFunctionBody(ifCtx.functionBody());
+                ElifBlock elifBlock = VisitElifBlock(ifCtx.elifBlock());
+                ElseBlock elseBlock = VisitElseBlock(ifCtx.elseBlock());
+                IfBlock ifBlock = new IfBlock(condition, body, elifBlock, elseBlock);
+                return ifBlock;
             }
             else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext)
             {
@@ -154,6 +181,26 @@ namespace Crimson.CSharp.Core
             {
                 throw new StatementParseException("The given CrimsonParser.FunctionStatementContext " + stCtx + " is not of a permissable type");
             }
+        }
+
+        public override IList<FunctionArgument> VisitInputParameters([NotNull] CrimsonParser.InputParametersContext context)
+        {
+            return null;
+        }
+
+        public override Condition VisitCondition([NotNull] CrimsonParser.ConditionContext context)
+        {
+            return null;
+        }
+
+        public override ElifBlock VisitElifBlock([NotNull] CrimsonParser.ElifBlockContext context)
+        {
+            return null;
+        }
+
+        public override ElseBlock VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context)
+        {
+            return null;
         }
     }
 }

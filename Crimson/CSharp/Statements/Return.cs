@@ -1,6 +1,6 @@
 ﻿using Crimson.CSharp.Reflection;
 
-namespace Crimson.CSharp.Core
+namespace Crimson.CSharp.Statements
 {
     internal class Return : FunctionOnlyStatement
     {
