@@ -6,8 +6,8 @@ namespace RedFoxVM {
     {
         static void Main(string[] args)
         {
-            Computer computer = new Computer(2);
-            
+            Computer computer = new Computer(2, 1024, new byte[] {234,213,1,23,16,45}, 32, 16, 256);
+            computer.TriggerClock();
         }
     }
 }

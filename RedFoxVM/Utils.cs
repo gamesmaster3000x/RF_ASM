@@ -57,7 +57,7 @@ namespace RedFoxVM
 
         public static byte[] SetBitInByte(byte b, int bitIndex, bool bitValue)
         {
-            BitArray bitArr = new BitArray(b);
+            BitArray bitArr = new BitArray(new byte[] {b});
             bitArr.Set(bitIndex, bitValue);
             byte[] o = new byte[bitArr.Length];
             bitArr.CopyTo(o, 0);
@@ -86,6 +86,23 @@ namespace RedFoxVM
                 num /= 256;
             }
             return value;
+        }
+
+        public static Value IncrementValue(Value num)
+        {
+            int i = 0;
+            while (true)
+            {
+                if (num.data[i] == byte.MaxValue)
+                {
+                    i++;
+                }
+                else
+                {
+                    num.data[i]++;
+                    return num;
+                }
+            }
         }
     }
 }

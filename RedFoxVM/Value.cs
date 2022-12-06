@@ -14,6 +14,10 @@ namespace RedFoxVM
         public Value(int size)
         {
             data = new byte[size];
+            for (int b = 0; b < size; b++)
+            {
+                data[b] = 0;
+            }
         }
 
         public Value(byte[] data)

@@ -33,14 +33,14 @@ namespace RedFoxVM
             }
         }
 
-        public byte GetByte(int addr)
+        public byte GetByte(Value addr)
         {
-            return data[addr];
+            return data[Utils.ValueToInt(addr)];
         }
         
-        public void SetByte(int addr, byte data)
+        public void SetByte(Value addr, byte data)
         {
-            this.data[addr] = data;
+            this.data[Utils.ValueToInt(addr)] = data;
         }
     }
 }
