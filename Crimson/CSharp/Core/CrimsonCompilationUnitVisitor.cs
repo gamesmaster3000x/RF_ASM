@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Crimson.CSharp.Core
 {
@@ -35,7 +36,7 @@ namespace Crimson.CSharp.Core
             IList<CrimsonParser.GlobalStatementContext> unitStatementCtxs = context._statements;
             foreach (CrimsonParser.GlobalStatementContext unitStatementCtx in unitStatementCtxs)
             {
-                GlobalStatement unitStatement = ParseCompilationUnitStatement(unitStatementCtx);
+                GlobalStatement unitStatement = ParseGlobalStatement(unitStatementCtx);
                 compilation.AddStatement(unitStatement);
             }
 
@@ -46,37 +47,58 @@ namespace Crimson.CSharp.Core
             return compilation;
         }
 
-        private GlobalStatement ParseCompilationUnitStatement(CrimsonParser.GlobalStatementContext context)
+        // ----------------------------------------------------
+        // -------------------------- GLOBAL STATEMENTS
+        // ----------------------------------------------------
+
+        private GlobalStatement ParseGlobalStatement(CrimsonParser.GlobalStatementContext context)
         {
             if (context is CrimsonParser.GlobalVariableUnitStatementContext)
             {
                 CrimsonParser.GlobalVariableUnitStatementContext gvCtx = (CrimsonParser.GlobalVariableUnitStatementContext)context;
-                CrimsonParser.InternalVariableDeclarationContext declaration = gvCtx.globalVariableDeclaration().declaration;
-                string identifier = declaration.Identifier().GetText();
-                ResolvableValue value = VisitResolvableValue(declaration.resolvableValue());
-                return new GlobalVariable(gvCtx.GetText(), identifier, value);
+                CrimsonParser.GlobalVariableDeclarationContext declaration = gvCtx.globalVariableDeclaration();
+                return VisitGlobalVariableDeclaration(declaration);
             } 
             else if (context is CrimsonParser.FunctionUnitStatementContext)
             {
                 CrimsonParser.FunctionUnitStatementContext fnCtx = (CrimsonParser.FunctionUnitStatementContext)context;
                 CrimsonParser.FunctionDeclarationContext declaration = fnCtx.functionDeclaration();
-                string name = declaration.name.Text;
-                CrimsonType returnType = VisitType(declaration.returnType);
-                IList<InternalStatement> statements = VisitFunctionBody(declaration.body);
-                IList<Function.Parameter> parameters = VisitParameterList(declaration.parameters);
-                return new Function(returnType, name, parameters, statements);
+                return VisitFunctionDeclaration(declaration);
             } 
             else if (context is CrimsonParser.StructureUnitStatementContext)
             {
                 CrimsonParser.StructureUnitStatementContext structureCtx = (CrimsonParser.StructureUnitStatementContext)context;
                 CrimsonParser.StructureDeclarationContext declaration = structureCtx.structureDeclaration();
-                string identifier = declaration.Identifier().GetText();
-                IList<InternalStatement> body = VisitStructureBody(declaration.structureBody());
-                return new Structure(identifier, body);
+                return VisitStructureDeclaration(declaration);
             } else
             {
                 throw new StatementParseException("The given CrimsonParser.CompilationUnitStatementContext " + context + " is not of a permissable type");
             }
+        }
+
+        public override GlobalVariable VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
+        {
+            InternalVariable intern = VisitInternalVariableDeclaration(context.internalVariableDeclaration());
+            GlobalVariable global = new GlobalVariable(intern);
+            return global;
+        }
+
+        public override Function VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context)
+        {
+            string name = context.name.Text;
+            CrimsonType returnType = VisitType(context.returnType);
+            IList<InternalStatement> statements = VisitFunctionBody(context.body);
+            IList<Function.Parameter> parameters = VisitParameterList(context.parameters); 
+            return new Function(returnType, name, parameters, statements);
+
+        }
+
+        public override Structure VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
+        {
+            string identifier = context.Identifier().GetText();
+            IList<InternalStatement> body = VisitStructureBody(context.structureBody());
+            Structure structure = new Structure(identifier, body);
+            return structure;
         }
 
         public override IList<InternalStatement> VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context)
@@ -117,13 +139,17 @@ namespace Crimson.CSharp.Core
             List<InternalStatement> statements = new List<InternalStatement>();
             foreach (CrimsonParser.InternalStatementContext stCtx in context._statements)
             {
-                InternalStatement statement = ParseFunctionStatement(stCtx);
+                InternalStatement statement = ParseInternalStatement(stCtx);
                 statements.Add(statement);
             }
             return statements;
         }
 
-        private InternalStatement ParseFunctionStatement(CrimsonParser.InternalStatementContext stCtx)
+        // ----------------------------------------------------
+        // -------------------------- INTERNAL STATEMENTS
+        // ----------------------------------------------------
+
+        private InternalStatement ParseInternalStatement(CrimsonParser.InternalStatementContext stCtx)
         {
             if(stCtx is CrimsonParser.FunctionVariableDeclarationStatementContext)
             {
