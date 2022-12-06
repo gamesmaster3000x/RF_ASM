@@ -26,13 +26,13 @@ functionBody
 
 // Function-only statements
 functionStatement
-    : internalVariableDeclaration #FunctionVariableDeclarationStatement
-    | functionReturn #FunctionReturnStatement
-    | assignVariable #FunctionAssignVariableStatement
-    | allocateMemory #FunctionAllocateMemoryStatement
-    | functionCall SemiColon #FunctionFunctionCallStatement
-    | ifBlock #FunctionIfStatement
-    | assemblyCall #FunctionAssemblyCallStatement
+    : internalVariableDeclaration 	#FunctionVariableDeclarationStatement
+    | functionReturn 				#FunctionReturnStatement
+    | assignVariable 				#FunctionAssignVariableStatement
+    | allocateMemory 				#FunctionAllocateMemoryStatement
+    | functionCall SemiColon 		#FunctionFunctionCallStatement
+    | ifBlock 						#FunctionIfStatement
+    | assemblyCall 					#FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
     : type Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()

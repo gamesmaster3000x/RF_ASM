@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Core
 {
-    internal class CrimsonProgramVisitor: CrimsonBaseVisitor<object>
+    internal class CrimsonCompiliationUnitVisitor: CrimsonBaseVisitor<object>
     {
         public override CompilationUnit VisitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context)
         {
@@ -47,19 +47,49 @@ namespace Crimson.CSharp.Core
         {
             if (context is CrimsonParser.GlobalVariableUnitStatementContext)
             {
-                return new GlobalVariable(context.GetText());
+                CrimsonParser.GlobalVariableUnitStatementContext gvCtx = (CrimsonParser.GlobalVariableUnitStatementContext)context;
+                CrimsonParser.InternalVariableDeclarationContext declaration = gvCtx.globalVariableDeclaration().declaration;
+                string identifier = declaration.Identifier().GetText();
+                ResolvableValue value = VisitResolvableValue(declaration.resolvableValue());
+                return new GlobalVariable(gvCtx.GetText(), identifier, value);
             } 
             else if (context is CrimsonParser.FunctionUnitStatementContext)
             {
-                return new Function(context.GetText());
+                CrimsonParser.FunctionUnitStatementContext fnCtx = (CrimsonParser.FunctionUnitStatementContext)context;
+                CrimsonParser.FunctionDeclarationContext declaration = fnCtx.functionDeclaration();
+                string name = declaration.name.Text;
+                CrimsonType returnType = VisitType(declaration.returnType);
+                List<FunctionOnlyStatement> statements = VisitFunctionBody(declaration.body);
+                List<Parameter> parameters = VisitParameterList(declaration.parameters);
+                return new Function(returnType, name, parameters, statements);
             } 
             else if (context is CrimsonParser.StructureUnitStatementContext)
             {
                 return new Structure(context.GetText());
             } else
             {
-                throw new ArgumentException("The given context " + context + " is not of a permissable type");
+                throw new ArgumentException("The given CrimsonParser.CompilationUnitStatementContext " + context + " is not of a permissable type");
             }
+        }
+
+        public override ResolvableValue VisitResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context)
+        {
+            return null;
+        }
+
+        public override CrimsonType VisitType([NotNull] CrimsonParser.TypeContext context)
+        {
+            return null;
+        }
+
+        public override List<Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
+        {
+            return null;
+        }
+
+        public override List<FunctionOnlyStatement> VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context)
+        {
+            return null;
         }
     }
 }

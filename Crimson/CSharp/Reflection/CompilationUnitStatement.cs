@@ -4,9 +4,9 @@
     {
         public string RawText { get; }
 
-        public CompilationUnitStatement(string text)
+        public CompilationUnitStatement(string rawText)
         {
-            RawText = text;
+            RawText = rawText;
         }
     }
 }

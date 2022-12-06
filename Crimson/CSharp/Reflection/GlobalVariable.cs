@@ -11,10 +11,14 @@ namespace Crimson.CSharp.Reflection
     /// </summary>
     internal class GlobalVariable: CompilationUnitStatement
     {
-        public GlobalVariable(string text) : base(text)
-        {
-        }
 
-        public string Name { get; set; }
+        public string Identifier { get; set; }
+        public ResolvableValue Value { get; }
+
+        public GlobalVariable(string rawText, string identifier, ResolvableValue value) : base(rawText)
+        {
+            Identifier = identifier;
+            Value = value;
+        }
     }
 }

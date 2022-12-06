@@ -105,7 +105,7 @@ namespace Crimson.Core
             CrimsonParser parser = new CrimsonParser(cts); 
 
             CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
-            CrimsonProgramVisitor visitor = new CrimsonProgramVisitor();
+            CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();
             CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
             //CrimsonListener listener = new CrimsonListener();
             //ParseTreeWalker.Default.Walk(listener, cuCtx);
