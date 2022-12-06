@@ -1,18 +1,8 @@
-﻿using Antlr4.Runtime;
-using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
+﻿using Antlr4.Runtime.Misc;
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Reflection;
 using Crimson.CSharp.Statements;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Crimson.CSharp.Core
 {
