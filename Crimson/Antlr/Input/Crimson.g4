@@ -41,14 +41,14 @@ assignVariable
     : Identifier Equals resolvableValue SemiColon
     ;
 ifBlock
-    : If condition functionBody (elseBlock | elifBlock)?
+    : If condition functionBody (elseBlock | elseIfBlock)?
     ;
 condition
     : OpenBracket BooleanValue CloseBracket
     | OpenBracket resolvableValue Comparator resolvableValue CloseBracket
     ;
-elifBlock
-    : Elif condition functionBody (elseBlock | elifBlock)?
+elseIfBlock
+    : Else ifBlock
     ;
 elseBlock
     : Else functionBody

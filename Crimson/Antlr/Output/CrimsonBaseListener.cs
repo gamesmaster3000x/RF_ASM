@@ -285,17 +285,17 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCondition([NotNull] CrimsonParser.ConditionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.elifBlock"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.elseIfBlock"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterElifBlock([NotNull] CrimsonParser.ElifBlockContext context) { }
+	public virtual void EnterElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.elifBlock"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.elseIfBlock"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitElifBlock([NotNull] CrimsonParser.ElifBlockContext context) { }
+	public virtual void ExitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.elseBlock"/>.
 	/// <para>The default implementation does nothing.</para>

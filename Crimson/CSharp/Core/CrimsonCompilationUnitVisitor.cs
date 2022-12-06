@@ -220,7 +220,7 @@ namespace Crimson.CSharp.Core
         {
             Condition condition = VisitCondition(context.condition());
             IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
-            ElifBlock elifBlock = VisitElifBlock(context.elifBlock());
+            ElseIfBlock elifBlock = VisitElseIfBlock(context.elseIfBlock());
             ElseBlock elseBlock = VisitElseBlock(context.elseBlock());
             IfBlock ifBlock = new IfBlock(condition, body, elifBlock, elseBlock);
             return ifBlock;
@@ -281,14 +281,18 @@ namespace Crimson.CSharp.Core
             return null;
         }
 
-        public override ElifBlock VisitElifBlock([NotNull] CrimsonParser.ElifBlockContext context)
+        public override ElseIfBlock VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context)
         {
-            return null;
+            IfBlock ifBlock = VisitIfBlock(context.ifBlock());
+            ElseIfBlock elseIfBlock = new ElseIfBlock(ifBlock);
+            return elseIfBlock;
         }
 
         public override ElseBlock VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context)
         {
-            return null;
+            IList<InternalStatement> statements = VisitFunctionBody(context.functionBody());
+            ElseBlock elseBlock = new ElseBlock(statements);
+            return elseBlock;
         }
     }
 }

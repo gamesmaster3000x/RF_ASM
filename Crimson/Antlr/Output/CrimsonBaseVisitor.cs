@@ -236,7 +236,7 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCondition([NotNull] CrimsonParser.ConditionContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.elifBlock"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.elseIfBlock"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -244,7 +244,7 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitElifBlock([NotNull] CrimsonParser.ElifBlockContext context) { return VisitChildren(context); }
+	public virtual Result VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.elseBlock"/>.
 	/// <para>

@@ -157,11 +157,11 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCondition([NotNull] CrimsonParser.ConditionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.elifBlock"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.elseIfBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitElifBlock([NotNull] CrimsonParser.ElifBlockContext context);
+	Result VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.elseBlock"/>.
 	/// </summary>

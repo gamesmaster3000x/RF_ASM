@@ -242,15 +242,15 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCondition([NotNull] CrimsonParser.ConditionContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.elifBlock"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.elseIfBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterElifBlock([NotNull] CrimsonParser.ElifBlockContext context);
+	void EnterElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.elifBlock"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.elseIfBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitElifBlock([NotNull] CrimsonParser.ElifBlockContext context);
+	void ExitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.elseBlock"/>.
 	/// </summary>
