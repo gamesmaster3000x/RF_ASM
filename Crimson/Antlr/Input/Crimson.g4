@@ -62,7 +62,7 @@ functionCall
     : Identifier inputParameters
     ;
 inputParameters
-    : OpenBracket (Identifier | Number)? (Comma (Identifier | Number))* CloseBracket
+    : OpenBracket (resolvableValue)? (Comma (resolvableValue))* CloseBracket
     ;
 allocateMemory
     : Allocate Identifier Number SemiColon

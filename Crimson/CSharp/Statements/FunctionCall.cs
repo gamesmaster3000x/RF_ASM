@@ -5,9 +5,9 @@ namespace Crimson.CSharp.Statements
     internal class FunctionCall : InternalStatement
     {
         private string identifier;
-        private IList<FunctionArgument> arguments;
+        private IList<ResolvableValue> arguments;
 
-        public FunctionCall(string identifier, IList<FunctionArgument> arguments)
+        public FunctionCall(string identifier, IList<ResolvableValue> arguments)
         {
             this.identifier = identifier;
             this.arguments = arguments;
