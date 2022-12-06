@@ -15,6 +15,8 @@ namespace Crimson.CSharp.Reflection
         public CrimsonType ReturnType { get; }
         public List<Parameter> Parameters { get; }
         public List<FunctionOnlyStatement> Statements { get; }
+        public ICollection<Parameter> Parameters1 { get; }
+        public ICollection<FunctionOnlyStatement> Statements1 { get; }
 
         Dictionary<string, Parameter> parameters = new Dictionary<string, Parameter>();
         Dictionary<string, FunctionOnlyStatement> statements = new Dictionary<string, FunctionOnlyStatement>();
@@ -29,6 +31,14 @@ namespace Crimson.CSharp.Reflection
             Name = name;
             Parameters = parameters1;
             Statements = statements1;
+        }
+
+        public Function(CrimsonType returnType, string name, ICollection<Parameter> parameters1, ICollection<FunctionOnlyStatement> statements1)
+        {
+            ReturnType = returnType;
+            Name = name;
+            Parameters1 = parameters1;
+            Statements1 = statements1;
         }
     }
 }
