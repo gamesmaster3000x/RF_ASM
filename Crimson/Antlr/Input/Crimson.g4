@@ -44,8 +44,7 @@ ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
     ;
 condition
-    : OpenBracket BooleanValue CloseBracket
-    | OpenBracket resolvableValue Comparator resolvableValue CloseBracket
+    : OpenBracket resolvableValue CloseBracket
     ;
 elseIfBlock
     : Else ifBlock

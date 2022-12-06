@@ -278,7 +278,9 @@ namespace Crimson.CSharp.Core
 
         public override Condition VisitCondition([NotNull] CrimsonParser.ConditionContext context)
         {
-            return null;
+            ResolvableValue value = VisitResolvableValue(context.resolvableValue());
+            Condition condition = new Condition(value);
+            return condition;
         }
 
         public override ElseIfBlock VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context)
