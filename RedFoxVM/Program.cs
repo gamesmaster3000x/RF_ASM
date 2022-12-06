@@ -6,7 +6,8 @@ namespace RedFoxVM {
     {
         static void Main(string[] args)
         {
-            Computer computer = new Computer(1, 1024);
+            Computer computer = new Computer(2);
+            
         }
     }
 }

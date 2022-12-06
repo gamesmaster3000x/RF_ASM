@@ -11,14 +11,11 @@ namespace RedFoxVM
     internal class Memory
     {
         byte[] data;
-        int dataWidth;
-        public Memory(int capacity, int dataWidth, byte[] input = null)
+        public Memory(int capacity, byte[] input = null)
         {
-            this.dataWidth = dataWidth;
-
             if (input == null)
             {
-                input = new byte[] { (byte)0};
+                input = new byte[] {0};
             }
 
             data = new byte[capacity];
@@ -31,7 +28,7 @@ namespace RedFoxVM
                 }
                 else
                 {
-                    data[i] = (byte)0;
+                    data[i] = 0;
                 }
             }
         }
@@ -40,15 +37,10 @@ namespace RedFoxVM
         {
             return data[addr];
         }
-
-        public Value GetValue(int addr)
+        
+        public void SetByte(int addr, byte data)
         {
-            byte[] bytes = new byte[dataWidth];
-            for (int i = 0; i < dataWidth; i++)
-            {
-                bytes[i] = data[addr + i];
-            }
-            return new Value(bytes);
+            this.data[addr] = data;
         }
     }
 }

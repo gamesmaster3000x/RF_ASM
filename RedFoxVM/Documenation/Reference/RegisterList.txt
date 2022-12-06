@@ -1,0 +1,18 @@
+﻿Register Layout:
+
+(Not all register addresses will be populated with an actual register.)
+0   - 127 = Specialised registers
+128 - 255 = General registers
+
+
+Specialised registers:
+
+Number(s) Size Info
+0         Word ALU output
+1         Word ALU input A
+2         Word ALU input B
+3         Byte Current instruction
+4         Word Operand A
+5         Byte Operand B
+6   - 62  -    Reserved
+63  - 127 Word Component lanes (Not all will be available)
