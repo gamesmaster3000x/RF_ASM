@@ -9,6 +9,14 @@
 global int counter;
 
 function main [int] () {
+	
+	if (true) {
+		allocate counter 6
+	} else if (utils.something(utils.otherthing)) {
+		int a;
+	} else {
+		return b;
+	}
 
     // Declare and allocate memory for "i"
     int i;

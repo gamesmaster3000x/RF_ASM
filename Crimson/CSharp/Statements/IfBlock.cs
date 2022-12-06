@@ -8,7 +8,7 @@ namespace Crimson.CSharp.Statements
         {
         }
 
-        public IfBlock(Condition condition, IList<InternalStatement> body, ElseIfBlock elifBlock, ElseBlock elseBlock)
+        public IfBlock(Condition condition, IList<InternalStatement> body, ElseIfBlock? elifBlock, ElseBlock? elseBlock)
         {
             Condition = condition;
             Body = body;

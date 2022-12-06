@@ -220,8 +220,10 @@ namespace Crimson.CSharp.Core
         {
             Condition condition = VisitCondition(context.condition());
             IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
-            ElseIfBlock elifBlock = VisitElseIfBlock(context.elseIfBlock());
-            ElseBlock elseBlock = VisitElseBlock(context.elseBlock());
+            CrimsonParser.ElseIfBlockContext eibCtx = context.elseIfBlock();
+            CrimsonParser.ElseBlockContext elbCtx = context.elseBlock();
+            ElseIfBlock? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
+            ElseBlock? elseBlock = elbCtx == null ? null : VisitElseBlock(elbCtx);
             IfBlock ifBlock = new IfBlock(condition, body, elifBlock, elseBlock);
             return ifBlock;
         }
