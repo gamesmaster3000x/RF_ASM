@@ -151,7 +151,8 @@ namespace Crimson.CSharp.Core
                 {
                     throw new StatementParseException("Failed to parse string->int " + numberText + " while allocating memory for " + identifier, f);
                 }
-                return new MemoryAllocation(identifier, number);
+                MemoryAllocation allocation = new MemoryAllocation(identifier, number);
+                return allocation;
             }
             else if (stCtx is CrimsonParser.FunctionFunctionCallStatementContext)
             {
