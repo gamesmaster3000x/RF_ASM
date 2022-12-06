@@ -1,13 +1,14 @@
 ﻿namespace Crimson.CSharp.Reflection
 {
-    internal class Structure: GlobalStatement
+    internal class Structure : GlobalStatement
     {
-        public Structure(string text, IList<InternalStatement> body)
+        public Structure(string identifier, IList<InternalStatement> body)
         {
+            Identifier = identifier;
             Body = body;
         }
 
-        public string Name { get; set; }
+        public string Identifier { get; }
         public IList<InternalStatement> Body { get; }
     }
 }

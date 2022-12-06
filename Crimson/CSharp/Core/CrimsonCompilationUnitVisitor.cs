@@ -97,6 +97,7 @@ namespace Crimson.CSharp.Core
             foreach (CrimsonParser.InternalVariableDeclarationContext ivdCtx in context.internalVariableDeclaration())
             {
                 InternalVariable var = VisitInternalVariableDeclaration(ivdCtx);
+                statements.Add(var);
             }
             return statements;
         }
