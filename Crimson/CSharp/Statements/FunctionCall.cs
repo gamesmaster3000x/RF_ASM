@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class FunctionCall : FunctionOnlyStatement
+    internal class FunctionCall : InternalStatement
     {
         private string identifier;
         private IList<FunctionArgument> arguments;

@@ -1,15 +1,14 @@
 ﻿using Crimson.CSharp.Reflection;
-using Crimson.CSharp.Statements;
 
-namespace Crimson.CSharp.Core
+namespace Crimson.CSharp.Statements
 {
-    internal class IfBlock: FunctionOnlyStatement
+    internal class IfBlock : InternalStatement
     {
         public IfBlock()
         {
         }
 
-        public IfBlock(Condition condition, IList<FunctionOnlyStatement> body, ElifBlock elifBlock, ElseBlock elseBlock)
+        public IfBlock(Condition condition, IList<InternalStatement> body, ElifBlock elifBlock, ElseBlock elseBlock)
         {
             Condition = condition;
             Body = body;
@@ -18,7 +17,7 @@ namespace Crimson.CSharp.Core
         }
 
         public Condition Condition { get; }
-        public IList<FunctionOnlyStatement> Body { get; }
+        public IList<InternalStatement> Body { get; }
         public ElifBlock ElifBlock { get; }
         public ElseBlock ElseBlock { get; }
     }

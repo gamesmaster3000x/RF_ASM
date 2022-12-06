@@ -32,10 +32,10 @@ namespace Crimson.CSharp.Core
             }
 
             // Visit Compilation-Unit statements
-            IList<CrimsonParser.CompilationUnitStatementContext> unitStatementCtxs = context._statements;
-            foreach (CrimsonParser.CompilationUnitStatementContext unitStatementCtx in unitStatementCtxs)
+            IList<CrimsonParser.GlobalStatementContext> unitStatementCtxs = context._statements;
+            foreach (CrimsonParser.GlobalStatementContext unitStatementCtx in unitStatementCtxs)
             {
-                CompilationUnitStatement unitStatement = ParseCompilationUnitStatement(unitStatementCtx);
+                GlobalStatement unitStatement = ParseCompilationUnitStatement(unitStatementCtx);
                 compilation.AddStatement(unitStatement);
             }
 
@@ -46,7 +46,7 @@ namespace Crimson.CSharp.Core
             return compilation;
         }
 
-        private CompilationUnitStatement ParseCompilationUnitStatement(CrimsonParser.CompilationUnitStatementContext context)
+        private GlobalStatement ParseCompilationUnitStatement(CrimsonParser.GlobalStatementContext context)
         {
             if (context is CrimsonParser.GlobalVariableUnitStatementContext)
             {
@@ -62,7 +62,7 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.FunctionDeclarationContext declaration = fnCtx.functionDeclaration();
                 string name = declaration.name.Text;
                 CrimsonType returnType = VisitType(declaration.returnType);
-                IList<FunctionOnlyStatement> statements = VisitFunctionBody(declaration.body);
+                IList<InternalStatement> statements = VisitFunctionBody(declaration.body);
                 IList<Function.Parameter> parameters = VisitParameterList(declaration.parameters);
                 return new Function(returnType, name, parameters, statements);
             } 
@@ -98,18 +98,18 @@ namespace Crimson.CSharp.Core
             return parameters;
         }
 
-        public override IList<FunctionOnlyStatement> VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context)
+        public override IList<InternalStatement> VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context)
         {
-            List<FunctionOnlyStatement> statements = new List<FunctionOnlyStatement>();
-            foreach (CrimsonParser.FunctionStatementContext stCtx in context._statements)
+            List<InternalStatement> statements = new List<InternalStatement>();
+            foreach (CrimsonParser.InternalStatementContext stCtx in context._statements)
             {
-                FunctionOnlyStatement statement = ParseFunctionStatement(stCtx);
+                InternalStatement statement = ParseFunctionStatement(stCtx);
                 statements.Add(statement);
             }
             return statements;
         }
 
-        private FunctionOnlyStatement ParseFunctionStatement(CrimsonParser.FunctionStatementContext stCtx)
+        private InternalStatement ParseFunctionStatement(CrimsonParser.InternalStatementContext stCtx)
         {
             if(stCtx is CrimsonParser.FunctionVariableDeclarationStatementContext)
             {
@@ -167,7 +167,7 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.FunctionIfStatementContext context = (CrimsonParser.FunctionIfStatementContext)stCtx;
                 CrimsonParser.IfBlockContext ifCtx = context.ifBlock();
                 Condition condition = VisitCondition(ifCtx.condition());
-                IList<FunctionOnlyStatement> body = VisitFunctionBody(ifCtx.functionBody());
+                IList<InternalStatement> body = VisitFunctionBody(ifCtx.functionBody());
                 ElifBlock elifBlock = VisitElifBlock(ifCtx.elifBlock());
                 ElseBlock elseBlock = VisitElseBlock(ifCtx.elseBlock());
                 IfBlock ifBlock = new IfBlock(condition, body, elifBlock, elseBlock);
@@ -175,7 +175,11 @@ namespace Crimson.CSharp.Core
             }
             else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext)
             {
-
+                CrimsonParser.FunctionAssemblyCallStatementContext context = (CrimsonParser.FunctionAssemblyCallStatementContext)stCtx;
+                CrimsonParser.AssemblyCallContext acCtx = context.assemblyCall();
+                string assemblyText = acCtx.assemblyText.Text;
+                AssemblyCall call = new AssemblyCall(assemblyText);
+                return call;
             }
             else
             {

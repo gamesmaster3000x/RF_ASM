@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class Return : FunctionOnlyStatement
+    internal class Return : InternalStatement
     {
         public Return(ResolvableValue value)
         {

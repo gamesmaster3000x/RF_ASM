@@ -1,4 +1,4 @@
-﻿namespace Crimson.CSharp.Core
+﻿namespace Crimson.CSharp.Statements
 {
     internal class ElseBlock
     {

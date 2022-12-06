@@ -1,6 +1,6 @@
 ﻿namespace Crimson.CSharp.Reflection
 {
-    internal class InternalVariable: FunctionOnlyStatement
+    internal class InternalVariable: InternalStatement
     {
         private CrimsonType type;
         private string identifier;

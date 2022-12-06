@@ -9,37 +9,21 @@ namespace Crimson.CSharp.Reflection
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
     /// </summary>
-    internal class Function: CompilationUnitStatement
+    internal class Function: GlobalStatement
     {
-       public string Name { get; set; }
+
+        public Function(CrimsonType returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
+        {
+            ReturnType = returnType;
+            Name = name;
+            Parameters = parameters;
+            Statements = statements;
+        }
+
         public CrimsonType ReturnType { get; }
-        public List<Parameter> Parameters { get; }
-        public List<FunctionOnlyStatement> Statements { get; }
-        public ICollection<Parameter> Parameters1 { get; }
-        public ICollection<FunctionOnlyStatement> Statements1 { get; }
-
-        Dictionary<string, Parameter> parameters = new Dictionary<string, Parameter>();
-        Dictionary<string, FunctionOnlyStatement> statements = new Dictionary<string, FunctionOnlyStatement>();
-
-        public Function(string text) : base(text)
-        {
-        }
-
-        public Function(CrimsonType returnType, string name, List<Parameter> parameters1, List<FunctionOnlyStatement> statements1)
-        {
-            ReturnType = returnType;
-            Name = name;
-            Parameters = parameters1;
-            Statements = statements1;
-        }
-
-        public Function(CrimsonType returnType, string name, ICollection<Parameter> parameters1, ICollection<FunctionOnlyStatement> statements1)
-        {
-            ReturnType = returnType;
-            Name = name;
-            Parameters1 = parameters1;
-            Statements1 = statements1;
-        }
+        public string Name { get; }
+        public IList<Parameter> Parameters { get; }
+        public IList<InternalStatement> Statements { get; }
 
         internal class Parameter
         {

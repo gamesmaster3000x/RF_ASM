@@ -79,11 +79,11 @@ Identifier
 rule names:
 compilationUnit
 importUnit
-compilationUnitStatement
+globalStatement
 globalVariableDeclaration
 functionDeclaration
 functionBody
-functionStatement
+internalStatement
 internalVariableDeclaration
 assignVariable
 ifBlock

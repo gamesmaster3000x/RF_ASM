@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class VariableAssignment: FunctionOnlyStatement
+    internal class VariableAssignment: InternalStatement
     {
         public VariableAssignment()
         {

@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class MemoryAllocation : FunctionOnlyStatement
+    internal class MemoryAllocation : InternalStatement
     {
         private string identifier;
         private int number;

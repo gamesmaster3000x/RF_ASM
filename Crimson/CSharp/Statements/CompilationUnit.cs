@@ -20,7 +20,7 @@ namespace Crimson.CSharp.Reflection
             imports.Add(import);
         }
 
-        public void AddStatement(CompilationUnitStatement statement)
+        public void AddStatement(GlobalStatement statement)
         {
             if (statement is Function)
             {

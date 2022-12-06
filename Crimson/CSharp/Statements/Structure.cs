@@ -1,6 +1,6 @@
 ﻿namespace Crimson.CSharp.Reflection
 {
-    internal class Structure: CompilationUnitStatement
+    internal class Structure: GlobalStatement
     {
         public Structure(string text) : base(text)
         {

@@ -2,14 +2,14 @@ grammar Crimson;
 
 // Parser rules
 compilationUnit 
-    : (imports+=importUnit)* (statements+=compilationUnitStatement)* eof=EOF
+    : (imports+=importUnit)* (statements+=globalStatement)* eof=EOF
     ;
 
 // Compilation-Unit statements
 importUnit
     : Hashtag Using path=String As identifier=Identifier
     ;
-compilationUnitStatement
+globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
     | functionDeclaration       #FunctionUnitStatement
     | structureDeclaration      #StructureUnitStatement
@@ -21,11 +21,11 @@ functionDeclaration
     : Function name=Identifier returnType=type parameters=parameterList body=functionBody
     ; 
 functionBody
-    : OpenBrace (statements+=functionStatement)* CloseBrace 
+    : OpenBrace (statements+=internalStatement)* CloseBrace 
     ; 
 
 // Function-only statements
-functionStatement
+internalStatement
     : internalVariableDeclaration 	#FunctionVariableDeclarationStatement
     | functionReturn 				#FunctionReturnStatement
     | assignVariable 				#FunctionAssignVariableStatement
@@ -54,7 +54,7 @@ elseBlock
     : Else functionBody
     ;
 assemblyCall
-    : Tilda ~('\r' | '\n')*
+    : Tilda assemblyText=~('\r' | '\n')*
     ;
  
 // Function

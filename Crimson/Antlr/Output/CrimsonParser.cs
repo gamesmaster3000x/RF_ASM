@@ -44,17 +44,17 @@ public partial class CrimsonParser : Parser {
 		Dot=27, SemiColon=28, Underscore=29, Hashtag=30, Quote=31, SkipTokens=32, 
 		LineComment=33, Number=34, String=35, Identifier=36;
 	public const int
-		RULE_compilationUnit = 0, RULE_importUnit = 1, RULE_compilationUnitStatement = 2, 
+		RULE_compilationUnit = 0, RULE_importUnit = 1, RULE_globalStatement = 2, 
 		RULE_globalVariableDeclaration = 3, RULE_functionDeclaration = 4, RULE_functionBody = 5, 
-		RULE_functionStatement = 6, RULE_internalVariableDeclaration = 7, RULE_assignVariable = 8, 
+		RULE_internalStatement = 6, RULE_internalVariableDeclaration = 7, RULE_assignVariable = 8, 
 		RULE_ifBlock = 9, RULE_condition = 10, RULE_elifBlock = 11, RULE_elseBlock = 12, 
 		RULE_assemblyCall = 13, RULE_functionCall = 14, RULE_inputParameters = 15, 
 		RULE_allocateMemory = 16, RULE_functionReturn = 17, RULE_resolvableValue = 18, 
 		RULE_parameterList = 19, RULE_parameter = 20, RULE_structureDeclaration = 21, 
 		RULE_structureBody = 22, RULE_type = 23, RULE_array = 24;
 	public static readonly string[] ruleNames = {
-		"compilationUnit", "importUnit", "compilationUnitStatement", "globalVariableDeclaration", 
-		"functionDeclaration", "functionBody", "functionStatement", "internalVariableDeclaration", 
+		"compilationUnit", "importUnit", "globalStatement", "globalVariableDeclaration", 
+		"functionDeclaration", "functionBody", "internalStatement", "internalVariableDeclaration", 
 		"assignVariable", "ifBlock", "condition", "elifBlock", "elseBlock", "assemblyCall", 
 		"functionCall", "inputParameters", "allocateMemory", "functionReturn", 
 		"resolvableValue", "parameterList", "parameter", "structureDeclaration", 
@@ -110,8 +110,8 @@ public partial class CrimsonParser : Parser {
 	public partial class CompilationUnitContext : ParserRuleContext {
 		public ImportUnitContext _importUnit;
 		public IList<ImportUnitContext> _imports = new List<ImportUnitContext>();
-		public CompilationUnitStatementContext _compilationUnitStatement;
-		public IList<CompilationUnitStatementContext> _statements = new List<CompilationUnitStatementContext>();
+		public GlobalStatementContext _globalStatement;
+		public IList<GlobalStatementContext> _statements = new List<GlobalStatementContext>();
 		public IToken eof;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(CrimsonParser.Eof, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ImportUnitContext[] importUnit() {
@@ -120,11 +120,11 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ImportUnitContext importUnit(int i) {
 			return GetRuleContext<ImportUnitContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public CompilationUnitStatementContext[] compilationUnitStatement() {
-			return GetRuleContexts<CompilationUnitStatementContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public GlobalStatementContext[] globalStatement() {
+			return GetRuleContexts<GlobalStatementContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public CompilationUnitStatementContext compilationUnitStatement(int i) {
-			return GetRuleContext<CompilationUnitStatementContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public GlobalStatementContext globalStatement(int i) {
+			return GetRuleContext<GlobalStatementContext>(i);
 		}
 		public CompilationUnitContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -179,8 +179,8 @@ public partial class CrimsonParser : Parser {
 				{
 				{
 				State = 56;
-				_localctx._compilationUnitStatement = compilationUnitStatement();
-				_localctx._statements.Add(_localctx._compilationUnitStatement);
+				_localctx._globalStatement = globalStatement();
+				_localctx._statements.Add(_localctx._globalStatement);
 				}
 				}
 				State = 61;
@@ -263,23 +263,23 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class CompilationUnitStatementContext : ParserRuleContext {
-		public CompilationUnitStatementContext(ParserRuleContext parent, int invokingState)
+	public partial class GlobalStatementContext : ParserRuleContext {
+		public GlobalStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_compilationUnitStatement; } }
+		public override int RuleIndex { get { return RULE_globalStatement; } }
 	 
-		public CompilationUnitStatementContext() { }
-		public virtual void CopyFrom(CompilationUnitStatementContext context) {
+		public GlobalStatementContext() { }
+		public virtual void CopyFrom(GlobalStatementContext context) {
 			base.CopyFrom(context);
 		}
 	}
-	public partial class GlobalVariableUnitStatementContext : CompilationUnitStatementContext {
+	public partial class GlobalVariableUnitStatementContext : GlobalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public GlobalVariableDeclarationContext globalVariableDeclaration() {
 			return GetRuleContext<GlobalVariableDeclarationContext>(0);
 		}
-		public GlobalVariableUnitStatementContext(CompilationUnitStatementContext context) { CopyFrom(context); }
+		public GlobalVariableUnitStatementContext(GlobalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -297,11 +297,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionUnitStatementContext : CompilationUnitStatementContext {
+	public partial class FunctionUnitStatementContext : GlobalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionDeclarationContext functionDeclaration() {
 			return GetRuleContext<FunctionDeclarationContext>(0);
 		}
-		public FunctionUnitStatementContext(CompilationUnitStatementContext context) { CopyFrom(context); }
+		public FunctionUnitStatementContext(GlobalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -319,11 +319,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class StructureUnitStatementContext : CompilationUnitStatementContext {
+	public partial class StructureUnitStatementContext : GlobalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public StructureDeclarationContext structureDeclaration() {
 			return GetRuleContext<StructureDeclarationContext>(0);
 		}
-		public StructureUnitStatementContext(CompilationUnitStatementContext context) { CopyFrom(context); }
+		public StructureUnitStatementContext(GlobalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -343,9 +343,9 @@ public partial class CrimsonParser : Parser {
 	}
 
 	[RuleVersion(0)]
-	public CompilationUnitStatementContext compilationUnitStatement() {
-		CompilationUnitStatementContext _localctx = new CompilationUnitStatementContext(Context, State);
-		EnterRule(_localctx, 4, RULE_compilationUnitStatement);
+	public GlobalStatementContext globalStatement() {
+		GlobalStatementContext _localctx = new GlobalStatementContext(Context, State);
+		EnterRule(_localctx, 4, RULE_globalStatement);
 		try {
 			State = 73;
 			ErrorHandler.Sync(this);
@@ -512,15 +512,15 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class FunctionBodyContext : ParserRuleContext {
-		public FunctionStatementContext _functionStatement;
-		public IList<FunctionStatementContext> _statements = new List<FunctionStatementContext>();
+		public InternalStatementContext _internalStatement;
+		public IList<InternalStatementContext> _statements = new List<InternalStatementContext>();
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBrace() { return GetToken(CrimsonParser.OpenBrace, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBrace() { return GetToken(CrimsonParser.CloseBrace, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionStatementContext[] functionStatement() {
-			return GetRuleContexts<FunctionStatementContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public InternalStatementContext[] internalStatement() {
+			return GetRuleContexts<InternalStatementContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionStatementContext functionStatement(int i) {
-			return GetRuleContext<FunctionStatementContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public InternalStatementContext internalStatement(int i) {
+			return GetRuleContext<InternalStatementContext>(i);
 		}
 		public FunctionBodyContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -562,8 +562,8 @@ public partial class CrimsonParser : Parser {
 				{
 				{
 				State = 85;
-				_localctx._functionStatement = functionStatement();
-				_localctx._statements.Add(_localctx._functionStatement);
+				_localctx._internalStatement = internalStatement();
+				_localctx._statements.Add(_localctx._internalStatement);
 				}
 				}
 				State = 90;
@@ -585,23 +585,23 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class FunctionStatementContext : ParserRuleContext {
-		public FunctionStatementContext(ParserRuleContext parent, int invokingState)
+	public partial class InternalStatementContext : ParserRuleContext {
+		public InternalStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_functionStatement; } }
+		public override int RuleIndex { get { return RULE_internalStatement; } }
 	 
-		public FunctionStatementContext() { }
-		public virtual void CopyFrom(FunctionStatementContext context) {
+		public InternalStatementContext() { }
+		public virtual void CopyFrom(InternalStatementContext context) {
 			base.CopyFrom(context);
 		}
 	}
-	public partial class FunctionAssignVariableStatementContext : FunctionStatementContext {
+	public partial class FunctionAssignVariableStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public AssignVariableContext assignVariable() {
 			return GetRuleContext<AssignVariableContext>(0);
 		}
-		public FunctionAssignVariableStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionAssignVariableStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -619,12 +619,12 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionFunctionCallStatementContext : FunctionStatementContext {
+	public partial class FunctionFunctionCallStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionCallContext functionCall() {
 			return GetRuleContext<FunctionCallContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
-		public FunctionFunctionCallStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionFunctionCallStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -642,11 +642,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionReturnStatementContext : FunctionStatementContext {
+	public partial class FunctionReturnStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionReturnContext functionReturn() {
 			return GetRuleContext<FunctionReturnContext>(0);
 		}
-		public FunctionReturnStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionReturnStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -664,11 +664,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionVariableDeclarationStatementContext : FunctionStatementContext {
+	public partial class FunctionVariableDeclarationStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public InternalVariableDeclarationContext internalVariableDeclaration() {
 			return GetRuleContext<InternalVariableDeclarationContext>(0);
 		}
-		public FunctionVariableDeclarationStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionVariableDeclarationStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -686,11 +686,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionAssemblyCallStatementContext : FunctionStatementContext {
+	public partial class FunctionAssemblyCallStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public AssemblyCallContext assemblyCall() {
 			return GetRuleContext<AssemblyCallContext>(0);
 		}
-		public FunctionAssemblyCallStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionAssemblyCallStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -708,11 +708,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionAllocateMemoryStatementContext : FunctionStatementContext {
+	public partial class FunctionAllocateMemoryStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public AllocateMemoryContext allocateMemory() {
 			return GetRuleContext<AllocateMemoryContext>(0);
 		}
-		public FunctionAllocateMemoryStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionAllocateMemoryStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -730,11 +730,11 @@ public partial class CrimsonParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionIfStatementContext : FunctionStatementContext {
+	public partial class FunctionIfStatementContext : InternalStatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public IfBlockContext ifBlock() {
 			return GetRuleContext<IfBlockContext>(0);
 		}
-		public FunctionIfStatementContext(FunctionStatementContext context) { CopyFrom(context); }
+		public FunctionIfStatementContext(InternalStatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
@@ -754,9 +754,9 @@ public partial class CrimsonParser : Parser {
 	}
 
 	[RuleVersion(0)]
-	public FunctionStatementContext functionStatement() {
-		FunctionStatementContext _localctx = new FunctionStatementContext(Context, State);
-		EnterRule(_localctx, 12, RULE_functionStatement);
+	public InternalStatementContext internalStatement() {
+		InternalStatementContext _localctx = new InternalStatementContext(Context, State);
+		EnterRule(_localctx, 12, RULE_internalStatement);
 		try {
 			State = 102;
 			ErrorHandler.Sync(this);
@@ -1280,6 +1280,7 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class AssemblyCallContext : ParserRuleContext {
+		public IToken assemblyText;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Tilda() { return GetToken(CrimsonParser.Tilda, 0); }
 		public AssemblyCallContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1323,9 +1324,10 @@ public partial class CrimsonParser : Parser {
 					{
 					{
 					State = 146;
+					_localctx.assemblyText = TokenStream.LT(1);
 					_la = TokenStream.LA(1);
 					if ( _la <= 0 || (_la==T__0 || _la==T__1) ) {
-					ErrorHandler.RecoverInline(this);
+						_localctx.assemblyText = ErrorHandler.RecoverInline(this);
 					}
 					else {
 						ErrorHandler.ReportMatch(this);
