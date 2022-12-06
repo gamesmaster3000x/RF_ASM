@@ -33,7 +33,7 @@ namespace RedFoxVM
             }
         }
 
-        public byte GetByte(Value addr)
+        /*public byte GetByte(Value addr)
         {
             return data[Utils.ValueToInt(addr)];
         }
@@ -41,6 +41,6 @@ namespace RedFoxVM
         public void SetByte(Value addr, byte data)
         {
             this.data[Utils.ValueToInt(addr)] = data;
-        }
+        }*/
     }
 }

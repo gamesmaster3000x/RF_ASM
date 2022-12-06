@@ -1,8 +1,8 @@
 ﻿Register Layout:
 
 (Not all register addresses will be populated with an actual register.)
-0   - 127 = Specialised registers
-128 - 255 = General registers
+0   - 127 = Specialised Registers
+128 - 255 = General Registers
 
 
 Specialised registers:

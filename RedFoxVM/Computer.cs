@@ -11,23 +11,28 @@ namespace RedFoxVM
     internal class Computer
     {
         public int dataWidth;
+        public bool halt = false;
+        public bool[] flags;
 
         public Memory memory;
         public Value[] generalRegisters;
         public Value[] componentRegisters;
+        public Value[] interruptAddresses;
         public Stack stack;
         public ALU alu;
+
 
         public Value nextInstructionAddress;
         public byte currentInstruction;
         public Value operandA;
         public byte operandB;
 
-        public Computer(int dataWidth = 1, int memorySize = 1024, byte[] ramState = null, int registerCount = 32, int componentLaneCount = 16, int stackSize = 256)
+        public Computer(int dataWidth = 1, int memorySize = 1024, byte[] ramState = null, int registerCount = 32, int componentLaneCount = 16, int stackSize = 256, int interruptCount = 256)
         {
             memory = new Memory(memorySize, ramState);
             generalRegisters = new Value[registerCount];
             componentRegisters = new Value[componentLaneCount];
+            interruptAddresses = new Value[interruptCount];
             stack = new Stack(stackSize);
             alu = new ALU(dataWidth);
             nextInstructionAddress = new Value(dataWidth);
@@ -44,81 +49,274 @@ namespace RedFoxVM
             {
                 componentRegisters[i] = new Value(dataWidth);
             }
+            for (int i = 0; i < interruptCount; i++)
+            {
+                interruptAddresses[i] = new Value(dataWidth);
+            }
         }
 
         public void TriggerClock()
         {
-            currentInstruction = memory.GetByte(nextInstructionAddress);
-            BitArray bitArray = new BitArray(new byte[] { currentInstruction });
+            currentInstruction = 0;
             switch(currentInstruction)
             {
                 case 0:
+                    HLT();
                     break;
                 case 1:
+                    NOP();
                     break;
                 case 2:
+                    ADD();
                     break;
                 case 3:
+                    SUB();
                     break;
                 case 4:
+                    LSL();
                     break;
                 case 5:
+                    LSR();
                     break;
                 case 6:
+                    NEG();
                     break;
                 case 7:
+                    NOT();
                     break;
                 case 8:
+                    CMP();
                     break;
                 case 9:
+                    JMP();
                     break;
                 case 10:
+                    BFG();
                     break;
                 case 11:
+                    BEQ();
                     break;
                 case 12:
+                    BLT();
                     break;
                 case 13:
+                    BGT();
                     break;
                 case 14:
+                    BSR();
                     break;
                 case 15:
+                    RTN();
                     break;
                 case 16:
+                    RRB();
                     break;
                 case 17:
+                    RRW();
                     break;
                 case 18:
+                    RMB();
                     break;
                 case 19:
+                    RMW();
                     break;
                 case 20:
+                    WRB();
                     break;
                 case 21:
+                    WRW();
                     break;
                 case 22:
+                    WMB();
                     break;
                 case 23:
+                    WMW();
                     break;
                 case 24:
+                    RVB();
                     break;
                 case 25:
+                    RVW();
                     break;
                 case 26:
+                    SIN();
                     break;
                 case 27:
+                    INT();
                     break;
                 case 28:
+                    SFG();
                     break;
                 case 29:
+                    AND();
                     break;
                 case 30:
+                    LOR();
                     break;
                 case 31:
+                    XOR();
                     break;
                 default:
                     break;
             }
+        }
+
+        public void HLT()
+        {
+            halt = true;
+        }
+        public void NOP()
+        {
+            //nothing
+        }
+        public void ADD()
+        {
+            
+        }
+
+        public void SUB()
+        {
+
+        }
+
+        public void LSL()
+        {
+
+        }
+
+        public void LSR()
+        {
+
+        }
+
+        public void NEG()
+        {
+
+        }
+
+        public void NOT()
+        {
+
+        }
+
+        public void CMP()
+        {
+
+        }
+
+        public void JMP()
+        {
+
+        }
+
+        public void BFG()
+        {
+
+        }
+
+        public void BEQ()
+        {
+
+        }
+
+        public void BLT()
+        {
+
+        }
+
+        public void BGT()
+        {
+
+        }
+
+        public void BSR()
+        {
+
+        }
+
+        public void RTN()
+        {
+
+        }
+
+        public void RRB()
+        {
+
+        }
+
+        public void RRW()
+        {
+
+        }
+
+        public void RMB()
+        {
+
+        }
+
+        public void RMW()
+        {
+
+        }
+
+        public void WRB()
+        {
+
+        }
+
+        public void WRW()
+        {
+
+        }
+
+        public void WMB()
+        {
+
+        }
+
+        public void WMW()
+        {
+
+        }
+
+        public void RVB()
+        {
+
+        }
+
+        public void RVW()
+        {
+
+        }
+
+        public void SIN()
+        {
+
+        }
+
+        public void INT()
+        {
+
+        }
+
+        public void SFG()
+        {
+
+        }
+
+        public void AND()
+        {
+
+        }
+
+        public void LOR()
+        {
+
+        }
+
+        public void XOR()
+        {
+
         }
     }
 }

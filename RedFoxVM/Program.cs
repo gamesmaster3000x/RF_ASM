@@ -6,8 +6,15 @@ namespace RedFoxVM {
     {
         static void Main(string[] args)
         {
-            Computer computer = new Computer(2, 1024, new byte[] {234,213,1,23,16,45}, 32, 16, 256);
-            computer.TriggerClock();
+            Computer computer = new(2, 1024, new byte[8], 32, 16, 256);
+            Value a = new(new byte[] { 10, 0 });
+            Value b = new(new byte[] { 255, 0 });
+            Value c = a + b;
+            Value d = -c;
+            Console.WriteLine(a.ToBinaryString);
+            Console.WriteLine(b.ToBinaryString);
+            Console.WriteLine(c.ToBinaryString);
+            Console.WriteLine(d.ToBinaryString);
         }
     }
 }

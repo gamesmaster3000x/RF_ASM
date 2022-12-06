@@ -19,6 +19,15 @@ namespace RedFoxVM
             output = new Value(dataWidth);
         }
 
-        
+        /*public void ADD()
+        {
+            for (int i = 0; i < output.data.Length; i++)
+            {
+                if (true)
+                {
+
+                }
+            }
+        }*/
     }
 }
