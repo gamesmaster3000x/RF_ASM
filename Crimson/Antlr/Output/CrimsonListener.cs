@@ -282,15 +282,15 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.inputParameters"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.arguments"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterInputParameters([NotNull] CrimsonParser.InputParametersContext context);
+	void EnterArguments([NotNull] CrimsonParser.ArgumentsContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.inputParameters"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.arguments"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitInputParameters([NotNull] CrimsonParser.InputParametersContext context);
+	void ExitArguments([NotNull] CrimsonParser.ArgumentsContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
 	/// </summary>

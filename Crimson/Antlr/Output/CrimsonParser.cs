@@ -48,17 +48,17 @@ public partial class CrimsonParser : Parser {
 		RULE_globalVariableDeclaration = 3, RULE_functionDeclaration = 4, RULE_functionBody = 5, 
 		RULE_internalStatement = 6, RULE_internalVariableDeclaration = 7, RULE_assignVariable = 8, 
 		RULE_ifBlock = 9, RULE_condition = 10, RULE_elifBlock = 11, RULE_elseBlock = 12, 
-		RULE_assemblyCall = 13, RULE_functionCall = 14, RULE_inputParameters = 15, 
-		RULE_allocateMemory = 16, RULE_functionReturn = 17, RULE_resolvableValue = 18, 
-		RULE_parameterList = 19, RULE_parameter = 20, RULE_structureDeclaration = 21, 
-		RULE_structureBody = 22, RULE_type = 23, RULE_array = 24;
+		RULE_assemblyCall = 13, RULE_functionCall = 14, RULE_arguments = 15, RULE_allocateMemory = 16, 
+		RULE_functionReturn = 17, RULE_resolvableValue = 18, RULE_parameterList = 19, 
+		RULE_parameter = 20, RULE_structureDeclaration = 21, RULE_structureBody = 22, 
+		RULE_type = 23, RULE_array = 24;
 	public static readonly string[] ruleNames = {
 		"compilationUnit", "importUnit", "globalStatement", "globalVariableDeclaration", 
 		"functionDeclaration", "functionBody", "internalStatement", "internalVariableDeclaration", 
 		"assignVariable", "ifBlock", "condition", "elifBlock", "elseBlock", "assemblyCall", 
-		"functionCall", "inputParameters", "allocateMemory", "functionReturn", 
-		"resolvableValue", "parameterList", "parameter", "structureDeclaration", 
-		"structureBody", "type", "array"
+		"functionCall", "arguments", "allocateMemory", "functionReturn", "resolvableValue", 
+		"parameterList", "parameter", "structureDeclaration", "structureBody", 
+		"type", "array"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -1355,8 +1355,8 @@ public partial class CrimsonParser : Parser {
 
 	public partial class FunctionCallContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public InputParametersContext inputParameters() {
-			return GetRuleContext<InputParametersContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ArgumentsContext arguments() {
+			return GetRuleContext<ArgumentsContext>(0);
 		}
 		public FunctionCallContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1391,7 +1391,7 @@ public partial class CrimsonParser : Parser {
 			State = 152;
 			Match(Identifier);
 			State = 153;
-			inputParameters();
+			arguments();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1405,7 +1405,7 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class InputParametersContext : ParserRuleContext {
+	public partial class ArgumentsContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBracket() { return GetToken(CrimsonParser.OpenBracket, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBracket() { return GetToken(CrimsonParser.CloseBracket, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext[] resolvableValue() {
@@ -1418,33 +1418,33 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Comma(int i) {
 			return GetToken(CrimsonParser.Comma, i);
 		}
-		public InputParametersContext(ParserRuleContext parent, int invokingState)
+		public ArgumentsContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_inputParameters; } }
+		public override int RuleIndex { get { return RULE_arguments; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterInputParameters(this);
+			if (typedListener != null) typedListener.EnterArguments(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitInputParameters(this);
+			if (typedListener != null) typedListener.ExitArguments(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitInputParameters(this);
+			if (typedVisitor != null) return typedVisitor.VisitArguments(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public InputParametersContext inputParameters() {
-		InputParametersContext _localctx = new InputParametersContext(Context, State);
-		EnterRule(_localctx, 30, RULE_inputParameters);
+	public ArgumentsContext arguments() {
+		ArgumentsContext _localctx = new ArgumentsContext(Context, State);
+		EnterRule(_localctx, 30, RULE_arguments);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);

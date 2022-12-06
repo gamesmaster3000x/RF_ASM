@@ -59,9 +59,9 @@ assemblyCall
  
 // Function
 functionCall 
-    : Identifier inputParameters
+    : Identifier arguments
     ;
-inputParameters
+arguments
     : OpenBracket (resolvableValue)? (Comma (resolvableValue))* CloseBracket
     ;
 allocateMemory

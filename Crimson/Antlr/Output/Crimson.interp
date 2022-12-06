@@ -92,7 +92,7 @@ elifBlock
 elseBlock
 assemblyCall
 functionCall
-inputParameters
+arguments
 allocateMemory
 functionReturn
 resolvableValue

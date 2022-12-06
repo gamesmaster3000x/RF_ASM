@@ -181,11 +181,11 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.inputParameters"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.arguments"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitInputParameters([NotNull] CrimsonParser.InputParametersContext context);
+	Result VisitArguments([NotNull] CrimsonParser.ArgumentsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
 	/// </summary>

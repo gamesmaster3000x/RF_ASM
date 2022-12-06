@@ -211,7 +211,7 @@ namespace Crimson.CSharp.Core
         public override FunctionCall VisitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context)
         {
             string identifier = context.Identifier().GetText();
-            IList<ResolvableValue> arguments = VisitInputParameters(context.inputParameters());
+            IList<ResolvableValue> arguments = VisitArguments(context.arguments());
             FunctionCall call = new FunctionCall(identifier, arguments);
             return call;
         }
@@ -265,7 +265,7 @@ namespace Crimson.CSharp.Core
             return allocation;
         }
 
-        public override IList<ResolvableValue> VisitInputParameters([NotNull] CrimsonParser.InputParametersContext context)
+        public override IList<ResolvableValue> VisitArguments([NotNull] CrimsonParser.ArgumentsContext context)
         {
             IList<ResolvableValue> arguments = new List<ResolvableValue>();
             foreach (CrimsonParser.ResolvableValueContext rvlCxt in context.resolvableValue())

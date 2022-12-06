@@ -333,17 +333,17 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.inputParameters"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.arguments"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterInputParameters([NotNull] CrimsonParser.InputParametersContext context) { }
+	public virtual void EnterArguments([NotNull] CrimsonParser.ArgumentsContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.inputParameters"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.arguments"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitInputParameters([NotNull] CrimsonParser.InputParametersContext context) { }
+	public virtual void ExitArguments([NotNull] CrimsonParser.ArgumentsContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
 	/// <para>The default implementation does nothing.</para>
