@@ -1,6 +1,4 @@
-﻿using Crimson.CSharp.Reflection;
-
-namespace Crimson.CSharp.Statements
+﻿namespace Crimson.CSharp.Statements
 {
     internal class IfBlock : InternalStatement
     {

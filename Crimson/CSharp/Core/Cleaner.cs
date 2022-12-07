@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 
-namespace Crimson.Core
+namespace Crimson.CSharp.Core
 {
     internal class Cleaner
     {
-        private NLog.Logger LOGGER = NLog.LogManager.GetCurrentClassLogger();
+        private Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private Dictionary<string, FileInfo> _files = new Dictionary<string, FileInfo>();
 
@@ -42,13 +42,14 @@ namespace Crimson.Core
         public void CleanFiles()
         {
             LOGGER.Info("Cleaning " + _files.Count + " temporary files in " + RootPath);
-            foreach(KeyValuePair<string, FileInfo> pair in _files)
+            foreach (KeyValuePair<string, FileInfo> pair in _files)
             {
                 if (pair.Value != null ? pair.Value.Exists : false)
                 {
                     LOGGER.Info("Removing temporary file " + pair.Key + ":", pair.Value);
                     pair.Value.Delete();
-                } else
+                }
+                else
                 {
                     LOGGER.Warn("Unable to remove temporary file " + pair.Key + ":", pair.Value);
                 }
@@ -59,7 +60,8 @@ namespace Crimson.Core
             {
                 LOGGER.Info("Removing temporary directory " + RootPath);
                 File.Delete(RootPath);
-            } else
+            }
+            else
             {
                 LOGGER.Info("Failed to remove temporary directory " + RootPath);
             }

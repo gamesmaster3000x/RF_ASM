@@ -1,4 +1,4 @@
-﻿namespace Crimson.CSharp.Reflection
+﻿namespace Crimson.CSharp.Statements
 {
     internal class Structure : GlobalStatement
     {

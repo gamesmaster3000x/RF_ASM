@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 
-namespace Crimson.Core
+namespace Crimson.CSharp.Core
 {
     internal class CrimsonCmdArguments
     {
         private string _compilationSourcePath;
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the source of the root compilation. " +
             "If no file extension given, .rfp will be assumed.")]
-        public string CompilationSourcePath 
+        public string CompilationSourcePath
         {
-             get { return _compilationSourcePath; } 
-             set { _compilationSourcePath = Path.GetFullPath(value); }
+            get { return _compilationSourcePath; }
+            set { _compilationSourcePath = Path.GetFullPath(value); }
         }
 
         private string _compilationTargetPath;

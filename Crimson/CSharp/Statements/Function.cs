@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Reflection
+namespace Crimson.CSharp.Statements
 {
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
     /// </summary>
-    internal class Function: GlobalStatement
+    internal class Function : GlobalStatement
     {
 
         public Function(CrimsonType returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)

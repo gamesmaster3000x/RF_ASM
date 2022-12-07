@@ -1,18 +1,17 @@
 ﻿using CommandLine;
 using NLog;
 using Antlr4.Runtime;
-using Crimson.CSharp.Core;
-using Crimson.CSharp.Reflection;
 using Crimson.AntlrBuild;
+using Crimson.CSharp.Statements;
 
-namespace Crimson.Core
+namespace Crimson.CSharp.Core
 {
     internal class CrimsonCompiler
     {
         public CrimsonCmdArguments Options { get; }
         public Cleaner Cleaner { get; }
 
-        private static NLog.Logger Logger;
+        private static Logger Logger;
 
         public CrimsonCompiler(CrimsonCmdArguments options)
         {
@@ -26,19 +25,19 @@ namespace Crimson.Core
             if (useAutowiredArgs)
             {
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
-                args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "nope"};
+                args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "nope" };
             }
 
             // Start
             Console.WriteLine("");
-            Console.WriteLine(" ~C~ "); 
+            Console.WriteLine(" ~C~ ");
             Console.WriteLine("Crimson Language Compiler, by GenElectrovise, for GamesMaster3000X");
             Console.WriteLine("https://github.com/gamesmaster3000x/RF_ASM");
             Console.WriteLine(" ~C~ ");
             Console.WriteLine("");
 
             Console.WriteLine("Parsing program arguments");
-            return CommandLine.Parser.Default.ParseArguments<CrimsonCmdArguments>(args).MapResult((CrimsonCmdArguments options) =>
+            return CommandLine.Parser.Default.ParseArguments<CrimsonCmdArguments>(args).MapResult((options) =>
             {
                 Console.WriteLine("CompilationSourcePath: " + options.CompilationSourcePath);
                 Console.WriteLine("CompilationTargetPath: " + options.CompilationTargetPath);
@@ -46,7 +45,8 @@ namespace Crimson.Core
                 CrimsonCompiler compiler = new CrimsonCompiler(options);
                 return Task.FromResult(compiler.Start(options));
             },
-            (error) => {
+            (error) =>
+            {
                 Console.Error.WriteLine("An issue occurred while parsing the program arguments (invalid arguments)");
                 return Task.FromResult(-1);
             });
@@ -86,10 +86,10 @@ namespace Crimson.Core
             };
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
-            NLog.LogManager.Configuration = config;
+            LogManager.Configuration = config;
             Console.WriteLine("NLog configured!");
 
-            Logger = NLog.LogManager.GetCurrentClassLogger();
+            Logger = LogManager.GetCurrentClassLogger();
             Console.WriteLine("Testing TRACE and FATAL level logging...");
             Logger.Trace("Testing trace level logging...");
             Logger.Fatal("Testing fatal level logging...");
@@ -102,7 +102,7 @@ namespace Crimson.Core
             AntlrInputStream a4is = new AntlrInputStream(textIn);
             CrimsonLexer lexer = new CrimsonLexer(a4is);
             CommonTokenStream cts = new CommonTokenStream(lexer);
-            CrimsonParser parser = new CrimsonParser(cts); 
+            CrimsonParser parser = new CrimsonParser(cts);
 
             CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
             CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();

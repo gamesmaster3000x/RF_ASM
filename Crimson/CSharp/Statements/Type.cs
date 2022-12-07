@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Reflection
+namespace Crimson.CSharp.Statements
 {
     internal class Type
     {
