@@ -3,20 +3,19 @@ using NLog;
 using Antlr4.Runtime;
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Statements;
+using System.IO.Abstractions;
 
 namespace Crimson.CSharp.Core
 {
     internal class CrimsonCompiler
     {
         public CrimsonCmdArguments Options { get; }
-        public Cleaner Cleaner { get; }
 
-        private static Logger Logger;
+        private static Logger LOGGER;
 
         public CrimsonCompiler(CrimsonCmdArguments options)
         {
             Options = options;
-            Cleaner = new Cleaner(Path.GetDirectoryName(options.CompilationSourcePath) + "/" + Path.GetFileNameWithoutExtension(options.CompilationSourcePath) + "_compiler_cleaner_temp/");
         }
 
         static Task<int> Main(string[] args)
@@ -65,7 +64,7 @@ namespace Crimson.CSharp.Core
 
             if (options.CleanFiles)
             {
-                Cleaner.CleanFiles();
+                LOGGER.Error("Cleaning of files is not implemented");
             }
             return 0;
         }
@@ -89,10 +88,10 @@ namespace Crimson.CSharp.Core
             LogManager.Configuration = config;
             Console.WriteLine("NLog configured!");
 
-            Logger = LogManager.GetCurrentClassLogger();
+            LOGGER = LogManager.GetCurrentClassLogger();
             Console.WriteLine("Testing TRACE and FATAL level logging...");
-            Logger.Trace("Testing trace level logging...");
-            Logger.Fatal("Testing fatal level logging...");
+            LOGGER.Trace("Testing trace level logging...");
+            LOGGER.Fatal("Testing fatal level logging...");
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
         }
 

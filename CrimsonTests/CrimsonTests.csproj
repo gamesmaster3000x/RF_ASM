@@ -14,10 +14,16 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="18.0.1" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="18.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Crimson\Crimson.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
   </ItemGroup>
 
 </Project>
