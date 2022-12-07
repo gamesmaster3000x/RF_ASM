@@ -1,0 +1,17 @@
+﻿Flag Layout:
+
+0   - 63  = System Flags
+64  - 127 = User Flags
+128 - 191 = CPU out / component in flags
+192 - 255 = Component out / CPU in flags
+
+
+System Flags:
+
+Number(s) Info
+0         Operand A addressing mode
+1         Operand B addressing mode
+2         Compare equals
+3         Compare less than
+4         Compare greater than
+5   - 63  Reserved

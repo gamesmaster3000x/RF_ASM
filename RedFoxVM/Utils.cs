@@ -57,7 +57,7 @@ namespace RedFoxVM
 
         public static byte[] SetBitInByte(byte b, int bitIndex, bool bitValue)
         {
-            BitArray bitArr = new BitArray(b);
+            BitArray bitArr = new BitArray(new byte[] {b});
             bitArr.Set(bitIndex, bitValue);
             byte[] o = new byte[bitArr.Length];
             bitArr.CopyTo(o, 0);
