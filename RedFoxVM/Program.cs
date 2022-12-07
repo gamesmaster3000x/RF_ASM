@@ -7,10 +7,10 @@ namespace RedFoxVM {
         static void Main(string[] args)
         {
             Computer computer = new(2, 1024, new byte[8], 32, 16, 256);
-            Value a = new(new byte[] { 10, 0 });
-            Value b = new(new byte[] { 255, 0 });
-            Value c = a + b;
-            Value d = -c;
+            Word a = new(new byte[] { 10, 0 });
+            Word b = new(new byte[] { 255, 0 });
+            Word c = a + b;
+            Word d = -c;
             Console.WriteLine(a.ToBinaryString);
             Console.WriteLine(b.ToBinaryString);
             Console.WriteLine(c.ToBinaryString);

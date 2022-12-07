@@ -15,43 +15,43 @@ namespace RedFoxVM
         public bool[] flags;
 
         public Memory memory;
-        public Value[] generalRegisters;
-        public Value[] componentRegisters;
-        public Value[] interruptAddresses;
+        public Word[] generalRegisters;
+        public Word[] componentRegisters;
+        public Word[] interruptAddresses;
         public Stack stack;
         public ALU alu;
 
 
-        public Value nextInstructionAddress;
+        public Word nextInstructionAddress;
         public byte currentInstruction;
-        public Value operandA;
+        public Word operandA;
         public byte operandB;
 
         public Computer(int dataWidth = 1, int memorySize = 1024, byte[] ramState = null, int registerCount = 32, int componentLaneCount = 16, int stackSize = 256, int interruptCount = 256)
         {
             memory = new Memory(memorySize, ramState);
-            generalRegisters = new Value[registerCount];
-            componentRegisters = new Value[componentLaneCount];
-            interruptAddresses = new Value[interruptCount];
+            generalRegisters = new Word[registerCount];
+            componentRegisters = new Word[componentLaneCount];
+            interruptAddresses = new Word[interruptCount];
             stack = new Stack(stackSize);
             alu = new ALU(dataWidth);
-            nextInstructionAddress = new Value(dataWidth);
+            nextInstructionAddress = new Word(dataWidth);
             currentInstruction = 0;
-            operandA = new Value(dataWidth);
+            operandA = new Word(dataWidth);
             operandB = 0;
             this.dataWidth = dataWidth;
 
             for (int i = 0; i < registerCount; i++)
             {
-                generalRegisters[i] = new Value(dataWidth);
+                generalRegisters[i] = new Word(dataWidth);
             }
             for (int i = 0; i < componentLaneCount; i++)
             {
-                componentRegisters[i] = new Value(dataWidth);
+                componentRegisters[i] = new Word(dataWidth);
             }
             for (int i = 0; i < interruptCount; i++)
             {
-                interruptAddresses[i] = new Value(dataWidth);
+                interruptAddresses[i] = new Word(dataWidth);
             }
         }
 

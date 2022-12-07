@@ -8,15 +8,15 @@ namespace RedFoxVM
 {
     internal class ALU
     {
-        public Value inA;
-        public Value inB;
-        public Value output;
+        public Word inA;
+        public Word inB;
+        public Word output;
 
         public ALU(int dataWidth)
         {
-            inA = new Value(dataWidth);
-            inB = new Value(dataWidth);
-            output = new Value(dataWidth);
+            inA = new Word(dataWidth);
+            inB = new Word(dataWidth);
+            output = new Word(dataWidth);
         }
 
         /*public void ADD()

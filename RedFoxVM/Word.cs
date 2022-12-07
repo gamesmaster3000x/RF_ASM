@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RedFoxVM
 {
-    internal class Value
+    internal class Word
     {
         private byte[] data;
 
@@ -24,7 +24,7 @@ namespace RedFoxVM
             }
         }
 
-        public Value(int size)
+        public Word(int size)
         {
             data = new byte[size];
             for (int b = 0; b < size; b++)
@@ -33,24 +33,24 @@ namespace RedFoxVM
             }
         }
 
-        public Value(byte[] data)
+        public Word(byte[] data)
         {
             this.data = data;
         }
 
-        public Value(Value val)
+        public Word(Word val)
         {
             this.data = val.ToByteArray;
         }
 
-        public static Value operator +(Value a)
+        public static Word operator +(Word a)
         {
             return a;
         }
 
-        public static Value operator -(Value a) //TODO: increment output to make value correct
+        public static Word operator -(Word a) //TODO: increment output to make value correct
         {
-            Value o = new(a.Length);
+            Word o = new(a.Length);
             BitArray bits = new(a.data);
             for (int i = 0; i < bits.Length; i++)
             {
@@ -69,9 +69,9 @@ namespace RedFoxVM
             return o;
         }
 
-        public static Value operator +(Value a, Value b)
+        public static Word operator +(Word a, Word b)
         {
-            Value o;
+            Word o;
 
             if (a.Length != b.Length)
             {
@@ -153,6 +153,28 @@ namespace RedFoxVM
         public int Length
         {
             get { return data.Length; }
+        }
+
+        public static Word Zero(int length)
+        {
+            return new(length);
+        }
+
+        public static Word One(int length)
+        {
+            Word o = new(length);
+            o[0] = 1;
+            return o;
+        }
+
+        public static Word MaxValue(int length)
+        {
+            Word o = new(length);
+            for (int i = 0; i < length; i++)
+            {
+                o[i] = byte.MaxValue;
+            }
+            return o;
         }
     }
 }
