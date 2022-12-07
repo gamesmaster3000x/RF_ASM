@@ -9,7 +9,7 @@ using System.Xml.XPath;
 
 namespace Crimson.CSharp.Core
 {
-    internal class Cleaner
+    public class Cleaner
     {
         private Logger LOGGER = LogManager.GetCurrentClassLogger();
 
@@ -41,7 +41,7 @@ namespace Crimson.CSharp.Core
 
         public FileInfo GetUnfriendlyFileInfo(string friendlyName)
         {
-            return new FileInfo(RootPath + friendlyName + ".crm_clnr");
+            return new FileInfo(RootPath + "/" + friendlyName + ".crm_clnr");
         }
 
         public void CleanFiles()
