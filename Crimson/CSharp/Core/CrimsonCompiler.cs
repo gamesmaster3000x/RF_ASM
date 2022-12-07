@@ -59,9 +59,6 @@ namespace Crimson.CSharp.Core
             string programText = string.Join(Environment.NewLine, File.ReadLines(Options.CompilationSourcePath));
             /* Compilation fullCompilationObject = */ ParseProgram(programText);
 
-            // Pre-compilation
-            // LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
-
             if (options.CleanFiles)
             {
                 LOGGER.Error("Cleaning of files is not implemented");
