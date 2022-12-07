@@ -63,9 +63,6 @@ namespace RedFoxVM
                 case 0:
                     HLT();
                     break;
-                case 1:
-                    NOP();
-                    break;
                 case 2:
                     ADD();
                     break;
@@ -92,15 +89,6 @@ namespace RedFoxVM
                     break;
                 case 10:
                     BFG();
-                    break;
-                case 11:
-                    BEQ();
-                    break;
-                case 12:
-                    BLT();
-                    break;
-                case 13:
-                    BGT();
                     break;
                 case 14:
                     BSR();

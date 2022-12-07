@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace RedFoxVM {
     /// <summary>
     /// Entry point class for RF_ASM.
@@ -6,15 +8,15 @@ namespace RedFoxVM {
     {
         static void Main(string[] args)
         {
-            Computer computer = new(2, 1024, new byte[8], 32, 16, 256);
-            Word a = new(new byte[] { 10, 0 });
-            Word b = new(new byte[] { 255, 0 });
-            Word c = a + b;
-            Word d = -c;
-            Console.WriteLine(a.ToBinaryString);
-            Console.WriteLine(b.ToBinaryString);
-            Console.WriteLine(c.ToBinaryString);
-            Console.WriteLine(d.ToBinaryString);
+            Computer computer = new(2, 1024, Array.Empty<byte>(), 32, 16, 256);
+            Word a = new(new byte[] {10, 28, 30, 48});
+            Console.WriteLine(a.ToBinaryString());
+            Console.WriteLine(a);
+            Console.WriteLine(new Word(new BitArray(a.ToByteArray())));
+            Console.WriteLine(a.ToBinaryString());
+            a = a << 4;
+            Console.WriteLine(a.ToBinaryString());
+            Console.WriteLine(a.ToHexString());
         }
     }
 }

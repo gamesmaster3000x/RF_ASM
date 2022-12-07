@@ -12,9 +12,9 @@ NOT  -              07  Logical NOT         Performs a logical NOT operation on 
 CMP  -              08  Compare             Compares register S1 to register S2. The registers are treated as 2's complement.
 JMP  Word α         09  Jump                Sets the memory address α as the next to be executed.
 BFG  Word α, Byte β 0A  Branch Flag         Sets the memory address α as the next to be executed, if flag β is active.
-BEQ  Word α         0B  Branch Equal        Sets the memory address α as the next to be executed, if the result of the previous compare was equal.
-BLT  Word α         0C  Branch Less Than    Sets the memory address α as the next to be executed, if the result of the previous compare was less than.
-BGT  Word α         0D  Branch Greater Than Sets the memory address α as the next to be executed, if the result of the previous compare was greater than.
+-    -              0B  -                   -
+-    -              0C  -                   -
+-    -              0D  -                   -
 BSR  Word α         0E  Branch Subroutine   Sets the memory address α as the next to be executed, and pushes the current instruction's address + 1 to the stack.
 RTN  -              0F  Return              Jumps to the address that the top of the stack points to and pops that value out of the stack.
 RRB  Word α, Byte β 10  Read Register Byte  Reads the byte β from the register α. (β == 0 -> Least Significant Byte)

@@ -40,7 +40,32 @@ namespace RedFoxVM
 
         public Word(Word val)
         {
-            this.data = val.ToByteArray;
+            data = val.ToByteArray();
+        }
+        public Word(int num, int width)
+        {
+            data = new byte[width];
+            for (int i = 0; i < width; i++)
+            {
+                data[i] = (byte)(num % 256);
+                num /= 256;
+            }
+        }
+
+        public Word(BitArray bits)
+        {
+            data = new byte[((bits.Length - 1) / 8) + 1];
+            for (int i = 0; i < Length; i++)
+            {
+                data[i] = 0;
+                for (int j = 0; j < 8; j++)
+                {
+                    if (bits[8 * i + j])
+                    {
+                        data[i] += (byte)Math.Pow(2, j);
+                    }
+                }
+            }
         }
 
         public static Word operator +(Word a)
@@ -48,7 +73,7 @@ namespace RedFoxVM
             return a;
         }
 
-        public static Word operator -(Word a) //TODO: increment output to make value correct
+        public static Word operator -(Word a)
         {
             Word o = new(a.Length);
             BitArray bits = new(a.data);
@@ -66,19 +91,18 @@ namespace RedFoxVM
                     }
                 }
             }
+            o++;
             return o;
         }
 
         public static Word operator +(Word a, Word b)
         {
-            Word o;
-
             if (a.Length != b.Length)
             {
                 throw new Exception("You cannot add two values of different lengths!");
             }
 
-            o = new(a.Length);
+            Word o = new(a.Length);
 
             for (int i = 0; i < a.Length; i++)
             {
@@ -95,59 +119,100 @@ namespace RedFoxVM
             return o;
         }
 
-
-        public byte[] ToByteArray
+        public static Word operator -(Word a, Word b)
         {
-            get { return data; }
+            if (a.Length != b.Length)
+            {
+                throw new Exception("You cannot add two values of different lengths!");
+            }
+
+            Word o = new(a.Length);
+
+            o = a + -b;
+            return o;
         }
 
-        public int ToInt32
+        public static Word operator ++(Word a)
         {
-            get
-            {
-                int o = 0;
-                if (Length <= 4)
-                {
-                    for (int i = 0; i < Length; i++)
-                    {
-                        o += data[i] * (int)Math.Pow(2, i * 8);
-                    }
-                }
-                return o;
-            }
+            return a + One(a.Length);
         }
 
-        public long ToInt64
+        public static Word operator --(Word a)
         {
-            get
-            {
-                long o = 0;
-                if (Length <= 8)
-                {
-                    for (int i = 0; i < Length; i++)
-                    {
-                        o += data[i] * (long)Math.Pow(2, i * 8);
-                    }
-                }
-                return o;
-            }
+            return a - One(a.Length);
         }
 
-        public string ToBinaryString
+        public static Word operator <<(Word a, int b)
         {
-            get
+            BitArray arr = new BitArray(a.ToByteArray());
+
+            arr.LeftShift(b);
+
+            return new(arr);
+        }
+
+        public static Word operator >>(Word a, int b)
+        {
+            BitArray arr = new BitArray(a.ToByteArray());
+
+            arr.RightShift(b);
+
+            return new(arr);
+        }
+
+        public byte[] ToByteArray()
+        {
+            return data;
+        }
+
+        public int ToInt32()
+        {
+            int o = 0;
+            if (Length <= 4)
             {
-                string o = "";
-                BitArray bits = new(data);
-                bool[] arr = new bool[bits.Length];
-                bits.CopyTo(arr, 0);
-                Array.Reverse(arr);
-                for (int i = 0; i < arr.Length; i++)
+                for (int i = 0; i < Length; i++)
                 {
-                    o += Convert.ToByte(arr[i]);
+                    o += data[i] * (int)Math.Pow(2, i * 8);
                 }
-                return o;
             }
+            return o;
+        }
+
+        public long ToInt64()
+        {
+            long o = 0;
+            if (Length <= 8)
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    o += data[i] * (long)Math.Pow(2, i * 8);
+                }
+            }
+            return o;
+        }
+
+        public string ToBinaryString()
+        {
+            string o = "";
+            BitArray bits = new(data);
+            bool[] arr = new bool[bits.Length];
+            bits.CopyTo(arr, 0);
+            Array.Reverse(arr);
+            for (int i = 0; i < arr.Length; i++)
+            {
+                o += Convert.ToByte(arr[i]);
+            }
+            return o;
+        }
+
+        public string ToHexString()
+        {
+            return Convert.ToHexString(data);
+        }
+
+        public override string ToString()
+        {
+            return string.Join('.', data);
         }
 
         public int Length

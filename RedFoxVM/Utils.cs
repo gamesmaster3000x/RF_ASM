@@ -63,16 +63,5 @@ namespace RedFoxVM
             bitArr.CopyTo(o, 0);
             return o;
         }
-
-        /*public static Value IntToValue(int num, int width)
-        {
-            Value value = new Value(width);
-            for (int i = 0; i < width; i++)
-            {
-                value.data[i] = (byte)(num % 256);
-                num /= 256;
-            }
-            return value;
-        }*/
     }
 }

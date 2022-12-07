@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,26 +9,30 @@ namespace RedFoxVM
 {
     internal class ALU
     {
-        public Word inA;
-        public Word inB;
-        public Word output;
+        public Word a;
+        public Word b;
+        public Word o;
 
         public ALU(int dataWidth)
         {
-            inA = new Word(dataWidth);
-            inB = new Word(dataWidth);
-            output = new Word(dataWidth);
+            a = new Word(dataWidth);
+            b = new Word(dataWidth);
+            o = new Word(dataWidth);
         }
 
-        /*public void ADD()
+        public void ADD()
         {
-            for (int i = 0; i < output.data.Length; i++)
-            {
-                if (true)
-                {
+            o = a + b;
+        }
 
-                }
-            }
-        }*/
+        public void SUB()
+        {
+            o = a - b;
+        }
+
+        public void LSL()
+        {
+            
+        }
     }
 }
