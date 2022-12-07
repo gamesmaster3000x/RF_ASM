@@ -66,7 +66,15 @@ namespace CrimsonTest.Core
         [TestMethod]
         public void Test_CleanFiles()
         {
+            string cleaner_root = "cleaner_root";
+            string file_name = "file_name";
+            DummyCleaner cleaner = new DummyCleaner(cleaner_root);
 
+            FileInfo ideal = new FileInfo(file_name);
+            cleaner.D_GetFiles().Add(file_name, ideal);
+
+            cleaner.CleanFiles();
+            Assert.IsTrue(cleaner.D_GetFiles().Count == 0);
         }
     }
 }
