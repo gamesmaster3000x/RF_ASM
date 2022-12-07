@@ -24,19 +24,24 @@ namespace Crimson.CSharp.Core
 
         public FileInfo GetFile(string friendlyName)
         {
-            FileInfo info;
+            FileInfo info = GetUnfriendlyFileInfo(friendlyName);
             if (!_files.ContainsKey(friendlyName))
             {
-                info = new FileInfo(RootPath + friendlyName + ".crm_clnr");
                 if (info.Exists)
                 {
                     LOGGER.Warn("File " + info + " already exists! (may be overwritten - who needs that one anyway?)");
                 }
                 _files.Add(friendlyName, info);
+                LOGGER.Info("Now tracking file with friendlyName " + friendlyName);
             }
 
             _files.TryGetValue(friendlyName, out info);
             return info;
+        }
+
+        public FileInfo GetUnfriendlyFileInfo(string friendlyName)
+        {
+            return new FileInfo(RootPath + friendlyName + ".crm_clnr");
         }
 
         public void CleanFiles()
