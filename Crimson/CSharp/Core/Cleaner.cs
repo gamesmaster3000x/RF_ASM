@@ -11,9 +11,9 @@ namespace Crimson.CSharp.Core
 {
     public class Cleaner
     {
-        private Logger LOGGER = LogManager.GetCurrentClassLogger();
+        protected Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        private Dictionary<string, FileInfo> _files = new Dictionary<string, FileInfo>();
+        protected Dictionary<string, FileInfo> _files = new Dictionary<string, FileInfo>();
 
         string RootPath { get; }
 
