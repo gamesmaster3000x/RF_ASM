@@ -57,7 +57,7 @@ namespace Crimson.CSharp.Core
             ConfigureNLog();
 
             string programText = string.Join(Environment.NewLine, File.ReadLines(Options.CompilationSourcePath));
-            CompilationUnit program = ParseProgram(programText);
+            /* Compilation fullCompilationObject = */ ParseProgram(programText);
 
             // Pre-compilation
             // LazySourceFile compilation = new LazySourceFile(options.CompilationSourcePath, options);
@@ -95,7 +95,7 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
         }
 
-        private CompilationUnit ParseProgram(string textIn)
+        private void /* Return full compilation object later */ ParseProgram(string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
@@ -106,12 +106,8 @@ namespace Crimson.CSharp.Core
             CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
             CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();
             CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
-            //CrimsonListener listener = new CrimsonListener();
-            //ParseTreeWalker.Default.Walk(listener, cuCtx);
 
-            // Create packages
-
-            return compilation;
+            return;
         }
     }
 }

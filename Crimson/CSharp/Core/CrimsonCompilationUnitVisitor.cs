@@ -30,8 +30,6 @@ namespace Crimson.CSharp.Core
             }
 
             // Populate output fields
-            //Dictionary<string, Package> packageDefinitions = VisitPackageDefinitionList(packageDefinitionListContext);
-            //compilation.packages = packageDefinitions;
 
             return compilation;
         }
