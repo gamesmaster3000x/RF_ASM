@@ -160,6 +160,48 @@ namespace RedFoxVM
             return new(arr);
         }
 
+        public static bool operator ==(Word a, Word b)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool operator !=(Word a, Word b)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool operator <(Word a, Word b)
+        {
+            if (new BitArray((a - b).ToByteArray())[(a.Length * 8) - 1])
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool operator >(Word a, Word b)
+        {
+            if (new BitArray((b - a).ToByteArray())[(a.Length * 8) - 1])
+            {
+                return true;
+            }
+            return false;
+        }
+
         public byte[] ToByteArray()
         {
             return data;

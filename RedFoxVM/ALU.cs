@@ -68,7 +68,6 @@ namespace RedFoxVM
 
         public void CMP()
         {
-
         }
     }
 }
