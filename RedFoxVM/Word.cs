@@ -207,12 +207,12 @@ namespace RedFoxVM
 
         public string ToHexString()
         {
-            return Convert.ToHexString(data);
+            return Convert.ToHexString(Utils.ReverseByteArray(data));
         }
 
         public override string ToString()
         {
-            return string.Join('.', data);
+            return string.Join('.', Utils.ReverseByteArray(data));
         }
 
         public int Length

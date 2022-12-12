@@ -11,13 +11,8 @@ namespace RedFoxVM
     internal class Memory
     {
         byte[] data;
-        public Memory(int capacity, byte[] input = null)
+        public Memory(int capacity, byte[] input)
         {
-            if (input == null)
-            {
-                input = new byte[] {0};
-            }
-
             data = new byte[capacity];
 
             for (int i = 0; i < capacity; i++)

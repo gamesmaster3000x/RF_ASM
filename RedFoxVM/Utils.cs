@@ -55,12 +55,30 @@ namespace RedFoxVM
             }
         }
 
-        public static byte[] SetBitInByte(byte b, int bitIndex, bool bitValue)
+        public static byte SetBitInByte(byte b, int i, bool v)
         {
-            BitArray bitArr = new BitArray(new byte[] {b});
-            bitArr.Set(bitIndex, bitValue);
-            byte[] o = new byte[bitArr.Length];
-            bitArr.CopyTo(o, 0);
+            BitArray bits = new(new byte[] {b});
+            bits[i] = v;
+            b = 0;
+            for (int j = 0; j < bits.Length; j++)
+            {
+                if (bits[j])
+                {
+                    b += (byte)Math.Pow(2, j);
+                }
+            }
+            return b;
+        }
+
+        
+
+        public static byte[] ReverseByteArray(byte[] a)
+        {
+            byte[] o = new byte[a.Length];
+            for (int i = 0; i < a.Length; i++)
+            {
+                o[a.Length - 1 - i] = a[i];
+            }
             return o;
         }
     }
