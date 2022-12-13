@@ -14,6 +14,10 @@ namespace RedFoxVM
         public Word b;
         public Word o;
 
+        public bool lt = false;
+        public bool gt = false;
+        public bool eq = false;
+
         public ALU(int dataWidth)
         {
             a = new Word(dataWidth);
@@ -68,6 +72,9 @@ namespace RedFoxVM
 
         public void CMP()
         {
+            lt = a < b;
+            gt = a > b;
+            eq = a == b;
         }
     }
 }

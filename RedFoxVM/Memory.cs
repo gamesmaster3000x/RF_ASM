@@ -28,14 +28,14 @@ namespace RedFoxVM
             }
         }
 
-        /*public byte GetByte(Value addr)
+        public byte GetByte(Word addr)
         {
-            return data[Utils.ValueToInt(addr)];
+            return data[addr.ToInt32()];
         }
         
-        public void SetByte(Value addr, byte data)
+        public void SetByte(Word addr, byte data)
         {
-            this.data[Utils.ValueToInt(addr)] = data;
-        }*/
+            this.data[addr.ToInt32()] = data;
+        }
     }
 }

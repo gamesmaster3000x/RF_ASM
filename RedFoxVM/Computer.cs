@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -12,7 +13,6 @@ namespace RedFoxVM
     {
         public int dataWidth;
         public bool halt = false;
-        public bool[] flags = new bool[256];
 
         public Memory memory;
         public Word[] generalRegisters;
@@ -22,7 +22,7 @@ namespace RedFoxVM
         public ALU alu;
 
 
-        public Word nextInstructionAddress;
+        public Word programCounter;
         public byte currentInstruction;
         public Word operandA;
         public byte operandB;
@@ -39,7 +39,7 @@ namespace RedFoxVM
 
             alu = new ALU(dataWidth);
 
-            nextInstructionAddress = new Word(dataWidth);
+            programCounter = new Word(dataWidth);
             currentInstruction = 0;
             operandA = new Word(dataWidth);
             operandB = 0;
@@ -57,10 +57,28 @@ namespace RedFoxVM
             {
                 interruptAddresses[i] = new Word(dataWidth);
             }
-            for (int i = 0; i < flags.Length; i++)
+        }
+
+        public void loadOperandAWord()
+        {
+            operandA = new(dataWidth);
+            for (int i = 0; i < dataWidth; i++)
             {
-                flags[i] = false;
+                operandA[dataWidth - 1 - i] = memory.GetByte(programCounter + new Word(i, dataWidth));
             }
+            programCounter += new Word(dataWidth, dataWidth);
+        }
+
+        public void loadOperandAByte()
+        {
+            operandA[0] = memory.GetByte(programCounter);
+            programCounter++;
+        }
+
+        public void loadOperandB()
+        {
+            operandB = memory.GetByte(programCounter);
+            programCounter++;
         }
 
         public void HLT()
@@ -98,32 +116,59 @@ namespace RedFoxVM
 
         public void NOT()
         {
-
+            alu.NOT();
         }
 
         public void CMP()
         {
-
+            alu.CMP();
         }
 
         public void JMP()
         {
-
+            loadOperandAWord();
+            programCounter = operandA;
         }
 
         public void BFG()
         {
-
+            loadOperandAWord();
+            loadOperandB();
+            bool flag = false;
+            switch (operandB)
+            {
+                case 0:
+                    flag = new BitArray(new byte[] { currentInstruction })[7];
+                    break;
+                case 1:
+                    flag = new BitArray(new byte[] { currentInstruction })[6];
+                    break;
+                case 2:
+                    flag = alu.eq;
+                    break;
+                case 3:
+                    flag = alu.lt;
+                    break;
+                case 4:
+                    flag = alu.gt;
+                    break;
+            }
+            if (flag)
+            {
+                programCounter = operandA;
+            }
         }
 
         public void BSR()
         {
-
+            stack.Push(programCounter - Word.One(dataWidth));
+            loadOperandAWord();
+            programCounter = operandA;
         }
 
         public void RTN()
         {
-
+            programCounter = stack.Pop;
         }
 
         public void RRB()
@@ -208,7 +253,8 @@ namespace RedFoxVM
 
         public void TriggerClock()
         {
-            currentInstruction = 0;
+            currentInstruction = memory.GetByte(programCounter);
+            programCounter++;
             switch (currentInstruction)
             {
                 case 0:
