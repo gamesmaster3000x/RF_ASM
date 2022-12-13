@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -12,7 +13,6 @@ namespace RedFoxVM
     {
         public int dataWidth;
         public bool halt = false;
-        public bool[] flags;
 
         public Memory memory;
         public Word[] generalRegisters;
@@ -22,20 +22,24 @@ namespace RedFoxVM
         public ALU alu;
 
 
-        public Word nextInstructionAddress;
+        public Word programCounter;
         public byte currentInstruction;
         public Word operandA;
         public byte operandB;
 
-        public Computer(int dataWidth = 1, int memorySize = 1024, byte[] ramState = null, int registerCount = 32, int componentLaneCount = 16, int stackSize = 256, int interruptCount = 256)
+        public Computer(byte[] ramState, int dataWidth = 1, int memorySize = 1024, int registerCount = 32, int componentLaneCount = 16, int stackSize = 256, int interruptCount = 256)
         {
             memory = new Memory(memorySize, ramState);
+
             generalRegisters = new Word[registerCount];
             componentRegisters = new Word[componentLaneCount];
             interruptAddresses = new Word[interruptCount];
+
             stack = new Stack(stackSize);
+
             alu = new ALU(dataWidth);
-            nextInstructionAddress = new Word(dataWidth);
+
+            programCounter = new Word(dataWidth);
             currentInstruction = 0;
             operandA = new Word(dataWidth);
             operandB = 0;
@@ -55,10 +59,203 @@ namespace RedFoxVM
             }
         }
 
+        public void loadOperandAWord()
+        {
+            operandA = new(dataWidth);
+            for (int i = 0; i < dataWidth; i++)
+            {
+                operandA[dataWidth - 1 - i] = memory.GetByte(programCounter + new Word(i, dataWidth));
+            }
+            programCounter += new Word(dataWidth, dataWidth);
+        }
+
+        public void loadOperandAByte()
+        {
+            operandA[0] = memory.GetByte(programCounter);
+            programCounter++;
+        }
+
+        public void loadOperandB()
+        {
+            operandB = memory.GetByte(programCounter);
+            programCounter++;
+        }
+
+        public void HLT()
+        {
+            halt = true;
+        }
+        public void NOP()
+        {
+            //nothing
+        }
+        public void ADD()
+        {
+            alu.ADD();
+        }
+
+        public void SUB()
+        {
+            alu.SUB();
+        }
+
+        public void LSL()
+        {
+            alu.LSL();
+        }
+
+        public void LSR()
+        {
+            alu.LSR();
+        }
+
+        public void NEG()
+        {
+            alu.NEG();
+        }
+
+        public void NOT()
+        {
+            alu.NOT();
+        }
+
+        public void CMP()
+        {
+            alu.CMP();
+        }
+
+        public void JMP()
+        {
+            loadOperandAWord();
+            programCounter = operandA;
+        }
+
+        public void BFG()
+        {
+            loadOperandAWord();
+            loadOperandB();
+            bool flag = false;
+            switch (operandB)
+            {
+                case 0:
+                    flag = new BitArray(new byte[] { currentInstruction })[7];
+                    break;
+                case 1:
+                    flag = new BitArray(new byte[] { currentInstruction })[6];
+                    break;
+                case 2:
+                    flag = alu.eq;
+                    break;
+                case 3:
+                    flag = alu.lt;
+                    break;
+                case 4:
+                    flag = alu.gt;
+                    break;
+            }
+            if (flag)
+            {
+                programCounter = operandA;
+            }
+        }
+
+        public void BSR()
+        {
+            stack.Push(programCounter - Word.One(dataWidth));
+            loadOperandAWord();
+            programCounter = operandA;
+        }
+
+        public void RTN()
+        {
+            programCounter = stack.Pop;
+        }
+
+        public void RRB()
+        {
+
+        }
+
+        public void RRW()
+        {
+
+        }
+
+        public void RMB()
+        {
+
+        }
+
+        public void RMW()
+        {
+
+        }
+
+        public void WRB()
+        {
+
+        }
+
+        public void WRW()
+        {
+
+        }
+
+        public void WMB()
+        {
+
+        }
+
+        public void WMW()
+        {
+
+        }
+
+        public void RVB()
+        {
+
+        }
+
+        public void RVW()
+        {
+
+        }
+
+        public void SIN()
+        {
+
+        }
+
+        public void INT()
+        {
+
+        }
+
+        public void SFG()
+        {
+
+        }
+
+        public void AND()
+        {
+
+        }
+
+        public void LOR()
+        {
+
+        }
+
+        public void XOR()
+        {
+
+        }
+
         public void TriggerClock()
         {
-            currentInstruction = 0;
-            switch(currentInstruction)
+            currentInstruction = memory.GetByte(programCounter);
+            programCounter++;
+            switch (currentInstruction)
             {
                 case 0:
                     HLT();
@@ -145,166 +342,9 @@ namespace RedFoxVM
                     XOR();
                     break;
                 default:
+                    NOP();
                     break;
             }
-        }
-
-        public void HLT()
-        {
-            halt = true;
-        }
-        public void NOP()
-        {
-            //nothing
-        }
-        public void ADD()
-        {
-            
-        }
-
-        public void SUB()
-        {
-
-        }
-
-        public void LSL()
-        {
-
-        }
-
-        public void LSR()
-        {
-
-        }
-
-        public void NEG()
-        {
-
-        }
-
-        public void NOT()
-        {
-
-        }
-
-        public void CMP()
-        {
-
-        }
-
-        public void JMP()
-        {
-
-        }
-
-        public void BFG()
-        {
-
-        }
-
-        public void BEQ()
-        {
-
-        }
-
-        public void BLT()
-        {
-
-        }
-
-        public void BGT()
-        {
-
-        }
-
-        public void BSR()
-        {
-
-        }
-
-        public void RTN()
-        {
-
-        }
-
-        public void RRB()
-        {
-
-        }
-
-        public void RRW()
-        {
-
-        }
-
-        public void RMB()
-        {
-
-        }
-
-        public void RMW()
-        {
-
-        }
-
-        public void WRB()
-        {
-
-        }
-
-        public void WRW()
-        {
-
-        }
-
-        public void WMB()
-        {
-
-        }
-
-        public void WMW()
-        {
-
-        }
-
-        public void RVB()
-        {
-
-        }
-
-        public void RVW()
-        {
-
-        }
-
-        public void SIN()
-        {
-
-        }
-
-        public void INT()
-        {
-
-        }
-
-        public void SFG()
-        {
-
-        }
-
-        public void AND()
-        {
-
-        }
-
-        public void LOR()
-        {
-
-        }
-
-        public void XOR()
-        {
-
         }
     }
 }

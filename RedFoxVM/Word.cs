@@ -160,6 +160,48 @@ namespace RedFoxVM
             return new(arr);
         }
 
+        public static bool operator ==(Word a, Word b)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool operator !=(Word a, Word b)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool operator <(Word a, Word b)
+        {
+            if (new BitArray((a - b).ToByteArray())[(a.Length * 8) - 1])
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool operator >(Word a, Word b)
+        {
+            if (new BitArray((b - a).ToByteArray())[(a.Length * 8) - 1])
+            {
+                return true;
+            }
+            return false;
+        }
+
         public byte[] ToByteArray()
         {
             return data;
@@ -207,12 +249,12 @@ namespace RedFoxVM
 
         public string ToHexString()
         {
-            return Convert.ToHexString(data);
+            return Convert.ToHexString(Utils.ReverseByteArray(data));
         }
 
         public override string ToString()
         {
-            return string.Join('.', data);
+            return string.Join('.', Utils.ReverseByteArray(data));
         }
 
         public int Length
