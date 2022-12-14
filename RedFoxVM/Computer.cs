@@ -25,7 +25,9 @@ namespace RedFoxVM
         public Word programCounter;
         public byte currentInstruction;
         public Word operandA;
+        public bool opAMode = false;
         public byte operandB;
+        public bool opBMode = false;
 
         public Computer(byte[] ramState, int dataWidth = 1, int memorySize = 1024, int registerCount = 32, int componentLaneCount = 16, int stackSize = 256, int interruptCount = 256)
         {
@@ -59,26 +61,140 @@ namespace RedFoxVM
             }
         }
 
+
+        public void Run()
+        {
+            while (!halt)
+            {
+                TriggerClock();
+            }
+        }
+
+
         public void loadOperandAWord()
         {
-            operandA = new(dataWidth);
-            for (int i = 0; i < dataWidth; i++)
+            if (opAMode)
             {
-                operandA[dataWidth - 1 - i] = memory.GetByte(programCounter + new Word(i, dataWidth));
+                byte val = memory.GetByte(programCounter++);
+                switch (val)
+                {
+                    case 0:
+                        operandA = alu.o;
+                        break;
+                    case 1:
+                        operandA = alu.a;
+                        break;
+                    case 2:
+                        operandA = alu.b;
+                        break;
+                    case 3:
+                        operandA = programCounter;
+                        break;
+                    case 4:
+                        Word a = new Word(dataWidth);
+                        a[0] = currentInstruction;
+                        operandA = a;
+                        break;
+                    case 6:
+                        Word b = new Word(dataWidth);
+                        b[0] = operandB;
+                        operandA = b;
+                        break;
+                    case > 63:
+                        operandA = componentRegisters[val - 64];
+                        break;
+                    default:
+                        break;
+                }
+
             }
-            programCounter += new Word(dataWidth, dataWidth);
+            else
+            {
+                operandA = new(dataWidth);
+                for (int i = 0; i < dataWidth; i++)
+                {
+                    operandA[dataWidth - 1 - i] = memory.GetByte(programCounter + new Word(i, dataWidth));
+                }
+                programCounter += new Word(dataWidth, dataWidth);
+            }
         }
 
         public void loadOperandAByte()
         {
-            operandA[0] = memory.GetByte(programCounter);
-            programCounter++;
+            if (opAMode)
+            {
+                byte val = memory.GetByte(programCounter++);
+                switch (val)
+                {
+                    case 0:
+                        operandA[0] = alu.o[0];
+                        break;
+                    case 1:
+                        operandA[0] = alu.a[0];
+                        break;
+                    case 2:
+                        operandA[0] = alu.b[0];
+                        break;
+                    case 3:
+                        operandA[0] = programCounter[0];
+                        break;
+                    case 4:
+                        operandA[0] = currentInstruction;
+                        break;
+                    case 6:
+                        operandA[0] = operandB;
+                        break;
+                    case > 63:
+                        operandA[0] = componentRegisters[val - 64][0];
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            else
+            {
+                operandA[0] = memory.GetByte(programCounter++);
+            }
         }
 
         public void loadOperandB()
         {
-            operandB = memory.GetByte(programCounter);
-            programCounter++;
+            if (opBMode)
+            {
+                byte val = memory.GetByte(programCounter++);
+                switch (val)
+                {
+                    case 0:
+                        operandB = alu.o[0];
+                        break;
+                    case 1:
+                        operandB = alu.a[0];
+                        break;
+                    case 2:
+                        operandB = alu.b[0];
+                        break;
+                    case 3:
+                        operandB = programCounter[0];
+                        break;
+                    case 4:
+                        operandB = currentInstruction;
+                        break;
+                    case 5:
+                        operandB = operandA[0];
+                        break;
+                    case > 63:
+                        operandB = componentRegisters[val - 64][0];
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            else
+            {
+                operandB = memory.GetByte(programCounter++);
+            }
         }
 
         public void HLT()
@@ -253,8 +369,26 @@ namespace RedFoxVM
 
         public void TriggerClock()
         {
-            currentInstruction = memory.GetByte(programCounter);
-            programCounter++;
+            currentInstruction = memory.GetByte(programCounter++);
+            if (currentInstruction > 127)
+            {
+                opAMode = true;
+                currentInstruction -= 128;
+            }
+            else
+            {
+                opAMode = false;
+            }
+
+            if (currentInstruction > 63)
+            {
+                opBMode = true;
+                currentInstruction -= 64;
+            }
+            else
+            {
+                opBMode = false;
+            }
             switch (currentInstruction)
             {
                 case 0:

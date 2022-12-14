@@ -11,9 +11,9 @@ Number(s) Size Info
 0         Word ALU output
 1         Word ALU input A
 2         Word ALU input B
-3         Word Next instruction address
+3         Word Program Counter
 4         Byte Current instruction
 5         Word Operand A
 6         Byte Operand B
-7   - 62  -    Reserved
-63  - 127 Word Component lanes (Not all will be available)
+7   - 63  -    Reserved
+64  - 127 Word Component lanes (Not all will be available)
