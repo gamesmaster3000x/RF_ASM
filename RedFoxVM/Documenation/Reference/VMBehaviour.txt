@@ -1,0 +1,4 @@
+﻿Notes:
+-When a byte is loaded as an operand, only the least significant byte of the operand register is overwritten.
+-When an operand is loaded from a register that doesn't exist, the operand register remains unaltered and execution continues.
+-

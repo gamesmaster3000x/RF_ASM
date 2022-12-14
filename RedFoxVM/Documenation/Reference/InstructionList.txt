@@ -17,8 +17,8 @@ BFG  Word α, Byte β 0A  Branch Flag         Sets the memory address α as the 
 -    -              0D  -                   -
 BSR  Word α         0E  Branch Subroutine   Sets the memory address α as the next to be executed, and pushes the current instruction's address + 1 to the stack.
 RTN  -              0F  Return              Jumps to the address that the top of the stack points to and pops that value out of the stack.
-RRB  Word α, Byte β 10  Read Register Byte  Reads the byte β from the register α. (β == 0 -> Least Significant Byte)
-RRW  Word α         11  Read Register Word  Reads the word from the register α.
+RRB  Byte α, Byte β 10  Read Register Byte  Reads the byte β from the register α. (β == 0 -> Least Significant Byte)
+RRW  Byte α         11  Read Register Word  Reads the word from the register α.
 RMB  Word α, Byte β 12  Read Memory Byte    Reads the byte β from the memory address α. (β == 0 -> Least Significant Byte)
 RMW  Word α         13  Read Memory Word    Reads the word starting at memory address α.
 WRB  Word α, Byte β 14  Write Register Byte Writes the selected byte β to the register α. (β == 0 -> Least Significant Byte)
