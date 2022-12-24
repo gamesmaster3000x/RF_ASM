@@ -17,8 +17,9 @@ namespace Crimson.CSharp.Core
             bool useAutowiredArgs = true;
             if (useAutowiredArgs)
             {
+                Console.WriteLine("Using autowired (debug) program arguments");
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
-                args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "nope" };
+                args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "C:/Crimson/Native/" };
             }
 
             // Start

@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Exception
 
         }
 
-        public UnitGeneratorException(string message, SystemException cause) : base(message, cause)
+        public UnitGeneratorException(string message, System.Exception cause) : base(message, cause)
         {
 
         }

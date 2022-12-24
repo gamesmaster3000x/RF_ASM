@@ -3,7 +3,7 @@
     internal class InternalVariable : InternalStatement
     {
         private CrimsonType type;
-        private string identifier;
+        public string identifier { get; set; }
 
         public InternalVariable(CrimsonType type, string identifier)
         {

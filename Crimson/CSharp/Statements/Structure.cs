@@ -8,7 +8,7 @@
             Body = body;
         }
 
-        public string Identifier { get; }
+        public string Identifier { get; set; }
         public IList<InternalStatement> Body { get; }
     }
 }

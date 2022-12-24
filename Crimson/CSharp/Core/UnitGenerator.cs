@@ -4,6 +4,7 @@ using Crimson.CSharp.Exception;
 using Crimson.CSharp.Statements;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,29 +20,41 @@ namespace Crimson.CSharp.Core
 
         public static readonly string SYSTEM_LIBRARY_PREFIX = "${NATIVE}";
 
+
         private CrimsonCmdArguments Options { get; }
+        private Dictionary<string, CompilationUnit> Units { get; }
+
         public UnitGenerator(CrimsonCmdArguments options)
         {
             Options = options;
+            Units = new Dictionary<string, CompilationUnit>();
         }
 
         public CompilationUnit GetUnitFromPath(string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
-            string path = pathIn;
-            if (pathIn.StartsWith(SYSTEM_LIBRARY_PREFIX))
+            string path = StandardiseNativePath(pathIn);
+            CompilationUnit? unit = LookupUnitByPath(path);
+
+            if (unit != null)
             {
-                path = pathIn.Replace(SYSTEM_LIBRARY_PREFIX, Options.NativeLibraryPath);
+                return unit;
             }
 
-            if (!File.Exists(path))
+            try
             {
-                throw new UnitGeneratorException("Unable to create CompilationUnit for non-existent file at " + path + " (" + pathIn + ")");
+                string programText = string.Join(Environment.NewLine, File.ReadLines(path));
+                return GetUnitFromText(programText);
+            } 
+            catch (IOException io) 
+            {
+                throw new UnitGeneratorException("Unable to find source file for CompilationUnit " + path + " (" + pathIn + ")", io);
+            } 
+            catch (System.Exception e) 
+            {
+                throw new UnitGeneratorException("Error while creating CompilationUnit from " + path + " (" + pathIn + ")", e);
             }
-
-            string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-            return GetUnitFromText(programText);
         }
 
         public CompilationUnit GetUnitFromText(string textIn)
@@ -57,6 +70,30 @@ namespace Crimson.CSharp.Core
             CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
 
             return compilation;
+        }
+
+        public string StandardiseNativePath(string path)
+        {
+            if (path.StartsWith(SYSTEM_LIBRARY_PREFIX))
+            {
+                string result = Path.GetFullPath(path.Replace(SYSTEM_LIBRARY_PREFIX, Options.NativeLibraryPath));
+                return result;
+            }
+            if (!Path.IsPathRooted(path))
+            {
+                string? parentDirectory = Path.GetDirectoryName(Options.CompilationSourcePath);
+                path = Path.Combine(parentDirectory, path);
+            }
+            return path;
+        }
+
+        private CompilationUnit? LookupUnitByPath(string path)
+        {
+            if (Units.ContainsKey(path))
+            {
+                return Units[path];
+            }
+            return null;
         }
     }
 }

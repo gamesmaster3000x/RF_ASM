@@ -23,18 +23,21 @@ namespace Crimson.CSharp.Core
         internal IList<Structure> Structures { get; set; }
         internal IList<GlobalVariable> GlobalVariables { get; set; }
 
-        internal void CombineWith(LinkedUnit lu)
+        internal void CombineWith(string alias, LinkedUnit lu)
         {
             foreach(Function function in lu.Functions)
             {
+                function.Name = alias + "." + function.Name;
                 Functions.Add(function);
             }
             foreach(Structure structure in lu.Structures)
             {
+                structure.Identifier = alias + "." + structure.Identifier;
                 Structures.Add(structure);
             }
             foreach(GlobalVariable variable in lu.GlobalVariables)
             {
+                variable.Intern.identifier = alias + "." + variable.Intern.identifier;
                 GlobalVariables.Add(variable);
             }
         }

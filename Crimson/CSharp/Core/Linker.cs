@@ -29,23 +29,13 @@ namespace Crimson.CSharp.Core
             foreach (Import import in root.Imports)
             {
                 // Get unit
-                string importRelativePath = import.Path;
-                string? resultantPath;
-                if (importRelativePath.StartsWith(UnitGenerator.SYSTEM_LIBRARY_PREFIX))
-                {
-                    resultantPath = importRelativePath;
-                } else
-                {
-                    string? rootDirectory = Path.GetDirectoryName(Options.CompilationSourcePath);
-                    resultantPath = Path.Combine(rootDirectory, importRelativePath); 
-                }
-                CompilationUnit unit = UnitGenerator.GetUnitFromPath(resultantPath);
+                CompilationUnit unit = UnitGenerator.GetUnitFromPath(import.Path);
 
                 // Link unit (recursively)
                 LinkedUnit lu = Link(unit);
 
                 // Combine the root linkedUnit with the results of this import
-                linkedUnit.CombineWith(lu);
+                linkedUnit.CombineWith(import.Alias, lu);
             }
 
             // This linkedUnit contains the results of all imports, and all of the imports' imports (recursively)
