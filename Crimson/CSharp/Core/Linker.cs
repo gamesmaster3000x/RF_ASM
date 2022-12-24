@@ -30,9 +30,16 @@ namespace Crimson.CSharp.Core
             {
                 // Get unit
                 string importRelativePath = import.Path;
-                string? rootDirectory = Path.GetDirectoryName(Options.CompilationSourcePath);
-                string combinedPath = Path.Combine(rootDirectory, importRelativePath); //TODO Linker is causing errors when combining paths (stops discovery of native due to hidden prefix)
-                CompilationUnit unit = UnitGenerator.GetUnitFromPath(combinedPath);
+                string? resultantPath;
+                if (importRelativePath.StartsWith(UnitGenerator.SYSTEM_LIBRARY_PREFIX))
+                {
+                    resultantPath = importRelativePath;
+                } else
+                {
+                    string? rootDirectory = Path.GetDirectoryName(Options.CompilationSourcePath);
+                    resultantPath = Path.Combine(rootDirectory, importRelativePath); 
+                }
+                CompilationUnit unit = UnitGenerator.GetUnitFromPath(resultantPath);
 
                 // Link unit (recursively)
                 LinkedUnit lu = Link(unit);
