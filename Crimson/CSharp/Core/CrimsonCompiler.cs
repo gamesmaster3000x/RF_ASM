@@ -5,26 +5,27 @@ using NLog;
 
 namespace Crimson.CSharp.Core
 {
+    /// <summary>
+    /// The root of all compilation. Initiates and delegates tasks for the compilation process.
+    /// </summary>
     internal class CrimsonCompiler
     {
         private static Logger LOGGER;
         public CrimsonCmdArguments Options { get; }
-        private UnitGenerator UnitGenerator;
-        private Linker linker;
-        private Dictionary<string, CompilationUnit> units;
+        public UnitGenerator UnitGenerator { get; }
+        public Linker Linker { get; }
 
-        public CrimsonCompiler(CrimsonCmdArguments options, UnitGenerator generator, Linker linker)
+        public CrimsonCompiler(CrimsonCmdArguments options, UnitGenerator unitGenerator, Linker linker)
         {
             Options = options;
-            UnitGenerator = generator;
-            linker = linker;
-            units = new Dictionary<string, CompilationUnit>();
+            UnitGenerator = unitGenerator;
+            Linker = linker;
         }
 
         public int FullyCompileFromOptions()
         {
-            string programText = string.Join(Environment.NewLine, File.ReadLines(Options.CompilationSourcePath));
-            CompilationUnit unit = UnitGenerator.GetUnitFromText(programText);
+            CompilationUnit unit = UnitGenerator.GetUnitFromPath(Options.CompilationSourcePath);
+            LinkedUnit compilation = Linker.Link(unit);
             return 1;
         }
 

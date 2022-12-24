@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Crimson.CSharp.Statements
 {
     /// <summary>
-    /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a Compilation.
+    /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.
     /// </summary>
     internal class CompilationUnit
     {

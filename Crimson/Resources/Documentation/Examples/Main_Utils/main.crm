@@ -4,7 +4,7 @@
 // - Package "console" from the system library, with the name "stdout"
 
 #using "utils.crm" as utils
-#using "console" as stdout
+#using "${NATIVE}/console.crm" as stdout
 
 global int counter;
 

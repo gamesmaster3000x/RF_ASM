@@ -35,8 +35,13 @@ namespace Crimson.CSharp.Core
                 Console.WriteLine("CompilationSourcePath: " + options.CompilationSourcePath);
                 Console.WriteLine("CompilationTargetPath: " + options.CompilationTargetPath);
                 Console.WriteLine("NativeLibraryPath: " + options.NativeLibraryPath);
+
                 ConfigureNLog();
-                CrimsonCompiler compiler = new CrimsonCompiler(options, new UnitGenerator());
+
+                UnitGenerator generator = new UnitGenerator(options);
+                Linker linker = new Linker(options, generator);
+                CrimsonCompiler compiler = new CrimsonCompiler(options, generator, linker);
+
                 return Task.FromResult(compiler.FullyCompileFromOptions());
             },
             (error) =>

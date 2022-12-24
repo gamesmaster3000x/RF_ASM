@@ -16,6 +16,10 @@ namespace Crimson.CSharp.Core
             foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
             {
                 string path = importCtx.path.Text;
+                if (path.StartsWith("\"") && path.EndsWith("\""))
+                {
+                    path = path.Substring(1, path.Length - 2);
+                }
                 string id = importCtx.identifier.Text;
                 Import import = new Import(path, id);
                 compilation.AddImport(import);
