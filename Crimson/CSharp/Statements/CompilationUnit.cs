@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Statements
 {
+    /// <summary>
+    /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a Compilation.
+    /// </summary>
     internal class CompilationUnit
     {
         private IList<Import> imports = new List<Import>();

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Core
 {
-    internal class CrimsonUnitGenerator
+    internal class UnitGenerator
     {
 
-        public CrimsonUnitGenerator()
+        public UnitGenerator()
         {
         }
 

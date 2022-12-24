@@ -9,13 +9,15 @@ namespace Crimson.CSharp.Core
     {
         private static Logger LOGGER;
         public CrimsonCmdArguments Options { get; }
-        private CrimsonUnitGenerator UnitGenerator;
+        private UnitGenerator UnitGenerator;
+        private Linker linker;
         private Dictionary<string, CompilationUnit> units;
 
-        public CrimsonCompiler(CrimsonCmdArguments options, CrimsonUnitGenerator generator)
+        public CrimsonCompiler(CrimsonCmdArguments options, UnitGenerator generator, Linker linker)
         {
             Options = options;
             UnitGenerator = generator;
+            linker = linker;
             units = new Dictionary<string, CompilationUnit>();
         }
 
