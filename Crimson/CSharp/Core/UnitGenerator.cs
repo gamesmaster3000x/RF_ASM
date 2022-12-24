@@ -45,7 +45,7 @@ namespace Crimson.CSharp.Core
             try
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-                return GetUnitFromText(programText);
+                return GetUnitFromText(path + " (" + pathIn + ")", programText);
             } 
             catch (IOException io) 
             {
@@ -57,13 +57,16 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public CompilationUnit GetUnitFromText(string textIn)
+        public CompilationUnit GetUnitFromText(string sourceName, string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
             CrimsonLexer lexer = new CrimsonLexer(a4is);
             CommonTokenStream cts = new CommonTokenStream(lexer);
             CrimsonParser parser = new CrimsonParser(cts);
+
+            lexer.AddErrorListener(new LexerErrorListener(sourceName));
+            parser.ErrorHandler = new ParserErrorStrategy(sourceName);
 
             CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
             CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();

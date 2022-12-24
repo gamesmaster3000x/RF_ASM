@@ -7,6 +7,7 @@ namespace Crimson.CSharp.Core
 {
     internal class CrimsonCompiliationUnitVisitor: CrimsonBaseVisitor<object>
     {
+
         public override CompilationUnit VisitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context)
         {
             CompilationUnit compilation = new CompilationUnit();
