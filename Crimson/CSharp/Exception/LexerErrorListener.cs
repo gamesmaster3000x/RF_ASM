@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Crimson.CSharp.Exception
 {
     internal class LexerErrorListener : IAntlrErrorListener<int>
     {
+        public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private string Path { get; set; }
         public LexerErrorListener(string path)
@@ -18,7 +20,7 @@ namespace Crimson.CSharp.Exception
 
         void IAntlrErrorListener<int>.SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("There was a lexer error");
         }
     }
 }

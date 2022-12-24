@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Crimson.CSharp.Exception
 {
     internal class ParserErrorStrategy : IAntlrErrorStrategy
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private string Path { get; set; }
         public ParserErrorStrategy(string path)
@@ -18,37 +20,39 @@ namespace Crimson.CSharp.Exception
 
         bool IAntlrErrorStrategy.InErrorRecoveryMode(Parser parser)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.InErrorRecoveryMode=false");
+            return false;
         }
 
         void IAntlrErrorStrategy.Recover(Parser parser, RecognitionException e)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.Recover");
         }
 
         IToken IAntlrErrorStrategy.RecoverInline(Parser parser)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.RecoverInline");
+            return null;
         }
 
         void IAntlrErrorStrategy.ReportError(Parser parser, RecognitionException e)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.ReportError");
         }
 
         void IAntlrErrorStrategy.ReportMatch(Parser parser)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.ReportMatch");
         }
 
         void IAntlrErrorStrategy.Reset(Parser parser)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.Reset");
         }
 
         void IAntlrErrorStrategy.Sync(Parser parser)
         {
-            throw new NotImplementedException();
+            LOGGER.Error("IAntlrErrorStrategy.Sync");
         }
     }
 }
