@@ -15,24 +15,29 @@ namespace Crimson.CSharp.Statements
         private IList<Structure> structures = new List<Structure>();
         private IList<GlobalVariable> globalVariables = new List<GlobalVariable>();
 
+        internal IList<Import> Imports { get => imports; set => imports = value; }
+        internal IList<Function> Functions { get => functions; set => functions = value; }
+        internal IList<Structure> Structures { get => structures; set => structures = value; }
+        internal IList<GlobalVariable> GlobalVariables { get => globalVariables; set => globalVariables = value; }
+
         public void AddImport(Import import)
         {
-            imports.Add(import);
+            Imports.Add(import);
         }
 
         public void AddStatement(GlobalStatement statement)
         {
             if (statement is Function)
             {
-                functions.Add((Function)statement);
+                Functions.Add((Function)statement);
             }
             else if (statement is GlobalVariable)
             {
-                globalVariables.Add((GlobalVariable)statement);
+                GlobalVariables.Add((GlobalVariable)statement);
             }
             else if (statement is Structure)
             {
-                structures.Add((Structure)statement);
+                Structures.Add((Structure)statement);
             }
             else
             {
