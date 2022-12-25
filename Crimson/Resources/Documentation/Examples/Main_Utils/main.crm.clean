@@ -1,1 +1,0 @@
-package main (utils(utils.crm) utils, console(system) stdout) {function main [int] () {}}} int i;allocate i 4; i = 4;  stdout.write(i);return utils.multiply(i, 5);}}

@@ -19,6 +19,7 @@ namespace Crimson.CSharp.Core
             GlobalVariables = globalVariables;
         }
 
+        internal Dictionary<string, string> Aliases { get; set; }
         internal IList<Function> Functions { get; set; }
         internal IList<Structure> Structures { get; set; }
         internal IList<GlobalVariable> GlobalVariables { get; set; }

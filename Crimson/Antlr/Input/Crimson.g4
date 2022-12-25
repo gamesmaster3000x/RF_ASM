@@ -35,7 +35,7 @@ internalStatement
     | assemblyCall 					#FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
+    : type Identifier (Equals resolvableValue)? SemiColon
     ;
 assignVariable
     : Identifier Equals resolvableValue SemiColon

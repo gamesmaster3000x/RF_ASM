@@ -3,7 +3,7 @@
 // - Package "utils" from the file "utils.crm", with the name "utils"
 // - Package "console" from the system library, with the name "stdout"
 
-#using "utils.crm" as utils
+#using "utils/utils.crm" as utils
 #using "${NATIVE}/console.crm" as stdout
 
 global int counter;

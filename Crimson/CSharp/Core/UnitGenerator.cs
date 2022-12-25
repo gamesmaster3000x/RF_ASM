@@ -45,7 +45,9 @@ namespace Crimson.CSharp.Core
             try
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-                return GetUnitFromText(path + " (" + pathIn + ")", programText);
+                CompilationUnit newUnit = GetUnitFromText(path + " (" + pathIn + ")", programText);
+                Units[path] = newUnit;
+                return newUnit;
             } 
             catch (IOException io) 
             {

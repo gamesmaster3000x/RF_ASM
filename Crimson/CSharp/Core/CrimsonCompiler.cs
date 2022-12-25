@@ -25,6 +25,7 @@ namespace Crimson.CSharp.Core
         public int FullyCompileFromOptions()
         {
             CompilationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.CompilationSourcePath);
+            Compilation compilation = new Compilation(rootUnit, UnitGenerator);
             LinkedUnit linkedUnit = Linker.Link(rootUnit);
             return 1;
         }
