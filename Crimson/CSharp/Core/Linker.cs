@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Core
             // Copy all functions, structures and global variables as-is (they need no changes)
             linked.CopyAllFrom(compilation.RootUnit);
 
-            // Now need to copy other functions, while editing function calls in the proces...
+            // TODO Now need to copy other functions, while editing function calls in the proces...
 
             return null;
         }
