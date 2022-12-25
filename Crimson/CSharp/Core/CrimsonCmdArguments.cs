@@ -37,6 +37,15 @@ namespace Crimson.CSharp.Core
             set { _nativeLibraryPath = Path.GetFullPath(value); }
         }
 
+        private string _entryFunctionName;
+        [Option(longName: "entry", shortName: 'e', Required = false, HelpText = "The name of the function where execution should " +
+            "start in the primary source file.", Default = "main")]
+        public string EntryFunctionName
+        {
+            get { return _entryFunctionName; }
+            set { _entryFunctionName = value; }
+        }
+
         [Option(longName: "clean", shortName: 'c', Required = false, Default = true, HelpText = "Should the compiler clean up its temporary files?")]
         public bool CleanFiles { get; set; }
     }

@@ -23,27 +23,27 @@ namespace Crimson.CSharp.Core
             var dependencies = new Dictionary<string, CompilationUnit>();
 
             // For each import
-            foreach (Import import in root.Imports)
+            foreach (var i in root.Imports)
             {
                 // Get the unit it refers to 
-                CompilationUnit unit = UnitGenerator.GetUnitFromPath(import.Path);
+                CompilationUnit unit = UnitGenerator.GetUnitFromPath(i.Value.Path);
 
                 // Get that units' dependencies (recursively)
                 var internalDependencies = FindDependencies(unit);
-                internalDependencies.Add(import.Path, unit);
+                internalDependencies.Add(i.Value.Path, unit);
 
                 // Add each dependency if it is not already added
                 foreach (var dependency in internalDependencies)
                 {
-                    if (dependencies.ContainsKey(import.Path))
+                    if (dependencies.ContainsKey(i.Value.Path))
                     {
-                        LOGGER.Info("Duplicate dependency " + import.Path + " called " + import.Alias);
+                        LOGGER.Info("Duplicate dependency " + i.Value.Path + " called " + i.Value.Alias);
                     }
                     else
                     {
                         dependencies[dependency.Key] = dependency.Value;
                     }
-                    dependencies[import.Path] = unit;
+                    dependencies[i.Value.Path] = unit;
                 }
             }
             

@@ -13,34 +13,37 @@ namespace Crimson.CSharp.Statements
     /// </summary>
     internal class CompilationUnit
     {
-        private IList<Import> imports = new List<Import>();
-        private IList<Function> functions = new List<Function>();
-        private IList<Structure> structures = new List<Structure>();
-        private IList<GlobalVariable> globalVariables = new List<GlobalVariable>();
+        private Dictionary<string, Import> imports = new Dictionary<string, Import>();
+        private Dictionary<string, Function> functions = new Dictionary<string, Function>();
+        private Dictionary<string, Structure> structures = new Dictionary<string, Structure>();
+        private Dictionary<string, GlobalVariable> globalVariables = new Dictionary<string, GlobalVariable>();
 
-        internal IList<Import> Imports { get => imports; set => imports = value; }
-        internal IList<Function> Functions { get => functions; set => functions = value; }
-        internal IList<Structure> Structures { get => structures; set => structures = value; }
-        internal IList<GlobalVariable> GlobalVariables { get => globalVariables; set => globalVariables = value; }
+        internal Dictionary<string, Import> Imports { get => imports; set => imports = value; }
+        internal Dictionary<string, Function> Functions { get => functions; set => functions = value; }
+        internal Dictionary<string, Structure> Structures { get => structures; set => structures = value; }
+        internal Dictionary<string, GlobalVariable> GlobalVariables { get => globalVariables; set => globalVariables = value; }
 
         public void AddImport(Import import)
         {
-            Imports.Add(import);
+            Imports.Add(import.Alias, import);
         }
 
         public void AddStatement(GlobalStatement statement)
         {
             if (statement is Function)
             {
-                Functions.Add((Function)statement);
+                Function f = (Function)statement;
+                Functions.Add(f.Name, f);
             }
             else if (statement is GlobalVariable)
             {
-                GlobalVariables.Add((GlobalVariable)statement);
+                GlobalVariable v = (GlobalVariable)statement;
+                GlobalVariables.Add(v.Intern.identifier, v);
             }
             else if (statement is Structure)
             {
-                Structures.Add((Structure)statement);
+                Structure s = (Structure)statement;
+                Structures.Add(s.Identifier, s);
             }
             else
             {

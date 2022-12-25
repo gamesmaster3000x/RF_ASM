@@ -12,6 +12,10 @@ namespace Crimson.CSharp.Core
     /// </summary>
     internal class LinkedUnit
     {
+        public LinkedUnit(): this(new List<Function>(), new List<Structure>(), new List<GlobalVariable>())
+        {
+        }
+
         public LinkedUnit(IList<Function> functions, IList<Structure> structures, IList<GlobalVariable> globalVariables)
         {
             Functions = functions;
@@ -19,27 +23,27 @@ namespace Crimson.CSharp.Core
             GlobalVariables = globalVariables;
         }
 
-        internal Dictionary<string, string> Aliases { get; set; }
+        public object EntryFunction { get; internal set; }
         internal IList<Function> Functions { get; set; }
         internal IList<Structure> Structures { get; set; }
         internal IList<GlobalVariable> GlobalVariables { get; set; }
 
-        internal void CombineWith(string alias, LinkedUnit lu)
+        internal void CopyAllFrom(CompilationUnit unit)
         {
-            foreach(Function function in lu.Functions)
+            foreach(var f in unit.Functions)
             {
-                function.Name = alias + "." + function.Name;
-                Functions.Add(function);
+                f.Value.Name = f.Value.Name;
+                Functions.Add(f.Value);
             }
-            foreach(Structure structure in lu.Structures)
+            foreach(var s in unit.Structures)
             {
-                structure.Identifier = alias + "." + structure.Identifier;
-                Structures.Add(structure);
+                s.Value.Identifier = s.Value.Identifier;
+                Structures.Add(s.Value);
             }
-            foreach(GlobalVariable variable in lu.GlobalVariables)
+            foreach(var g in unit.GlobalVariables)
             {
-                variable.Intern.identifier = alias + "." + variable.Intern.identifier;
-                GlobalVariables.Add(variable);
+                g.Value.Intern.identifier = g.Value.Intern.identifier;
+                GlobalVariables.Add(g.Value);
             }
         }
     }

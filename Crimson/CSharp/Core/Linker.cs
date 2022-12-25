@@ -8,11 +8,9 @@ namespace Crimson.CSharp.Core
     internal class Linker
     {
         public CrimsonCmdArguments Options { get; }
-        public UnitGenerator UnitGenerator { get; }
         public Linker(CrimsonCmdArguments options, UnitGenerator generator)
         {
             Options = options;
-            UnitGenerator = generator;
         }
 
         /// <summary>
@@ -20,26 +18,18 @@ namespace Crimson.CSharp.Core
         /// </summary>
         /// <param name="root"></param>
         /// <returns>The linked LinkedUnit resulting from the root CompilationUnit.</returns>
-        public LinkedUnit Link(CompilationUnit root)
+        public LinkedUnit Link(Compilation compilation)
         {
-            // Copy non-linkable features to output
-            LinkedUnit linkedUnit = new LinkedUnit(root.Functions, root.Structures, root.GlobalVariables);
+            // Set the entry function for the LinkedUnit
+            LinkedUnit linked = new LinkedUnit();
+            linked.EntryFunction = compilation.RootUnit.Functions[Options.EntryFunctionName];
 
-            // Link imports
-            foreach (Import import in root.Imports)
-            {
-                // Get unit
-                CompilationUnit unit = UnitGenerator.GetUnitFromPath(import.Path);
+            // Copy all functions, structures and global variables as-is (they need no changes)
+            linked.CopyAllFrom(compilation.RootUnit);
 
-                // Link unit (recursively)
-                LinkedUnit lu = Link(unit);
+            // Now need to copy other functions, while editing function calls in the proces...
 
-                // Combine the root linkedUnit with the results of this import
-                linkedUnit.CombineWith(import.Alias, lu);
-            }
-
-            // This linkedUnit contains the results of all imports, and all of the imports' imports (recursively)
-            return linkedUnit;
+            return null;
         }
     }
 }
