@@ -7,8 +7,8 @@ namespace Crimson.CSharp.Core
     /// </summary>
     internal class Linker
     {
-        public CrimsonCmdArguments Options { get; }
-        public Linker(CrimsonCmdArguments options, UnitGenerator generator)
+        public Options Options { get; }
+        public Linker(Options options, UnitGenerator generator)
         {
             Options = options;
         }
@@ -18,7 +18,7 @@ namespace Crimson.CSharp.Core
         /// </summary>
         /// <param name="root"></param>
         /// <returns>The linked LinkedUnit resulting from the root CompilationUnit.</returns>
-        public LinkedUnit Link(Compilation compilation)
+        public LinkedUnit Link(Translation compilation)
         {
             // Set the entry function for the LinkedUnit
             LinkedUnit linked = new LinkedUnit();

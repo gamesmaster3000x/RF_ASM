@@ -8,14 +8,14 @@ namespace Crimson.CSharp.Core
     /// <summary>
     /// The root of all compilation. Initiates and delegates tasks for the compilation process.
     /// </summary>
-    internal class CrimsonCompiler
+    internal class CrimsonTranslator
     {
         private static Logger LOGGER;
-        public CrimsonCmdArguments Options { get; }
+        public Options Options { get; }
         public UnitGenerator UnitGenerator { get; }
         public Linker Linker { get; }
 
-        public CrimsonCompiler(CrimsonCmdArguments options, UnitGenerator unitGenerator, Linker linker)
+        public CrimsonTranslator(Options options, UnitGenerator unitGenerator, Linker linker)
         {
             Options = options;
             UnitGenerator = unitGenerator;
@@ -32,8 +32,8 @@ namespace Crimson.CSharp.Core
              * This stage results in a collection of individual units which contain ComplexStatements exactly describing the input.
              * 
              */
-            CompilationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.CompilationSourcePath); // Get the root unit (ie. main.crm)
-            Compilation compilation = new Compilation(rootUnit, UnitGenerator); // Generate dependency units (all resources are now accessible)
+            TranslationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
+            Translation compilation = new Translation(rootUnit, UnitGenerator); // Generate dependency units (all resources are now accessible)
 
 
             /*

@@ -37,17 +37,17 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.compilationUnit"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.translationUnit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context) { }
+	public virtual void EnterTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.compilationUnit"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.translationUnit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context) { }
+	public virtual void ExitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// <para>The default implementation does nothing.</para>

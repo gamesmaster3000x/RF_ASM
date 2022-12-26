@@ -1,7 +1,7 @@
 grammar Crimson;
 
 // Parser rules
-compilationUnit 
+translationUnit 
     : (imports+=importUnit)* (statements+=globalStatement)* eof=EOF
     ;
 

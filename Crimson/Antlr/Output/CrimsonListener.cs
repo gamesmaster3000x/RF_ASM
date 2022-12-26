@@ -32,15 +32,15 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface ICrimsonListener : IParseTreeListener {
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.compilationUnit"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.translationUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context);
+	void EnterTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.compilationUnit"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.translationUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context);
+	void ExitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>

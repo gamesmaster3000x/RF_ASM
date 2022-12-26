@@ -7,29 +7,29 @@ using CommandLine;
 
 namespace Crimson.CSharp.Core
 {
-    internal class CrimsonCmdArguments
+    internal class Options
     {
-        private string _compilationSourcePath;
-        [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the source of the root compilation. " +
+        private string _translationSourcePath;
+        [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
             "If no file extension given, .rfp will be assumed.")]
-        public string CompilationSourcePath
+        public string TranslationSourcePath
         {
-            get { return _compilationSourcePath; }
-            set { _compilationSourcePath = Path.GetFullPath(value); }
+            get { return _translationSourcePath; }
+            set { _translationSourcePath = Path.GetFullPath(value); }
         }
 
-        private string _compilationTargetPath;
+        private string _translationTargetPath;
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
             "If no file extension provided, will assume .rfp.")]
-        public string CompilationTargetPath
+        public string TranslationTargetPath
         {
-            get { return _compilationTargetPath; }
-            set { _compilationTargetPath = Path.GetFullPath(value); }
+            get { return _translationTargetPath; }
+            set { _translationTargetPath = Path.GetFullPath(value); }
         }
 
         private string _nativeLibraryPath;
         [Option(longName: "native", shortName: 'n', Required = false, HelpText = "Path to the native Crimson library. " +
-            "If not provided, will use a version packaged with the compiler. " +
+            "If not provided, will use a packaged version. " +
             "If provided, but a required file is not found, the file will be created from the packaged library.")]
         public string NativeLibraryPath
         {
@@ -48,5 +48,9 @@ namespace Crimson.CSharp.Core
 
         [Option(longName: "clean", shortName: 'c', Required = false, Default = true, HelpText = "Should the compiler clean up its temporary files?")]
         public bool CleanFiles { get; set; }
+
+        [Option(Group = "platform")] public bool CrimsonBasic { get; set; }
+        [Option(Group = "platform")] public bool RFASM { get; set; }
+
     }
 }

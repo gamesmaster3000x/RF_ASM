@@ -44,7 +44,7 @@ public partial class CrimsonParser : Parser {
 		Dot=27, SemiColon=28, Underscore=29, Hashtag=30, Quote=31, SkipTokens=32, 
 		LineComment=33, Number=34, String=35, Identifier=36;
 	public const int
-		RULE_compilationUnit = 0, RULE_importUnit = 1, RULE_globalStatement = 2, 
+		RULE_translationUnit = 0, RULE_importUnit = 1, RULE_globalStatement = 2, 
 		RULE_globalVariableDeclaration = 3, RULE_functionDeclaration = 4, RULE_functionBody = 5, 
 		RULE_internalStatement = 6, RULE_internalVariableDeclaration = 7, RULE_assignVariable = 8, 
 		RULE_ifBlock = 9, RULE_condition = 10, RULE_elseIfBlock = 11, RULE_elseBlock = 12, 
@@ -53,7 +53,7 @@ public partial class CrimsonParser : Parser {
 		RULE_parameter = 20, RULE_structureDeclaration = 21, RULE_structureBody = 22, 
 		RULE_type = 23, RULE_array = 24;
 	public static readonly string[] ruleNames = {
-		"compilationUnit", "importUnit", "globalStatement", "globalVariableDeclaration", 
+		"translationUnit", "importUnit", "globalStatement", "globalVariableDeclaration", 
 		"functionDeclaration", "functionBody", "internalStatement", "internalVariableDeclaration", 
 		"assignVariable", "ifBlock", "condition", "elseIfBlock", "elseBlock", 
 		"assemblyCall", "functionCall", "arguments", "allocateMemory", "functionReturn", 
@@ -107,7 +107,7 @@ public partial class CrimsonParser : Parser {
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
-	public partial class CompilationUnitContext : ParserRuleContext {
+	public partial class TranslationUnitContext : ParserRuleContext {
 		public ImportUnitContext _importUnit;
 		public IList<ImportUnitContext> _imports = new List<ImportUnitContext>();
 		public GlobalStatementContext _globalStatement;
@@ -126,33 +126,33 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public GlobalStatementContext globalStatement(int i) {
 			return GetRuleContext<GlobalStatementContext>(i);
 		}
-		public CompilationUnitContext(ParserRuleContext parent, int invokingState)
+		public TranslationUnitContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_compilationUnit; } }
+		public override int RuleIndex { get { return RULE_translationUnit; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterCompilationUnit(this);
+			if (typedListener != null) typedListener.EnterTranslationUnit(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitCompilationUnit(this);
+			if (typedListener != null) typedListener.ExitTranslationUnit(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitCompilationUnit(this);
+			if (typedVisitor != null) return typedVisitor.VisitTranslationUnit(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public CompilationUnitContext compilationUnit() {
-		CompilationUnitContext _localctx = new CompilationUnitContext(Context, State);
-		EnterRule(_localctx, 0, RULE_compilationUnit);
+	public TranslationUnitContext translationUnit() {
+		TranslationUnitContext _localctx = new TranslationUnitContext(Context, State);
+		EnterRule(_localctx, 0, RULE_translationUnit);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);

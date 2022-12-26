@@ -33,11 +33,11 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.compilationUnit"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.translationUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCompilationUnit([NotNull] CrimsonParser.CompilationUnitContext context);
+	Result VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>

@@ -28,7 +28,7 @@ namespace Crimson.CSharp.Core
         internal IList<Structure> Structures { get; set; }
         internal IList<GlobalVariable> GlobalVariables { get; set; }
 
-        internal void CopyAllFrom(CompilationUnit unit)
+        internal void CopyAllFrom(TranslationUnit unit)
         {
             foreach(var f in unit.Functions)
             {

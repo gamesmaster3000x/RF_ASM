@@ -77,7 +77,7 @@ String
 Identifier
 
 rule names:
-compilationUnit
+translationUnit
 importUnit
 globalStatement
 globalVariableDeclaration

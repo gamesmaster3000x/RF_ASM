@@ -21,21 +21,21 @@ namespace Crimson.CSharp.Core
         public static readonly string SYSTEM_LIBRARY_PREFIX = "${NATIVE}";
 
 
-        private CrimsonCmdArguments Options { get; }
-        private Dictionary<string, CompilationUnit> Units { get; }
+        private Options Options { get; }
+        private Dictionary<string, TranslationUnit> Units { get; }
 
-        public UnitGenerator(CrimsonCmdArguments options)
+        public UnitGenerator(Options options)
         {
             Options = options;
-            Units = new Dictionary<string, CompilationUnit>();
+            Units = new Dictionary<string, TranslationUnit>();
         }
 
-        public CompilationUnit GetUnitFromPath(string pathIn)
+        public TranslationUnit GetUnitFromPath(string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
             string path = StandardiseNativePath(pathIn);
-            CompilationUnit? unit = LookupUnitByPath(path);
+            TranslationUnit? unit = LookupUnitByPath(path);
 
             if (unit != null)
             {
@@ -45,7 +45,7 @@ namespace Crimson.CSharp.Core
             try
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-                CompilationUnit newUnit = GetUnitFromText(path + " (" + pathIn + ")", programText);
+                TranslationUnit newUnit = GetUnitFromText(path + " (" + pathIn + ")", programText);
                 Units[path] = newUnit;
                 return newUnit;
             } 
@@ -59,7 +59,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public CompilationUnit GetUnitFromText(string sourceName, string textIn)
+        public TranslationUnit GetUnitFromText(string sourceName, string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
@@ -70,11 +70,11 @@ namespace Crimson.CSharp.Core
             lexer.AddErrorListener(new LexerErrorListener(sourceName));
             parser.ErrorHandler = new ParserErrorStrategy(sourceName);
 
-            CrimsonParser.CompilationUnitContext cuCtx = parser.compilationUnit();
+            CrimsonParser.TranslationUnitContext cuCtx = parser.translationUnit();
             CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();
-            CompilationUnit compilation = visitor.VisitCompilationUnit(cuCtx);
+            TranslationUnit translationUnit = visitor.VisitTranslationUnit(cuCtx);
 
-            return compilation;
+            return translationUnit;
         }
 
         public string StandardiseNativePath(string path)
@@ -86,13 +86,13 @@ namespace Crimson.CSharp.Core
             }
             if (!Path.IsPathRooted(path))
             {
-                string? parentDirectory = Path.GetDirectoryName(Options.CompilationSourcePath);
+                string? parentDirectory = Path.GetDirectoryName(Options.TranslationSourcePath);
                 path = Path.Combine(parentDirectory, path);
             }
             return path;
         }
 
-        private CompilationUnit? LookupUnitByPath(string path)
+        private TranslationUnit? LookupUnitByPath(string path)
         {
             if (Units.ContainsKey(path))
             {

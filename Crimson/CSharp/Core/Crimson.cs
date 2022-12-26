@@ -7,7 +7,7 @@ using System.IO.Abstractions;
 
 namespace Crimson.CSharp.Core
 {
-    internal class CrimsonProgram
+    internal class Crimson
     {
 
         private static Logger? LOGGER;
@@ -19,29 +19,37 @@ namespace Crimson.CSharp.Core
             {
                 Console.WriteLine("Using autowired (debug) program arguments");
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
-                args = new string[] { "-s", testProgramsPath + "Main_Utils/main.crm", "-t", "out", "-n", "C:/Crimson/Native/" };
+                args = new string[] { 
+                    "-s", testProgramsPath + "Main_Utils/main.crm", 
+                    "-t", "out", 
+                    "-n", "C:/Crimson/Native/" , 
+                    "--rfasm"
+                };
             }
 
             // Start
             Console.WriteLine("");
             Console.WriteLine(" ~C~ ");
-            Console.WriteLine("Crimson Language Compiler, by GenElectrovise, for GamesMaster3000X");
+            Console.WriteLine("Crimson Language Translator, by GenElectrovise, for GamesMaster3000X");
             Console.WriteLine("https://github.com/gamesmaster3000x/RF_ASM");
             Console.WriteLine(" ~C~ ");
             Console.WriteLine("");
 
-            Console.WriteLine("Parsing program arguments");
-            return CommandLine.Parser.Default.ParseArguments<CrimsonCmdArguments>(args).MapResult((options) =>
+            Console.WriteLine("Parsing options");
+            return CommandLine.Parser.Default.ParseArguments<Options>(args).MapResult((options) =>
             {
-                Console.WriteLine("CompilationSourcePath: " + options.CompilationSourcePath);
-                Console.WriteLine("CompilationTargetPath: " + options.CompilationTargetPath);
-                Console.WriteLine("NativeLibraryPath: " + options.NativeLibraryPath);
+                Console.WriteLine("  Option: CompilationSourcePath: " + options.TranslationSourcePath);
+                Console.WriteLine("  Option: CompilationTargetPath: " + options.TranslationTargetPath);
+                Console.WriteLine("  Option: NativeLibraryPath: " + options.NativeLibraryPath);
+                Console.WriteLine("  Option: CleanFiles: " + options.CleanFiles);
+                Console.WriteLine("  Option: (Platform) CrimsonBasic: " + options.CrimsonBasic);
+                Console.WriteLine("  Option: (Platform) RFASM: " + options.RFASM);
 
                 ConfigureNLog();
 
                 UnitGenerator generator = new UnitGenerator(options);
                 Linker linker = new Linker(options, generator);
-                CrimsonCompiler compiler = new CrimsonCompiler(options, generator, linker);
+                CrimsonTranslator compiler = new CrimsonTranslator(options, generator, linker);
 
                 return Task.FromResult(compiler.FullyCompileFromOptions());
             },

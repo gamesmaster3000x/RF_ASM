@@ -3,30 +3,30 @@ using NLog;
 
 namespace Crimson.CSharp.Core
 {
-    internal class Compilation
+    internal class Translation
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public CompilationUnit RootUnit { get; }
+        public TranslationUnit RootUnit { get; }
         internal UnitGenerator UnitGenerator { get; }
-        internal Dictionary<string, CompilationUnit> Dependencies { get; }
+        internal Dictionary<string, TranslationUnit> Dependencies { get; }
 
-        public Compilation(CompilationUnit rootUnit, UnitGenerator unitGenerator)
+        public Translation(TranslationUnit rootUnit, UnitGenerator unitGenerator)
         {
             RootUnit = rootUnit;
             UnitGenerator = unitGenerator;
             Dependencies = FindDependencies(rootUnit);
         }
 
-        private Dictionary<string, CompilationUnit> FindDependencies(CompilationUnit root)
+        private Dictionary<string, TranslationUnit> FindDependencies(TranslationUnit root)
         {
-            var dependencies = new Dictionary<string, CompilationUnit>();
+            var dependencies = new Dictionary<string, TranslationUnit>();
 
             // For each import
             foreach (var i in root.Imports)
             {
                 // Get the unit it refers to 
-                CompilationUnit unit = UnitGenerator.GetUnitFromPath(i.Value.Path);
+                TranslationUnit unit = UnitGenerator.GetUnitFromPath(i.Value.Path);
 
                 // Get that units' dependencies (recursively)
                 var internalDependencies = FindDependencies(unit);
