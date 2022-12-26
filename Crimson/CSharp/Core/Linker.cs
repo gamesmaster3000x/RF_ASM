@@ -7,8 +7,8 @@ namespace Crimson.CSharp.Core
     /// </summary>
     internal class Linker
     {
-        public Options Options { get; }
-        public Linker(Options options, UnitGenerator generator)
+        public CrimsonOptions Options { get; }
+        public Linker(CrimsonOptions options, UnitGenerator generator)
         {
             Options = options;
         }

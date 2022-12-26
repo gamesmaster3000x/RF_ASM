@@ -7,7 +7,7 @@ using CommandLine;
 
 namespace Crimson.CSharp.Core
 {
-    internal class Options
+    internal class CrimsonOptions
     {
         private string _translationSourcePath;
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +

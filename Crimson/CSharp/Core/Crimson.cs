@@ -36,7 +36,7 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("");
 
             Console.WriteLine("Parsing options");
-            return CommandLine.Parser.Default.ParseArguments<Options>(args).MapResult((options) =>
+            return CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).MapResult((options) =>
             {
                 Console.WriteLine("  Option: CompilationSourcePath: " + options.TranslationSourcePath);
                 Console.WriteLine("  Option: CompilationTargetPath: " + options.TranslationTargetPath);

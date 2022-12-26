@@ -11,11 +11,11 @@ namespace Crimson.CSharp.Core
     internal class CrimsonTranslator
     {
         private static Logger LOGGER;
-        public Options Options { get; }
+        public CrimsonOptions Options { get; }
         public UnitGenerator UnitGenerator { get; }
         public Linker Linker { get; }
 
-        public CrimsonTranslator(Options options, UnitGenerator unitGenerator, Linker linker)
+        public CrimsonTranslator(CrimsonOptions options, UnitGenerator unitGenerator, Linker linker)
         {
             Options = options;
             UnitGenerator = unitGenerator;

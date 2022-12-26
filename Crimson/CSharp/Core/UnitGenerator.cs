@@ -21,10 +21,10 @@ namespace Crimson.CSharp.Core
         public static readonly string SYSTEM_LIBRARY_PREFIX = "${NATIVE}";
 
 
-        private Options Options { get; }
+        private CrimsonOptions Options { get; }
         private Dictionary<string, TranslationUnit> Units { get; }
 
-        public UnitGenerator(Options options)
+        public UnitGenerator(CrimsonOptions options)
         {
             Options = options;
             Units = new Dictionary<string, TranslationUnit>();
