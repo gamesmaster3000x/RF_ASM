@@ -24,16 +24,21 @@ namespace Crimson.CSharp.Core
 
         public int FullyCompileFromOptions()
         {
-            // Get the root unit (ie. main.crm)
-            CompilationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.CompilationSourcePath);
+            /*
+             * == PARSING STAGE == 
+             * 
+             * The syntax of the source files must be parsed from text to an abstract syntax tree.
+             * In this case, the work is done by ANTLR, using the Crimson.g4 grammar file.
+             * This stage results in a collection of individual units which contain ComplexStatements exactly describing the input.
+             * 
+             */
+            CompilationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.CompilationSourcePath); // Get the root unit (ie. main.crm)
+            Compilation compilation = new Compilation(rootUnit, UnitGenerator); // Generate dependency units (all resources are now accessible)
 
-            // Generate dependency units (all resources are now accessible)
-            Compilation compilation = new Compilation(rootUnit, UnitGenerator);
-
-            // Link FunctionCalls
-            LinkedUnit linkedUnit = Linker.Link(compilation);
 
             /*
+             * == FLATTENING STAGE == 
+             * 
              * Now we need to break this list into simple statements - a strange kind of Crimson/RFASM mash-up.
              * This strange intermediate language will have some high-level features from Crimson, but will use a flattened control flow.
              * This basically means that conditions will be replaced with jumps.
@@ -61,6 +66,32 @@ namespace Crimson.CSharp.Core
              *      return false;
              *  ::end_condition
              *  ::endfunc_main
+             */
+
+
+            /*
+             * == LINKING STAGE == 
+             * 
+             * Now that all of the statements have been flattened into one list, we can iterate through and link the FunctionCalls.
+             * 
+             */
+            // Link FunctionCalls
+            // LinkedUnit linkedUnit = Linker.Link(compilation);
+
+
+            /*
+             * == TRANSLATION STAGE ==
+             * 
+             * All statements are now translated to RFASM statements
+             * 
+             */
+
+
+            /*
+             * == ASSEMBLING STAGE == 
+             * 
+             * If option is specified, the RFASM compiler is now invoked to compile the enormous RFP file to RFB
+             * 
              */
 
             return 1;
