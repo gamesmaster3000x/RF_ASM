@@ -52,8 +52,8 @@ namespace Crimson.CSharp.Core
              * >> main.crmrfp
              *  ::func_main
              *  int i = 5
-             *  bool b = (i == 4)
              *  
+             *  bool b = (i == 4)               // Condition has been extracted
              *  JNE b, true, "not_equal"        // Jump if condition false (ie. i != 4)
              *      i = 6
              *      JMP "end_condition"
