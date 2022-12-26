@@ -82,15 +82,15 @@ namespace Crimson.CSharp.Core
             /*
              * == TRANSLATION STAGE ==
              * 
-             * All statements are now translated to RFASM statements
+             * All statements are now translated to CrimsonBasic statements
              * 
              */
 
 
             /*
-             * == ASSEMBLING STAGE == 
+             * == FURTHER COMPILATION STAGES == 
              * 
-             * If option is specified, the RFASM compiler is now invoked to compile the enormous RFP file to RFB
+             * Depending on specified options, the CrimsonBasic or RFASM compilers may now be invoked.
              * 
              */
 
