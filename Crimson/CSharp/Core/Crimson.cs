@@ -46,7 +46,7 @@ namespace Crimson.CSharp.Core
                 UnitGenerator generator = new UnitGenerator(options);
                 Linker linker = new Linker(options, generator);
                 Flattener flattener = new Flattener();
-                CrimsonTranslator compiler = new CrimsonTranslator(options, generator, linker, flattener);
+                CrimsonCompiler compiler = new CrimsonCompiler(options, generator, linker, flattener);
 
                 return Task.FromResult(compiler.FullyCompileFromOptions());
             },

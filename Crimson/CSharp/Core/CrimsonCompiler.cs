@@ -9,15 +9,15 @@ namespace Crimson.CSharp.Core
     /// <summary>
     /// The root of all compilation. Initiates and delegates tasks for the compilation process.
     /// </summary>
-    internal class CrimsonTranslator
+    internal class CrimsonCompiler
     {
-        private static Logger LOGGER;
+        private static Logger LOGGER = LogManager.GetCurrentClassLogger();
         public CrimsonOptions Options { get; }
         public UnitGenerator UnitGenerator { get; }
         public Linker Linker { get; }
         public Flattener Flattener { get; }
 
-        public CrimsonTranslator(CrimsonOptions options, UnitGenerator unitGenerator, Linker linker, Flattener flattener)
+        public CrimsonCompiler(CrimsonOptions options, UnitGenerator unitGenerator, Linker linker, Flattener flattener)
         {
             Options = options;
             UnitGenerator = unitGenerator;
@@ -35,6 +35,8 @@ namespace Crimson.CSharp.Core
              * This stage results in a collection of individual units which contain ComplexStatements exactly describing the input.
              * 
              */
+            LOGGER.Info("\n\n");
+            LOGGER.Info(" P A R S I N G ");
             CompilationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
             Compilation library = new Compilation(rootUnit, UnitGenerator); // Generate dependency units (all resources are now accessible)
 
@@ -47,6 +49,8 @@ namespace Crimson.CSharp.Core
              */
             // Link FunctionCalls
             // LinkedUnit linkedUnit = Linker.Link(compilation);
+            LOGGER.Info("\n\n");
+            LOGGER.Info(" L I N K I N G ");
             Linker.Link(library);
 
 
@@ -81,6 +85,8 @@ namespace Crimson.CSharp.Core
              *  ::end_condition
              *  ::endfunc_main
              */
+            LOGGER.Info("\n\n");
+            LOGGER.Info(" F L A T T E N I N G ");
             BasicProgram unlinkedProgram = Flattener.Flatten(library, Options);
 
 
@@ -90,6 +96,8 @@ namespace Crimson.CSharp.Core
              * All statements are now translated to CrimsonBasic statements
              * 
              */
+            LOGGER.Info("\n\n");
+            LOGGER.Info(" T R A N S L A T I N G ");
 
 
             /*
@@ -98,7 +106,11 @@ namespace Crimson.CSharp.Core
              * Depending on specified options, the CrimsonBasic or RFASM compilers may now be invoked.
              * 
              */
+            LOGGER.Info("\n\n");
+            LOGGER.Info(" D E L E G A T I N G");
 
+            LOGGER.Info("\n\n");
+            LOGGER.Info("Done!");
             return 1;
         }
 

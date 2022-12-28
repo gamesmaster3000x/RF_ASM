@@ -41,20 +41,19 @@ namespace Crimson.CSharp.Statements
 
         internal class Parameter
         {
+            public CrimsonType Type { get; }
+            public string Identifier { get; set;  }
+
             public Parameter(CrimsonType type, string identifier)
             {
-                Type1 = type;
+                Type = type;
                 Identifier = identifier;
             }
 
-            public CrimsonType Type1 { get; }
-            public string Identifier { get; }
-            Type Type { get; set; }
-            string Name { get; set; }
-
             internal void Link(LinkingContext ctx)
             {
-                throw new NotImplementedException();
+                Type.Link(ctx);
+                Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
             }
         }
     }

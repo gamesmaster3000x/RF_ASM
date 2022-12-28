@@ -1,12 +1,19 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using Crimson.CSharp.Core;
+
+namespace Crimson.CSharp.Statements
 {
-    public class CrimsonType
+    public class CrimsonType : ICrimsonToken
     {
-        public CrimsonType(string v)
+        public string Text { get; set; }
+
+        public CrimsonType(string text)
         {
-            V = v;
+            Text = text;
         }
 
-        public string V { get; }
+        public void Link(LinkingContext ctx)
+        {
+            Text = LinkerHelper.LinkIdentifier(Text, ctx);
+        }
     }
 }

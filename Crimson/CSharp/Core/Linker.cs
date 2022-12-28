@@ -10,7 +10,7 @@ namespace Crimson.CSharp.Core
     internal class Linker
     {
         public CrimsonOptions Options { get; }
-        public Linker(CrimsonOptions options, UnitGenerator generator)
+        public Linker(CrimsonOptions options)
         {
             Options = options;
         }
@@ -26,7 +26,26 @@ namespace Crimson.CSharp.Core
                 CompilationUnit unit = pair.Value;
                 var statements = GetAllStatements(unit);
 
-                LinkingContext ctx = new LinkingContext();
+                LinkingContext ctx = new LinkingContext(pair.Key);
+                foreach (KeyValuePair<string, Import> dependency in unit.Imports)
+                {
+                    /*
+                     * Get the alias of the dependency.
+                     * For example:
+                     *  The alias of '#using "utils.crm" as u' is 'u'
+                     */
+                    string alias = dependency.Key;
+
+                    /*
+                     * Get the absolute path of the unit which the alias refers to.
+                     * This is the path which is used to look up the dependency in a Compilation.
+                     * For example:
+                     *  '#using "utils.crm" as u' may result in 'C:/utils.crm'
+                     */
+                    string 
+                    string path = library.Units[dependency.Value]; // the absolute path of the alias
+                }
+
                 foreach (var statement in statements)
                 {
                     statement.Link(ctx);

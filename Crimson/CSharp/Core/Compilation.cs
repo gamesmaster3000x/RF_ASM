@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Core
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         internal UnitGenerator UnitGenerator { get; }
-        internal Dictionary<string, CompilationUnit> Units { get; }
+        internal Dictionary<string, CompilationUnit> Units { get; } // duplicate of UnitGenerator.Units?
 
         public Compilation(CompilationUnit rootUnit, UnitGenerator unitGenerator)
         {
