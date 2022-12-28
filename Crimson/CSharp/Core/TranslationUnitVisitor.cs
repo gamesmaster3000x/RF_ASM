@@ -8,9 +8,9 @@ namespace Crimson.CSharp.Core
     internal class CrimsonCompiliationUnitVisitor: CrimsonBaseVisitor<object>
     {
 
-        public override TranslationUnit VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context)
+        public override CompilationUnit VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context)
         {
-            TranslationUnit compilation = new TranslationUnit();
+            CompilationUnit compilation = new CompilationUnit();
 
             // Visit imports
             IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;

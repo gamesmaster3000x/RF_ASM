@@ -1,4 +1,6 @@
 ﻿using Crimson.CSharp.Statements;
+using CrimsonBasic.CSharp.Core;
+using System.Linq;
 
 namespace Crimson.CSharp.Core
 {
@@ -14,22 +16,40 @@ namespace Crimson.CSharp.Core
         }
 
         /// <summary>
-        /// Converts a CompilationUnit to a LinkedUnit.
+        /// Links the FunctionCalls in a Compilation.
         /// </summary>
-        /// <param name="root"></param>
-        /// <returns>The linked LinkedUnit resulting from the root CompilationUnit.</returns>
-        public LinkedUnit Link(Translation compilation)
+        /// <param name="library"></param>
+        public void Link(Compilation library)
         {
-            // Set the entry function for the LinkedUnit
-            LinkedUnit linked = new LinkedUnit();
-            linked.EntryFunction = compilation.RootUnit.Functions[Options.EntryFunctionName];
+            foreach (KeyValuePair<string, CompilationUnit> pair in library.Units)
+            {
+                CompilationUnit unit = pair.Value;
+                var statements = GetAllStatements(unit);
 
-            // Copy all functions, structures and global variables as-is (they need no changes)
-            linked.CopyAllFrom(compilation.RootUnit);
+                LinkingContext ctx = new LinkingContext();
+                foreach (var statement in statements)
+                {
+                    statement.Link(ctx);
+                }
+            }
+        }
 
-            // TODO Now need to copy other functions, while editing function calls in the proces...
-
-            return null;
+        private static List<CrimsonStatement> GetAllStatements(CompilationUnit unit)
+        {
+            var statements = new List<CrimsonStatement>();
+            foreach (var s in unit.Functions.Values)
+            {
+                statements.Add(s);
+            }
+            foreach (var s in unit.Structures.Values)
+            {
+                statements.Add(s);
+            }
+            foreach (var s in unit.GlobalVariables.Values)
+            {
+                statements.Add(s);
+            }
+            return statements;
         }
     }
 }

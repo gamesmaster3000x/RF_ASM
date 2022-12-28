@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crimson.CSharp.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,10 @@ namespace Crimson.CSharp.Statements
         }
 
         public InternalVariable Intern { get; }
+
+        public override void Link(LinkingContext ctx)
+        {
+            Intern.Link(ctx);
+        }
     }
 }

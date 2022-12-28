@@ -1,6 +1,6 @@
 ﻿namespace Crimson.CSharp.Statements
 {
-    internal class GlobalStatement
+    public abstract class GlobalStatement: CrimsonStatement
     {
     }
 }

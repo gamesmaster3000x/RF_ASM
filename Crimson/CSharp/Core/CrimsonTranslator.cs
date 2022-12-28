@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Statements;
+using CrimsonBasic.CSharp.Core;
 using NLog;
 
 namespace Crimson.CSharp.Core
@@ -14,12 +15,14 @@ namespace Crimson.CSharp.Core
         public CrimsonOptions Options { get; }
         public UnitGenerator UnitGenerator { get; }
         public Linker Linker { get; }
+        public Flattener Flattener { get; }
 
-        public CrimsonTranslator(CrimsonOptions options, UnitGenerator unitGenerator, Linker linker)
+        public CrimsonTranslator(CrimsonOptions options, UnitGenerator unitGenerator, Linker linker, Flattener flattener)
         {
             Options = options;
             UnitGenerator = unitGenerator;
             Linker = linker;
+            Flattener = flattener;
         }
 
         public int FullyCompileFromOptions()
@@ -32,8 +35,19 @@ namespace Crimson.CSharp.Core
              * This stage results in a collection of individual units which contain ComplexStatements exactly describing the input.
              * 
              */
-            TranslationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
-            Translation compilation = new Translation(rootUnit, UnitGenerator); // Generate dependency units (all resources are now accessible)
+            CompilationUnit rootUnit = UnitGenerator.GetUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
+            Compilation library = new Compilation(rootUnit, UnitGenerator); // Generate dependency units (all resources are now accessible)
+
+
+            /*
+             * == LINKING STAGE == 
+             * 
+             * Now that all of the statements have been flattened into one list, we can iterate through and link the FunctionCalls.
+             * 
+             */
+            // Link FunctionCalls
+            // LinkedUnit linkedUnit = Linker.Link(compilation);
+            Linker.Link(library);
 
 
             /*
@@ -67,16 +81,7 @@ namespace Crimson.CSharp.Core
              *  ::end_condition
              *  ::endfunc_main
              */
-
-
-            /*
-             * == LINKING STAGE == 
-             * 
-             * Now that all of the statements have been flattened into one list, we can iterate through and link the FunctionCalls.
-             * 
-             */
-            // Link FunctionCalls
-            // LinkedUnit linkedUnit = Linker.Link(compilation);
+            BasicProgram unlinkedProgram = Flattener.Flatten(library, Options);
 
 
             /*

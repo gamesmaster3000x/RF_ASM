@@ -1,4 +1,6 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using Crimson.CSharp.Core;
+
+namespace Crimson.CSharp.Statements
 {
     internal class MemoryAllocation : InternalStatement
     {
@@ -9,6 +11,11 @@
         {
             this.identifier = identifier;
             this.number = number;
+        }
+
+        public override void Link(LinkingContext ctx)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using Crimson.CSharp.Core;
+
+namespace Crimson.CSharp.Statements
 {
     internal class Structure : GlobalStatement
     {
@@ -10,5 +12,10 @@
 
         public string Identifier { get; set; }
         public IList<InternalStatement> Body { get; }
+
+        public override void Link(LinkingContext ctx)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

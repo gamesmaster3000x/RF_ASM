@@ -1,4 +1,6 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using Crimson.CSharp.Core;
+
+namespace Crimson.CSharp.Statements
 {
     internal class AssemblyCall : InternalStatement
     {
@@ -7,6 +9,11 @@
         public AssemblyCall(string assemblyText)
         {
             this.assemblyText = assemblyText;
+        }
+
+        public override void Link(LinkingContext ctx)
+        {
+            throw new NotImplementedException();
         }
     }
 }

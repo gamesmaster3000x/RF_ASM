@@ -1,6 +1,7 @@
 ﻿namespace Crimson.CSharp.Statements
 {
-    internal class InternalStatement
+    public abstract class InternalStatement: CrimsonStatement
     {
+
     }
 }

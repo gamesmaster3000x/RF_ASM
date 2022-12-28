@@ -1,4 +1,6 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using Crimson.CSharp.Core;
+
+namespace Crimson.CSharp.Statements
 {
     internal class VariableAssignment: InternalStatement
     {
@@ -12,7 +14,13 @@
             Value = value;
         }
 
-        public string Identifier { get; }
+        public string Identifier { get; set; }
         public ResolvableValue Value { get; }
+
+        public override void Link(LinkingContext ctx)
+        {
+            Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
+            Value.Link(ctx);
+        }
     }
 }

@@ -19,21 +19,17 @@ namespace Crimson.CSharp.Core
             {
                 Console.WriteLine("Using autowired (debug) program arguments");
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
-                args = new string[] { 
-                    "-s", testProgramsPath + "Main_Utils/main.crm", 
-                    "-t", "out", 
-                    "-n", "C:/Crimson/Native/" , 
+                args = new string[] {
+                    "-s", testProgramsPath + "Main_Utils/main.crm",
+                    "-t", "out",
+                    "-n", "C:/Crimson/Native/" ,
                     "--rfasm"
                 };
             }
 
             // Start
-            Console.WriteLine("");
-            Console.WriteLine(" ~C~ ");
-            Console.WriteLine("Crimson Language Translator, by GenElectrovise, for GamesMaster3000X");
-            Console.WriteLine("https://github.com/gamesmaster3000x/RF_ASM");
-            Console.WriteLine(" ~C~ ");
-            Console.WriteLine("");
+            ShowSplash();
+            ShowCredits();
 
             Console.WriteLine("Parsing options");
             return CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).MapResult((options) =>
@@ -49,7 +45,8 @@ namespace Crimson.CSharp.Core
 
                 UnitGenerator generator = new UnitGenerator(options);
                 Linker linker = new Linker(options, generator);
-                CrimsonTranslator compiler = new CrimsonTranslator(options, generator, linker);
+                Flattener flattener = new Flattener();
+                CrimsonTranslator compiler = new CrimsonTranslator(options, generator, linker, flattener);
 
                 return Task.FromResult(compiler.FullyCompileFromOptions());
             },
@@ -58,6 +55,34 @@ namespace Crimson.CSharp.Core
                 Console.Error.WriteLine("An issue occurred while parsing the program arguments (invalid arguments)");
                 return Task.FromResult(-1);
             });
+        }
+
+        private static void ShowSplash()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Crimson Language Compiler, by GenElectrovise, for GamesMaster3000X");
+            Console.WriteLine("   _____          _                                   ");
+            Console.WriteLine("  / ____|        (_)                                  ");
+            Console.WriteLine(" | |       _ __   _   _ __ ___    ___    ___    _ __  ");
+            Console.WriteLine(" | |      | '__| | | | '_ ` _ \\  / __|  / _ \\  | '_ \\ ");
+            Console.WriteLine(" | |____  | |    | | | | | | | | \\__ \\ | (_) | | | | |");
+            Console.WriteLine("  \\_____| |_|    |_| |_| |_| |_| |___/  \\___/  |_| |_|");
+            Console.WriteLine("                                                      ");
+            Console.WriteLine("https://github.com/gamesmaster3000x/RF_ASM");
+            Console.WriteLine("");
+        }
+
+        private static void ShowCredits()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("  -> C R E D I T S <-  ");
+            Console.WriteLine("Created by GenElectrovise https://github.com/GenElectrovise on behalf of GamesMaster3000X https://github.com/gamesmaster3000x");
+            Console.WriteLine("ASCII art generated with https://patorjk.com/software/taag/");
+            Console.WriteLine("ASCII art font 'Big' by Glenn Chappell, Bruce Jakeway and Paul Burton");
+            Console.WriteLine("Using NuGet packages: ANTLR4, CommandLineParser, System.IO.Abstractions and NLog");
+            Console.WriteLine("Written using Visual Studio in C#/.NET 6.0 (LTS)");
+            Console.WriteLine("  -> - - - - - - - <-  ");
+            Console.WriteLine("");
         }
 
         private static void ConfigureNLog()

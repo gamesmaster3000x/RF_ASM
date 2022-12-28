@@ -1,32 +1,41 @@
 ﻿using Crimson.CSharp.Statements;
+using CrimsonBasic.CSharp.Core;
 using NLog;
 
 namespace Crimson.CSharp.Core
 {
-    internal class Translation
+    /// <summary>
+    /// A collection of CompilationUnit keyed with their absolute path within the file system.
+    /// This is the result of parsing.
+    /// The next stage is linking.
+    /// 
+    /// For example: <"C:/main.crm", CompilationUnit>.
+    /// </summary>
+    internal class Compilation
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public TranslationUnit RootUnit { get; }
         internal UnitGenerator UnitGenerator { get; }
-        internal Dictionary<string, TranslationUnit> Dependencies { get; }
+        internal Dictionary<string, CompilationUnit> Units { get; }
 
-        public Translation(TranslationUnit rootUnit, UnitGenerator unitGenerator)
+        public Compilation(CompilationUnit rootUnit, UnitGenerator unitGenerator)
         {
-            RootUnit = rootUnit;
+            Units = new Dictionary<string, CompilationUnit>();
             UnitGenerator = unitGenerator;
-            Dependencies = FindDependencies(rootUnit);
+
+            Units = FindDependencies(rootUnit);
+            Units[UnitGenerator.ROOT_FACET_NAME] = rootUnit; // This name is reserved and should be free
         }
 
-        private Dictionary<string, TranslationUnit> FindDependencies(TranslationUnit root)
+        private Dictionary<string, CompilationUnit> FindDependencies(CompilationUnit root)
         {
-            var dependencies = new Dictionary<string, TranslationUnit>();
+            var dependencies = new Dictionary<string, CompilationUnit>();
 
             // For each import
             foreach (var i in root.Imports)
             {
                 // Get the unit it refers to 
-                TranslationUnit unit = UnitGenerator.GetUnitFromPath(i.Value.Path);
+                CompilationUnit unit = UnitGenerator.GetUnitFromPath(i.Value.Path);
 
                 // Get that units' dependencies (recursively)
                 var internalDependencies = FindDependencies(unit);

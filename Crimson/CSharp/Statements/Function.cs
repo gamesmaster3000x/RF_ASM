@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crimson.CSharp.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,19 @@ namespace Crimson.CSharp.Statements
         public IList<Parameter> Parameters { get; }
         public IList<InternalStatement> Statements { get; }
 
+        public override void Link(LinkingContext ctx)
+        {
+            foreach (var p in Parameters)
+            {
+                p.Link(ctx);
+            }
+
+            foreach (var s in Statements)
+            {
+                s.Link(ctx);
+            }
+        }
+
         internal class Parameter
         {
             public Parameter(CrimsonType type, string identifier)
@@ -37,6 +51,11 @@ namespace Crimson.CSharp.Statements
             public string Identifier { get; }
             Type Type { get; set; }
             string Name { get; set; }
+
+            internal void Link(LinkingContext ctx)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
