@@ -42,8 +42,7 @@ namespace Crimson.CSharp.Core
                      * For example:
                      *  '#using "utils.crm" as u' may result in 'C:/utils.crm'
                      */
-                    string 
-                    string path = library.Units[dependency.Value]; // the absolute path of the alias
+                    string path = library.UnitGenerator.Units[dependency.Value.Path].ToString(); // the absolute path of the alias
                 }
 
                 foreach (var statement in statements)

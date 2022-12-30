@@ -44,7 +44,7 @@ namespace Crimson.CSharp.Core
                 ConfigureNLog();
 
                 UnitGenerator generator = new UnitGenerator(options);
-                Linker linker = new Linker(options, generator);
+                Linker linker = new Linker(options);
                 Flattener flattener = new Flattener();
                 CrimsonCompiler compiler = new CrimsonCompiler(options, generator, linker, flattener);
 

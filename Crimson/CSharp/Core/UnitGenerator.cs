@@ -22,7 +22,7 @@ namespace Crimson.CSharp.Core
         public static readonly string ROOT_FACET_NAME = "${ROOT}";
 
         private CrimsonOptions Options { get; }
-        private Dictionary<string, CompilationUnit> Units { get; }
+        internal Dictionary<string, CompilationUnit> Units { get; }
 
         public UnitGenerator(CrimsonOptions options)
         {
