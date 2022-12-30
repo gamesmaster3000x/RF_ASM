@@ -31,7 +31,6 @@ namespace Crimson.CSharp.Core
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
                 LinkingContext ctx = new LinkingContext(pair.Key);
                 CompilationUnit unit = pair.Value;
-                var statements = GetAllStatements(unit);
                 foreach (KeyValuePair<string, Import> importPair in unit.Imports)
                 {
                     /*
@@ -58,6 +57,7 @@ namespace Crimson.CSharp.Core
                 }
 
                 // Link each statement in the unit
+                var statements = GetAllStatements(unit);
                 foreach (var statement in statements)
                 {
                     statement.Link(ctx);
