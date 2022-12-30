@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Exception;
+using Crimson.CSharp.Statements;
 
 namespace Crimson.CSharp.Core
 {
@@ -6,19 +7,19 @@ namespace Crimson.CSharp.Core
     {
 
         private string Name { get; }
-        public Dictionary<string, string> Links { get; }
+        internal Dictionary<string, CompilationUnit> Links { get; }
 
-        public LinkingContext(string friendlyName) : this(friendlyName, new Dictionary<string, string>())
+        public LinkingContext(string friendlyName) : this(friendlyName, new Dictionary<string, CompilationUnit>())
         {
         }
 
-        public LinkingContext(string friendlyName, Dictionary<string, string> links)
+        public LinkingContext(string friendlyName, Dictionary<string, CompilationUnit> links)
         {
             Name = friendlyName;
             Links = links;
         }
 
-        internal string GetImportPathByAlias(string alias)
+        internal CompilationUnit GetUnit(string alias)
         {
             if (Links.ContainsKey(alias))
             {

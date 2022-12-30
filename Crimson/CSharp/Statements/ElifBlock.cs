@@ -17,7 +17,7 @@ namespace Crimson.CSharp.Statements
 
         internal void Link(LinkingContext ctx)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

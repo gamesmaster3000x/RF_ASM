@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Statements
 
         public override void Link(LinkingContext ctx)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

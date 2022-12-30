@@ -11,17 +11,17 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.
     /// </summary>
-    internal class CompilationUnit
+    public class CompilationUnit
     {
         private Dictionary<string, Import> imports = new Dictionary<string, Import>();
         private Dictionary<string, Function> functions = new Dictionary<string, Function>();
         private Dictionary<string, Structure> structures = new Dictionary<string, Structure>();
         private Dictionary<string, GlobalVariable> globalVariables = new Dictionary<string, GlobalVariable>();
 
-        internal Dictionary<string, Import> Imports { get => imports; set => imports = value; }
-        internal Dictionary<string, Function> Functions { get => functions; set => functions = value; }
-        internal Dictionary<string, Structure> Structures { get => structures; set => structures = value; }
-        internal Dictionary<string, GlobalVariable> GlobalVariables { get => globalVariables; set => globalVariables = value; }
+        public Dictionary<string, Import> Imports { get => imports; set => imports = value; }
+        public Dictionary<string, Function> Functions { get => functions; set => functions = value; }
+        public Dictionary<string, Structure> Structures { get => structures; set => structures = value; }
+        public Dictionary<string, GlobalVariable> GlobalVariables { get => globalVariables; set => globalVariables = value; }
 
         public void AddImport(Import import)
         {

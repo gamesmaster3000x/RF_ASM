@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class InternalVariable : InternalStatement
+    public class InternalVariable : InternalStatement
     {
         private CrimsonType type;
         public string identifier { get; set; }
@@ -22,7 +22,7 @@ namespace Crimson.CSharp.Statements
 
         public override void Link(LinkingContext ctx)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

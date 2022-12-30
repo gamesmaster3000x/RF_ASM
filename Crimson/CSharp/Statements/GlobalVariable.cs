@@ -10,7 +10,7 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.
     /// </summary>
-    internal class GlobalVariable : GlobalStatement
+    public class GlobalVariable : GlobalStatement
     {
         public GlobalVariable(InternalVariable intern)
         {

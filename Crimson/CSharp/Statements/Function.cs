@@ -10,7 +10,7 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
     /// </summary>
-    internal class Function : GlobalStatement
+    public class Function : GlobalStatement
     {
 
         public Function(CrimsonType returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
@@ -39,7 +39,7 @@ namespace Crimson.CSharp.Statements
             }
         }
 
-        internal class Parameter
+        public class Parameter
         {
             public CrimsonType Type { get; }
             public string Identifier { get; set;  }

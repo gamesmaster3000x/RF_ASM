@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class Structure : GlobalStatement
+    public class Structure : GlobalStatement
     {
         public Structure(string identifier, IList<InternalStatement> body)
         {
@@ -15,7 +15,7 @@ namespace Crimson.CSharp.Statements
 
         public override void Link(LinkingContext ctx)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

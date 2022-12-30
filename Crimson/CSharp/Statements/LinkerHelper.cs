@@ -30,10 +30,10 @@ namespace Crimson.CSharp.Statements
             {
                 string alias = parts[0];
 
-                string path = ctx.GetImportPathByAlias(alias);
+                CompilationUnit unit = ctx.GetUnit(alias);
                 string call = parts[1];
 
-                string output = $"{{{path}}}.{call}"; // {{ is used to escape the {, creating ${path}.call in the end
+                string output = $"{{{unit}}}.{call}"; // {{ is used to escape the {, creating ${path}.call in the end //TODO LinkerHelper casts Unit to string
                 return output;
             }
 

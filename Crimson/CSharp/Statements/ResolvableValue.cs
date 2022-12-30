@@ -2,7 +2,7 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class ResolvableValue: ICrimsonToken
+    public class ResolvableValue: ICrimsonToken
     {
         public ResolvableValue(object value)
         {
@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Statements
 
         public void Link(LinkingContext ctx)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

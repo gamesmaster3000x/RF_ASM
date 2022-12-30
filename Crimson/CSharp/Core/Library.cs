@@ -105,11 +105,18 @@ namespace Crimson.CSharp.Core
             return path;
         }
 
-        private CompilationUnit? LookupUnitByPath(string path)
+        public CompilationUnit? LookupUnitByPath(string path)
         {
             if (Units.ContainsKey(path))
             {
                 return Units[path];
+            } else
+            {
+                var nativePath = StandardiseNativePath(path);
+                if (Units.ContainsKey(nativePath))
+                {
+                    return Units[nativePath];
+                }
             }
             return null;
         }
