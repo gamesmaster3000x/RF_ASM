@@ -18,10 +18,10 @@ namespace Crimson.CSharp.Core
         /// <summary>
         /// Links the FunctionCalls in a Compilation.
         /// </summary>
-        /// <param name="library"></param>
-        public void Link(Compilation library)
+        /// <param name="compilation"></param>
+        public void Link(Compilation compilation)
         {
-            foreach (KeyValuePair<string, CompilationUnit> pair in library.Units)
+            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
             {
                 CompilationUnit unit = pair.Value;
                 var statements = GetAllStatements(unit);
@@ -42,7 +42,7 @@ namespace Crimson.CSharp.Core
                      * For example:
                      *  '#using "utils.crm" as u' may result in 'C:/utils.crm'
                      */
-                    string path = library.UnitGenerator.Units[dependency.Value.Path].ToString(); // the absolute path of the alias
+                    string path = compilation.Library.Units[dependency.Value.Path].ToString(); // the absolute path of the alias
                 }
 
                 foreach (var statement in statements)

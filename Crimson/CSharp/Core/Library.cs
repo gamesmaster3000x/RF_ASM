@@ -15,22 +15,30 @@ namespace Crimson.CSharp.Core
     /// <summary>
     /// Generates CompilationUnits from input text with the power of ANTLR.
     /// </summary>
-    internal class UnitGenerator
+    internal class Library
     {
 
         public static readonly string SYSTEM_LIBRARY_PREFIX = "${NATIVE}";
         public static readonly string ROOT_FACET_NAME = "${ROOT}";
 
         private CrimsonOptions Options { get; }
+
+        /// <summary>
+        /// The "master" list of units. Stored so that each unique unit is only created once.
+        /// 
+        /// For example:
+        /// [ C:/utils.crm => UTILS_UNIT ]
+        /// [ C:/main.crm  => MAIN_UNIT  ]
+        /// </summary>
         internal Dictionary<string, CompilationUnit> Units { get; }
 
-        public UnitGenerator(CrimsonOptions options)
+        public Library(CrimsonOptions options)
         {
             Options = options;
             Units = new Dictionary<string, CompilationUnit>();
         }
 
-        public CompilationUnit GetUnitFromPath(string pathIn)
+        public CompilationUnit LoadUnitFromPath(string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
@@ -50,7 +58,7 @@ namespace Crimson.CSharp.Core
             try
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-                CompilationUnit newUnit = GetUnitFromText(path + " (" + pathIn + ")", programText);
+                CompilationUnit newUnit = LoadUnitFromText(path + " (" + pathIn + ")", programText);
                 Units[path] = newUnit;
                 return newUnit;
             } 
@@ -64,7 +72,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public CompilationUnit GetUnitFromText(string sourceName, string textIn)
+        public CompilationUnit LoadUnitFromText(string sourceName, string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
