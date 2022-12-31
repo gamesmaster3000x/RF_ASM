@@ -51,5 +51,10 @@ namespace Crimson.CSharp.Statements
             }
 
         }
+
+        public override string ToString()
+        {
+            return $"CompilationUnit(Imports:{Imports.Count} Functions:{Functions.Count} Structures:{Structures.Count} GlobalVariables{GlobalVariables.Count})";
+        }
     }
 }

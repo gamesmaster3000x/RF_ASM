@@ -45,5 +45,15 @@ namespace Crimson.CSharp.Core
                 LoadLibrary(unit);
             }
         }
+
+        public CompilationUnit GetRootUnit()
+        {
+            return Library.Units[Library.ROOT_FACET_NAME];
+        }
+
+        public override string ToString()
+        {
+            return $"Compilation(RootUnit={GetRootUnit()}; Library={Library.ToString()})";
+        }
     }
 }

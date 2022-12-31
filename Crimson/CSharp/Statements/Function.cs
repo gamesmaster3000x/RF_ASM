@@ -28,6 +28,8 @@ namespace Crimson.CSharp.Statements
 
         public override void Link(LinkingContext ctx)
         {
+            if (IsLinked()) return;
+
             foreach (var p in Parameters)
             {
                 p.Link(ctx);
@@ -37,6 +39,8 @@ namespace Crimson.CSharp.Statements
             {
                 s.Link(ctx);
             }
+
+            SetLinked(true);
         }
 
         public class Parameter

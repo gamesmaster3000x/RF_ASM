@@ -120,5 +120,10 @@ namespace Crimson.CSharp.Core
             }
             return null;
         }
+
+        public override string ToString()
+        {
+            return $"Library(Units={Units})";
+        }
     }
 }

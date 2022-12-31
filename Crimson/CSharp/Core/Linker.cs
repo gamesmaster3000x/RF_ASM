@@ -1,6 +1,8 @@
-﻿using Crimson.CSharp.Exception;
+﻿using Antlr4.Runtime.Misc;
+using Crimson.CSharp.Exception;
 using Crimson.CSharp.Statements;
 using CrimsonBasic.CSharp.Core;
+using NLog;
 using System.Linq;
 
 namespace Crimson.CSharp.Core
@@ -10,6 +12,8 @@ namespace Crimson.CSharp.Core
     /// </summary>
     internal class Linker
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+
         public CrimsonOptions Options { get; }
         public Linker(CrimsonOptions options)
         {
@@ -22,14 +26,16 @@ namespace Crimson.CSharp.Core
         /// <param name="compilation"></param>
         public void Link(Compilation compilation)
         {
+            LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
             foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
             {
+                LOGGER.Info("Linking KeyValuePair<string, CompilationUnit> " + pair);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                LinkingContext ctx = new LinkingContext(pair.Key);
+                LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, CompilationUnit>());
                 CompilationUnit unit = pair.Value;
                 foreach (KeyValuePair<string, Import> importPair in unit.Imports)
                 {
@@ -50,7 +56,7 @@ namespace Crimson.CSharp.Core
                     /*
                      * 
                      */
-                    CompilationUnit mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
+                    CompilationUnit? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
                     if (mappingUnit == null) throw new LinkingException("Could not add unloaded unit " + relativePath + " (alias=" + alias + ") to mapping context");
 
                     ctx.Links.Add(alias, mappingUnit);
@@ -62,7 +68,13 @@ namespace Crimson.CSharp.Core
                 {
                     statement.Link(ctx);
                 }
+                LOGGER.Debug($"Linked {statements.Count} top-level statements");
+
+                // Just so that I can put a breakpoint here
+                continue;
             }
+
+            return;
         }
 
         private static List<CrimsonStatement> GetAllStatements(CompilationUnit unit)

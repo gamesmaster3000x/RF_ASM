@@ -7,15 +7,13 @@ namespace Crimson.CSharp.Core
     {
 
         private string Name { get; }
+        private string CurrentUnitLookupPath { get; }
         internal Dictionary<string, CompilationUnit> Links { get; }
 
-        public LinkingContext(string friendlyName) : this(friendlyName, new Dictionary<string, CompilationUnit>())
-        {
-        }
-
-        public LinkingContext(string friendlyName, Dictionary<string, CompilationUnit> links)
+        public LinkingContext(string friendlyName, string currentUnitLookupPath, Dictionary<string, CompilationUnit> links)
         {
             Name = friendlyName;
+            CurrentUnitLookupPath = currentUnitLookupPath;
             Links = links;
         }
 
@@ -27,6 +25,11 @@ namespace Crimson.CSharp.Core
             }
 
             throw new LinkingException("No alias '" + alias + "' in " + ToString());
+        }
+
+        internal CompilationUnit GetCurrentUnit()
+        {
+            return GetUnit(CurrentUnitLookupPath);
         }
 
         public override string ToString()
