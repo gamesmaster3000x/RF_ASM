@@ -44,9 +44,9 @@ namespace Crimson.CSharp.Core
 
             string path = StandardiseNativePath(pathIn);
 
-            if (pathIn.Equals(ROOT_FACET_NAME))
+            if (pathIn.Equals(ROOT_FACET_NAME) || pathIn.Equals(SYSTEM_LIBRARY_PREFIX))
             {
-                throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet with reserved name '" + ROOT_FACET_NAME + "'");
+                throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet with reserved name '" + pathIn + "'");
             }
 
             CompilationUnit? unit = LookupUnitByPath(path);
@@ -85,9 +85,9 @@ namespace Crimson.CSharp.Core
 
             CrimsonParser.TranslationUnitContext cuCtx = parser.translationUnit();
             CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();
-            CompilationUnit translationUnit = visitor.VisitTranslationUnit(cuCtx);
+            CompilationUnit compilationUnit = visitor.VisitTranslationUnit(cuCtx);
 
-            return translationUnit;
+            return compilationUnit;
         }
 
         public string StandardiseNativePath(string path)

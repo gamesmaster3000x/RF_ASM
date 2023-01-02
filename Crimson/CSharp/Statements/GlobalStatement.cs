@@ -1,4 +1,6 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using CrimsonBasic.CSharp.Core;
+
+namespace Crimson.CSharp.Statements
 {
     public abstract class GlobalStatement : CrimsonStatement
     {
@@ -6,6 +8,11 @@
         protected GlobalStatement() : base(false)
         {
             Name = "";
+        }
+
+        public override IList<BasicStatement> GetCrimsonBasic()
+        {
+            return new List<BasicStatement>();
         }
     }
 }

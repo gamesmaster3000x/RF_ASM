@@ -13,14 +13,14 @@ namespace Crimson.CSharp.Core
     {
         private static Logger LOGGER = LogManager.GetCurrentClassLogger();
         public CrimsonOptions Options { get; }
-        public Library UnitGenerator { get; }
+        public Library Library { get; }
         public Linker Linker { get; }
         public Flattener Flattener { get; }
 
         public CrimsonCompiler(CrimsonOptions options, Library unitGenerator, Linker linker, Flattener flattener)
         {
             Options = options;
-            UnitGenerator = unitGenerator;
+            Library = unitGenerator;
             Linker = linker;
             Flattener = flattener;
         }
@@ -37,7 +37,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" P A R S I N G ");
-            CompilationUnit rootUnit = UnitGenerator.LoadUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
+            CompilationUnit rootUnit = Library.LoadUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
             Compilation compilation = new Compilation(rootUnit, Options); // Generate dependency units (all resources are henceforth accessible)
 
 
@@ -87,7 +87,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" F L A T T E N I N G ");
-            BasicProgram unlinkedProgram = Flattener.Flatten(compilation, Options);
+            BasicProgram unlinkedProgram = Flattener.Flatten(compilation);
 
 
             /*

@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 
 namespace Crimson.CSharp.Statements
 {
@@ -10,6 +11,11 @@ namespace Crimson.CSharp.Statements
         }
 
         public ResolvableValue Value { get; }
+
+        public IList<BasicStatement> GetCrimsonBasic()
+        {
+            return new List<BasicStatement>();
+        }
 
         public void Link(LinkingContext ctx)
         {

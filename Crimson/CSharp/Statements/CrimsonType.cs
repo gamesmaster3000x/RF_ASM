@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 
 namespace Crimson.CSharp.Statements
 {
@@ -14,6 +15,11 @@ namespace Crimson.CSharp.Statements
         public void Link(LinkingContext ctx)
         {
             Text = LinkerHelper.LinkIdentifier(Text, ctx);
+        }
+
+        public IList<BasicStatement> GetCrimsonBasic()
+        {
+            return new List<BasicStatement>();
         }
     }
 }

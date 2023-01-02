@@ -45,7 +45,7 @@ namespace Crimson.CSharp.Core
 
                 Library generator = new Library(options);
                 Linker linker = new Linker(options);
-                Flattener flattener = new Flattener();
+                Flattener flattener = new Flattener(options);
                 CrimsonCompiler compiler = new CrimsonCompiler(options, generator, linker, flattener);
 
                 return Task.FromResult(compiler.FullyCompileFromOptions());

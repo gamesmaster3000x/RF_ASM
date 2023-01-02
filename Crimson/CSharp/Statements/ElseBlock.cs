@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 
 namespace Crimson.CSharp.Statements
 {
@@ -11,9 +12,14 @@ namespace Crimson.CSharp.Statements
 
         public IList<InternalStatement> Statements { get; }
 
+        public IList<BasicStatement> GetCrimsonBasic()
+        {
+            return new List<BasicStatement>();
+        }
+
         public void Link(LinkingContext ctx)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }
