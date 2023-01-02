@@ -33,16 +33,19 @@ namespace Crimson.CSharp.Statements
             if (statement is Function)
             {
                 Function f = (Function)statement;
+                if (functions.ContainsKey(f.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {f.Name} for statement {statement} in unit {this}");
                 Functions.Add(f.Name, f);
             }
             else if (statement is GlobalVariable)
             {
                 GlobalVariable v = (GlobalVariable)statement;
+                if (functions.ContainsKey(v.Intern.identifier)) throw new StatementParseException($"Duplicate GlobalStatement name {v.Intern.identifier} for statement {statement} in unit {this}");
                 GlobalVariables.Add(v.Intern.identifier, v);
             }
             else if (statement is Structure)
             {
                 Structure s = (Structure)statement;
+                if (functions.ContainsKey(s.Identifier)) throw new StatementParseException($"Duplicate GlobalStatement name {s.Identifier} for statement {statement} in unit {this}");
                 Structures.Add(s.Identifier, s);
             }
             else

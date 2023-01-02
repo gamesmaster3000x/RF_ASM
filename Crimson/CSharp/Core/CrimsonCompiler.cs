@@ -91,16 +91,6 @@ namespace Crimson.CSharp.Core
 
 
             /*
-             * == TRANSLATION STAGE ==
-             * 
-             * All statements are now translated to CrimsonBasic statements
-             * 
-             */
-            LOGGER.Info("\n\n");
-            LOGGER.Info(" T R A N S L A T I N G ");
-
-
-            /*
              * == FURTHER COMPILATION STAGES == 
              * 
              * Depending on specified options, the CrimsonBasic or RFASM compilers may now be invoked.

@@ -18,6 +18,7 @@ namespace Crimson.CSharp.Statements
         }
 
         public InternalVariable Intern { get; }
+        public new string Name { get => Intern.identifier; set => Intern.identifier = value; } // Hides the GlobalStatement base property Name
 
         public override void Link(LinkingContext ctx)
         {

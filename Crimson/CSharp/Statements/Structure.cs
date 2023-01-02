@@ -4,13 +4,12 @@ namespace Crimson.CSharp.Statements
 {
     public class Structure : GlobalStatement
     {
-        public Structure(string identifier, IList<InternalStatement> body)
+        public Structure(string name, IList<InternalStatement> body)
         {
-            Identifier = identifier;
+            Name = name;
             Body = body;
         }
 
-        public string Identifier { get; set; }
         public IList<InternalStatement> Body { get; }
 
         public override void Link(LinkingContext ctx)

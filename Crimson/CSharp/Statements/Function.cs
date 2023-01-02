@@ -22,7 +22,6 @@ namespace Crimson.CSharp.Statements
         }
 
         public CrimsonType ReturnType { get; }
-        public string Name { get; set; }
         public IList<Parameter> Parameters { get; }
         public IList<InternalStatement> Statements { get; }
 
