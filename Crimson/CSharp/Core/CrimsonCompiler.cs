@@ -47,8 +47,6 @@ namespace Crimson.CSharp.Core
              * Now that all of the statements have been flattened into one list, we can iterate through and link the FunctionCalls.
              * 
              */
-            // Link FunctionCalls
-            // LinkedUnit linkedUnit = Linker.Link(compilation);
             LOGGER.Info("\n\n");
             LOGGER.Info(" L I N K I N G ");
             Linker.Link(compilation);

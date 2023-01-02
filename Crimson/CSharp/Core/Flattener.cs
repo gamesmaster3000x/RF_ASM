@@ -2,12 +2,14 @@
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Statements;
 using CrimsonBasic.CSharp.Core;
+using NLog;
 using System.Text.RegularExpressions;
 
 namespace Crimson.CSharp.Core
 {
     public class Flattener
     {
+        public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         public CrimsonOptions Options { get; }
 
         internal Flattener (CrimsonOptions options)
@@ -56,6 +58,7 @@ namespace Crimson.CSharp.Core
             {
                 IList<BasicStatement> bs = pair.Value.GetCrimsonBasic();
                 program.Statements.Concat(bs);
+                LOGGER.Debug($"Added GlobalVariable {pair.Value.Name}");
             }
 
             // Add structures
@@ -63,12 +66,15 @@ namespace Crimson.CSharp.Core
             {
                 IList<BasicStatement> bs = pair.Value.GetCrimsonBasic();
                 program.Statements.Concat(bs);
+                LOGGER.Debug($"Added Structure {pair.Value.Name}");
             }
 
             // Add main (entry) function
             Function entry = GetEntryFunction(compilation);
+            LOGGER.Info($"Found entry Function {entry.Name}");
             IList<BasicStatement> entryBs = entry.GetCrimsonBasic();
             program.Statements.Concat(entryBs);
+            LOGGER.Debug($"Added entry Function {entry.Name}");
 
             // Add remaining functions
             foreach (var pair in functions)
@@ -76,6 +82,7 @@ namespace Crimson.CSharp.Core
                 if (pair.Value == entry) continue;
                 IList<BasicStatement> bs = pair.Value.GetCrimsonBasic();
                 program.Statements.Concat(bs);
+                LOGGER.Debug($"Added Function {pair.Value.Name}");
             }
 
             return program;
@@ -89,7 +96,8 @@ namespace Crimson.CSharp.Core
             Regex regex = new Regex(pattern);
 
             IList<Function> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name)).ToList();
-            if (funcs.Count != 0) throw new FlatteningException($"Multiple ({funcs.Count}) valid entry methods {funcs} for root unit {rootUnit} of compilation {compilation}");
+            if (funcs.Count < 1) throw new FlatteningException($"Found {funcs.Count} (exactly 1 required) valid entry methods {funcs} for root unit {rootUnit} of compilation {compilation}");
+            if (funcs.Count > 1) throw new FlatteningException($"Multiple ({funcs.Count}) valid entry methods (maximum permissable 1) {funcs} for root unit {rootUnit} of compilation {compilation}");
             Function entry = funcs.Single();
             return entry;
         }

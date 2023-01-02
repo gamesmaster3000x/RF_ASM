@@ -9,5 +9,10 @@ namespace CrimsonBasic.CSharp.Core
     public class BasicProgram
     {
         public IList<BasicStatement> Statements { get; }
+
+        public BasicProgram()
+        {
+            Statements = new List<BasicStatement>();
+        }
     }
 }
