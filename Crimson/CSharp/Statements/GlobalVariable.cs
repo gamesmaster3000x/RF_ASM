@@ -12,17 +12,24 @@ namespace Crimson.CSharp.Statements
     /// </summary>
     public class GlobalVariable : GlobalStatement
     {
-        public GlobalVariable(InternalVariable intern)
+        private CrimsonType type;
+
+        public GlobalVariable(CrimsonType type, string identifier)
         {
-            Intern = intern;
+            this.type = type;
+            Name = identifier;
         }
 
-        public InternalVariable Intern { get; }
-        public new string Name { get => Intern.identifier; set => Intern.identifier = value; } // Hides the GlobalStatement base property Name
+        public GlobalVariable(CrimsonType type, string identifier, ResolvableValue? value) : this(type, identifier)
+        {
+            Value = value;
+        }
+
+        public ResolvableValue? Value { get; }
 
         public override void Link(LinkingContext ctx)
         {
-            Intern.Link(ctx);
+            return;
         }
     }
 }

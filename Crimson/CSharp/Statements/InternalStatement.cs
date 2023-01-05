@@ -1,4 +1,5 @@
 ﻿using CrimsonBasic.CSharp.Core;
+using System.Xml.Linq;
 
 namespace Crimson.CSharp.Statements
 {
@@ -10,7 +11,7 @@ namespace Crimson.CSharp.Statements
 
         public override IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>();
+            return new List<BasicStatement>() { new TestStatement("InternalStatement: "  + IsLinked() )};
         }
     }
 }

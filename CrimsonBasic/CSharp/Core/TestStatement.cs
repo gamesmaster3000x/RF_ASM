@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Core
 {
-    public class BasicProgram
+    public class TestStatement: BasicStatement
     {
-        public List<BasicStatement> Statements { get; }
-
-        public BasicProgram()
+        public TestStatement(string text)
         {
-            Statements = new List<BasicStatement>();
+            Text = text;
         }
     }
 }

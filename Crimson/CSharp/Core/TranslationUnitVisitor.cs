@@ -70,9 +70,12 @@ namespace Crimson.CSharp.Core
 
         public override GlobalVariable VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
         {
-            InternalVariable intern = VisitInternalVariableDeclaration(context.internalVariableDeclaration());
-            GlobalVariable global = new GlobalVariable(intern);
-            return global;
+            CrimsonParser.InternalVariableDeclarationContext ivdc = context.internalVariableDeclaration();
+            CrimsonType type = VisitType(ivdc.type());
+            string identifier = ivdc.Identifier().GetText();
+            ResolvableValue? value = ivdc.resolvableValue() == null ? null : VisitResolvableValue(ivdc.resolvableValue());
+            GlobalVariable variable = new GlobalVariable(type, identifier, value);
+            return variable;
         }
 
         public override Function VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context)

@@ -85,7 +85,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" F L A T T E N I N G ");
-            BasicProgram unlinkedProgram = Flattener.Flatten(compilation);
+            BasicProgram basicProgram = Flattener.Flatten(compilation);
 
 
             /*

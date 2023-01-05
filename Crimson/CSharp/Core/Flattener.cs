@@ -57,7 +57,7 @@ namespace Crimson.CSharp.Core
             foreach (var pair in variables)
             {
                 IList<BasicStatement> bs = pair.Value.GetCrimsonBasic();
-                program.Statements.Concat(bs);
+                program.Statements.AddRange(bs);
                 LOGGER.Debug($"Added GlobalVariable {pair.Value.Name}");
             }
 
@@ -65,7 +65,7 @@ namespace Crimson.CSharp.Core
             foreach (var pair in structures)
             {
                 IList<BasicStatement> bs = pair.Value.GetCrimsonBasic();
-                program.Statements.Concat(bs);
+                program.Statements.AddRange(bs);
                 LOGGER.Debug($"Added Structure {pair.Value.Name}");
             }
 
@@ -73,7 +73,7 @@ namespace Crimson.CSharp.Core
             Function entry = GetEntryFunction(compilation);
             LOGGER.Info($"Found entry Function {entry.Name}");
             IList<BasicStatement> entryBs = entry.GetCrimsonBasic();
-            program.Statements.Concat(entryBs);
+            program.Statements.AddRange(entryBs);
             LOGGER.Debug($"Added entry Function {entry.Name}");
 
             // Add remaining functions
@@ -81,7 +81,7 @@ namespace Crimson.CSharp.Core
             {
                 if (pair.Value == entry) continue;
                 IList<BasicStatement> bs = pair.Value.GetCrimsonBasic();
-                program.Statements.Concat(bs);
+                program.Statements.AddRange(bs);
                 LOGGER.Debug($"Added Function {pair.Value.Name}");
             }
 
@@ -92,7 +92,7 @@ namespace Crimson.CSharp.Core
         {
             string baseName = Options.EntryFunctionName;
             CompilationUnit rootUnit = compilation.GetRootUnit();
-            string pattern = $"^{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
+            string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 
             IList<Function> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name)).ToList();
@@ -105,12 +105,34 @@ namespace Crimson.CSharp.Core
         private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: GlobalStatement
         {
             int i = 0;
+            string prefix = GetFlattenedPrefix(gs.GetType());
             while (map.ContainsKey(gs.Name + "_" + i))
             {
                 i++;
             }
-            gs.Name += $"_{i}";
+            gs.Name = $"{prefix}_{gs.Name}_{i}";
             map.Add(gs.Name, gs);
+        }
+
+        private string GetFlattenedPrefix(System.Type type)
+        {
+            if (type == typeof(Function))
+            {
+                return "func";
+            }
+            if (type == typeof(Structure))
+            {
+                return "stru";
+            }
+            if (type == typeof(GlobalVariable))
+            {
+                return "gvar";
+            }
+            if (type == typeof(InternalVariable))
+            {
+                return "ivar";
+            }
+            return "";
         }
     }
 }

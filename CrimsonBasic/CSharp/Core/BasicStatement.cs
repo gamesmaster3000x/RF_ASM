@@ -2,5 +2,6 @@
 {
     public class BasicStatement
     {
+        public string Text { get; set; }
     }
 }
