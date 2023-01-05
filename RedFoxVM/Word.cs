@@ -2,32 +2,33 @@
 {
     internal class Word
     {
-        private bool[] bits;
+        private bool[] data;
 
         public Word(int dataWidth)
         {
-            bits = new bool[dataWidth * 8];
-            for (int i = 0; i < bits.Length; i++)
+            data = new bool[dataWidth * 8];
+            for (int i = 0; i < data.Length; i++)
             {
-                bits[i] = false;
+                data[i] = false;
             }
         }
 
-
+        public Word(bool[] data)
+        {
+            this.data = data;
+        } 
 
         public bool this[int key]
         {
             get
             {
-                return bits[key];
+                return data[key];
             }
             set
             {
-                bits[key] = value;
+                data[key] = value;
             }
         }
-
-
 
         public static Word operator ++(Word a)
         {
@@ -46,24 +47,27 @@
             return a;
         }
 
+        public int Length { get { return data.Length; } }
 
-
-        public int Length { get { return bits.Length; } }
-
-        public byte[] bytes
+        public byte[] Bytes
         {
             get
             {
-                byte[] bytes = new byte[bits.Length / 8];
-                for (int i = 0; i < bits.Length / 8; i++)
+                byte[] bytes = new byte[data.Length / 8];
+                for (int i = 0; i < data.Length / 8; i++)
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        bytes[i] += (byte)(Convert.ToByte(bits[8 * i + j]) * Math.Pow(2, j));
+                        bytes[i] += (byte)(Convert.ToByte(data[8 * i + j]) * Math.Pow(2, j));
                     }
                 }
                 return bytes;
             }
+        }
+
+        public bool[] Bits
+        {
+            get { return data; }
         }
     }
 }

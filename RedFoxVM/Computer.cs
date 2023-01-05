@@ -1,8 +1,9 @@
-﻿namespace RedFoxVM
-{
-    internal class Computer
-    {
-        bool[] flags = new bool[256];
+﻿using RedFoxVM.Components;
 
+namespace RedFoxVM
+{
+    internal static class Computer
+    {
+        public static Processor processor = new Processor();
     }
 }
