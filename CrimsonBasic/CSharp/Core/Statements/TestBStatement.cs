@@ -8,7 +8,7 @@ namespace CrimsonBasic.CSharp.Core.Statements
 {
     public class TestBStatement : BasicStatement
     {
-        public TestBStatement(string text)
+        public TestBStatement(string text): base(text)
         {
             Text = text;
         }
