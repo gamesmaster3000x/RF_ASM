@@ -14,7 +14,7 @@ namespace Crimson.CSharp.Statements
 
         public IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new TestBStatement($"Condition:{Value}") };
+            return new List<BasicStatement>() { new CommentBStatement($"Condition:{Value}") };
         }
 
         public void Link(LinkingContext ctx)

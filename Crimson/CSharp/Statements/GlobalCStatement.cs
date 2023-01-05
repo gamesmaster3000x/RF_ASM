@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Statements
 
         public override IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new TestBStatement(Name) };
+            return new List<BasicStatement>() { new CommentBStatement("GlobalC:" + Name) };
         }
     }
 }

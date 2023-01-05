@@ -12,7 +12,7 @@ namespace Crimson.CSharp.Statements
 
         public override IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new TestBStatement("InternalStatement: "  + IsLinked() )};
+            return new List<BasicStatement>() { new CommentBStatement("InternalStatement: "  + IsLinked() )};
         }
     }
 }

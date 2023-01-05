@@ -64,14 +64,16 @@ namespace Crimson.CSharp.Statements
         public IList<BasicStatement> GetCrimsonBasic()
         {
             List<BasicStatement> statements = new List<BasicStatement>();
-            statements.Add(new TestBStatement($"StartFunction:{Name}"));
+            statements.Add(new CommentBStatement(""));
+            statements.Add(new CommentBStatement($"CFunction {Name}"));
+            statements.Add(new LabelBStatement(Name));
 
             foreach (var s in Statements)
             {
                 statements.AddRange(s.GetCrimsonBasic());
             }
 
-            statements.Add(new TestBStatement($"EndFunction:{Name}"));
+            statements.Add(new CommentBStatement(""));
 
             return statements;
         }

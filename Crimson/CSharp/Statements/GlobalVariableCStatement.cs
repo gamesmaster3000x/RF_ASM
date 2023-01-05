@@ -36,7 +36,14 @@ namespace Crimson.CSharp.Statements
         public IList<BasicStatement> GetCrimsonBasic()
         {
             List<BasicStatement> statements = new List<BasicStatement>();
-            statements.Add(new TestBStatement($"GlobalVariable:{Name}"));
+
+            if (Value != null)
+            {
+                IList<BasicStatement> valueStatements = Value.GetCrimsonBasic();
+                statements.AddRange(valueStatements);
+            }
+
+            statements.Add(new VariableBStatement($"var {type.ToString()} {Name} VALUE;"));
 
             return statements;
         }

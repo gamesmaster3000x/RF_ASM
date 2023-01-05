@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class TestBStatement : BasicStatement
+    public class VariableBStatement : BasicStatement
     {
-        public TestBStatement(string text): base(text)
+        public VariableBStatement(string text): base(text)
         {
             Text = text;
         }
