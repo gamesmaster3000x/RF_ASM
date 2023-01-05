@@ -2,20 +2,16 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class VariableAssignment: InternalStatement
+    internal class VariableAssignmentCStatement: InternalStatement
     {
-        public VariableAssignment()
-        {
-        }
-
-        public VariableAssignment(string identifier, ResolvableValue value)
+        public VariableAssignmentCStatement(string identifier, ResolvableValueCToken value)
         {
             Identifier = identifier;
             Value = value;
         }
 
         public string Identifier { get; set; }
-        public ResolvableValue Value { get; }
+        public ResolvableValueCToken Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

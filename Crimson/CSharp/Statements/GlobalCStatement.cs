@@ -1,4 +1,5 @@
 ﻿using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
@@ -12,7 +13,7 @@ namespace Crimson.CSharp.Statements
 
         public override IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new TestStatement(Name) };
+            return new List<BasicStatement>() { new TestBStatement(Name) };
         }
     }
 }

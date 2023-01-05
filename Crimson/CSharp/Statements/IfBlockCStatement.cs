@@ -8,7 +8,7 @@ namespace Crimson.CSharp.Statements
         {
         }
 
-        public IfBlock(Condition condition, IList<InternalStatement> body, ElseIfBlock? elifBlock, ElseBlock? elseBlock)
+        public IfBlock(ConditionCToken condition, IList<InternalStatement> body, ElseIfBlock? elifBlock, ElseBlockCToken? elseBlock)
         {
             Condition = condition;
             Body = body;
@@ -16,10 +16,10 @@ namespace Crimson.CSharp.Statements
             ElseBlock = elseBlock;
         }
 
-        public Condition Condition { get; }
+        public ConditionCToken Condition { get; }
         public IList<InternalStatement> Body { get; }
         public ElseIfBlock? ElifBlock { get; }
-        public ElseBlock? ElseBlock { get; }
+        public ElseBlockCToken? ElseBlock { get; }
 
         public override void Link(LinkingContext ctx)
         {

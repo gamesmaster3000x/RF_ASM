@@ -1,16 +1,16 @@
 ﻿using Crimson.CSharp.Core;
-using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    internal class Condition: ICrimsonToken
+    public class ResolvableValue: ICrimsonToken
     {
-        public Condition(ResolvableValue value)
+        public ResolvableValue(object value)
         {
             Value = value;
         }
 
-        public ResolvableValue Value { get; }
+        public object Value { get; }
 
         public IList<BasicStatement> GetCrimsonBasic()
         {

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonBasic.CSharp.Core
+namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class TestStatement: BasicStatement
+    public class TestBStatement : BasicStatement
     {
-        public TestStatement(string text)
+        public TestBStatement(string text)
         {
             Text = text;
         }

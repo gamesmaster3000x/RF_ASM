@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Statements
     public class Function : GlobalStatement
     {
 
-        public Function(CrimsonType returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
+        public Function(CrimsonTypeCToken returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
         {
             ReturnType = returnType;
             Name = name;
@@ -21,7 +21,7 @@ namespace Crimson.CSharp.Statements
             Statements = statements;
         }
 
-        public CrimsonType ReturnType { get; }
+        public CrimsonTypeCToken ReturnType { get; }
         public IList<Parameter> Parameters { get; }
         public IList<InternalStatement> Statements { get; }
 
@@ -44,10 +44,10 @@ namespace Crimson.CSharp.Statements
 
         public class Parameter
         {
-            public CrimsonType Type { get; }
+            public CrimsonTypeCToken Type { get; }
             public string Identifier { get; set;  }
 
-            public Parameter(CrimsonType type, string identifier)
+            public Parameter(CrimsonTypeCToken type, string identifier)
             {
                 Type = type;
                 Identifier = identifier;

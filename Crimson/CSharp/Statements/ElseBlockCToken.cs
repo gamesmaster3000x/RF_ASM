@@ -1,16 +1,16 @@
 ﻿using Crimson.CSharp.Core;
-using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    public class ResolvableValue: ICrimsonToken
+    internal class ElseBlock : ICrimsonToken
     {
-        public ResolvableValue(object value)
+        public ElseBlock(IList<InternalStatement> statements)
         {
-            Value = value;
+            Statements = statements;
         }
 
-        public object Value { get; }
+        public IList<InternalStatement> Statements { get; }
 
         public IList<BasicStatement> GetCrimsonBasic()
         {

@@ -8,12 +8,12 @@ namespace Crimson.CSharp.Statements
         /// 
         /// </summary>
         /// <param name="ifBlock">An IfBlock representing the "if" part of this statement (NOT THIS STATEMENT'S PARENT)</param>
-        public ElseIfBlock(IfBlock ifBlock)
+        public ElseIfBlock(IfBlockCStatement ifBlock)
         {
             IfBlock = ifBlock;
         }
 
-        public IfBlock IfBlock { get; }
+        public IfBlockCStatement IfBlock { get; }
 
         internal void Link(LinkingContext ctx)
         {

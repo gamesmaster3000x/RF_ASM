@@ -8,16 +8,16 @@ namespace Crimson.CSharp.Core
 
         private string Name { get; }
         private string CurrentUnitLookupPath { get; }
-        internal Dictionary<string, CompilationUnit> Links { get; }
+        internal Dictionary<string, CompilationUnitCStatement> Links { get; }
 
-        public LinkingContext(string friendlyName, string currentUnitLookupPath, Dictionary<string, CompilationUnit> links)
+        public LinkingContext(string friendlyName, string currentUnitLookupPath, Dictionary<string, CompilationUnitCStatement> links)
         {
             Name = friendlyName;
             CurrentUnitLookupPath = currentUnitLookupPath;
             Links = links;
         }
 
-        internal CompilationUnit GetUnit(string alias)
+        internal CompilationUnitCStatement GetUnit(string alias)
         {
             if (Links.ContainsKey(alias))
             {
@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Core
             throw new LinkingException("No alias '" + alias + "' in " + ToString());
         }
 
-        internal CompilationUnit GetCurrentUnit()
+        internal CompilationUnitCStatement GetCurrentUnit()
         {
             return GetUnit(CurrentUnitLookupPath);
         }

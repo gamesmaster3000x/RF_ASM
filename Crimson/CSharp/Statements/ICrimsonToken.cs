@@ -1,5 +1,5 @@
 ﻿using Crimson.CSharp.Core;
-using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {

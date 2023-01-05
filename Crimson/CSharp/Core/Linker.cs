@@ -29,14 +29,14 @@ namespace Crimson.CSharp.Core
             LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
-            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, CompilationUnitCStatement> pair in compilation.Library.Units)
             {
                 LOGGER.Info("Linking KeyValuePair<string, CompilationUnit> " + pair);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, CompilationUnit>());
-                CompilationUnit unit = pair.Value;
+                LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, CompilationUnitCStatement>());
+                CompilationUnitCStatement unit = pair.Value;
                 foreach (KeyValuePair<string, Import> importPair in unit.Imports)
                 {
                     /*
@@ -56,7 +56,7 @@ namespace Crimson.CSharp.Core
                     /*
                      * 
                      */
-                    CompilationUnit? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
+                    CompilationUnitCStatement? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
                     if (mappingUnit == null) throw new LinkingException("Could not add unloaded unit " + relativePath + " (alias=" + alias + ") to mapping context");
 
                     ctx.Links.Add(alias, mappingUnit);
@@ -77,7 +77,7 @@ namespace Crimson.CSharp.Core
             return;
         }
 
-        private static List<CrimsonStatement> GetAllStatements(CompilationUnit unit)
+        private static List<CrimsonStatement> GetAllStatements(CompilationUnitCStatement unit)
         {
             var statements = new List<CrimsonStatement>();
             foreach (var s in unit.Functions.Values)

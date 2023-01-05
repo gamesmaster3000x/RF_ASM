@@ -4,16 +4,16 @@ namespace Crimson.CSharp.Statements
 {
     public class InternalVariable : InternalStatement
     {
-        private CrimsonType type;
+        private CrimsonTypeCToken type;
         public string identifier { get; set; }
 
-        public InternalVariable(CrimsonType type, string identifier)
+        public InternalVariable(CrimsonTypeCToken type, string identifier)
         {
             this.type = type;
             this.identifier = identifier;
         }
 
-        public InternalVariable(CrimsonType type, string identifier, ResolvableValue? value) : this(type, identifier)
+        public InternalVariable(CrimsonTypeCToken type, string identifier, ResolvableValue? value) : this(type, identifier)
         {
             Value = value;
         }

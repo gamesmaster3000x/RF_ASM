@@ -12,15 +12,15 @@ namespace Crimson.CSharp.Statements
     /// </summary>
     public class GlobalVariable : GlobalStatement
     {
-        private CrimsonType type;
+        private CrimsonTypeCToken type;
 
-        public GlobalVariable(CrimsonType type, string identifier)
+        public GlobalVariable(CrimsonTypeCToken type, string identifier)
         {
             this.type = type;
             Name = identifier;
         }
 
-        public GlobalVariable(CrimsonType type, string identifier, ResolvableValue? value) : this(type, identifier)
+        public GlobalVariable(CrimsonTypeCToken type, string identifier, ResolvableValue? value) : this(type, identifier)
         {
             Value = value;
         }

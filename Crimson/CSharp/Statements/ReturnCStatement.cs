@@ -4,12 +4,12 @@ namespace Crimson.CSharp.Statements
 {
     internal class Return : InternalStatement
     {
-        public Return(ResolvableValue value)
+        public Return(ResolvableValueCToken value)
         {
             Value = value;
         }
 
-        public ResolvableValue Value { get; }
+        public ResolvableValueCToken Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

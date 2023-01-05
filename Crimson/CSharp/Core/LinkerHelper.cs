@@ -1,6 +1,7 @@
 ﻿using Crimson.CSharp.Exception;
+using Crimson.CSharp.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Core
 {
     internal class LinkerHelper
     {
@@ -12,7 +13,7 @@ namespace Crimson.CSharp.Statements
         /// <param name="ctx"></param>
         /// <returns></returns>
         /// <exception cref="LinkingException"></exception>
-        internal static Function LinkFunctionCall(string identifier, Core.LinkingContext ctx)
+        internal static FunctionCStatement LinkFunctionCall(string identifier, LinkingContext ctx)
         {
             string[] parts = identifier.Split('.');
             if (parts.Length < 1 || parts.Length > 2)
@@ -30,7 +31,7 @@ namespace Crimson.CSharp.Statements
             if (parts.Length == 1)
             {
                 string funcName = parts[0];
-                if (!ctx.GetCurrentUnit().Functions.TryGetValue(funcName, out Function? result))
+                if (!ctx.GetCurrentUnit().Functions.TryGetValue(funcName, out FunctionCStatement? result))
                     throw new LinkingException("Function " + funcName + " does not exist in CompilationUnit " + ctx.GetCurrentUnit() + "; " + ctx.ToString());
                 return result;
             }
@@ -47,10 +48,10 @@ namespace Crimson.CSharp.Statements
             {
                 string alias = parts[0];
 
-                CompilationUnit unit = ctx.GetUnit(alias);
+                CompilationUnitCStatement unit = ctx.GetUnit(alias);
                 string funcName = parts[1];
 
-                if (!unit.Functions.TryGetValue(funcName, out Function? result))
+                if (!unit.Functions.TryGetValue(funcName, out FunctionCStatement? result))
                     throw new LinkingException("Function " + funcName + " does not exist in CompilationUnit " + ctx.GetCurrentUnit() + "; " + ctx.ToString());
 
                 return result;
@@ -60,7 +61,7 @@ namespace Crimson.CSharp.Statements
         }
 
         [Obsolete]
-        internal static string LinkIdentifier(string identifier, Core.LinkingContext ctx)
+        internal static string LinkIdentifier(string identifier, LinkingContext ctx)
         {
             string[] parts = identifier.Split('.');
             if (parts.Length < 1 || parts.Length > 2)
@@ -74,19 +75,19 @@ namespace Crimson.CSharp.Statements
                 return identifier;
             }
 
-           /*
-            * Before:
-            *  (#using "utils.crm" as u)
-            *  u.help
-            * 
-            * After:
-            *  ${utils.crm}.help
-            */
+            /*
+             * Before:
+             *  (#using "utils.crm" as u)
+             *  u.help
+             * 
+             * After:
+             *  ${utils.crm}.help
+             */
             if (parts.Length == 2)
             {
                 string alias = parts[0];
 
-                CompilationUnit unit = ctx.GetUnit(alias);
+                CompilationUnitCStatement unit = ctx.GetUnit(alias);
                 string call = parts[1];
 
                 string output = $"{{{unit}}}.{call}"; // {{ is used to escape the {, creating ${path}.call in the end //TODO LinkerHelper casts Unit to string

@@ -239,10 +239,10 @@ namespace Crimson.CSharp.Core
             return ret;
         }
 
-        public override AssemblyCall VisitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context)
+        public override AssemblyCallCStatement VisitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context)
         {
             string assemblyText = context.assemblyText.Text;
-            AssemblyCall call = new AssemblyCall(assemblyText);
+            AssemblyCallCStatement call = new AssemblyCallCStatement(assemblyText);
             return call;
         }
 
