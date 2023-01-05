@@ -12,5 +12,10 @@ namespace CrimsonBasic.CSharp.Core.Statements
         {
             Text = text;
         }
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 }

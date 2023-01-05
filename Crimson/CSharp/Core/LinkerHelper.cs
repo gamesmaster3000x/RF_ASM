@@ -48,7 +48,7 @@ namespace Crimson.CSharp.Core
             {
                 string alias = parts[0];
 
-                CompilationUnitCStatement unit = ctx.GetUnit(alias);
+                CompilationUnit unit = ctx.GetUnit(alias);
                 string funcName = parts[1];
 
                 if (!unit.Functions.TryGetValue(funcName, out FunctionCStatement? result))
@@ -87,7 +87,7 @@ namespace Crimson.CSharp.Core
             {
                 string alias = parts[0];
 
-                CompilationUnitCStatement unit = ctx.GetUnit(alias);
+                CompilationUnit unit = ctx.GetUnit(alias);
                 string call = parts[1];
 
                 string output = $"{{{unit}}}.{call}"; // {{ is used to escape the {, creating ${path}.call in the end //TODO LinkerHelper casts Unit to string

@@ -37,7 +37,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" P A R S I N G ");
-            CompilationUnitCStatement rootUnit = Library.LoadUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
+            CompilationUnit rootUnit = Library.LoadUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
             Compilation compilation = new Compilation(rootUnit, Options); // Generate dependency units (all resources are henceforth accessible)
 
 
@@ -87,7 +87,6 @@ namespace Crimson.CSharp.Core
             LOGGER.Info(" F L A T T E N I N G ");
             BasicProgram basicProgram = Flattener.Flatten(compilation);
 
-
             /*
              * == FURTHER COMPILATION STAGES == 
              * 
@@ -96,11 +95,33 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" D E L E G A T I N G");
+            DumpBasicProgram(basicProgram);
 
             LOGGER.Info("\n\n");
             LOGGER.Info("Done!");
             return 1;
         }
 
+        private void DumpBasicProgram(BasicProgram basicProgram)
+        {
+            if (Options.DumpIntermediates)
+            {
+                string basicTarget = Path.ChangeExtension(Options.TranslationTargetPath, ".cba");
+                LOGGER.Info("Dumping CrimsonBasic program to " + basicTarget);
+
+                List<string> lines = new List<string>();
+                foreach (var s in basicProgram.Statements)
+                {
+                    lines.Add(s.ToString());
+                }
+
+                Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));
+                File.WriteAllLines(basicTarget, lines.ToArray());
+                LOGGER.Info("Finished CrimsonBasic dump!");
+            } else
+            {
+                LOGGER.Info("Skipping dumping of CrimsonBasic program");
+            }
+        }
     }
 }

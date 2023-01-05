@@ -38,7 +38,7 @@ namespace Crimson.CSharp.Core
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (KeyValuePair<string, CompilationUnitCStatement> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
             {
                 foreach (var f in pair.Value.Functions)
                 {
@@ -92,7 +92,7 @@ namespace Crimson.CSharp.Core
         private FunctionCStatement GetEntryFunction(Compilation compilation)
         {
             string baseName = Options.EntryFunctionName;
-            CompilationUnitCStatement rootUnit = compilation.GetRootUnit();
+            CompilationUnit rootUnit = compilation.GetRootUnit();
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 

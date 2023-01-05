@@ -19,7 +19,7 @@ namespace Crimson.CSharp.Statements
 
         public IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>();
+            return new List<BasicStatement>() { new TestBStatement($"Type:{Text}") };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,14 @@ namespace Crimson.CSharp.Statements
         public override void Link(LinkingContext ctx)
         {
             return;
+        }
+
+        public IList<BasicStatement> GetCrimsonBasic()
+        {
+            List<BasicStatement> statements = new List<BasicStatement>();
+            statements.Add(new TestBStatement($"GlobalVariable:{Name}"));
+
+            return statements;
         }
     }
 }

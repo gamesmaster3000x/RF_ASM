@@ -2,7 +2,10 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class AssemblyBStatement : IList<BasicStatement>
+    public class AssemblyBStatement : BasicStatement
     {
+        public AssemblyBStatement(string text) : base(text)
+        {
+        }
     }
 }

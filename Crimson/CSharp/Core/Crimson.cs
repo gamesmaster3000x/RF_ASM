@@ -21,7 +21,7 @@ namespace Crimson.CSharp.Core
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
                 args = new string[] {
                     "-s", testProgramsPath + "Main_Utils/main.crm",
-                    "-t", "out",
+                    "-t", testProgramsPath + "Main_Utils/out/main.rfp",
                     "-n", "C:/Crimson/Native/" ,
                     "--rfasm"
                 };
@@ -37,7 +37,7 @@ namespace Crimson.CSharp.Core
                 Console.WriteLine("  Option: CompilationSourcePath: " + options.TranslationSourcePath);
                 Console.WriteLine("  Option: CompilationTargetPath: " + options.TranslationTargetPath);
                 Console.WriteLine("  Option: NativeLibraryPath: " + options.NativeLibraryPath);
-                Console.WriteLine("  Option: CleanFiles: " + options.CleanFiles);
+                Console.WriteLine("  Option: DumpIntermediates: " + options.DumpIntermediates);
                 Console.WriteLine("  Option: (Platform) CrimsonBasic: " + options.CrimsonBasic);
                 Console.WriteLine("  Option: (Platform) RFASM: " + options.RFASM);
 

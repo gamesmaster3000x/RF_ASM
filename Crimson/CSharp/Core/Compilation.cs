@@ -21,7 +21,7 @@ namespace Crimson.CSharp.Core
         /// </summary>
         internal Library Library { get; }
 
-        public Compilation(CompilationUnitCStatement rootUnit, CrimsonOptions options)
+        public Compilation(CompilationUnit rootUnit, CrimsonOptions options)
         {
             Library = new Library(options);
 
@@ -33,20 +33,20 @@ namespace Crimson.CSharp.Core
         /// Loads dependencies for the given root CompilationUnit, as well as that unit's dependencies, recursively.
         /// </summary>
         /// <param name="root"></param>
-        private void LoadLibrary(CompilationUnitCStatement root)
+        private void LoadLibrary(CompilationUnit root)
         {
             // For each import
             foreach (var i in root.Imports)
             {
                 // Get the unit it refers to 
-                CompilationUnitCStatement unit = Library.LoadUnitFromPath(i.Value.Path);
+                CompilationUnit unit = Library.LoadUnitFromPath(i.Value.Path);
 
                 // Get that units' dependencies (recursively)
                 LoadLibrary(unit);
             }
         }
 
-        public CompilationUnitCStatement GetRootUnit()
+        public CompilationUnit GetRootUnit()
         {
             return Library.Units[Library.ROOT_FACET_NAME];
         }

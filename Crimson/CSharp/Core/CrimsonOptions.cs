@@ -9,6 +9,7 @@ namespace Crimson.CSharp.Core
 {
     public class CrimsonOptions
     {
+        // Source
         private string _translationSourcePath;
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
             "If no file extension given, .rfp will be assumed.")]
@@ -18,6 +19,7 @@ namespace Crimson.CSharp.Core
             set { _translationSourcePath = Path.GetFullPath(value); }
         }
 
+        // Target
         private string _translationTargetPath;
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
             "If no file extension provided, will assume .rfp.")]
@@ -27,6 +29,7 @@ namespace Crimson.CSharp.Core
             set { _translationTargetPath = Path.GetFullPath(value); }
         }
 
+        // Native library
         private string _nativeLibraryPath;
         [Option(longName: "native", shortName: 'n', Required = false, HelpText = "Path to the native Crimson library. " +
             "If not provided, will use a packaged version. " +
@@ -37,6 +40,7 @@ namespace Crimson.CSharp.Core
             set { _nativeLibraryPath = Path.GetFullPath(value); }
         }
 
+        // Entry function
         private string _entryFunctionName;
         [Option(longName: "entry", shortName: 'e', Required = false, HelpText = "The name of the function where execution should " +
             "start in the primary source file.", Default = "main")]
@@ -46,9 +50,11 @@ namespace Crimson.CSharp.Core
             set { _entryFunctionName = value; }
         }
 
+        // DumpIntermediates
         [Option(longName: "clean", shortName: 'c', Required = false, Default = true, HelpText = "Should the compiler clean up its temporary files?")]
-        public bool CleanFiles { get; set; }
+        public bool DumpIntermediates { get; set; }
 
+        // Targeted language
         [Option(Group = "platform")] public bool CrimsonBasic { get; set; }
         [Option(Group = "platform")] public bool RFASM { get; set; }
 

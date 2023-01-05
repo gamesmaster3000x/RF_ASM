@@ -11,7 +11,7 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.
     /// </summary>
-    public class CompilationUnitCStatement
+    public class CompilationUnit
     {
         private Dictionary<string, ImportCStatement> imports = new Dictionary<string, ImportCStatement>();
         private Dictionary<string, FunctionCStatement> functions = new Dictionary<string, FunctionCStatement>();

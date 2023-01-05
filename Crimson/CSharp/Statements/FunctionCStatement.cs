@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,21 @@ namespace Crimson.CSharp.Statements
                 Type.Link(ctx);
                 Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
             }
+        }
+
+        public IList<BasicStatement> GetCrimsonBasic()
+        {
+            List<BasicStatement> statements = new List<BasicStatement>();
+            statements.Add(new TestBStatement($"StartFunction:{Name}"));
+
+            foreach (var s in Statements)
+            {
+                statements.AddRange(s.GetCrimsonBasic());
+            }
+
+            statements.Add(new TestBStatement($"EndFunction:{Name}"));
+
+            return statements;
         }
     }
 }
