@@ -9,7 +9,6 @@ namespace RedFoxVM {
     {
         static void Main(string[] args)
         {
-            Computer computer = new(Array.Empty<byte>(), 2, 1024, 32, 16, 256);
             
         }
     }
