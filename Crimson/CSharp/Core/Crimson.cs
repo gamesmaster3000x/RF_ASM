@@ -11,6 +11,7 @@ namespace Crimson.CSharp.Core
     {
 
         private static Logger? LOGGER;
+        internal static readonly string VERSION = "v0.0";
 
         static Task<int> Main(string[] args)
         {
