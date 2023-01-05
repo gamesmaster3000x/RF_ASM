@@ -10,10 +10,10 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
     /// </summary>
-    public class Function : GlobalStatement
+    public class FunctionCStatement : GlobalCStatement
     {
 
-        public Function(CrimsonTypeCToken returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
+        public FunctionCStatement(CrimsonTypeCToken returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
         {
             ReturnType = returnType;
             Name = name;

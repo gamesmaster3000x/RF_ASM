@@ -29,16 +29,16 @@ namespace Crimson.CSharp.Core
         {
             BasicProgram program = new BasicProgram();
 
-            Dictionary<string, Function> functions = new Dictionary<string, Function>();
-            Dictionary<string, Structure> structures = new Dictionary<string, Structure>();
-            Dictionary<string, GlobalVariable> variables = new Dictionary<string, GlobalVariable>();
+            Dictionary<string, FunctionCStatement> functions = new Dictionary<string, FunctionCStatement>();
+            Dictionary<string, StructureCStatement> structures = new Dictionary<string, StructureCStatement>();
+            Dictionary<string, GlobalVariableCStatement> variables = new Dictionary<string, GlobalVariableCStatement>();
 
             /*
              * Create 3 universal lists which contain all of the statements.
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, CompilationUnitCStatement> pair in compilation.Library.Units)
             {
                 foreach (var f in pair.Value.Functions)
                 {
@@ -71,7 +71,7 @@ namespace Crimson.CSharp.Core
             }
 
             // Add main (entry) function
-            Function entry = GetEntryFunction(compilation);
+            FunctionCStatement entry = GetEntryFunction(compilation);
             LOGGER.Info($"Found entry Function {entry.Name}");
             IList<BasicStatement> entryBs = entry.GetCrimsonBasic();
             program.Statements.AddRange(entryBs);
@@ -89,21 +89,21 @@ namespace Crimson.CSharp.Core
             return program;
         }
 
-        private Function GetEntryFunction(Compilation compilation)
+        private FunctionCStatement GetEntryFunction(Compilation compilation)
         {
             string baseName = Options.EntryFunctionName;
-            CompilationUnit rootUnit = compilation.GetRootUnit();
+            CompilationUnitCStatement rootUnit = compilation.GetRootUnit();
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 
-            IList<Function> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name)).ToList();
+            IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name)).ToList();
             if (funcs.Count < 1) throw new FlatteningException($"Found {funcs.Count} (exactly 1 required) valid entry methods {funcs} for root unit {rootUnit} of compilation {compilation}");
             if (funcs.Count > 1) throw new FlatteningException($"Multiple ({funcs.Count}) valid entry methods (maximum permissable 1) {funcs} for root unit {rootUnit} of compilation {compilation}");
-            Function entry = funcs.Single();
+            FunctionCStatement entry = funcs.Single();
             return entry;
         }
 
-        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: GlobalStatement
+        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: GlobalCStatement
         {
             int i = 0;
             string prefix = GetFlattenedPrefix(gs.GetType());
@@ -117,19 +117,19 @@ namespace Crimson.CSharp.Core
 
         private string GetFlattenedPrefix(System.Type type)
         {
-            if (type == typeof(Function))
+            if (type == typeof(FunctionCStatement))
             {
                 return "func";
             }
-            if (type == typeof(Structure))
+            if (type == typeof(StructureCStatement))
             {
                 return "stru";
             }
-            if (type == typeof(GlobalVariable))
+            if (type == typeof(GlobalVariableCStatement))
             {
                 return "gvar";
             }
-            if (type == typeof(InternalVariable))
+            if (type == typeof(InternalVariableCStatement))
             {
                 return "ivar";
             }

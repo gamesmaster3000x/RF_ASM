@@ -2,9 +2,9 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class Return : InternalStatement
+    internal class ReturnCStatement : InternalStatement
     {
-        public Return(ResolvableValueCToken value)
+        public ReturnCStatement(ResolvableValueCToken value)
         {
             Value = value;
         }

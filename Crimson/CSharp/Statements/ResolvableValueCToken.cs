@@ -3,9 +3,9 @@ using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    public class ResolvableValue: ICrimsonToken
+    public class ResolvableValueCToken: ICrimsonToken
     {
-        public ResolvableValue(object value)
+        public ResolvableValueCToken(object value)
         {
             Value = value;
         }

@@ -3,10 +3,10 @@ using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    public abstract class GlobalStatement : CrimsonStatement
+    public abstract class GlobalCStatement : CrimsonStatement
     {
         public virtual string Name { get; set; }
-        protected GlobalStatement() : base(false)
+        protected GlobalCStatement() : base(false)
         {
             Name = "";
         }

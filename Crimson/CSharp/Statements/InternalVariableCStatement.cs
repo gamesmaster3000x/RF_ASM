@@ -2,23 +2,23 @@
 
 namespace Crimson.CSharp.Statements
 {
-    public class InternalVariable : InternalStatement
+    public class InternalVariableCStatement : InternalStatement
     {
         private CrimsonTypeCToken type;
         public string identifier { get; set; }
 
-        public InternalVariable(CrimsonTypeCToken type, string identifier)
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier)
         {
             this.type = type;
             this.identifier = identifier;
         }
 
-        public InternalVariable(CrimsonTypeCToken type, string identifier, ResolvableValue? value) : this(type, identifier)
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken? value) : this(type, identifier)
         {
             Value = value;
         }
 
-        public ResolvableValue? Value { get; }
+        public ResolvableValueCToken? Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

@@ -2,12 +2,12 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class MemoryAllocation : InternalStatement
+    internal class MemoryAllocationCStatement : InternalStatement
     {
         private string identifier;
         private int number;
 
-        public MemoryAllocation(string identifier, int number)
+        public MemoryAllocationCStatement(string identifier, int number)
         {
             this.identifier = identifier;
             this.number = number;

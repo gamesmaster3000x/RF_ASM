@@ -1,8 +1,8 @@
 ﻿namespace Crimson.CSharp.Statements
 {
-    internal class Parameter
+    internal class ParameterCToken
     {
-        public Parameter(CrimsonTypeCToken type, string identifier)
+        public ParameterCToken(CrimsonTypeCToken type, string identifier)
         {
             Type1 = type;
             Identifier = identifier;
@@ -10,7 +10,7 @@
 
         public CrimsonTypeCToken Type1 { get; }
         public string Identifier { get; }
-        Type Type { get; set; }
+        TypeCToken Type { get; set; }
         string Name { get; set; }
     }
 }

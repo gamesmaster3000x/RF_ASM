@@ -2,13 +2,13 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class IfBlock : InternalStatement
+    internal class IfBlockCStatement : InternalStatement
     {
-        public IfBlock()
+        public IfBlockCStatement()
         {
         }
 
-        public IfBlock(ConditionCToken condition, IList<InternalStatement> body, ElseIfBlock? elifBlock, ElseBlockCToken? elseBlock)
+        public IfBlockCStatement(ConditionCToken condition, IList<InternalStatement> body, ElseIfBlock? elifBlock, ElseBlockCToken? elseBlock)
         {
             Condition = condition;
             Body = body;

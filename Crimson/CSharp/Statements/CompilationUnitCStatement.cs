@@ -11,40 +11,40 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.
     /// </summary>
-    public class CompilationUnit
+    public class CompilationUnitCStatement
     {
-        private Dictionary<string, Import> imports = new Dictionary<string, Import>();
-        private Dictionary<string, Function> functions = new Dictionary<string, Function>();
-        private Dictionary<string, Structure> structures = new Dictionary<string, Structure>();
-        private Dictionary<string, GlobalVariable> globalVariables = new Dictionary<string, GlobalVariable>();
+        private Dictionary<string, ImportCStatement> imports = new Dictionary<string, ImportCStatement>();
+        private Dictionary<string, FunctionCStatement> functions = new Dictionary<string, FunctionCStatement>();
+        private Dictionary<string, StructureCStatement> structures = new Dictionary<string, StructureCStatement>();
+        private Dictionary<string, GlobalVariableCStatement> globalVariables = new Dictionary<string, GlobalVariableCStatement>();
 
-        public Dictionary<string, Import> Imports { get => imports; set => imports = value; }
-        public Dictionary<string, Function> Functions { get => functions; set => functions = value; }
-        public Dictionary<string, Structure> Structures { get => structures; set => structures = value; }
-        public Dictionary<string, GlobalVariable> GlobalVariables { get => globalVariables; set => globalVariables = value; }
+        public Dictionary<string, ImportCStatement> Imports { get => imports; set => imports = value; }
+        public Dictionary<string, FunctionCStatement> Functions { get => functions; set => functions = value; }
+        public Dictionary<string, StructureCStatement> Structures { get => structures; set => structures = value; }
+        public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get => globalVariables; set => globalVariables = value; }
 
-        public void AddImport(Import import)
+        public void AddImport(ImportCStatement import)
         {
             Imports.Add(import.Alias, import);
         }
 
-        public void AddStatement(GlobalStatement statement)
+        public void AddStatement(GlobalCStatement statement)
         {
-            if (statement is Function)
+            if (statement is FunctionCStatement)
             {
-                Function f = (Function)statement;
+                FunctionCStatement f = (FunctionCStatement)statement;
                 if (functions.ContainsKey(f.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {f.Name} for statement {statement} in unit {this}");
                 Functions.Add(f.Name, f);
             }
-            else if (statement is GlobalVariable)
+            else if (statement is GlobalVariableCStatement)
             {
-                GlobalVariable v = (GlobalVariable)statement;
+                GlobalVariableCStatement v = (GlobalVariableCStatement)statement;
                 if (functions.ContainsKey(v.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {v.Name} for statement {statement} in unit {this}");
                 GlobalVariables.Add(v.Name, v);
             }
-            else if (statement is Structure)
+            else if (statement is StructureCStatement)
             {
-                Structure s = (Structure)statement;
+                StructureCStatement s = (StructureCStatement)statement;
                 if (functions.ContainsKey(s.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {s.Name} for statement {statement} in unit {this}");
                 Structures.Add(s.Name, s);
             }

@@ -8,9 +8,9 @@ namespace Crimson.CSharp.Core
     internal class CrimsonCompiliationUnitVisitor: CrimsonBaseVisitor<object>
     {
 
-        public override CompilationUnit VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context)
+        public override CompilationUnitCStatement VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context)
         {
-            CompilationUnit compilation = new CompilationUnit();
+            CompilationUnitCStatement compilation = new CompilationUnitCStatement();
 
             // Visit imports
             IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
@@ -22,7 +22,7 @@ namespace Crimson.CSharp.Core
                     path = path.Substring(1, path.Length - 2);
                 }
                 string id = importCtx.identifier.Text;
-                Import import = new Import(path, id);
+                ImportCStatement import = new ImportCStatement(path, id);
                 compilation.AddImport(import);
             }
 
@@ -30,7 +30,7 @@ namespace Crimson.CSharp.Core
             IList<CrimsonParser.GlobalStatementContext> unitStatementCtxs = context._statements;
             foreach (CrimsonParser.GlobalStatementContext unitStatementCtx in unitStatementCtxs)
             {
-                GlobalStatement unitStatement = ParseGlobalStatement(unitStatementCtx);
+                GlobalCStatement unitStatement = ParseGlobalStatement(unitStatementCtx);
                 compilation.AddStatement(unitStatement);
             }
 
@@ -43,7 +43,7 @@ namespace Crimson.CSharp.Core
         // -------------------------- GLOBAL STATEMENTS
         // ----------------------------------------------------
 
-        private GlobalStatement ParseGlobalStatement(CrimsonParser.GlobalStatementContext context)
+        private GlobalCStatement ParseGlobalStatement(CrimsonParser.GlobalStatementContext context)
         {
             if (context is CrimsonParser.GlobalVariableUnitStatementContext)
             {
@@ -68,31 +68,31 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public override GlobalVariable VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
+        public override GlobalVariableCStatement VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
         {
             CrimsonParser.InternalVariableDeclarationContext ivdc = context.internalVariableDeclaration();
-            CrimsonType type = VisitType(ivdc.type());
+            CrimsonTypeCToken type = VisitType(ivdc.type());
             string identifier = ivdc.Identifier().GetText();
-            ResolvableValue? value = ivdc.resolvableValue() == null ? null : VisitResolvableValue(ivdc.resolvableValue());
-            GlobalVariable variable = new GlobalVariable(type, identifier, value);
+            ResolvableValueCToken? value = ivdc.resolvableValue() == null ? null : VisitResolvableValue(ivdc.resolvableValue());
+            GlobalVariableCStatement variable = new GlobalVariableCStatement(type, identifier, value);
             return variable;
         }
 
-        public override Function VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context)
+        public override FunctionCStatement VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context)
         {
             string name = context.name.Text;
-            CrimsonType returnType = VisitType(context.returnType);
+            CrimsonTypeCToken returnType = VisitType(context.returnType);
             IList<InternalStatement> statements = VisitFunctionBody(context.body);
-            IList<Function.Parameter> parameters = VisitParameterList(context.parameters); 
-            return new Function(returnType, name, parameters, statements);
+            IList<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters); 
+            return new FunctionCStatement(returnType, name, parameters, statements);
 
         }
 
-        public override Structure VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
+        public override StructureCStatement VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
         {
             string identifier = context.Identifier().GetText();
             IList<InternalStatement> body = VisitStructureBody(context.structureBody());
-            Structure structure = new Structure(identifier, body);
+            StructureCStatement structure = new StructureCStatement(identifier, body);
             return structure;
         }
 
@@ -101,30 +101,30 @@ namespace Crimson.CSharp.Core
             IList<InternalStatement> statements = new List<InternalStatement>();
             foreach (CrimsonParser.InternalVariableDeclarationContext ivdCtx in context.internalVariableDeclaration())
             {
-                InternalVariable var = VisitInternalVariableDeclaration(ivdCtx);
+                InternalVariableCStatement var = VisitInternalVariableDeclaration(ivdCtx);
                 statements.Add(var);
             }
             return statements;
         }
 
-        public override ResolvableValue VisitResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context)
+        public override ResolvableValueCToken VisitResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context)
         {
-            return new ResolvableValue(null);
+            return new ResolvableValueCToken(null);
         }
 
-        public override CrimsonType VisitType([NotNull] CrimsonParser.TypeContext context)
+        public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
         {
-            return new CrimsonType(context.GetText());
+            return new CrimsonTypeCToken(context.GetText());
         }
 
-        public override IList<Function.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
+        public override IList<FunctionCStatement.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
         {
-            List<Function.Parameter> parameters = new List<Function.Parameter>();
+            List<FunctionCStatement.Parameter> parameters = new List<FunctionCStatement.Parameter>();
             foreach (CrimsonParser.ParameterContext paCxt in context.parameter())
             {
-                CrimsonType type = VisitType(paCxt.type());
+                CrimsonTypeCToken type = VisitType(paCxt.type());
                 string identifier = paCxt.Identifier().GetText();
-                Function.Parameter parameter = new Function.Parameter(type, identifier);
+                FunctionCStatement.Parameter parameter = new FunctionCStatement.Parameter(type, identifier);
                 parameters.Add(parameter);
             }
             return parameters;
@@ -195,47 +195,47 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public override InternalVariable VisitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context)
+        public override InternalVariableCStatement VisitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context)
         {
-            CrimsonType type = VisitType(context.type());
+            CrimsonTypeCToken type = VisitType(context.type());
             string identifier = context.Identifier().GetText();
-            ResolvableValue? value = context.resolvableValue() == null ? null : VisitResolvableValue(context.resolvableValue());
-            InternalVariable variable = new InternalVariable(type, identifier, value);
+            ResolvableValueCToken? value = context.resolvableValue() == null ? null : VisitResolvableValue(context.resolvableValue());
+            InternalVariableCStatement variable = new InternalVariableCStatement(type, identifier, value);
             return variable;
         }
 
-        public override FunctionCall VisitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context)
+        public override FunctionCallCStatement VisitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context)
         {
             string identifier = context.Identifier().GetText();
-            IList<ResolvableValue> arguments = VisitArguments(context.arguments());
-            FunctionCall call = new FunctionCall(identifier, arguments);
+            IList<ResolvableValueCToken> arguments = VisitArguments(context.arguments());
+            FunctionCallCStatement call = new FunctionCallCStatement(identifier, arguments);
             return call;
         }
 
-        public override IfBlock VisitIfBlock([NotNull] CrimsonParser.IfBlockContext context)
+        public override IfBlockCStatement VisitIfBlock([NotNull] CrimsonParser.IfBlockContext context)
         {
-            Condition condition = VisitCondition(context.condition());
+            ConditionCToken condition = VisitCondition(context.condition());
             IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
             CrimsonParser.ElseIfBlockContext eibCtx = context.elseIfBlock();
             CrimsonParser.ElseBlockContext elbCtx = context.elseBlock();
             ElseIfBlock? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
-            ElseBlock? elseBlock = elbCtx == null ? null : VisitElseBlock(elbCtx);
-            IfBlock ifBlock = new IfBlock(condition, body, elifBlock, elseBlock);
+            ElseBlockCToken? elseBlock = elbCtx == null ? null : VisitElseBlock(elbCtx);
+            IfBlockCStatement ifBlock = new IfBlockCStatement(condition, body, elifBlock, elseBlock);
             return ifBlock;
         }
 
-        public override VariableAssignment VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
+        public override VariableAssignmentCStatement VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
         {
             string identifier = context.Identifier().GetText();
-            ResolvableValue value = VisitResolvableValue(context.resolvableValue());
-            VariableAssignment assignment = new VariableAssignment(identifier, value);
+            ResolvableValueCToken value = VisitResolvableValue(context.resolvableValue());
+            VariableAssignmentCStatement assignment = new VariableAssignmentCStatement(identifier, value);
             return assignment;
         }
 
-        public override Return VisitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context)
+        public override ReturnCStatement VisitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context)
         {
-            ResolvableValue value = VisitResolvableValue(context.resolvableValue());
-            Return ret = new Return(value);
+            ResolvableValueCToken value = VisitResolvableValue(context.resolvableValue());
+            ReturnCStatement ret = new ReturnCStatement(value);
             return ret;
         }
 
@@ -246,7 +246,7 @@ namespace Crimson.CSharp.Core
             return call;
         }
 
-        public override MemoryAllocation VisitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context)
+        public override MemoryAllocationCStatement VisitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context)
         {
             string identifier = context.Identifier().GetText();
             string numberText = context.Number().GetText();
@@ -259,39 +259,39 @@ namespace Crimson.CSharp.Core
             {
                 throw new StatementParseException("Failed to parse string->int " + numberText + " while allocating memory for " + identifier, f);
             }
-            MemoryAllocation allocation = new MemoryAllocation(identifier, number);
+            MemoryAllocationCStatement allocation = new MemoryAllocationCStatement(identifier, number);
             return allocation;
         }
 
-        public override IList<ResolvableValue> VisitArguments([NotNull] CrimsonParser.ArgumentsContext context)
+        public override IList<ResolvableValueCToken> VisitArguments([NotNull] CrimsonParser.ArgumentsContext context)
         {
-            IList<ResolvableValue> arguments = new List<ResolvableValue>();
+            IList<ResolvableValueCToken> arguments = new List<ResolvableValueCToken>();
             foreach (CrimsonParser.ResolvableValueContext rvlCxt in context.resolvableValue())
             {
-                ResolvableValue value = VisitResolvableValue(rvlCxt);
+                ResolvableValueCToken value = VisitResolvableValue(rvlCxt);
                 arguments.Add(value);
             }
             return arguments;
         }
 
-        public override Condition VisitCondition([NotNull] CrimsonParser.ConditionContext context)
+        public override ConditionCToken VisitCondition([NotNull] CrimsonParser.ConditionContext context)
         {
-            ResolvableValue value = VisitResolvableValue(context.resolvableValue());
-            Condition condition = new Condition(value);
+            ResolvableValueCToken value = VisitResolvableValue(context.resolvableValue());
+            ConditionCToken condition = new ConditionCToken(value);
             return condition;
         }
 
         public override ElseIfBlock VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context)
         {
-            IfBlock ifBlock = VisitIfBlock(context.ifBlock());
+            IfBlockCStatement ifBlock = VisitIfBlock(context.ifBlock());
             ElseIfBlock elseIfBlock = new ElseIfBlock(ifBlock);
             return elseIfBlock;
         }
 
-        public override ElseBlock VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context)
+        public override ElseBlockCToken VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context)
         {
             IList<InternalStatement> statements = VisitFunctionBody(context.functionBody());
-            ElseBlock elseBlock = new ElseBlock(statements);
+            ElseBlockCToken elseBlock = new ElseBlockCToken(statements);
             return elseBlock;
         }
     }

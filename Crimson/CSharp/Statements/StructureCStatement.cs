@@ -2,9 +2,9 @@
 
 namespace Crimson.CSharp.Statements
 {
-    public class Structure : GlobalCStatement
+    public class StructureCStatement : GlobalCStatement
     {
-        public Structure(string name, IList<InternalStatement> body)
+        public StructureCStatement(string name, IList<InternalStatement> body)
         {
             Name = name;
             Body = body;

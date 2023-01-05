@@ -3,11 +3,11 @@ using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    public class CrimsonType : ICrimsonToken
+    public class CrimsonTypeCToken : ICrimsonToken
     {
         public string Text { get; set; }
 
-        public CrimsonType(string text)
+        public CrimsonTypeCToken(string text)
         {
             Text = text;
         }

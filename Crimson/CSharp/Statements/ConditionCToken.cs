@@ -3,14 +3,14 @@ using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    internal class Condition: ICrimsonToken
+    internal class ConditionCToken: ICrimsonToken
     {
-        public Condition(ResolvableValue value)
+        public ConditionCToken(ResolvableValueCToken value)
         {
             Value = value;
         }
 
-        public ResolvableValue Value { get; }
+        public ResolvableValueCToken Value { get; }
 
         public IList<BasicStatement> GetCrimsonBasic()
         {

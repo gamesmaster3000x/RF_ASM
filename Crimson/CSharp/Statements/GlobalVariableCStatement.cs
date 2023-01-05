@@ -10,22 +10,22 @@ namespace Crimson.CSharp.Statements
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.
     /// </summary>
-    public class GlobalVariable : GlobalStatement
+    public class GlobalVariableCStatement : GlobalCStatement
     {
         private CrimsonTypeCToken type;
 
-        public GlobalVariable(CrimsonTypeCToken type, string identifier)
+        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier)
         {
             this.type = type;
             Name = identifier;
         }
 
-        public GlobalVariable(CrimsonTypeCToken type, string identifier, ResolvableValue? value) : this(type, identifier)
+        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken? value) : this(type, identifier)
         {
             Value = value;
         }
 
-        public ResolvableValue? Value { get; }
+        public ResolvableValueCToken? Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

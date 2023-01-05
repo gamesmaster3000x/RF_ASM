@@ -3,9 +3,9 @@ using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    internal class ElseBlock : ICrimsonToken
+    internal class ElseBlockCToken : ICrimsonToken
     {
-        public ElseBlock(IList<InternalStatement> statements)
+        public ElseBlockCToken(IList<InternalStatement> statements)
         {
             Statements = statements;
         }

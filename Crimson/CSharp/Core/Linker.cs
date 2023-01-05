@@ -37,7 +37,7 @@ namespace Crimson.CSharp.Core
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
                 LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, CompilationUnitCStatement>());
                 CompilationUnitCStatement unit = pair.Value;
-                foreach (KeyValuePair<string, Import> importPair in unit.Imports)
+                foreach (KeyValuePair<string, ImportCStatement> importPair in unit.Imports)
                 {
                     /*
                      * Get the alias of the dependency.

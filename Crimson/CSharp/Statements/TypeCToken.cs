@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Statements
 {
-    internal class Type
+    internal class TypeCToken
     {
     }
 }

@@ -3,11 +3,11 @@ using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    internal class AssemblyCall : InternalStatement
+    internal class AssemblyCallCStatement : InternalStatement
     {
         private string assemblyText;
 
-        public AssemblyCall(string assemblyText)
+        public AssemblyCallCStatement(string assemblyText)
         {
             this.assemblyText = assemblyText;
         }

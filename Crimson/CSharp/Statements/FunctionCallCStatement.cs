@@ -2,13 +2,13 @@
 
 namespace Crimson.CSharp.Statements
 {
-    internal class FunctionCall : InternalStatement
+    internal class FunctionCallCStatement : InternalStatement
     {
         private string identifier;
         private FunctionCStatement? targetFunction;
-        private IList<ResolvableValue> arguments;
+        private IList<ResolvableValueCToken> arguments;
 
-        public FunctionCall(string identifier, IList<ResolvableValue> arguments): base()
+        public FunctionCallCStatement(string identifier, IList<ResolvableValueCToken> arguments): base()
         {
             this.identifier = identifier;
             this.arguments = arguments;
