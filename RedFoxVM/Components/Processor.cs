@@ -2,7 +2,9 @@
 {
     internal class Processor
     {
-        public static bool[] flags = new bool[256];
-        public static Register[] registers = new Register[256];
+        public bool[] flags = new bool[256];
+        public Register[] registers = new Register[256];
+        public ALU alu = new ALU();
+        
     }
 }

@@ -69,5 +69,15 @@
         {
             get { return data; }
         }
+
+        public int ToInt32()
+        {
+            int o = 0;
+            for (int i = 0; i < data.Length; i++)
+            {
+                o += Convert.ToInt32(data[i]) * (int)Math.Pow(2, i);
+            }
+            return o;
+        }
     }
 }
