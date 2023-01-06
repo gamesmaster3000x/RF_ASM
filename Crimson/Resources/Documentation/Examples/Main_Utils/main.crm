@@ -11,7 +11,7 @@ global int counter = 0;
 function main [int] () {
 	
 	if (true) {
-		allocate counter 6
+		allocate counter 6;
 	} else if (utils.something(utils.otherthing)) {
 		int a;
 	} else {
