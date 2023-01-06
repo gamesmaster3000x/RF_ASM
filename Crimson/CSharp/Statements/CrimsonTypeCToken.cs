@@ -21,5 +21,15 @@ namespace Crimson.CSharp.Statements
         {
             return new List<BasicStatement>() { new CommentBStatement($"Type:{Text}") };
         }
+
+        public override string ToString()
+        {
+            return Text;
+        }
+
+        internal int GetByteSize()
+        {
+            return 666;
+        }
     }
 }

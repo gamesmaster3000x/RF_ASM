@@ -9,15 +9,17 @@ namespace CrimsonBasic.CSharp.Core.Statements
 {
     public class CommentBStatement : BasicStatement
     {
-        public CommentBStatement(string text): base(text)
+        private string _text;
+
+        public CommentBStatement(string text)
         {
-            Text = text;
+            _text = text;
         }
 
         public override string ToString()
         {
-            if (Text.Equals("") || Text.StartsWith("//")) return Text;
-            return "// " + Text;
+            if (_text.Equals("") || _text.StartsWith("//")) return _text;
+            return "// " + _text;
         }
     }
 }

@@ -43,7 +43,9 @@ namespace Crimson.CSharp.Statements
                 statements.AddRange(valueStatements);
             }
 
-            statements.Add(new VariableBStatement($"var {type.ToString()} {Name} VALUE;"));
+            statements.Add(new VariableDeclareBStatement(Name));
+            statements.Add(new MemoryAllocateBStatement(Name, type.GetByteSize()));
+            statements.Add(new VariableAssignBStatement(Name, "GLO_VAR_ASSIGN_VAL"));
 
             return statements;
         }

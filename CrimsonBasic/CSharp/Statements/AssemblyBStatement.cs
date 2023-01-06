@@ -4,8 +4,11 @@ namespace Crimson.CSharp.Statements
 {
     public class AssemblyBStatement : BasicStatement
     {
-        public AssemblyBStatement(string text) : base(text)
+        private string _text;
+
+        public AssemblyBStatement(string text)
         {
+            _text = text;
         }
     }
 }

@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class VariableBStatement : BasicStatement
+    public class VariableDeclareBStatement : BasicStatement
     {
-        public VariableBStatement(string text): base(text)
+        private string _name;
+
+        public VariableDeclareBStatement(string name)
         {
-            Text = text;
+            _name = name;
         }
 
         public override string ToString()
         {
-            return Text;
+            return $"var {_name};";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
@@ -16,6 +17,15 @@ namespace Crimson.CSharp.Statements
         public override void Link(LinkingContext ctx)
         {
             return;
+        }
+
+        public override IList<BasicStatement> GetCrimsonBasic()
+        {
+            List<BasicStatement> crimsonBasic = new List<BasicStatement>();
+
+            crimsonBasic.Add(new MemoryAllocateBStatement(identifier, number));
+
+            return crimsonBasic;
         }
     }
 }

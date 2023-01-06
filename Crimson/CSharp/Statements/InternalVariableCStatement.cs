@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
@@ -23,6 +24,22 @@ namespace Crimson.CSharp.Statements
         public override void Link(LinkingContext ctx)
         {
             return;
+        }
+
+        public override IList<BasicStatement> GetCrimsonBasic()
+        {
+            List<BasicStatement> statements = new List<BasicStatement>();
+
+            if (Value != null)
+            {
+                IList<BasicStatement> valueStatements = Value.GetCrimsonBasic();
+                statements.AddRange(valueStatements);
+            }
+            statements.Add(new VariableDeclareBStatement(identifier));
+            statements.Add(new MemoryAllocateBStatement(identifier, type.GetByteSize()));
+            statements.Add(new VariableAssignBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
+
+            return statements;
         }
     }
 }

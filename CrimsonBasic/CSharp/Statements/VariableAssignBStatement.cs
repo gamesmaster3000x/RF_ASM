@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class LabelBStatement : BasicStatement
+    public class VariableAssignBStatement : BasicStatement
     {
+
+        private string _value;
         private string _name;
 
-        public LabelBStatement(string label)
+        public VariableAssignBStatement(string text, string value)
         {
-            _name = label;
+            this._name = text;
+            this._value = value;
         }
 
         public override string ToString()
         {
-            return _name.StartsWith(":") ? _name : ":" + _name;
+            return $"{_name} = {_value};";
         }
     }
 }

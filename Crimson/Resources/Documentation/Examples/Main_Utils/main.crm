@@ -6,7 +6,7 @@
 #using "utils/utils.crm" as utils
 #using "${NATIVE}/console.crm" as stdout
 
-global int counter;
+global int counter = 0;
 
 function main [int] () {
 	

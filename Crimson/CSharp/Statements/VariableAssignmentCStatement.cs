@@ -1,4 +1,6 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Exception;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
@@ -17,6 +19,17 @@ namespace Crimson.CSharp.Statements
         {
             Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
             Value.Link(ctx);
+        }
+
+        public override IList<BasicStatement> GetCrimsonBasic()
+        {
+            List<BasicStatement> result = new List<BasicStatement>();
+
+            if (Value == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
+            result.AddRange(Value.GetCrimsonBasic());
+            result.Add(new VariableAssignBStatement(Identifier, "VAR_ASSIGN_C_VAL"));
+
+            return result;
         }
     }
 }
