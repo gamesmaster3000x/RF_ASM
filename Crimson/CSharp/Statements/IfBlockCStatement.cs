@@ -67,15 +67,17 @@ namespace Crimson.CSharp.Statements
             // If
             IList<BasicStatement> conditionStatements = Condition.GetCrimsonBasic();
             statements.AddRange(conditionStatements);
+            string uniqueBranchName = FlattenerHelper.GetUniqueBranchName();
+            string endLabelName = "END_" + uniqueBranchName;
             statements.Add(new JumpNotEqualBStatement("CONDITION", "1", "NEXT_ELIF"));
-            statements.Add(new JumpBStatement("END_OF_IF"));
+            statements.Add(new JumpBStatement(endLabelName));
 
             // Elif and/or Else
             if (ElifBlock != null) statements.AddRange(ElifBlock.GetCrimsonBasic());
             else if (ElseBlock != null) statements.AddRange(ElseBlock.GetCrimsonBasic());
 
             // End of if
-            statements.Add(new LabelBStatement("END_OF_IF"));
+            statements.Add(new LabelBStatement(endLabelName));
 
             return statements;
         }
