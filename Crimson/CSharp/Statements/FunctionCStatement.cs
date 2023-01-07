@@ -71,6 +71,7 @@ namespace Crimson.CSharp.Statements
                 statements.AddRange(s.GetCrimsonBasic());
             }
 
+            statements.Add(new ReturnBStatement());
             statements.Add(new CommentBStatement(""));
 
             return statements;

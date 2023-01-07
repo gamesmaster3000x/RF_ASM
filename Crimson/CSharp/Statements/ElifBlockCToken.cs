@@ -1,21 +1,27 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
-    internal class ElseIfBlock
+    internal class ElseIfBlockCToken: ICrimsonToken
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ifBlock">An IfBlock representing the "if" part of this statement (NOT THIS STATEMENT'S PARENT)</param>
-        public ElseIfBlock(IfBlockCStatement ifBlock)
+        public ElseIfBlockCToken(IfBlockCStatement ifBlock)
         {
             IfBlock = ifBlock;
         }
 
         public IfBlockCStatement IfBlock { get; }
 
-        internal void Link(LinkingContext ctx)
+        public IList<BasicStatement> GetCrimsonBasic()
+        {
+            return IfBlock.GetCrimsonBasic();
+        }
+
+        public void Link(LinkingContext ctx)
         {
             return;
         }

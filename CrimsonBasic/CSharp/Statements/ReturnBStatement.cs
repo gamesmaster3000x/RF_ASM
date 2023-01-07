@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class JumpBStatement : BasicStatement
+    public class ReturnBStatement : BasicStatement
     {
-        private string _label;
-
-        public JumpBStatement(string _label)
-        {
-            this._label = _label;
-        }
 
         public override string ToString()
         {
-            return $"jmp {_label}";
+            return "return;";
         }
     }
 }

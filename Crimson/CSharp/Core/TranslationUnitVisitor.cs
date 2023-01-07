@@ -218,7 +218,7 @@ namespace Crimson.CSharp.Core
             IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
             CrimsonParser.ElseIfBlockContext eibCtx = context.elseIfBlock();
             CrimsonParser.ElseBlockContext elbCtx = context.elseBlock();
-            ElseIfBlock? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
+            ElseIfBlockCToken? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
             ElseBlockCToken? elseBlock = elbCtx == null ? null : VisitElseBlock(elbCtx);
             IfBlockCStatement ifBlock = new IfBlockCStatement(condition, body, elifBlock, elseBlock);
             return ifBlock;
@@ -281,10 +281,10 @@ namespace Crimson.CSharp.Core
             return condition;
         }
 
-        public override ElseIfBlock VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context)
+        public override ElseIfBlockCToken VisitElseIfBlock([NotNull] CrimsonParser.ElseIfBlockContext context)
         {
             IfBlockCStatement ifBlock = VisitIfBlock(context.ifBlock());
-            ElseIfBlock elseIfBlock = new ElseIfBlock(ifBlock);
+            ElseIfBlockCToken elseIfBlock = new ElseIfBlockCToken(ifBlock);
             return elseIfBlock;
         }
 

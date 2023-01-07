@@ -9,7 +9,7 @@ namespace Crimson.CSharp.Statements
         {
         }
 
-        public IfBlockCStatement(ConditionCToken condition, IList<InternalStatement> body, ElseIfBlock? elifBlock, ElseBlockCToken? elseBlock)
+        public IfBlockCStatement(ConditionCToken condition, IList<InternalStatement> body, ElseIfBlockCToken? elifBlock, ElseBlockCToken? elseBlock)
         {
             Condition = condition;
             Body = body;
@@ -19,7 +19,7 @@ namespace Crimson.CSharp.Statements
 
         public ConditionCToken Condition { get; }
         public IList<InternalStatement> Body { get; }
-        public ElseIfBlock? ElifBlock { get; }
+        public ElseIfBlockCToken? ElifBlock { get; }
         public ElseBlockCToken? ElseBlock { get; }
 
         public override void Link(LinkingContext ctx)
@@ -64,7 +64,18 @@ namespace Crimson.CSharp.Statements
         {
             List<BasicStatement> statements = new List<BasicStatement>();
 
-            
+            // If
+            IList<BasicStatement> conditionStatements = Condition.GetCrimsonBasic();
+            statements.AddRange(conditionStatements);
+            statements.Add(new JumpNotEqualBStatement("CONDITION", "1", "NEXT_ELIF"));
+            statements.Add(new JumpBStatement("END_OF_IF"));
+
+            // Elif and/or Else
+            if (ElifBlock != null) statements.AddRange(ElifBlock.GetCrimsonBasic());
+            else if (ElseBlock != null) statements.AddRange(ElseBlock.GetCrimsonBasic());
+
+            // End of if
+            statements.Add(new LabelBStatement("END_OF_IF"));
 
             return statements;
         }

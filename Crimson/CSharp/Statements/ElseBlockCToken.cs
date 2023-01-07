@@ -14,7 +14,14 @@ namespace Crimson.CSharp.Statements
 
         public IList<BasicStatement> GetCrimsonBasic()
         {
-            return new List<BasicStatement>();
+            List<BasicStatement> basicStatements = new List<BasicStatement>();
+
+            foreach (var s in Statements)
+            {
+                basicStatements.AddRange(s.GetCrimsonBasic());
+            }
+            
+            return basicStatements;
         }
 
         public void Link(LinkingContext ctx)
