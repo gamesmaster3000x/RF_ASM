@@ -1,5 +1,6 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -21,12 +22,12 @@ namespace Crimson.CSharp.Statements
             Value.Link(ctx);
         }
 
-        public override IList<BasicStatement> GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
-            List<BasicStatement> result = new List<BasicStatement>();
+            Fragment result = new Fragment(0);
 
             if (Value == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
-            result.AddRange(Value.GetCrimsonBasic());
+            result.Add(Value.GetCrimsonBasic());
             result.Add(new VariableAssignBStatement(Identifier, "VAR_ASSIGN_C_VAL"));
 
             return result;

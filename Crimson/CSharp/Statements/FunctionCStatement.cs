@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 using System;
 using System.Collections.Generic;
@@ -61,14 +62,14 @@ namespace Crimson.CSharp.Statements
             }
         }
 
-        public IList<BasicStatement> GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
-            List<BasicStatement> statements = new List<BasicStatement>();
+            Fragment statements = new Fragment(0);
             statements.Add(new LabelBStatement(Name));
 
             foreach (var s in Statements)
             {
-                statements.AddRange(s.GetCrimsonBasic());
+                statements.Add(s.GetCrimsonBasic());
             }
 
             statements.Add(new ReturnBStatement());

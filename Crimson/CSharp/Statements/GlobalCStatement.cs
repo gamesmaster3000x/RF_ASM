@@ -11,9 +11,11 @@ namespace Crimson.CSharp.Statements
             Name = "";
         }
 
-        public override IList<BasicStatement> GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new CommentBStatement("GlobalC:" + Name) };
+            Fragment f = new Fragment(0);
+            f.Add(new CommentBStatement("GlobalC:" + Name));
+            return f;
         }
     }
 }

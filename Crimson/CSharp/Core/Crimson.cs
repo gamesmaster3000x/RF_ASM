@@ -21,8 +21,8 @@ namespace Crimson.CSharp.Core
                 Console.WriteLine("Using autowired (debug) program arguments");
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
                 args = new string[] {
-                    "-s", testProgramsPath + "Main_Utils/main.crm",
-                    "-t", testProgramsPath + "Main_Utils/out/main.rfp",
+                    "-s", testProgramsPath + "Main_Utils/shortprogram.crm",
+                    "-t", testProgramsPath + "Main_Utils/out/shortprogram.rfp",
                     "-n", "C:/Crimson/Native/" ,
                     "--rfasm"
                 };

@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -12,9 +13,11 @@ namespace Crimson.CSharp.Statements
 
         public ResolvableValueCToken Value { get; }
 
-        public IList<BasicStatement> GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new CommentBStatement($"Condition:{Value}") };
+            Fragment f = new Fragment(0);
+            f.Add(new CommentBStatement($"Condition:{Value}"));
+            return f;
         }
 
         public void Link(LinkingContext ctx)

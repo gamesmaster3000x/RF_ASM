@@ -9,11 +9,23 @@ namespace CrimsonBasic.CSharp.Core
 {
     public class BasicProgram
     {
-        public List<BasicStatement> Statements { get; }
+        public List<Fragment> Fragments { get; }
 
         public BasicProgram()
         {
-            Statements = new List<BasicStatement>();
+            Fragments = new List<Fragment>();
+        }
+
+        public void Add(Fragment f)
+        {
+            Fragments.Add(f);
+        }
+
+        public void Add(BasicStatement s)
+        {
+            Fragment f = new Fragment(0);
+            f.Add(s);
+            Fragments.Add(f);
         }
     }
 }

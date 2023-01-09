@@ -8,6 +8,9 @@ namespace CrimsonBasic.CSharp.Core.Statements
 {
     public class ReturnBStatement : BasicStatement
     {
+        public ReturnBStatement()
+        {
+        }
 
         public override string ToString()
         {

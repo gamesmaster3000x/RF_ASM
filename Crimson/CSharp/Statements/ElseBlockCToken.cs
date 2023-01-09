@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -12,13 +13,13 @@ namespace Crimson.CSharp.Statements
 
         public IList<InternalStatement> Statements { get; }
 
-        public IList<BasicStatement> GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
-            List<BasicStatement> basicStatements = new List<BasicStatement>();
+            Fragment basicStatements = new Fragment(0);
 
             foreach (var s in Statements)
             {
-                basicStatements.AddRange(s.GetCrimsonBasic());
+                basicStatements.Add(s.GetCrimsonBasic());
             }
             
             return basicStatements;

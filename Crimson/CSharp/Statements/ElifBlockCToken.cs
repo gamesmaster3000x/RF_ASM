@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -16,7 +17,7 @@ namespace Crimson.CSharp.Statements
 
         public IfBlockCStatement IfBlock { get; }
 
-        public IList<BasicStatement> GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             return IfBlock.GetCrimsonBasic();
         }

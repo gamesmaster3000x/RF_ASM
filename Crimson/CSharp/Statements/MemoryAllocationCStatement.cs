@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -19,9 +20,9 @@ namespace Crimson.CSharp.Statements
             return;
         }
 
-        public override IList<BasicStatement> GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
-            List<BasicStatement> crimsonBasic = new List<BasicStatement>();
+            Fragment crimsonBasic = new Fragment(0);
 
             crimsonBasic.Add(new MemoryAllocateBStatement(identifier, number));
 

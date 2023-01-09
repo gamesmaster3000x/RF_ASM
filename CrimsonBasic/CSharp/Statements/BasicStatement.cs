@@ -1,7 +1,8 @@
 ﻿namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class BasicStatement
+    public abstract class BasicStatement
     {
 
+        public abstract override string ToString();
     }
 }

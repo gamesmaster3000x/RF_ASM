@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -14,7 +15,7 @@ namespace Crimson.CSharp.Statements
 
         // Abstract
         public abstract void Link(LinkingContext ctx);
-        public abstract IList<BasicStatement> GetCrimsonBasic();
+        public abstract Fragment GetCrimsonBasic();
 
 
         // Concrete

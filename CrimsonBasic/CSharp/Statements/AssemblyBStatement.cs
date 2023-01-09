@@ -10,5 +10,10 @@ namespace Crimson.CSharp.Statements
         {
             _text = text;
         }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

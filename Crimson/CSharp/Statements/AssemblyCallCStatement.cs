@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -17,9 +18,11 @@ namespace Crimson.CSharp.Statements
             return;
         }
 
-        public override IList<BasicStatement> GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new AssemblyBStatement(assemblyText) };
+            Fragment f = new Fragment(0);
+            f.Add(new AssemblyBStatement(assemblyText));
+            return f;
         }
     }
 }

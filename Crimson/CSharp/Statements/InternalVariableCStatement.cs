@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -26,14 +27,14 @@ namespace Crimson.CSharp.Statements
             return;
         }
 
-        public override IList<BasicStatement> GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
-            List<BasicStatement> statements = new List<BasicStatement>();
+            Fragment statements = new Fragment(0);
 
             if (Value != null)
             {
-                IList<BasicStatement> valueStatements = Value.GetCrimsonBasic();
-                statements.AddRange(valueStatements);
+                Fragment valueStatements = Value.GetCrimsonBasic();
+                statements.Add(valueStatements);
             }
             statements.Add(new VariableDeclareBStatement(identifier));
             statements.Add(new MemoryAllocateBStatement(identifier, type.GetByteSize()));

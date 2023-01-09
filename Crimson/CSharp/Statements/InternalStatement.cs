@@ -10,9 +10,11 @@ namespace Crimson.CSharp.Statements
         {
         }
 
-        public override IList<BasicStatement> GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new CommentBStatement("InternalStatement: "  + IsLinked() )};
+            Fragment f = new Fragment(0);
+            f.Add(new CommentBStatement("InternalStatement: " + IsLinked()));
+            return f;
         }
     }
 }

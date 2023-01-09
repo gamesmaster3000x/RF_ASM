@@ -110,9 +110,9 @@ namespace Crimson.CSharp.Core
                 LOGGER.Info("Dumping CrimsonBasic program to " + basicTarget);
 
                 List<string> lines = new List<string>();
-                foreach (var s in basicProgram.Statements)
+                foreach (var f in basicProgram.Fragments)
                 {
-                    lines.Add(s.ToString());
+                    lines.Add(f.ToString());
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));

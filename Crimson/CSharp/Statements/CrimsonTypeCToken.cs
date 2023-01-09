@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
@@ -17,9 +18,11 @@ namespace Crimson.CSharp.Statements
             Text = LinkerHelper.LinkIdentifier(Text, ctx);
         }
 
-        public IList<BasicStatement> GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
-            return new List<BasicStatement>() { new CommentBStatement($"Type:{Text}") };
+            Fragment f = new Fragment(0);
+            f.Add(new CommentBStatement($"Type:{Text}"));
+            return f;
         }
 
         public override string ToString()
