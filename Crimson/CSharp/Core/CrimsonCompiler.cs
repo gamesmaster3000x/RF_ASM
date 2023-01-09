@@ -112,7 +112,7 @@ namespace Crimson.CSharp.Core
                 List<string> lines = new List<string>();
                 foreach (var f in basicProgram.Fragments)
                 {
-                    lines.Add(f.ToString());
+                    lines.AddRange(f.GetLines());
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));

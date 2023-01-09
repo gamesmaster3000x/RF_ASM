@@ -64,18 +64,26 @@ namespace Crimson.CSharp.Statements
 
         public Fragment GetCrimsonBasic()
         {
-            Fragment statements = new Fragment(0);
-            statements.Add(new LabelBStatement(Name));
+            Fragment function = new Fragment(0);
 
+            Fragment functionHead = new Fragment(0);
+            functionHead.Add(new LabelBStatement(Name));
+
+            Fragment functionBody = new Fragment(1);
             foreach (var s in Statements)
             {
-                statements.Add(s.GetCrimsonBasic());
+                functionBody.Add(s.GetCrimsonBasic());
             }
 
-            statements.Add(new ReturnBStatement());
-            statements.Add(new CommentBStatement(""));
+            Fragment functionFoot = new Fragment(0);
+            functionFoot.Add(new ReturnBStatement());
+            functionFoot.Add(new CommentBStatement(""));
 
-            return statements;
+            function.Add(functionHead);
+            function.Add(functionBody);
+            function.Add(functionFoot);
+
+            return function;
         }
     }
 }

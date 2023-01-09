@@ -15,14 +15,21 @@ namespace Crimson.CSharp.Statements
 
         public Fragment GetCrimsonBasic()
         {
-            Fragment basicStatements = new Fragment(0);
+            Fragment fragment = new Fragment(0);
 
+            Fragment elseHead = new Fragment(0);
+            elseHead.Add(new LabelBStatement("ELSE"));
+
+            Fragment elseBody = new Fragment(1);
             foreach (var s in Statements)
             {
-                basicStatements.Add(s.GetCrimsonBasic());
+                elseBody.Add(s.GetCrimsonBasic());
             }
-            
-            return basicStatements;
+
+            fragment.Add(elseHead);
+            fragment.Add(elseBody);
+
+            return fragment;
         }
 
         public void Link(LinkingContext ctx)

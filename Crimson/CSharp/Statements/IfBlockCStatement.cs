@@ -63,25 +63,38 @@ namespace Crimson.CSharp.Statements
          */
         public override Fragment GetCrimsonBasic()
         {
-            Fragment fragment = new Fragment(0);
+            Fragment wholeBlock = new Fragment(0);
 
             // If
-            Fragment conditionStatements = Condition.GetCrimsonBasic().WithIndentation(1);
-            fragment.Add(conditionStatements);
+            // Condition
+            Fragment condition = Condition.GetCrimsonBasic();
+            Fragment ifHead = new Fragment(0);
             string uniqueBranchName = FlattenerHelper.GetUniqueBranchName();
             string endLabelName = "END_" + uniqueBranchName;
-            fragment.Add(new JumpNotEqualBStatement("CONDITION", "1", "NEXT_ELIF"));
-            foreach (var s in Body) fragment.Add(s.GetCrimsonBasic());
-            fragment.Add(new JumpBStatement(endLabelName));
+            ifHead.Add(new JumpNotEqualBStatement("CONDITION", "1", "NEXT_ELIF"));
+            Fragment ifBody = new Fragment(1);
+            foreach (var s in Body) 
+            {
+                ifBody.Add(s.GetCrimsonBasic()); 
+            }
+            Fragment ifFoot = new Fragment(1);
+            ifFoot.Add(new JumpBStatement(endLabelName));
+
+            wholeBlock.Add(condition);
+            wholeBlock.Add(ifHead);
+            wholeBlock.Add(ifBody);
+            wholeBlock.Add(ifFoot);
 
             // Elif and/or Else
-            if (ElifBlock != null) fragment.Add(ElifBlock.GetCrimsonBasic());
-            else if (ElseBlock != null) fragment.Add(ElseBlock.GetCrimsonBasic());
+            if (ElifBlock != null) 
+                wholeBlock.Add(ElifBlock.GetCrimsonBasic());
+            else if (ElseBlock != null) 
+                wholeBlock.Add(ElseBlock.GetCrimsonBasic());
 
             // End of if
-            fragment.Add(new LabelBStatement(endLabelName));
+            wholeBlock.Add(new LabelBStatement(endLabelName));
 
-            return fragment;
+            return wholeBlock;
         }
     }
 }
