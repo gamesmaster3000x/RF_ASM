@@ -22,7 +22,7 @@ namespace Crimson.CSharp.Core
                 string testProgramsPath = "../../../Resources/Documentation/Examples/"; // Escape bin, Debug, and net6.0
                 args = new string[] {
                     "-s", testProgramsPath + "Main_Utils/main.crm",
-                    "-t", testProgramsPath + "Main_Utils/out/main.rfp",
+                    "-t", testProgramsPath + "Main_Utils/result/main.rfp",
                     "-n", "C:/Crimson/Native/" ,
                     "--rfasm"
                 };
