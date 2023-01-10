@@ -24,12 +24,15 @@ gvar_counter_0 = GLO_VAR_ASSIGN_VAL;
         jmp END_branch_0
     
     jmp utils.multiply
+    // ^^ Why is this not linked!? (utils.otherthing should be linked)
     var rval_1;
     rval_1 = FUNC_RETURN;
+    // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     // arg0=rval_1
     jmp utils.times
     var rval_2;
     rval_2 = FUNC_RETURN;
+    // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     var rval_3;
     rval_3 = rval_2 == true;
     jeq rval_3 0 NEXT_ELIF
