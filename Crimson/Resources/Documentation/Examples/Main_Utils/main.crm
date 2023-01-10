@@ -10,13 +10,15 @@ global int counter = 0;
 
 function main [int] () {
 	
-	if (true) {
+	if (true == true) {
 		allocate counter 6;
-	} else if (utils.something(utils.otherthing)) {
+	} else if (utils.times(utils.multiply(8)) == true) {
 		int a;
 	} else {
 		return b;
 	}
+	
+	call(4, 7, 5);
 
     // Declare and allocate memory for "i"
     int i;
@@ -28,6 +30,11 @@ function main [int] () {
     // Note usage of functions from imported packages
     stdout.write(i);
     return utils.multiply(i, 5);
+}
+
+function call [int] () {
+	allocate test 69;
+	return;
 }
 
 structure Person {

@@ -16,6 +16,7 @@ namespace Crimson.CSharp.Statements
         public Fragment GetCrimsonBasic()
         {
             Fragment fragment = new Fragment(0);
+            fragment.Add(new CommentBStatement(""));
 
             Fragment elseHead = new Fragment(0);
             elseHead.Add(new LabelBStatement("ELSE"));

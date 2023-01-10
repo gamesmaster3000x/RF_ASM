@@ -24,7 +24,7 @@ namespace Crimson.CSharp.Statements
 
         public void Link(LinkingContext ctx)
         {
-            return;
+            IfBlock.Link(ctx);
         }
     }
 }

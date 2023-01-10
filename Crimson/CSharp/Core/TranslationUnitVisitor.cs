@@ -73,7 +73,7 @@ namespace Crimson.CSharp.Core
             CrimsonParser.InternalVariableDeclarationContext ivdc = context.internalVariableDeclaration();
             CrimsonTypeCToken type = VisitType(ivdc.type());
             string identifier = ivdc.Identifier().GetText();
-            ResolvableValueCToken? value = ivdc.resolvableValue() == null ? null : VisitResolvableValue(ivdc.resolvableValue());
+            ResolvableValueCToken? value = ivdc.resolvableValue() == null ? null : ParseResolvableValue(ivdc.resolvableValue());
             GlobalVariableCStatement variable = new GlobalVariableCStatement(type, identifier, value);
             return variable;
         }
@@ -107,9 +107,65 @@ namespace Crimson.CSharp.Core
             return statements;
         }
 
-        public override ResolvableValueCToken VisitResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context)
+        public ResolvableValueCToken ParseResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context)
         {
-            return new ResolvableValueCToken(null);
+            if (context == null) throw new StatementParseException("Illegal null CrimsonParser.ResolvableValueContext");
+            if (context is CrimsonParser.FunctionCallResolvableValueStatementContext) 
+            {
+                CrimsonParser.FunctionCallResolvableValueStatementContext fcrvsc = (CrimsonParser.FunctionCallResolvableValueStatementContext)context;
+                return VisitFunctionCallResolvableValueStatement(fcrvsc);
+            } 
+            else if (context is CrimsonParser.IdentifierResolvableValueStatementContext)
+            {
+                CrimsonParser.IdentifierResolvableValueStatementContext irvsc = (CrimsonParser.IdentifierResolvableValueStatementContext)context;
+                return VisitIdentifierResolvableValueStatement(irvsc);
+            }
+            else if (context is CrimsonParser.BooleanResolvableValueStatementContext)
+            {
+                CrimsonParser.BooleanResolvableValueStatementContext brvsc = (CrimsonParser.BooleanResolvableValueStatementContext)context;
+                return VisitBooleanResolvableValueStatement(brvsc);
+            }
+            else if (context is CrimsonParser.NullResolvableValueStatementContext)
+            {
+                CrimsonParser.NullResolvableValueStatementContext nrvsc = (CrimsonParser.NullResolvableValueStatementContext)context;
+                return VisitNullResolvableValueStatement(nrvsc);
+            }
+            else if (context is CrimsonParser.NumberResolvableValueStatementContext)
+            {
+                CrimsonParser.NumberResolvableValueStatementContext nrvsc = (CrimsonParser.NumberResolvableValueStatementContext)context;
+                return VisitNumberResolvableValueStatement(nrvsc);
+            }
+            else
+            {
+                throw new StatementParseException("The given CrimsonParser.ResolvableValueContext (" + context + ") is not of a permissable type");
+            }
+        }
+
+        public override ResolvableValueCToken VisitFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context)
+        {
+            CrimsonParser.FunctionCallContext fcctx = context.functionCall();
+            FunctionCallCStatement functionCall = VisitFunctionCall(fcctx);
+            return new ResolvableValueCToken(functionCall, ResolvableValueCToken.ValueType.FUNCTION_CALL);
+        }
+
+        public override ResolvableValueCToken VisitIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context)
+        {
+            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.IDENTIFIER);
+        }
+
+        public override ResolvableValueCToken VisitBooleanResolvableValueStatement([NotNull] CrimsonParser.BooleanResolvableValueStatementContext context)
+        {
+            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.BOOLEAN);
+        }
+
+        public override ResolvableValueCToken VisitNullResolvableValueStatement([NotNull] CrimsonParser.NullResolvableValueStatementContext context)
+        {
+            return new ResolvableValueCToken("null", ResolvableValueCToken.ValueType.NULL);
+        }
+
+        public override ResolvableValueCToken VisitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context)
+        {
+            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.NUMBER);
         }
 
         public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
@@ -199,7 +255,7 @@ namespace Crimson.CSharp.Core
         {
             CrimsonTypeCToken type = VisitType(context.type());
             string identifier = context.Identifier().GetText();
-            ResolvableValueCToken? value = context.resolvableValue() == null ? null : VisitResolvableValue(context.resolvableValue());
+            ResolvableValueCToken? value = context.resolvableValue() == null ? null : ParseResolvableValue(context.resolvableValue());
             InternalVariableCStatement variable = new InternalVariableCStatement(type, identifier, value);
             return variable;
         }
@@ -227,14 +283,15 @@ namespace Crimson.CSharp.Core
         public override VariableAssignmentCStatement VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
         {
             string identifier = context.Identifier().GetText();
-            ResolvableValueCToken value = VisitResolvableValue(context.resolvableValue());
+            ResolvableValueCToken value = ParseResolvableValue(context.resolvableValue());
             VariableAssignmentCStatement assignment = new VariableAssignmentCStatement(identifier, value);
             return assignment;
         }
 
         public override ReturnCStatement VisitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context)
         {
-            ResolvableValueCToken value = VisitResolvableValue(context.resolvableValue());
+            CrimsonParser.ResolvableValueContext rvc = context.resolvableValue();
+            ResolvableValueCToken value = rvc == null ? new ResolvableValueCToken("NULL", ResolvableValueCToken.ValueType.NULL) : ParseResolvableValue(rvc);
             ReturnCStatement ret = new ReturnCStatement(value);
             return ret;
         }
@@ -268,7 +325,7 @@ namespace Crimson.CSharp.Core
             IList<ResolvableValueCToken> arguments = new List<ResolvableValueCToken>();
             foreach (CrimsonParser.ResolvableValueContext rvlCxt in context.resolvableValue())
             {
-                ResolvableValueCToken value = VisitResolvableValue(rvlCxt);
+                ResolvableValueCToken value = ParseResolvableValue(rvlCxt);
                 arguments.Add(value);
             }
             return arguments;
@@ -276,8 +333,10 @@ namespace Crimson.CSharp.Core
 
         public override ConditionCToken VisitCondition([NotNull] CrimsonParser.ConditionContext context)
         {
-            ResolvableValueCToken value = VisitResolvableValue(context.resolvableValue());
-            ConditionCToken condition = new ConditionCToken(value);
+            ResolvableValueCToken leftValue = ParseResolvableValue(context.leftValue);
+            Comparator.Values comparator = Comparator.Get(context.comparator.Text);
+            ResolvableValueCToken rightValue = ParseResolvableValue(context.rightValue);
+            ConditionCToken condition = new ConditionCToken(leftValue, comparator, rightValue);
             return condition;
         }
 

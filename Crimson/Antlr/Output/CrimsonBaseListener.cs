@@ -369,17 +369,75 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.resolvableValue"/>.
+	/// Enter a parse tree produced by the <c>IdentifierResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context) { }
+	public virtual void EnterIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.resolvableValue"/>.
+	/// Exit a parse tree produced by the <c>IdentifierResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitResolvableValue([NotNull] CrimsonParser.ResolvableValueContext context) { }
+	public virtual void ExitIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NumberResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NumberResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NullResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNullResolvableValueStatement([NotNull] CrimsonParser.NullResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NullResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNullResolvableValueStatement([NotNull] CrimsonParser.NullResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BooleanResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBooleanResolvableValueStatement([NotNull] CrimsonParser.BooleanResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BooleanResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBooleanResolvableValueStatement([NotNull] CrimsonParser.BooleanResolvableValueStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
 	/// <para>The default implementation does nothing.</para>

@@ -65,13 +65,15 @@ namespace Crimson.CSharp.Statements
         {
             Fragment wholeBlock = new Fragment(0);
 
+            wholeBlock.Add(new CommentBStatement(""));
+
             // If
             // Condition
             Fragment condition = Condition.GetCrimsonBasic();
             Fragment ifHead = new Fragment(0);
             string uniqueBranchName = FlattenerHelper.GetUniqueBranchName();
             string endLabelName = "END_" + uniqueBranchName;
-            ifHead.Add(new JumpNotEqualBStatement("CONDITION", "1", "NEXT_ELIF"));
+            ifHead.Add(new JumpEqualBStatement(condition.ResultHolder!, "0", "NEXT_ELIF"));
             Fragment ifBody = new Fragment(1);
             foreach (var s in Body) 
             {
@@ -93,6 +95,7 @@ namespace Crimson.CSharp.Statements
 
             // End of if
             wholeBlock.Add(new LabelBStatement(endLabelName));
+            wholeBlock.Add(new CommentBStatement(""));
 
             return wholeBlock;
         }

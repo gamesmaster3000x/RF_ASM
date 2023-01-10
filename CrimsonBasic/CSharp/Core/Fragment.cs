@@ -12,6 +12,7 @@ namespace CrimsonBasic.CSharp.Core
         private List<BasicStatement> _statements;
         private List<int> _indents;
         private int _indentation;
+        public string? ResultHolder { get; set; }
 
         public Fragment(int indentation)
         {
@@ -19,6 +20,7 @@ namespace CrimsonBasic.CSharp.Core
             _indents = new List<int>();
             _indentation = indentation;
         }
+
 
         public void Add(BasicStatement statement)
         {
@@ -62,5 +64,6 @@ namespace CrimsonBasic.CSharp.Core
             _indentation = indentation;
             return this;
         }
+    
     }
 }

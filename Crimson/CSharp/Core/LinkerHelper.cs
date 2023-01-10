@@ -52,7 +52,9 @@ namespace Crimson.CSharp.Core
                 string funcName = parts[1];
 
                 if (!unit.Functions.TryGetValue(funcName, out FunctionCStatement? result))
-                    throw new LinkingException("Function " + funcName + " does not exist in CompilationUnit " + ctx.GetCurrentUnit() + "; " + ctx.ToString());
+                {
+                    throw new LinkingException("Function '" + funcName + "' does not exist in CompilationUnit " + unit + " via LinkingContext " + ctx.ToString());
+                }
 
                 return result;
             }

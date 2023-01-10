@@ -31,12 +31,13 @@ namespace Crimson.CSharp.Core
             // Iterate through each relevant unit
             foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
             {
-                LOGGER.Info("Linking KeyValuePair<string, CompilationUnit> " + pair);
+                LOGGER.Info("Linking " + pair);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
                 LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, CompilationUnit>());
                 CompilationUnit unit = pair.Value;
+                ctx.Links.Add(pair.Key, pair.Value); //TODO This may cause issues
                 foreach (KeyValuePair<string, ImportCStatement> importPair in unit.Imports)
                 {
                     /*

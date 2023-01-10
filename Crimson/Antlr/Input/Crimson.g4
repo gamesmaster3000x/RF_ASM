@@ -26,13 +26,13 @@ functionBody
 
 // Function-only statements
 internalStatement
-    : internalVariableDeclaration 	#FunctionVariableDeclarationStatement
-    | functionReturn 				#FunctionReturnStatement
-    | assignVariable 				#FunctionAssignVariableStatement
-    | allocateMemory 				#FunctionAllocateMemoryStatement
-    | functionCall SemiColon 		#FunctionFunctionCallStatement
-    | ifBlock 						#FunctionIfStatement
-    | assemblyCall 					#FunctionAssemblyCallStatement
+    : internalVariableDeclaration   #FunctionVariableDeclarationStatement
+    | functionReturn                #FunctionReturnStatement
+    | assignVariable                #FunctionAssignVariableStatement
+    | allocateMemory                #FunctionAllocateMemoryStatement
+    | functionCall SemiColon        #FunctionFunctionCallStatement
+    | ifBlock                       #FunctionIfStatement
+    | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
     : type Identifier (Equals resolvableValue)? SemiColon
@@ -44,7 +44,7 @@ ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
     ;
 condition
-    : OpenBracket resolvableValue CloseBracket
+    : OpenBracket leftValue=resolvableValue comparator=Comparator rightValue=resolvableValue CloseBracket
     ;
 elseIfBlock
     : Else ifBlock
@@ -71,11 +71,11 @@ functionReturn
     | Return SemiColon
     ;
 resolvableValue
-    : Identifier
-    | Number
-    | functionCall
-    | Null
-    | BooleanValue
+    : Identifier       #IdentifierResolvableValueStatement
+    | Number           #NumberResolvableValueStatement
+    | functionCall     #FunctionCallResolvableValueStatement
+    | Null             #NullResolvableValueStatement
+    | BooleanValue     #BooleanResolvableValueStatement
     ;
 
 // Parameters 
@@ -133,9 +133,11 @@ fragment False: 'false';
 BooleanValue: True | False;
 
 fragment Less: '<';
+fragment LessEqual: '<=';
 fragment Greater: '>';
+fragment GreaterEqual: '>=';
 fragment EqualTo: '==';
-Comparator: Less | Greater | EqualTo;
+Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
 Tilda: '~';
 Equals: '=';
