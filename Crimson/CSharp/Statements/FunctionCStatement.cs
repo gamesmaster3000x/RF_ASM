@@ -68,6 +68,7 @@ namespace Crimson.CSharp.Statements
 
             Fragment functionHead = new Fragment(0);
             functionHead.Add(new LabelBStatement(Name));
+            functionHead.Add(new StackBStatement(StackBStatement.StackOperation.PUSH_FRAME));
 
             Fragment functionBody = new Fragment(1);
             foreach (var s in Statements)
@@ -76,6 +77,7 @@ namespace Crimson.CSharp.Statements
             }
 
             Fragment functionFoot = new Fragment(0);
+            functionFoot.Add(new StackBStatement(StackBStatement.StackOperation.POP_FRAME));
             functionFoot.Add(new ReturnBStatement());
             functionFoot.Add(new CommentBStatement(""));
 

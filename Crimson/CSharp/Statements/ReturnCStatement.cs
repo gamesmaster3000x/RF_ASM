@@ -1,4 +1,6 @@
 ﻿using Crimson.CSharp.Core;
+using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Core.Statements;
 
 namespace Crimson.CSharp.Statements
 {
@@ -14,6 +16,13 @@ namespace Crimson.CSharp.Statements
         public override void Link(LinkingContext ctx)
         {
             return;
+        }
+
+        public override Fragment GetCrimsonBasic()
+        {
+            Fragment f = new Fragment(0);
+            f.Add(new ReturnBStatement());
+            return f;
         }
     }
 }

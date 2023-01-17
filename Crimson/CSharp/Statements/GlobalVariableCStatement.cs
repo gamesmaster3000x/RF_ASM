@@ -45,7 +45,7 @@ namespace Crimson.CSharp.Statements
             }
 
             statements.Add(new VariableDeclareBStatement(Name));
-            statements.Add(new MemoryAllocateBStatement(Name, type.GetByteSize()));
+            statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
             statements.Add(new VariableAssignBStatement(Name, "GLO_VAR_ASSIGN_VAL"));
 
             return statements;

@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Statements
         public override Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
-            f.Add(new CommentBStatement("InternalStatement: " + IsLinked()));
+            f.Add(new CommentBStatement($"{GetType()}: " + IsLinked()));
             return f;
         }
     }

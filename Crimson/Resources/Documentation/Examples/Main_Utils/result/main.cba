@@ -7,7 +7,7 @@
 
 // ============================== Global Variables ==============================
 var gvar_counter_0;
-allocate gvar_counter_0 666;
+stack allocate gvar_counter_0 666
 gvar_counter_0 = GLO_VAR_ASSIGN_VAL;
 
 // (Structures shouldn't be a part of CB)
@@ -16,20 +16,21 @@ gvar_counter_0 = GLO_VAR_ASSIGN_VAL;
 
 // ============================== Entry Function ==============================
 :func_main_0
+stack push_frame 
     
     var rval_0;
     rval_0 = true == true;
     jeq rval_0 0 NEXT_ELIF
-        allocate counter 6;
-        jmp END_branch_0
+        stack allocate counter 6
+        jump END_branch_0
     
-    jmp utils.multiply
+    jump utils.multiply
     // ^^ Why is this not linked!? (utils.otherthing should be linked)
     var rval_1;
     rval_1 = FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     // arg0=rval_1
-    jmp utils.times
+    jump utils.times
     var rval_2;
     rval_2 = FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
@@ -37,12 +38,12 @@ gvar_counter_0 = GLO_VAR_ASSIGN_VAL;
     rval_3 = rval_2 == true;
     jeq rval_3 0 NEXT_ELIF
         var a;
-        allocate a 666;
+        stack allocate a 666
         a = INT_VAR_ASSIGN_VAL;
-        jmp END_branch_1
+        jump END_branch_1
     
     :ELSE
-        // InternalStatement: False
+        return;
     :END_branch_1
     
     :END_branch_0
@@ -50,43 +51,52 @@ gvar_counter_0 = GLO_VAR_ASSIGN_VAL;
     // arg0=4
     // arg1=7
     // arg2=5
-    jmp call
+    jump call
     var rval_4;
     rval_4 = FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     var i;
-    allocate i 666;
+    stack allocate i 666
     i = INT_VAR_ASSIGN_VAL;
-    allocate i 4;
+    stack allocate i 4
     i = VAR_ASSIGN_C_VAL;
     // arg0=i
-    jmp stdout.write
+    jump stdout.write
     var rval_5;
     rval_5 = FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
-    // InternalStatement: False
+    return;
+stack pop_frame 
 return;
 
 
 // ============================== Functions ==============================
 :func_multiply_0
+stack push_frame 
     // arg0=6
-    jmp utils_stdout.write
+    jump utils_stdout.write
     var rval_6;
     rval_6 = FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
-    // InternalStatement: False
+    return;
+stack pop_frame 
 return;
 
 :func_times_0
-    // InternalStatement: False
+stack push_frame 
+    return;
+stack pop_frame 
 return;
 
 :func_write_0
+stack push_frame 
+stack pop_frame 
 return;
 
 :func_call_0
-    allocate test 69;
-    // InternalStatement: False
+stack push_frame 
+    stack allocate test 69
+    return;
+stack pop_frame 
 return;
 

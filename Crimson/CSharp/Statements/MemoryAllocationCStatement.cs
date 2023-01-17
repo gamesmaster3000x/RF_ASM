@@ -24,7 +24,7 @@ namespace Crimson.CSharp.Statements
         {
             Fragment crimsonBasic = new Fragment(0);
 
-            crimsonBasic.Add(new MemoryAllocateBStatement(identifier, number));
+            crimsonBasic.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, number.ToString()));
 
             return crimsonBasic;
         }

@@ -80,7 +80,7 @@ namespace Crimson.CSharp.Statements
             f.Add(new VariableDeclareBStatement(returnName));
             f.Add(new VariableAssignBStatement(returnName, FUNCTION_RETURN_VARIABLE_NAME));
             f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
-
+            
             f.ResultHolder = returnName;
 
             return f;

@@ -17,7 +17,7 @@ namespace CrimsonBasic.CSharp.Core.Statements
 
         public override string ToString()
         {
-            return $"jmp {_label}";
+            return $"jump {_label}";
         }
     }
 }
