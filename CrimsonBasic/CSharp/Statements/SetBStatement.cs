@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Core.Statements
 {
-    public class VariableAssignBStatement : BasicStatement
+    public class SetBStatement : BasicStatement
     {
 
         private string _value;
         private string _name;
 
-        public VariableAssignBStatement(string text, string value)
+        public SetBStatement(string text, string value)
         {
             this._name = text;
             this._value = value;
@@ -20,7 +20,7 @@ namespace CrimsonBasic.CSharp.Core.Statements
 
         public override string ToString()
         {
-            return $"{_name} = {_value};";
+            return $"set {_name} {_value};";
         }
     }
 }

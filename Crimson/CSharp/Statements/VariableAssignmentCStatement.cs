@@ -28,7 +28,7 @@ namespace Crimson.CSharp.Statements
 
             if (Value == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
             result.Add(Value.GetCrimsonBasic());
-            result.Add(new VariableAssignBStatement(Identifier, "VAR_ASSIGN_C_VAL"));
+            result.Add(new SetBStatement(Identifier, "VAR_ASSIGN_C_VAL"));
 
             return result;
         }

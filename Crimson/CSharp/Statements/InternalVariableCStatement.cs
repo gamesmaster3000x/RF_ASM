@@ -38,7 +38,7 @@ namespace Crimson.CSharp.Statements
             }
             statements.Add(new VariableDeclareBStatement(identifier));
             statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, type.GetByteSize().ToString()));
-            statements.Add(new VariableAssignBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
+            statements.Add(new SetBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
 
             return statements;
         }

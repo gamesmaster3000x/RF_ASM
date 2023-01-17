@@ -44,7 +44,7 @@ namespace Crimson.CSharp.Statements
                     f.Add(new CommentBStatement("^^ Why is this not linked!? (utils.otherthing should be linked)"));
                     string argReturnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
                     f.Add(new VariableDeclareBStatement(argReturnName));
-                    f.Add(new VariableAssignBStatement(argReturnName, FUNCTION_RETURN_VARIABLE_NAME));
+                    f.Add(new SetBStatement(argReturnName, FUNCTION_RETURN_VARIABLE_NAME));
                     f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
 
                     argumentHolders.Add(argReturnName);
@@ -78,7 +78,7 @@ namespace Crimson.CSharp.Statements
             // Store result
             string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
             f.Add(new VariableDeclareBStatement(returnName));
-            f.Add(new VariableAssignBStatement(returnName, FUNCTION_RETURN_VARIABLE_NAME));
+            f.Add(new SetBStatement(returnName, FUNCTION_RETURN_VARIABLE_NAME));
             f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
             
             f.ResultHolder = returnName;
