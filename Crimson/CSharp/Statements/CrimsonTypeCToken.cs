@@ -1,11 +1,14 @@
 ﻿using Crimson.CSharp.Core;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
+using System.Text.RegularExpressions;
 
 namespace Crimson.CSharp.Statements
 {
     public class CrimsonTypeCToken : ICrimsonToken
     {
+        private static readonly Regex WHITESPACE = new Regex(@"\s+");
+
         public string Text { get; set; }
 
         public CrimsonTypeCToken(string text)
@@ -32,6 +35,14 @@ namespace Crimson.CSharp.Statements
 
         internal int GetByteSize()
         {
+            if (Text.Equals("int"))
+            {
+                return 4;
+            }
+            if (Text.Equals("byte"))
+            {
+                return 1;
+            }
             return 666;
         }
     }

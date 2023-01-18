@@ -7,7 +7,7 @@
 
 // ============================== Global Variables ==============================
 var gvar_counter_0;
-stack allocate gvar_counter_0 666
+stack allocate gvar_counter_0 4
 set gvar_counter_0 GLO_VAR_ASSIGN_VAL;
 
 // (Structures shouldn't be a part of CB)
