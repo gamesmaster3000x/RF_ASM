@@ -181,20 +181,6 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionAssignVariableStatement([NotNull] CrimsonParser.FunctionAssignVariableStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionFunctionCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -344,18 +330,6 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArguments([NotNull] CrimsonParser.ArgumentsContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.functionReturn"/>.
 	/// <para>The default implementation does nothing.</para>

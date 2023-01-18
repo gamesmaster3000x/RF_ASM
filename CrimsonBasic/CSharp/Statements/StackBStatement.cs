@@ -14,7 +14,7 @@ namespace CrimsonBasic.CSharp.Core.Statements
         public StackBStatement(StackOperation operation, params string[] arguments)
         {
             _operation = operation;
-            _arguments= arguments;
+            _arguments = arguments;
         }
 
         public override string ToString()

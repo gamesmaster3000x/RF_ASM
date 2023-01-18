@@ -11,9 +11,9 @@ global int counter = 0;
 function main [int] () {
 	
 	if (true == true) {
-		allocate counter 6;
+		counter = 5;
 	} else if (utils.times(utils.multiply(8)) == true) {
-		int a;
+		int a = allocate(utils.times(5, 3));
 	} else {
 		return b;
 	}
@@ -21,8 +21,7 @@ function main [int] () {
 	call(4, 7, 5);
 
     // Declare and allocate memory for "i"
-    int i;
-    allocate i 4;
+    int i = allocate(4);
 
     // Assign a value to "i"
     i = 4;
@@ -33,10 +32,10 @@ function main [int] () {
 }
 
 function call [int] () {
-	allocate test 69;
+	int test = allocate(69);
 	return;
 }
 
 structure Person {
-	int age;
+	int age = allocate(5);
 }

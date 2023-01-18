@@ -21,7 +21,7 @@ stack push_frame
     var rval_0;
     set rval_0 true == true;
     jeq rval_0 0 NEXT_ELIF
-        stack allocate counter 6
+        set counter VAR_ASSIGN_C_VAL;
         jump END_branch_0
     
     jump utils.multiply
@@ -38,8 +38,13 @@ stack push_frame
     set rval_3 rval_2 == true;
     jeq rval_3 0 NEXT_ELIF
         var a;
-        stack allocate a 666
-        set a INT_VAR_ASSIGN_VAL;
+        // arg0=5
+        // arg1=3
+        jump utils.times
+        var rval_4;
+        set rval_4 FUNC_RETURN;
+        // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
+        stack allocate a rval_4
         jump END_branch_1
     
     :ELSE
@@ -52,18 +57,16 @@ stack push_frame
     // arg1=7
     // arg2=5
     jump call
-    var rval_4;
-    set rval_4 FUNC_RETURN;
+    var rval_5;
+    set rval_5 FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     var i;
-    stack allocate i 666
-    set i INT_VAR_ASSIGN_VAL;
     stack allocate i 4
     set i VAR_ASSIGN_C_VAL;
     // arg0=i
     jump stdout.write
-    var rval_5;
-    set rval_5 FUNC_RETURN;
+    var rval_6;
+    set rval_6 FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     return;
 stack pop_frame 
@@ -75,8 +78,8 @@ return;
 stack push_frame 
     // arg0=6
     jump utils_stdout.write
-    var rval_6;
-    set rval_6 FUNC_RETURN;
+    var rval_7;
+    set rval_7 FUNC_RETURN;
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     return;
 stack pop_frame 
@@ -95,6 +98,7 @@ return;
 
 :func_call_0
 stack push_frame 
+    var test;
     stack allocate test 69
     return;
 stack pop_frame 

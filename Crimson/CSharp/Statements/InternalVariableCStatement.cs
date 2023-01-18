@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Exception;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
@@ -8,22 +9,24 @@ namespace Crimson.CSharp.Statements
     {
         private CrimsonTypeCToken type;
         public string identifier { get; set; }
+        public ResolvableValueCToken Value { get; }
+        public bool IsAllocation { get; }
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier)
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken value, bool isAllocation)
         {
             this.type = type;
             this.identifier = identifier;
-        }
+            this.Value = value;
+            this.IsAllocation = isAllocation;
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken? value) : this(type, identifier)
-        {
-            Value = value;
+            if (identifier == null) throw new ParserException("Null identifier");
+            if (type == null) throw new ParserException($"Null type for variable {identifier}");
+            if (Value == null) throw new ParserException($"Cannot use null value for variable {identifier} (must assign value or allocate memory)");
         }
-
-        public ResolvableValueCToken? Value { get; }
 
         public override void Link(LinkingContext ctx)
         {
+            Value.Link(ctx);
             return;
         }
 
@@ -31,15 +34,27 @@ namespace Crimson.CSharp.Statements
         {
             Fragment statements = new Fragment(0);
 
-            if (Value != null)
+            statements.Add(new VariableDeclareBStatement(identifier));
+
+            // int i = allocate(6);
+            if (IsAllocation)
+            {
+                Fragment sizeValue = Value.GetCrimsonBasic();
+                statements.Add(sizeValue);
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, sizeValue.ResultHolder!));
+                // result_holder = result
+                // stack allocate i result_holder;
+            }
+            // int i = (6 + 5);
+            else
             {
                 Fragment valueStatements = Value.GetCrimsonBasic();
                 statements.Add(valueStatements);
-            }
-            statements.Add(new VariableDeclareBStatement(identifier));
-            statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, type.GetByteSize().ToString()));
-            statements.Add(new SetBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
 
+            }
+            
             return statements;
         }
     }

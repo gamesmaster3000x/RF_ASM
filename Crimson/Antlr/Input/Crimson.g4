@@ -29,13 +29,14 @@ internalStatement
     : internalVariableDeclaration   #FunctionVariableDeclarationStatement
     | functionReturn                #FunctionReturnStatement
     | assignVariable                #FunctionAssignVariableStatement
-    | allocateMemory                #FunctionAllocateMemoryStatement
+    //| allocateMemory              #FunctionAllocateMemoryStatement
     | functionCall SemiColon        #FunctionFunctionCallStatement
     | ifBlock                       #FunctionIfStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier (Equals resolvableValue)? SemiColon
+    : type Identifier Equals Allocate OpenBracket allocateSize=resolvableValue CloseBracket SemiColon
+    | type Identifier Equals value=resolvableValue SemiColon
     ;
 assignVariable
     : Identifier Equals resolvableValue SemiColon
@@ -57,14 +58,11 @@ assemblyCall
     ;
  
 // Function
-functionCall 
+functionCall
     : Identifier arguments
     ;
 arguments
     : OpenBracket (resolvableValue)? (Comma (resolvableValue))* CloseBracket
-    ;
-allocateMemory
-    : Allocate Identifier Number SemiColon
     ;
 functionReturn
     : Return resolvableValue SemiColon
@@ -153,6 +151,8 @@ SemiColon: ';';
 Underscore: '_'; 
 Hashtag: '#'; 
 Quote: '"'; 
+Asterisk: '*'; 
+Slash: '/'; 
 
 SkipTokens
     : (WhiteSpace | Newline | LineComment) -> skip

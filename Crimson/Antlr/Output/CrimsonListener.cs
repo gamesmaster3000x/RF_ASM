@@ -154,18 +154,6 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionAssignVariableStatement([NotNull] CrimsonParser.FunctionAssignVariableStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionFunctionCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// </summary>
@@ -291,16 +279,6 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArguments([NotNull] CrimsonParser.ArgumentsContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.functionReturn"/>.
 	/// </summary>

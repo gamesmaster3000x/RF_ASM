@@ -221,12 +221,12 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.AssignVariableContext asvCtx = context.assignVariable();
                 return VisitAssignVariable(asvCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionAllocateMemoryStatementContext)
+            /*else if (stCtx is CrimsonParser.FunctionAllocateMemoryStatementContext)
             {
                 CrimsonParser.FunctionAllocateMemoryStatementContext context = (CrimsonParser.FunctionAllocateMemoryStatementContext)stCtx;
                 CrimsonParser.AllocateMemoryContext almCtx = context.allocateMemory();
                 return VisitAllocateMemory(almCtx);
-            }
+            }*/
             else if (stCtx is CrimsonParser.FunctionFunctionCallStatementContext)
             {
                 CrimsonParser.FunctionFunctionCallStatementContext context = (CrimsonParser.FunctionFunctionCallStatementContext)stCtx;
@@ -255,9 +255,20 @@ namespace Crimson.CSharp.Core
         {
             CrimsonTypeCToken type = VisitType(context.type());
             string identifier = context.Identifier().GetText();
-            ResolvableValueCToken? value = context.resolvableValue() == null ? null : ParseResolvableValue(context.resolvableValue());
-            InternalVariableCStatement variable = new InternalVariableCStatement(type, identifier, value);
-            return variable;
+
+            if (context.allocateSize != null)
+            {
+                ResolvableValueCToken value = ParseResolvableValue(context.allocateSize);
+                return new InternalVariableCStatement(type, identifier, value, true);
+            }
+            else if (context.value != null)
+            {
+                ResolvableValueCToken value = ParseResolvableValue(context.value);
+                return new InternalVariableCStatement(type, identifier, value, false);
+            } else
+            {
+                throw new ParserException("No value or memory assigned to internal variable " + identifier);
+            }
         }
 
         public override FunctionCallCStatement VisitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context)
@@ -303,7 +314,7 @@ namespace Crimson.CSharp.Core
             return call;
         }
 
-        public override MemoryAllocationCStatement VisitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context)
+/*        public  MemoryAllocationCStatement VisitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context)
         {
             string identifier = context.Identifier().GetText();
             string numberText = context.Number().GetText();
@@ -319,7 +330,7 @@ namespace Crimson.CSharp.Core
             MemoryAllocationCStatement allocation = new MemoryAllocationCStatement(identifier, number);
             return allocation;
         }
-
+*/
         public override IList<ResolvableValueCToken> VisitArguments([NotNull] CrimsonParser.ArgumentsContext context)
         {
             IList<ResolvableValueCToken> arguments = new List<ResolvableValueCToken>();

@@ -105,13 +105,6 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionAssignVariableStatement([NotNull] CrimsonParser.FunctionAssignVariableStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionAllocateMemoryStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionAllocateMemoryStatement([NotNull] CrimsonParser.FunctionAllocateMemoryStatementContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>FunctionFunctionCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// </summary>
@@ -186,12 +179,6 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArguments([NotNull] CrimsonParser.ArgumentsContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.allocateMemory"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.functionReturn"/>.
 	/// </summary>

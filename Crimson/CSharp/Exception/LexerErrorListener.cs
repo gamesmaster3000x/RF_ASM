@@ -20,7 +20,9 @@ namespace Crimson.CSharp.Exception
 
         void IAntlrErrorListener<int>.SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            LOGGER.Error("There was a lexer error");
+            string message = $"Lexer error lexing {Path} @ line:{line} char:{charPositionInLine} msg:{msg}";
+            LOGGER.Error(message);
+            throw new LexerException(message, e);
         }
     }
 }
