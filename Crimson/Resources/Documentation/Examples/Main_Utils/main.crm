@@ -20,10 +20,10 @@ function main [int] () {
 	
 	call(4, 7, 5);
 
-    // Allocate memory on the heap for "i" and get a pointer to it
+    // Allocate memory on the heap for 'i' and get a pointer to it
     ptr i = allocate(4);
 
-    // Assign a value to "i"
+    // Set memory at pointer 'i'
     i *= 4;
         
     // Note usage of functions from imported packages
