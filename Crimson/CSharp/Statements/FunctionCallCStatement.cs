@@ -41,10 +41,10 @@ namespace Crimson.CSharp.Statements
                 if (argValue.TypeOfValue == ResolvableValueCToken.ValueType.FUNCTION_CALL)
                 {
                     f.Add(new JumpBStatement(argValue.FunctionContent!.identifier));
-                    f.Add(new CommentBStatement("^^ Why is this not linked!? (utils.otherthing should be linked)"));
+                    //f.Add(new CommentBStatement("^^ FCCS Why is this not linked!? (utils.otherthing should be linked)"));
                     string argReturnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
                     f.Add(new SetBStatement(argReturnName, FUNCTION_RETURN_VARIABLE_NAME));
-                    f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
+                    //f.Add(new CommentBStatement("^^ FCCS Perhaps need to dereference and copy/change ownership to not be overwritten?"));
 
                     argumentHolders.Add(argReturnName);
                 }
@@ -77,9 +77,8 @@ namespace Crimson.CSharp.Statements
             // Store result
             string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
             f.Add(new HeapBStatement(HeapBStatement.HeapOperation.ALLOCATE, returnName, "6969"));
-            f.Add(new RegisterBStatement(RegisterBStatement.RegisterOperation.SET, "RETURN", returnName));
+            f.Add(new RegisterBStatement(RegisterBStatement.RegisterOperation.SET, "REG_RETURN", returnName));
             f.Add(new SetBStatement(returnName, FUNCTION_RETURN_VARIABLE_NAME));
-            // f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
             
             f.ResultHolder = returnName;
 

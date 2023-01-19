@@ -21,7 +21,7 @@ function main [int] () {
 	call(4, 7, 5);
 
     // Declare and allocate memory for "i"
-    int i = allocate(4);
+    int* i = allocate(4);
 
     // Assign a value to "i"
     i = 4;
@@ -32,10 +32,10 @@ function main [int] () {
 }
 
 function call [int] () {
-	int test = allocate(69);
+	int* test = allocate(69);
 	return;
 }
 
 structure Person {
-	int age = allocate(5);
+	int* age = allocate(5);
 }

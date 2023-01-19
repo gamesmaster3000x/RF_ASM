@@ -170,7 +170,7 @@ namespace Crimson.CSharp.Core
 
         public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
         {
-            return new CrimsonTypeCToken(context.GetText());
+            return new CrimsonTypeCToken(context.name.GetText(), context.pointer != null);
         }
 
         public override IList<FunctionCStatement.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)

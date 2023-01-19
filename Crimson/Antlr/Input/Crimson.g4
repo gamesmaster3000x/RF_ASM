@@ -95,6 +95,9 @@ structureBody
 
 // Types 
 type
+    : name=rawType pointer=Asterisk?
+	;
+rawType
     : Integer
     | Boolean
     | Identifier
