@@ -40,7 +40,6 @@ namespace Crimson.CSharp.Statements
             combined.Add(right);
             string combinedName = FlattenerHelper.GetUniqueResolvableValueFieldName();
             string combinedValue = $"{left.ResultHolder} {Comparator.ToString(comparator)} {right.ResultHolder}";
-            combined.Add(new VariableDeclareBStatement(combinedName));
             combined.Add(new SetBStatement(combinedName, combinedValue));
             combined.ResultHolder = combinedName;
             return combined;

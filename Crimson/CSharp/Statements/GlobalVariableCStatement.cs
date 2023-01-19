@@ -44,7 +44,6 @@ namespace Crimson.CSharp.Statements
                 statements.Add(valueStatements);
             }
 
-            statements.Add(new VariableDeclareBStatement(Name));
             statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
             statements.Add(new SetBStatement(Name, "GLO_VAR_ASSIGN_VAL"));
 

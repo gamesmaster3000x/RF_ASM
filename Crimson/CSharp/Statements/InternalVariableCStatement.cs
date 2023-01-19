@@ -34,8 +34,6 @@ namespace Crimson.CSharp.Statements
         {
             Fragment statements = new Fragment(0);
 
-            statements.Add(new VariableDeclareBStatement(identifier));
-
             // int i = allocate(6);
             if (IsAllocation)
             {
