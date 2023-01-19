@@ -1,3 +1,4 @@
 ﻿Notes:
 -When a byte is loaded as an operand, only the least significant byte of the operand register is overwritten.
-!Only datawidths up to 4 bytes are supported. Higher widths can be run, but it is likely to crash the program if a memory address higher than ~2 billion is accessed.
+!Only datawidths up to 3 bytes are supported.
+-When reading/writing a word from/to memory, the operand storing the memory address will be modified.

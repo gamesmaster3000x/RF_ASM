@@ -2,7 +2,7 @@
 {
     internal class Register
     {
-        Word data;
+        Word data = new Word(Computer.DataWidth);
 
 
         public Register(int dataWidth)
