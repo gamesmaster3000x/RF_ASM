@@ -32,6 +32,7 @@
                     carry = true;
                 }
             }
+            Computer.processor.flags[5] = carry;
             Computer.processor.registers[0].Word = o;
         }
 
@@ -72,6 +73,7 @@
                     carry = true;
                 }
             }
+            Computer.processor.flags[5] = carry;
             Computer.processor.registers[0].Word = o;
         }
 
@@ -87,6 +89,7 @@
 
             o[0] = false;
 
+            Computer.processor.flags[5] = a[a.Length - 1];
             Computer.processor.registers[0].Word = o;
         }
 
@@ -97,11 +100,12 @@
 
             for (int i = 1; i < a.Length; i++)
             {
-                o[o.Length - i] = a[a.Length - (i + 1)];
+                o[i-1] = a[i];
             }
 
-            o[0] = false;
+            o[o.Length - 1] = false;
 
+            Computer.processor.flags[5] = a[0];
             Computer.processor.registers[0].Word = o;
         }
 
@@ -153,6 +157,21 @@
                 b[i] = !b[i];
             }
             Computer.processor.registers[0].Word = b;
+        }
+
+        public void Compare()
+        {
+            Subtract();
+            if (Computer.processor.registers[0].Word[Computer.processor.registers[0].Word.Length - 1])
+            {
+                Computer.processor.flags[3] = true;
+                Computer.processor.flags[2] = false;
+                Computer.processor.flags[4] = false;
+            }
+            else 
+            {
+            
+            }
         }
 
         public void And()

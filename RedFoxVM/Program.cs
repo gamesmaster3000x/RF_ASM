@@ -13,7 +13,6 @@ namespace RedFoxVM
 
         public static void DumpInfo()
         {
-            Console.WriteLine("Selection register: " + Computer.processor.registers[7].Word.ToInt32());
             Console.WriteLine("Clock cycle started.");
             for (int i = 0; i < 8; i++)
             {
