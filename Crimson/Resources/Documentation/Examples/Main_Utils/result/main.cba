@@ -28,15 +28,17 @@ stack push_frame
     // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     // arg0=rval_1
     jump utils.times
+    heap allocate rval_2 6969
+    register set RETURN rval_2
     set rval_2 FUNC_RETURN;
-    // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     set rval_3 rval_2 == true;
     jeq rval_3 0 NEXT_ELIF
         // arg0=5
         // arg1=3
         jump utils.times
+        heap allocate rval_4 6969
+        register set RETURN rval_4
         set rval_4 FUNC_RETURN;
-        // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
         stack allocate a rval_4
         jump END_branch_1
     
@@ -50,14 +52,16 @@ stack push_frame
     // arg1=7
     // arg2=5
     jump call
+    heap allocate rval_5 6969
+    register set RETURN rval_5
     set rval_5 FUNC_RETURN;
-    // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     stack allocate i 4
     set i VAR_ASSIGN_C_VAL;
     // arg0=i
     jump stdout.write
+    heap allocate rval_6 6969
+    register set RETURN rval_6
     set rval_6 FUNC_RETURN;
-    // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     return;
 stack pop_frame 
 return;
@@ -68,8 +72,9 @@ return;
 stack push_frame 
     // arg0=6
     jump utils_stdout.write
+    heap allocate rval_7 6969
+    register set RETURN rval_7
     set rval_7 FUNC_RETURN;
-    // ^^ Perhaps need to dereference and copy/change ownership to not be overwritten?
     return;
 stack pop_frame 
 return;

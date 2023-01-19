@@ -76,8 +76,10 @@ namespace Crimson.CSharp.Statements
 
             // Store result
             string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
+            f.Add(new HeapBStatement(HeapBStatement.HeapOperation.ALLOCATE, returnName, "6969"));
+            f.Add(new RegisterBStatement(RegisterBStatement.RegisterOperation.SET, "RETURN", returnName));
             f.Add(new SetBStatement(returnName, FUNCTION_RETURN_VARIABLE_NAME));
-            f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
+            // f.Add(new CommentBStatement("^^ Perhaps need to dereference and copy/change ownership to not be overwritten?"));
             
             f.ResultHolder = returnName;
 
