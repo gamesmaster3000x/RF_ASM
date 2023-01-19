@@ -2,3 +2,4 @@
 -When a byte is loaded as an operand, only the least significant byte of the operand register is overwritten.
 !Only datawidths up to 3 bytes are supported.
 -When reading/writing a word from/to memory, the operand storing the memory address will be modified.
+-Compare overrides the register S0.

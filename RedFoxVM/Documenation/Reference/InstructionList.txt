@@ -27,7 +27,7 @@ WMB  Word α         16  Write Memory Byte   Writes the selected byte to the mem
 WMW  Word α         17  Write Memory Word   Writes the selected word to the memory addresses starting at α.
 RVB  Byte α         18  Read Value Byte     Reads the byte α.
 RVW  Word α         19  Read Value Word     Reads the word α.
-SIN  Word α, Byte β 1A  Set Interrupt       Sets the address of the interrupt β to the memory address α. (α cannot be 0, as this will cause the device to halt upon trigger of the interrupt.)
+SIN  Word α, Byte β 1A  Set Interrupt       Sets the address of the interrupt β to the memory address α.
 INT  Byte α         1B  Interrupt           Triggers the interrupt α.
 SFG  Byte α, Byte β 1C  Set Flag            Sets the flag α to the Least Significant Bit of β.
 AND  -              1D  Logical AND         Performs a logical AND operation on registers S1 and S2 and stores the result in register S0.
