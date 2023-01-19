@@ -1,4 +1,4 @@
-﻿Register Layout:
+﻿registersRegister Layout:
 
 (Not all register addresses will be populated with an actual register.)
 0   - 127 = Specialised Registers
@@ -15,5 +15,6 @@ Number(s) Size Info
 4         Byte Current instruction
 5         Word Operand A
 6         Byte Operand B
-7   - 63  -    Reserved
+7         Word Selection Register
+8   - 63  -    Reserved
 64  - 127 Word Component lanes (Not all will be available)

@@ -11,12 +11,19 @@ namespace RedFoxVM.Components
     {
         private byte[] data;
 
-        public RAM()
+        public RAM(byte[] data = null)
         {
-            data = new byte [Capacity];
+            this.data = new byte[Capacity];
             for (int i = 0; i < Capacity; i++)
             {
-                data[i] = 0;
+                if (i < data.Length)
+                {
+                    this.data[i] = data[i];
+                }
+                else
+                {
+                    this.data[i] = 0;
+                }
             }
         }
 

@@ -19,7 +19,7 @@ BSR  Word α         0E  Branch Subroutine   Sets the memory address α as the n
 RTN  -              0F  Return              Jumps to the address that the top of the stack points to and pops that value out of the stack.
 RRB  Byte α, Byte β 10  Read Register Byte  Reads the byte β from the register α. (β == 0 -> Least Significant Byte)
 RRW  Byte α         11  Read Register Word  Reads the word from the register α.
-RMB  Word α, Byte β 12  Read Memory Byte    Reads the byte β from the memory address α. (β == 0 -> Least Significant Byte)
+RMB  Word α         12  Read Memory Byte    Reads the byte from the memory address α.
 RMW  Word α         13  Read Memory Word    Reads the word starting at memory address α.
 WRB  Word α, Byte β 14  Write Register Byte Writes the selected byte β to the register α. (β == 0 -> Least Significant Byte)
 WRW  Word α         15  Write Register Word Writes the selected word to the register α.

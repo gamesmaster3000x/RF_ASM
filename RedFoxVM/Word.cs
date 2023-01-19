@@ -18,6 +18,26 @@
             this.data = data;
         } 
 
+        public Word(byte[] data)
+        {
+            this.data = new bool[data.Length * 8];
+            for (int i = 0; i < data.Length; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (data[i] % 2 == 1)
+                    {
+                        this.data[(8 * i) + j] = true;
+                    }
+                    else
+                    {
+                        this.data[(8 * i) + j] = false;
+                    }
+                    data[i] /= 2;
+                }
+            }
+        }
+
         public bool this[int key]
         {
             get
