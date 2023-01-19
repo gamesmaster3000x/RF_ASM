@@ -141,6 +141,25 @@ namespace Crimson.CSharp.Core
             }
         }
 
+        public VariableAssignmentCStatement ParseAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
+        {
+            if (context == null) throw new StatementParseException("Illegal null CrimsonParser.AssignVariableContext");
+            if (context is CrimsonParser.AssignVariableDirectContext)
+            {
+                CrimsonParser.AssignVariableDirectContext avdc = (CrimsonParser.AssignVariableDirectContext)context;
+                return VisitAssignVariableDirect(avdc);
+            }
+            else if (context is CrimsonParser.AssignVariableAtPointerContext)
+            {
+                CrimsonParser.AssignVariableAtPointerContext avapc = (CrimsonParser.AssignVariableAtPointerContext)context;
+                return VisitAssignVariableAtPointer(avapc);
+            }
+            else
+            {
+                throw new StatementParseException("The given CrimsonParser.AssignVariableContext (" + context + ") is not of a permissable type");
+            }
+        }
+
         public override ResolvableValueCToken VisitFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context)
         {
             CrimsonParser.FunctionCallContext fcctx = context.functionCall();
@@ -160,7 +179,8 @@ namespace Crimson.CSharp.Core
 
         public override ResolvableValueCToken VisitNullResolvableValueStatement([NotNull] CrimsonParser.NullResolvableValueStatementContext context)
         {
-            return new ResolvableValueCToken("null", ResolvableValueCToken.ValueType.NULL);
+            bool ptr = context.pointer != null;
+            return new ResolvableValueCToken("null" + (ptr ? "*" : ""), ResolvableValueCToken.ValueType.NULL);
         }
 
         public override ResolvableValueCToken VisitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context)
@@ -219,7 +239,7 @@ namespace Crimson.CSharp.Core
             {
                 CrimsonParser.FunctionAssignVariableStatementContext context = (CrimsonParser.FunctionAssignVariableStatementContext)stCtx;
                 CrimsonParser.AssignVariableContext asvCtx = context.assignVariable();
-                return VisitAssignVariable(asvCtx);
+                return ParseAssignVariable(asvCtx);
             }
             /*else if (stCtx is CrimsonParser.FunctionAllocateMemoryStatementContext)
             {
@@ -291,11 +311,28 @@ namespace Crimson.CSharp.Core
             return ifBlock;
         }
 
-        public override VariableAssignmentCStatement VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
+        /*public override VariableAssignmentCStatement VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
+        {
+            string identifier = context.Identifier().GetText();
+            bool ptr = context.pointer != null;
+            ResolvableValueCToken value = ParseResolvableValue(context.resolvableValue());
+            VariableAssignmentCStatement assignment = new VariableAssignmentCStatement(identifier, value);
+            return assignment;
+        }*/
+
+        public override VariableAssignmentCStatement VisitAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context)
         {
             string identifier = context.Identifier().GetText();
             ResolvableValueCToken value = ParseResolvableValue(context.resolvableValue());
             VariableAssignmentCStatement assignment = new VariableAssignmentCStatement(identifier, value);
+            return assignment;
+        }
+
+        public override VariableAssignmentCStatement VisitAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context)
+        {
+            string identifier = context.Identifier().GetText();
+            ResolvableValueCToken value = ParseResolvableValue(context.resolvableValue());
+            VariableAssignmentCStatement assignment = new VariableAssignmentCStatement(identifier + "*", value);
             return assignment;
         }
 

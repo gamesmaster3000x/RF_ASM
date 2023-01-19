@@ -20,11 +20,11 @@ function main [int] () {
 	
 	call(4, 7, 5);
 
-    // Declare and allocate memory for "i"
-    int* i = allocate(4);
+    // Allocate memory on the heap for "i" and get a pointer to it
+    ptr i = allocate(4);
 
     // Assign a value to "i"
-    i = 4;
+    i *= 4;
         
     // Note usage of functions from imported packages
     stdout.write(i);

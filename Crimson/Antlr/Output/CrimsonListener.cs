@@ -200,15 +200,29 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.assignVariable"/>.
+	/// Enter a parse tree produced by the <c>AssignVariableDirect</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAssignVariable([NotNull] CrimsonParser.AssignVariableContext context);
+	void EnterAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.assignVariable"/>.
+	/// Exit a parse tree produced by the <c>AssignVariableDirect</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context);
+	void ExitAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignVariableAtPointer</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignVariableAtPointer</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.ifBlock"/>.
 	/// </summary>

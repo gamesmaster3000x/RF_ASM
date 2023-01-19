@@ -235,17 +235,33 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.assignVariable"/>.
+	/// Enter a parse tree produced by the <c>AssignVariableDirect</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignVariable([NotNull] CrimsonParser.AssignVariableContext context) { }
+	public virtual void EnterAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.assignVariable"/>.
+	/// Exit a parse tree produced by the <c>AssignVariableDirect</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context) { }
+	public virtual void ExitAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignVariableAtPointer</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignVariableAtPointer</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.ifBlock"/>.
 	/// <para>The default implementation does nothing.</para>

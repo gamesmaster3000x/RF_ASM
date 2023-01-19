@@ -35,11 +35,12 @@ internalStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier Equals Allocate OpenBracket allocateSize=resolvableValue CloseBracket SemiColon
-    | type Identifier Equals value=resolvableValue SemiColon
+    : type Identifier DirectEquals Allocate OpenBracket allocateSize=resolvableValue CloseBracket SemiColon
+    | type Identifier DirectEquals value=resolvableValue SemiColon
     ;
 assignVariable
-    : Identifier Equals resolvableValue SemiColon
+    : Identifier DirectEquals resolvableValue SemiColon     #AssignVariableDirect
+    | Identifier PointerEquals resolvableValue SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
@@ -69,11 +70,11 @@ functionReturn
     | Return SemiColon
     ;
 resolvableValue
-    : Identifier       #IdentifierResolvableValueStatement
-    | Number           #NumberResolvableValueStatement
-    | functionCall     #FunctionCallResolvableValueStatement
-    | Null             #NullResolvableValueStatement
-    | BooleanValue     #BooleanResolvableValueStatement
+    : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
+    | Number                             #NumberResolvableValueStatement
+    | functionCall                       #FunctionCallResolvableValueStatement
+    | Null pointer=Asterisk?             #NullResolvableValueStatement
+    | BooleanValue                       #BooleanResolvableValueStatement
     ;
 
 // Parameters 
@@ -100,6 +101,7 @@ type
 rawType
     : Integer
     | Boolean
+    | Pointer
     | Identifier
     | array
     | Null
@@ -127,6 +129,7 @@ Elif: 'elif';
 
 Integer: 'int';
 Boolean: 'bool';
+Pointer: 'ptr';
 Null: 'null';
 
 fragment True: 'true';
@@ -141,7 +144,8 @@ fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
 Tilda: '~';
-Equals: '=';
+DirectEquals: '=';
+PointerEquals: '*=';
 OpenBracket: '(';
 CloseBracket: ')';
 OpenSquare: '[';

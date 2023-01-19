@@ -195,7 +195,8 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.assignVariable"/>.
+	/// Visit a parse tree produced by the <c>AssignVariableDirect</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -203,7 +204,18 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context) { return VisitChildren(context); }
+	public virtual Result VisitAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AssignVariableAtPointer</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.ifBlock"/>.
 	/// <para>

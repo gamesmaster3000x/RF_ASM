@@ -132,11 +132,19 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.assignVariable"/>.
+	/// Visit a parse tree produced by the <c>AssignVariableDirect</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAssignVariable([NotNull] CrimsonParser.AssignVariableContext context);
+	Result VisitAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AssignVariableAtPointer</c>
+	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.ifBlock"/>.
 	/// </summary>

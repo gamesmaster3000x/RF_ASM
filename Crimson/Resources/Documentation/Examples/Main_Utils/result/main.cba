@@ -54,7 +54,7 @@ stack push_frame
     register set REG_RETURN rval_5
     set rval_5 FUNC_RETURN;
     stack allocate i 4
-    set i VAR_ASSIGN_C_VAL;
+    set i* VAR_ASSIGN_C_VAL;
     // arg0=i
     jump stdout.write
     heap allocate rval_6 6969
