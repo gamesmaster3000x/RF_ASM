@@ -7,8 +7,8 @@ ADD  -              02  Add                 Adds registers S1 and S2 and stores 
 SUB  -              03  Subtract            Subtracts register S2 from register S1 and stores the result in S0.
 LSL  -              04  Logical Shift Left  Shifts the value of the register S1 to the left and stores the result in S0.
 LSR  -              05  Logical Shift Right Shifts the value of the register S1 to the right and stores the result in S0.
-NEG  -              06  Negate              Subtracts the register S1 from #0 and stores the result in S0.
-NOT  -              07  Logical NOT         Performs a logical NOT operation on register S1 and stores the result in S0.
+NEG  -              06  Negate              Subtracts the register S2 from #0 and stores the result in S0.
+NOT  -              07  Logical NOT         Performs a logical NOT operation on register S2 and stores the result in S0.
 CMP  -              08  Compare             Compares register S1 to register S2. The registers are treated as 2's complement.
 JMP  Word α         09  Jump                Sets the memory address α as the next to be executed.
 BFG  Word α, Byte β 0A  Branch Flag         Sets the memory address α as the next to be executed, if flag β is active.
@@ -19,15 +19,15 @@ BSR  Word α         0E  Branch Subroutine   Sets the memory address α as the n
 RTN  -              0F  Return              Jumps to the address that the top of the stack points to and pops that value out of the stack.
 RRB  Byte α, Byte β 10  Read Register Byte  Reads the byte β from the register α. (β == 0 -> Least Significant Byte)
 RRW  Byte α         11  Read Register Word  Reads the word from the register α.
-RMB  Word α, Byte β 12  Read Memory Byte    Reads the byte β from the memory address α. (β == 0 -> Least Significant Byte)
+RMB  Word α         12  Read Memory Byte    Reads the byte from the memory address α.
 RMW  Word α         13  Read Memory Word    Reads the word starting at memory address α.
-WRB  Word α, Byte β 14  Write Register Byte Writes the selected byte β to the register α. (β == 0 -> Least Significant Byte)
-WRW  Word α         15  Write Register Word Writes the selected word to the register α.
-WMB  Word α, Byte β 16  Write Memory Byte   Writes the selected byte β to the memory address α. (β == 0 -> Least Significant Byte)
+WRB  Byte α, Byte β 14  Write Register Byte Writes the selected byte to the register α's byte β. (β == 0 -> Least Significant Byte)
+WRW  Byte α         15  Write Register Word Writes the selected word to the register α.
+WMB  Word α         16  Write Memory Byte   Writes the selected byte to the memory address α.
 WMW  Word α         17  Write Memory Word   Writes the selected word to the memory addresses starting at α.
 RVB  Byte α         18  Read Value Byte     Reads the byte α.
 RVW  Word α         19  Read Value Word     Reads the word α.
-SIN  Word α, Byte β 1A  Set Interrupt       Sets the address of the interrupt β to the memory address α. (α cannot be 0, as this will cause the device to halt upon trigger of the interrupt.)
+SIN  Word α, Byte β 1A  Set Interrupt       Sets the address of the interrupt β to the memory address α.
 INT  Byte α         1B  Interrupt           Triggers the interrupt α.
 SFG  Byte α, Byte β 1C  Set Flag            Sets the flag α to the Least Significant Bit of β.
 AND  -              1D  Logical AND         Performs a logical AND operation on registers S1 and S2 and stores the result in register S0.
