@@ -19,7 +19,7 @@
 
         public Word Word
         {
-            get { return data; }
+            get { return new Word(data.Bytes); }
             set { data = value; }
         }
 
