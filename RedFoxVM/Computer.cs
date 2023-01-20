@@ -5,10 +5,16 @@ namespace RedFoxVM
     internal static class Computer
     {
         private static bool halted = false;
-        private static int dataWidth = 2;
+        private static int dataWidth = 1;
         public static int DataWidth { get { return dataWidth; } }
         public static Processor processor = new Processor();
-        public static RAM memory = new RAM(new byte[] {25, 10, 132, 21, 1, 25, 4, 52, 21, 2, 3, 17, 0});
+        public static RAM memory;
+
+        public static void Initialise(int dataWidth, byte[] data)
+        {
+            Computer.dataWidth = dataWidth;
+            memory = new RAM(data);
+        }
 
         public static void Run()
         {
