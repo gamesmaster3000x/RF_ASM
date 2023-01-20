@@ -22,7 +22,6 @@ namespace RedFoxVM
             {
                 processor.Clock();
                 Program.DumpInfo();
-                Console.ReadLine();
             }
             Console.WriteLine("Computer halted.");
         }
