@@ -1,0 +1,26 @@
+
+
+// CRM
+
+
+int i = 3;
+if (i < 4) {
+    counter = 5;
+}
+
+
+// CBA
+
+
+// Setup i
+stack allocate i 4
+set i 3
+// Branch
+stack push_scope_frame
+stack allocate rval_0 1
+set rval_0 (i < 4)
+jne rval_0 1 END_branch_0
+    set i 5
+::END_branch_0
+stack pop_scope_frame
+
