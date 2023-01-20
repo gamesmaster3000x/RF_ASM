@@ -119,6 +119,13 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionIfStatement([NotNull] CrimsonParser.FunctionIfStatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionWhileStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// </summary>
@@ -151,6 +158,12 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIfBlock([NotNull] CrimsonParser.IfBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.whileBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileBlock([NotNull] CrimsonParser.WhileBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.condition"/>.
 	/// </summary>
@@ -208,6 +221,13 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>MathsResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMathsResolvableValueStatement([NotNull] CrimsonParser.MathsResolvableValueStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
 	/// </summary>
@@ -228,6 +248,12 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBooleanResolvableValueStatement([NotNull] CrimsonParser.BooleanResolvableValueStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.maths"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMaths([NotNull] CrimsonParser.MathsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
 	/// </summary>

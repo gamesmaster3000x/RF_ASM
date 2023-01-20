@@ -10,14 +10,12 @@ namespace Crimson.CSharp.Statements
         private CrimsonTypeCToken type;
         public string identifier { get; set; }
         public ResolvableValueCToken Value { get; }
-        public bool IsAllocation { get; }
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken value, bool isAllocation)
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken value)
         {
             this.type = type;
             this.identifier = identifier;
             this.Value = value;
-            this.IsAllocation = isAllocation;
 
             if (identifier == null) throw new ParserException("Null identifier");
             if (type == null) throw new ParserException($"Null type for variable {identifier}");
@@ -34,17 +32,7 @@ namespace Crimson.CSharp.Statements
         {
             Fragment statements = new Fragment(0);
 
-            // int i = allocate(6);
-            if (IsAllocation)
-            {
-                Fragment sizeValue = Value.GetCrimsonBasic();
-                statements.Add(sizeValue);
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, sizeValue.ResultHolder!));
-                // result_holder = result
-                // stack allocate i result_holder;
-            }
             // int i = (6 + 5);
-            else
             {
                 Fragment valueStatements = Value.GetCrimsonBasic();
                 statements.Add(valueStatements);

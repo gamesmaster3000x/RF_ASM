@@ -58,9 +58,18 @@ namespace Crimson.CSharp.Statements
                     return GetBasicAsBoolean();
                 case ValueType.NUMBER:
                     return GetBasicAsNumber();
+                case ValueType.MATHS:
+                    return GetBasicAsMaths();
             }
 
             throw new FlatteningException($"ResolvableValues of type {_valueType} cannot be flattened");
+        }
+
+        private Fragment GetBasicAsMaths()
+        {
+            Fragment fragment = new Fragment(0);
+            fragment.ResultHolder = _stringContent;
+            return fragment;
         }
 
         private Fragment GetBasicAsNumber()
@@ -112,7 +121,12 @@ namespace Crimson.CSharp.Statements
 
         public enum ValueType
         {
-            NULL, BOOLEAN, FUNCTION_CALL, NUMBER, IDENTIFIER
+            NULL, 
+            BOOLEAN, 
+            FUNCTION_CALL, 
+            NUMBER, 
+            MATHS,
+            IDENTIFIER
         }
     }
 }

@@ -29,14 +29,13 @@ internalStatement
     : internalVariableDeclaration   #FunctionVariableDeclarationStatement
     | functionReturn                #FunctionReturnStatement
     | assignVariable                #FunctionAssignVariableStatement
-    //| allocateMemory              #FunctionAllocateMemoryStatement
     | functionCall SemiColon        #FunctionFunctionCallStatement
     | ifBlock                       #FunctionIfStatement
+    | whileBlock                    #FunctionWhileStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier DirectEquals Allocate OpenBracket allocateSize=resolvableValue CloseBracket SemiColon
-    | type Identifier DirectEquals value=resolvableValue SemiColon
+    : type Identifier DirectEquals value=resolvableValue SemiColon
     ;
 assignVariable
     : Identifier DirectEquals resolvableValue SemiColon     #AssignVariableDirect
@@ -44,6 +43,9 @@ assignVariable
     ;
 ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
+    ;
+whileBlock
+    : While condition functionBody
     ;
 condition
     : OpenBracket leftValue=resolvableValue comparator=Comparator rightValue=resolvableValue CloseBracket
@@ -72,10 +74,14 @@ functionReturn
 resolvableValue
     : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
     | Number                             #NumberResolvableValueStatement
+	| maths                              #MathsResolvableValueStatement
     | functionCall                       #FunctionCallResolvableValueStatement
     | Null pointer=Asterisk?             #NullResolvableValueStatement
     | BooleanValue                       #BooleanResolvableValueStatement
     ;
+maths
+	: leftValue=(Number | Identifier) operator=(Plus | Minus | Asterisk | Slash) rightValue=(Number | Identifier)
+	;
 
 // Parameters 
 parameterList 
@@ -119,11 +125,11 @@ array
 Function: 'function';
 Global: 'global';
 Return: 'return';
-Allocate: 'allocate';
 Structure: 'structure';
 Using: 'using';
 As: 'as';
 If: 'if';
+While: 'while';
 Else: 'else';
 Elif: 'elif';
 
@@ -158,8 +164,10 @@ SemiColon: ';';
 Underscore: '_'; 
 Hashtag: '#'; 
 Quote: '"'; 
+Plus: '+'; 
+Minus: '-'; 
 Asterisk: '*'; 
-Slash: '/'; 
+Slash: '/';
 
 SkipTokens
     : (WhiteSpace | Newline | LineComment) -> skip

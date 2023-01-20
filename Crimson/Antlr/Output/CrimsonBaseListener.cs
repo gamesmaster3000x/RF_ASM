@@ -209,6 +209,20 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionIfStatement([NotNull] CrimsonParser.FunctionIfStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionWhileStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionWhileStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -274,6 +288,18 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIfBlock([NotNull] CrimsonParser.IfBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.whileBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileBlock([NotNull] CrimsonParser.WhileBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.whileBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileBlock([NotNull] CrimsonParser.WhileBlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.condition"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -387,6 +413,20 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>MathsResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMathsResolvableValueStatement([NotNull] CrimsonParser.MathsResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MathsResolvableValueStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMathsResolvableValueStatement([NotNull] CrimsonParser.MathsResolvableValueStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -428,6 +468,18 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBooleanResolvableValueStatement([NotNull] CrimsonParser.BooleanResolvableValueStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.maths"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMaths([NotNull] CrimsonParser.MathsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.maths"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMaths([NotNull] CrimsonParser.MathsContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
 	/// <para>The default implementation does nothing.</para>

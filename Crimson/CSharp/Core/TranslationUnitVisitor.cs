@@ -135,6 +135,11 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.NumberResolvableValueStatementContext nrvsc = (CrimsonParser.NumberResolvableValueStatementContext)context;
                 return VisitNumberResolvableValueStatement(nrvsc);
             }
+            else if (context is CrimsonParser.MathsResolvableValueStatementContext)
+            {
+                CrimsonParser.MathsResolvableValueStatementContext mrfsc = (CrimsonParser.MathsResolvableValueStatementContext)context;
+                return VisitMathsResolvableValueStatement(mrfsc);
+            }
             else
             {
                 throw new StatementParseException("The given CrimsonParser.ResolvableValueContext (" + context + ") is not of a permissable type");
@@ -186,6 +191,16 @@ namespace Crimson.CSharp.Core
         public override ResolvableValueCToken VisitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context)
         {
             return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.NUMBER);
+        }
+
+        public override ResolvableValueCToken VisitMathsResolvableValueStatement([NotNull] CrimsonParser.MathsResolvableValueStatementContext context)
+        {
+            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.MATHS);
+        }
+
+        public override ResolvableValueCToken VisitMaths([NotNull] CrimsonParser.MathsContext context)
+        {
+            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.MATHS);
         }
 
         public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
@@ -241,12 +256,6 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.AssignVariableContext asvCtx = context.assignVariable();
                 return ParseAssignVariable(asvCtx);
             }
-            /*else if (stCtx is CrimsonParser.FunctionAllocateMemoryStatementContext)
-            {
-                CrimsonParser.FunctionAllocateMemoryStatementContext context = (CrimsonParser.FunctionAllocateMemoryStatementContext)stCtx;
-                CrimsonParser.AllocateMemoryContext almCtx = context.allocateMemory();
-                return VisitAllocateMemory(almCtx);
-            }*/
             else if (stCtx is CrimsonParser.FunctionFunctionCallStatementContext)
             {
                 CrimsonParser.FunctionFunctionCallStatementContext context = (CrimsonParser.FunctionFunctionCallStatementContext)stCtx;
@@ -258,6 +267,12 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.FunctionIfStatementContext context = (CrimsonParser.FunctionIfStatementContext)stCtx;
                 CrimsonParser.IfBlockContext ifCtx = context.ifBlock();
                 return VisitIfBlock(ifCtx);
+            }
+            else if (stCtx is CrimsonParser.FunctionWhileStatementContext)
+            {
+                CrimsonParser.FunctionWhileStatementContext context = (CrimsonParser.FunctionWhileStatementContext)stCtx;
+                CrimsonParser.WhileBlockContext whileCtx = context.whileBlock();
+                return VisitWhileBlock(whileCtx);
             }
             else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext)
             {
@@ -276,15 +291,10 @@ namespace Crimson.CSharp.Core
             CrimsonTypeCToken type = VisitType(context.type());
             string identifier = context.Identifier().GetText();
 
-            if (context.allocateSize != null)
-            {
-                ResolvableValueCToken value = ParseResolvableValue(context.allocateSize);
-                return new InternalVariableCStatement(type, identifier, value, true);
-            }
-            else if (context.value != null)
+            if (context.value != null)
             {
                 ResolvableValueCToken value = ParseResolvableValue(context.value);
-                return new InternalVariableCStatement(type, identifier, value, false);
+                return new InternalVariableCStatement(type, identifier, value);
             } else
             {
                 throw new ParserException("No value or memory assigned to internal variable " + identifier);
@@ -308,6 +318,14 @@ namespace Crimson.CSharp.Core
             ElseIfBlockCToken? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
             ElseBlockCToken? elseBlock = elbCtx == null ? null : VisitElseBlock(elbCtx);
             IfBlockCStatement ifBlock = new IfBlockCStatement(condition, body, elifBlock, elseBlock);
+            return ifBlock;
+        }
+
+        public override WhileBlockCStatement VisitWhileBlock([NotNull] CrimsonParser.WhileBlockContext context)
+        {
+            ConditionCToken condition = VisitCondition(context.condition());
+            IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
+            WhileBlockCStatement ifBlock = new WhileBlockCStatement(condition, body);
             return ifBlock;
         }
 

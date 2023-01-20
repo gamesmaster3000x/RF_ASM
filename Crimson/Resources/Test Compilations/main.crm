@@ -5,6 +5,7 @@
 
 #using "utils/utils.crm" as utils
 #using "${NATIVE}/console.crm" as stdout
+#using "${NATIVE}/heap.crm" as heap
 
 global int counter = 0;
 
@@ -13,7 +14,7 @@ function main [int] () {
 	if (true == true) {
 		counter = 5;
 	} else if (utils.times(utils.multiply(8)) == true) {
-		int a = allocate(utils.times(5, 3));
+		int a = heap.alloc(utils.times(5, 3));
 	} else {
 		return b;
 	}
@@ -21,7 +22,7 @@ function main [int] () {
 	call(4, 7, 5);
 
     // Allocate memory on the heap for 'i' and get a pointer to it
-    ptr i = allocate(4);
+    ptr i = heap.alloc(4);
 
     // Set memory at pointer 'i'
     i *= 4;
@@ -32,10 +33,10 @@ function main [int] () {
 }
 
 function call [int] () {
-	int* test = allocate(69);
+	int* test = heap.alloc(69);
 	return;
 }
 
 structure Person {
-	int* age = allocate(5);
+	int* age = heap.alloc(5);
 }
