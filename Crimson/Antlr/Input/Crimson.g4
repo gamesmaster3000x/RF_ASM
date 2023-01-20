@@ -1,15 +1,15 @@
 grammar Crimson;
 
 // Parser rules
-compilationUnit 
-    : (imports+=importUnit)* (statements+=compilationUnitStatement)* eof=EOF
+translationUnit 
+    : (imports+=importUnit)* (statements+=globalStatement)* eof=EOF
     ;
 
 // Compilation-Unit statements
 importUnit
     : Hashtag Using path=String As identifier=Identifier
     ;
-compilationUnitStatement
+globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
     | functionDeclaration       #FunctionUnitStatement
     | structureDeclaration      #StructureUnitStatement
@@ -21,59 +21,67 @@ functionDeclaration
     : Function name=Identifier returnType=type parameters=parameterList body=functionBody
     ; 
 functionBody
-    : OpenBrace (statements+=functionStatement)* CloseBrace 
+    : OpenBrace (statements+=internalStatement)* CloseBrace 
     ; 
 
 // Function-only statements
-functionStatement
-    : internalVariableDeclaration
-    | functionReturn
-    | assignVariable
-    | allocateMemory
-    | functionCall SemiColon
-    | ifBlock
+internalStatement
+    : internalVariableDeclaration   #FunctionVariableDeclarationStatement
+    | functionReturn                #FunctionReturnStatement
+    | assignVariable                #FunctionAssignVariableStatement
+    | functionCall SemiColon        #FunctionFunctionCallStatement
+    | ifBlock                       #FunctionIfStatement
+    | whileBlock                    #FunctionWhileStatement
+    | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier (Equals resolvableValue)? SemiColon // Need to add =value or =func()
+    : type Identifier DirectEquals value=resolvableValue SemiColon
     ;
 assignVariable
-    : Identifier Equals resolvableValue SemiColon
+    : Identifier DirectEquals resolvableValue SemiColon     #AssignVariableDirect
+    | Identifier PointerEquals resolvableValue SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
-    : If condition functionBody (elseBlock | elifBlock)?
+    : If condition functionBody (elseBlock | elseIfBlock)?
+    ;
+whileBlock
+    : While condition functionBody
     ;
 condition
-    : OpenBracket BooleanValue CloseBracket
-    | OpenBracket resolvableValue Comparator resolvableValue CloseBracket
+    : OpenBracket leftValue=resolvableValue comparator=Comparator rightValue=resolvableValue CloseBracket
     ;
-elifBlock
-    : Elif condition functionBody (elseBlock | elifBlock)?
+elseIfBlock
+    : Else ifBlock
     ;
 elseBlock
     : Else functionBody
     ;
+assemblyCall
+    : Tilda assemblyText=~('\r' | '\n')*
+    ;
  
 // Function
-functionCall 
-    : Identifier inputParameters
+functionCall
+    : Identifier arguments
     ;
-inputParameters
-    : OpenBracket (Identifier | Number)? (Comma (Identifier | Number))* CloseBracket
-    ;
-allocateMemory
-    : Allocate Identifier Number SemiColon
+arguments
+    : OpenBracket (resolvableValue)? (Comma (resolvableValue))* CloseBracket
     ;
 functionReturn
     : Return resolvableValue SemiColon
     | Return SemiColon
     ;
 resolvableValue
-    : Identifier
-    | Number
-    | functionCall
-    | Null
-    | BooleanValue
+    : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
+    | Number                             #NumberResolvableValueStatement
+	| maths                              #MathsResolvableValueStatement
+    | functionCall                       #FunctionCallResolvableValueStatement
+    | Null pointer=Asterisk?             #NullResolvableValueStatement
+    | BooleanValue                       #BooleanResolvableValueStatement
     ;
+maths
+	: leftValue=(Number | Identifier) operator=(Plus | Minus | Asterisk | Slash) rightValue=(Number | Identifier)
+	;
 
 // Parameters 
 parameterList 
@@ -94,8 +102,12 @@ structureBody
 
 // Types 
 type
+    : name=rawType pointer=Asterisk?
+	;
+rawType
     : Integer
     | Boolean
+    | Pointer
     | Identifier
     | array
     | Null
@@ -113,16 +125,17 @@ array
 Function: 'function';
 Global: 'global';
 Return: 'return';
-Allocate: 'allocate';
 Structure: 'structure';
 Using: 'using';
 As: 'as';
 If: 'if';
+While: 'while';
 Else: 'else';
 Elif: 'elif';
 
 Integer: 'int';
 Boolean: 'bool';
+Pointer: 'ptr';
 Null: 'null';
 
 fragment True: 'true';
@@ -130,11 +143,15 @@ fragment False: 'false';
 BooleanValue: True | False;
 
 fragment Less: '<';
+fragment LessEqual: '<=';
 fragment Greater: '>';
+fragment GreaterEqual: '>=';
 fragment EqualTo: '==';
-Comparator: Less | Greater | EqualTo;
+Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
-Equals: '=';
+Tilda: '~';
+DirectEquals: '=';
+PointerEquals: '*=';
 OpenBracket: '(';
 CloseBracket: ')';
 OpenSquare: '[';
@@ -147,6 +164,10 @@ SemiColon: ';';
 Underscore: '_'; 
 Hashtag: '#'; 
 Quote: '"'; 
+Plus: '+'; 
+Minus: '-'; 
+Asterisk: '*'; 
+Slash: '/';
 
 SkipTokens
     : (WhiteSpace | Newline | LineComment) -> skip
