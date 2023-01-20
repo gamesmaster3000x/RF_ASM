@@ -1,0 +1,31 @@
+
+
+// CRM
+
+
+int i = 3;
+deallocate(i*)
+
+
+// CBA
+
+
+// Setup i
+stack allocate i 4
+set i 3
+stack deallocate i
+
+
+// RFASM
+
+
+- Increment Stack Frame Offset
+- Increment SFO
+- Increment SFO
+- Increment SFO
+- Load i to register
+- Store register to i*
+- Decrement SFO
+- Decrement SFO
+- Decrement SFO
+- Decrement SFO
