@@ -14,21 +14,21 @@ namespace RedFoxVM
         //The index of the previously added item.
         int back;
 
-        Value[] data;
+        Word[] data;
 
         public Stack(int capacity)
         {
             this.capacity = capacity;
-            data = new Value[capacity];
+            data = new Word[capacity];
             back = 0;
         }
 
-        public void Push(Value b)
+        public void Push(Word b)
         {
             data[++back] = b;
         }
 
-        public Value Pop
+        public Word Pop
         {
             get
             {
@@ -36,7 +36,7 @@ namespace RedFoxVM
             }
         }
 
-        public Value Peek
+        public Word Peek
         {
             get { return data[back];}
         }

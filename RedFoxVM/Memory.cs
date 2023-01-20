@@ -11,16 +11,8 @@ namespace RedFoxVM
     internal class Memory
     {
         byte[] data;
-        int dataWidth;
-        public Memory(int capacity, int dataWidth, byte[] input = null)
+        public Memory(int capacity, byte[] input)
         {
-            this.dataWidth = dataWidth;
-
-            if (input == null)
-            {
-                input = new byte[] { (byte)0};
-            }
-
             data = new byte[capacity];
 
             for (int i = 0; i < capacity; i++)
@@ -31,24 +23,19 @@ namespace RedFoxVM
                 }
                 else
                 {
-                    data[i] = (byte)0;
+                    data[i] = 0;
                 }
             }
         }
 
-        public byte GetByte(int addr)
+        public byte GetByte(Word addr)
         {
-            return data[addr];
+            return data[addr.ToInt32()];
         }
-
-        public Value GetValue(int addr)
+        
+        public void SetByte(Word addr, byte data)
         {
-            byte[] bytes = new byte[dataWidth];
-            for (int i = 0; i < dataWidth; i++)
-            {
-                bytes[i] = data[addr + i];
-            }
-            return new Value(bytes);
+            this.data[addr.ToInt32()] = data;
         }
     }
 }

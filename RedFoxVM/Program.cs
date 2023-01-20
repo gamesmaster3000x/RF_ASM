@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Text.Json.Nodes;
+
 namespace RedFoxVM {
     /// <summary>
     /// Entry point class for RF_ASM.
@@ -6,7 +9,8 @@ namespace RedFoxVM {
     {
         static void Main(string[] args)
         {
-            Computer computer = new Computer(1, 1024);
+            Computer computer = new(Array.Empty<byte>(), 2, 1024, 32, 16, 256);
+            
         }
     }
 }

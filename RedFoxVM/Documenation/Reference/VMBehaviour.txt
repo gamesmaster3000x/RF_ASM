@@ -1,0 +1,8 @@
+Formatting:
+?-This may remain the same in the future, or it may be removed.
+!-This is only temporary, it will be fixed.
+--This will be a feature of the final product, it's just good to know.
+
+Notes:
+--When a byte is loaded as an operand, only the least significant byte of the operand register is overwritten.
+!-When an operand is loaded from a register that doesn't exist, the operand register remains unaltered and execution continues.
