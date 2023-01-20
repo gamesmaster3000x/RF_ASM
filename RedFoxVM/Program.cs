@@ -1,16 +1,23 @@
-using System.Collections;
-using System.Text.Json.Nodes;
+using RedFoxVM.Components;
 
-namespace RedFoxVM {
-    /// <summary>
-    /// Entry point class for RF_ASM.
-    /// </summary>
+namespace RedFoxVM
+{
     static class Program
     {
         static void Main(string[] args)
         {
-            Computer computer = new(Array.Empty<byte>(), 2, 1024, 32, 16, 256);
-            
+            Console.WriteLine("Created VM with " + Computer.memory.Capacity + " bytes of memory.");
+            Console.WriteLine("Starting VM...");
+            Computer.Run();
+        }
+
+        public static void DumpInfo()
+        {
+            Console.WriteLine("Clock cycle started.");
+            for (int i = 0; i < 8; i++)
+            {
+                Console.WriteLine("Register " + i + "'s current value is " + Computer.processor.registers[i].Word.ToInt32());
+            }
         }
     }
 }
