@@ -1,4 +1,5 @@
 using RedFoxVM.Components;
+using System.Text;
 
 namespace RedFoxVM
 {
@@ -6,6 +7,17 @@ namespace RedFoxVM
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Enter the datawidth of the desired VM in bytes:");
+            int dw = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter the name of the file to load:");
+            BinaryReader reader = new BinaryReader(File.Open(Console.ReadLine(),FileMode.Open), Encoding.ASCII);
+            List<byte> bytes = new List<byte>();
+            while (reader.PeekChar() != -1)
+            {
+                bytes.Add(reader.ReadByte());
+            }
+            reader.Close();
+            Computer.Initialise(dw, bytes.ToArray());
             Console.WriteLine("Created VM with " + Computer.memory.Capacity + " bytes of memory.");
             Console.WriteLine("Starting VM...");
             Computer.Run();

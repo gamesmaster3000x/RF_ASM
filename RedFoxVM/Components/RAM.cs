@@ -11,7 +11,7 @@ namespace RedFoxVM.Components
     {
         private byte[] data;
 
-        public RAM(byte[] data = null)
+        public RAM(byte[] data)
         {
             this.data = new byte[Capacity];
             for (int i = 0; i < Capacity; i++)
