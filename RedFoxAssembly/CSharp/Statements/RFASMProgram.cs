@@ -8,8 +8,8 @@ namespace RedFoxAssembly.CSharp.Statements
 {
     internal class RFASMProgram
     {
-        private List<IConfiguration> _configurations;
-        private List<ICommand> _commands;
+        public List<IConfiguration> Configuations { get; }
+        public List<ICommand> Commands { get; }
 
         public RFASMProgram(): this(new List<IConfiguration>(), new List<ICommand>())
         {
@@ -17,18 +17,18 @@ namespace RedFoxAssembly.CSharp.Statements
 
         public RFASMProgram(List<IConfiguration> configurations, List<ICommand> commands)
         {
-            _configurations = configurations;
-            _commands = commands;
+            Configuations = configurations;
+            Commands = commands;
         }
 
         internal void AddCommand(ICommand c)
         {
-            _commands.Add(c);
+            Commands.Add(c);
         }
 
         internal void AddConfiguration(IConfiguration c)
         {
-            _configurations.Add(c);
+            Configuations.Add(c);
         }
     }
 }

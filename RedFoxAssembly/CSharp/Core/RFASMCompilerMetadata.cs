@@ -1,10 +1,6 @@
-﻿using RedFoxAssembly.Compiler.Tokens;
-using RedFoxAssembly.CSharp.TokenParser;
-using System.Xml.Linq;
-
-namespace RedFoxAssembly.CSharp.Compiler
+﻿namespace RedFoxAssembly.CSharp.Core
 {
-    public class RFASMCompilerMetadata : ITokenParserMetadata
+    public class RFASMCompilerMetadata
     {
 
         private Dictionary<string, string> metadata = new Dictionary<string, string>();
@@ -25,8 +21,6 @@ namespace RedFoxAssembly.CSharp.Compiler
         }
 
         // Constants
-        public Dictionary<string, TokenTemplate> constants = new Dictionary<string, TokenTemplate>();
-
 
         public RFASMCompilerMetadata()
         {

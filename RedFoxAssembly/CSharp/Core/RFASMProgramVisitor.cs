@@ -1,14 +1,8 @@
-﻿using RedFoxAssembly.AntlrBuild;
-using RedFoxAssembly.CSharp.Compiler.Tokens;
+﻿using Antlr4.Runtime.Misc;
+using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RedFoxAssembly.CSharp.Compiler
+namespace RedFoxAssembly.CSharp.Core
 {
     internal class RFASMProgramVisitor : RedFoxAssemblyBaseVisitor<object>
     {
@@ -31,38 +25,59 @@ namespace RedFoxAssembly.CSharp.Compiler
 
         public IConfiguration ParseConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context)
         {
+            if (context == null) throw new ParsingException("ConfigurationContext cannot be null");
             if (context is RedFoxAssemblyParser.WidthConfigurationContext) return VisitWidthConfiguration((RedFoxAssemblyParser.WidthConfigurationContext)context);
             if (context is RedFoxAssemblyParser.ValueConfigurationContext) return VisitValueConfiguration((RedFoxAssemblyParser.ValueConfigurationContext)context);
-            return null;
+            throw new ParsingException("Cannot parse ConfigurationContext of type " + context.GetText());
         }
 
-        public override WidthConfiguration VisitWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context){return VisitWidth(context.width());}
-        public override WidthConfiguration VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context){return new WidthConfiguration(int.Parse(context.val.Text));}
+        public override WidthConfiguration VisitWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context) { return VisitWidth(context.width()); }
+        public override WidthConfiguration VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context) { return new WidthConfiguration(int.Parse(context.val.Text)); }
 
-        public override ValueConfiguration VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context){return VisitValue(context.value());}
-        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context){return new ValueConfiguration(context.id.Text, VisitWord(context.val));}
+        public override ValueConfiguration VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context) { return VisitValue(context.value()); }
+        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context) { return new ValueConfiguration(context.id.Text, VisitWord(context.val)); }
 
         public override Word VisitWord([NotNull] RedFoxAssemblyParser.WordContext context)
         {
-            if (String.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
+            if (string.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
 
-            List<byte> data = new List<byte>();
-            foreach (var b in context._data)
+            if (context._data != null)
             {
-                string d = b.GetText();
-                byte[] bs = Convert.FromHexString(d);
-                data.AddRange(bs);
+                List<byte> data = new List<byte>();
+                foreach (var b in context._data)
+                {
+                    string d = b.GetText();
+                    byte[] bs = Convert.FromHexString(d);
+                    data.AddRange(bs);
+                }
+                if (data.Count < 1) throw new ParsingException("Word " + context.GetText() + " must contain at least 1 hex byte");
+                return new Word(data.ToArray());
             }
 
-            if (data.Count < 1) throw new ParsingException("Word " + context.GetText() + " must contain at least 1 hex byte");
+            if (!string.IsNullOrWhiteSpace(context.val.Text))
+            {
+                return new Word(context.val.Text);
+            }
 
-            return new Word(data.ToArray());
+            throw new ParsingException("Cannot create word with no bytedata or value-mapping");
         }
 
         public override RByte VisitByte([NotNull] RedFoxAssemblyParser.ByteContext context)
         {
-            byte[] data = Convert.FromHexString(context.GetText());
-            return new RByte(data[0]);
+            if (string.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
+
+            if (context.data != null)
+            {
+                byte[] data = Convert.FromHexString(context.data.GetText());
+                return new RByte(data[0]);
+            }
+
+            if (!string.IsNullOrWhiteSpace(context.val.Text))
+            {
+                return new RByte(context.val.Text);
+            }
+
+            throw new ParsingException("Cannot create byte with no bytedata or value-mapping");
         }
 
         public override object VisitBytedata([NotNull] RedFoxAssemblyParser.BytedataContext context)
@@ -78,10 +93,10 @@ namespace RedFoxAssembly.CSharp.Compiler
             throw new ParsingException("Cannot parse RedFoxAssemblyParser.CommandContext of type " + context.GetType());
         }
 
-        public override LabelCommand VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context){return VisitLabel(context.label());}
-        public override LabelCommand VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context){return new LabelCommand(context.id.Text);}
+        public override LabelCommand VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context) { return VisitLabel(context.label()); }
+        public override LabelCommand VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context) { return new LabelCommand(context.id.Text); }
 
-        public override InstructionCommand VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context){return ParseInstruction(context.instruction());}
+        public override InstructionCommand VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context) { return ParseInstruction(context.instruction()); }
         public InstructionCommand ParseInstruction(RedFoxAssemblyParser.InstructionContext context)
         {
             if (context == null) throw new ParsingException("Cannot parse null InstructionContext");
@@ -148,10 +163,10 @@ namespace RedFoxAssembly.CSharp.Compiler
         public override InstructionCommand VisitCmp([NotNull] RedFoxAssemblyParser.CmpContext context) { return new InstructionCommand(InstructionType.CMP, null, null); }
 
         public override InstructionCommand VisitJMPInstruction([NotNull] RedFoxAssemblyParser.JMPInstructionContext context) { return VisitJmp(context.jmp()); }
-        public override InstructionCommand VisitJmp([NotNull] RedFoxAssemblyParser.JmpContext context) { return new InstructionCommand(InstructionType.JMP, null, null); }
+        public override InstructionCommand VisitJmp([NotNull] RedFoxAssemblyParser.JmpContext context) { return new InstructionCommand(InstructionType.JMP, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
-        public override InstructionCommand VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new InstructionCommand(InstructionType.BFG, null, null); }
+        public override InstructionCommand VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new InstructionCommand(InstructionType.BFG, VisitWord(context.arg1w), VisitByte(context.arg2b)); }
 
         //public override Instruction VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
         //public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
@@ -163,49 +178,49 @@ namespace RedFoxAssembly.CSharp.Compiler
         //public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
 
         public override InstructionCommand VisitBSRInstruction([NotNull] RedFoxAssemblyParser.BSRInstructionContext context) { return VisitBsr(context.bsr()); }
-        public override InstructionCommand VisitBsr([NotNull] RedFoxAssemblyParser.BsrContext context) { return new InstructionCommand(InstructionType.BSR, null, null); }
+        public override InstructionCommand VisitBsr([NotNull] RedFoxAssemblyParser.BsrContext context) { return new InstructionCommand(InstructionType.BSR, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitRTNInstruction([NotNull] RedFoxAssemblyParser.RTNInstructionContext context) { return VisitRtn(context.rtn()); }
         public override InstructionCommand VisitRtn([NotNull] RedFoxAssemblyParser.RtnContext context) { return new InstructionCommand(InstructionType.RTN, null, null); }
 
         public override InstructionCommand VisitRRBInstruction([NotNull] RedFoxAssemblyParser.RRBInstructionContext context) { return VisitRrb(context.rrb()); }
-        public override InstructionCommand VisitRrb([NotNull] RedFoxAssemblyParser.RrbContext context) { return new InstructionCommand(InstructionType.RRB, null, null); }
+        public override InstructionCommand VisitRrb([NotNull] RedFoxAssemblyParser.RrbContext context) { return new InstructionCommand(InstructionType.RRB, VisitByte(context.arg1b), VisitByte(context.arg2b)); }
 
         public override InstructionCommand VisitRRWInstruction([NotNull] RedFoxAssemblyParser.RRWInstructionContext context) { return VisitRrw(context.rrw()); }
-        public override InstructionCommand VisitRrw([NotNull] RedFoxAssemblyParser.RrwContext context) { return new InstructionCommand(InstructionType.RRW, null, null); }
+        public override InstructionCommand VisitRrw([NotNull] RedFoxAssemblyParser.RrwContext context) { return new InstructionCommand(InstructionType.RRW, VisitByte(context.arg1b), null); }
 
         public override InstructionCommand VisitRMBInstruction([NotNull] RedFoxAssemblyParser.RMBInstructionContext context) { return VisitRmb(context.rmb()); }
-        public override InstructionCommand VisitRmb([NotNull] RedFoxAssemblyParser.RmbContext context) { return new InstructionCommand(InstructionType.RMB, null, null); }
+        public override InstructionCommand VisitRmb([NotNull] RedFoxAssemblyParser.RmbContext context) { return new InstructionCommand(InstructionType.RMB, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitRMWInstruction([NotNull] RedFoxAssemblyParser.RMWInstructionContext context) { return VisitRmw(context.rmw()); }
-        public override InstructionCommand VisitRmw([NotNull] RedFoxAssemblyParser.RmwContext context) { return new InstructionCommand(InstructionType.RMW, null, null); }
+        public override InstructionCommand VisitRmw([NotNull] RedFoxAssemblyParser.RmwContext context) { return new InstructionCommand(InstructionType.RMW, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitWRBInstruction([NotNull] RedFoxAssemblyParser.WRBInstructionContext context) { return VisitWrb(context.wrb()); }
-        public override InstructionCommand VisitWrb([NotNull] RedFoxAssemblyParser.WrbContext context) { return new InstructionCommand(InstructionType.WRB, null, null); }
+        public override InstructionCommand VisitWrb([NotNull] RedFoxAssemblyParser.WrbContext context) { return new InstructionCommand(InstructionType.WRB, VisitByte(context.arg1b), VisitByte(context.arg2b)); }
 
         public override InstructionCommand VisitWRWInstruction([NotNull] RedFoxAssemblyParser.WRWInstructionContext context) { return VisitWrw(context.wrw()); }
-        public override InstructionCommand VisitWrw([NotNull] RedFoxAssemblyParser.WrwContext context) { return new InstructionCommand(InstructionType.WRW, null, null); }
+        public override InstructionCommand VisitWrw([NotNull] RedFoxAssemblyParser.WrwContext context) { return new InstructionCommand(InstructionType.WRW, VisitByte(context.arg1b), null); }
 
         public override InstructionCommand VisitWMBInstruction([NotNull] RedFoxAssemblyParser.WMBInstructionContext context) { return VisitWmb(context.wmb()); }
-        public override InstructionCommand VisitWmb([NotNull] RedFoxAssemblyParser.WmbContext context) { return new InstructionCommand(InstructionType.WMB, null, null); }
+        public override InstructionCommand VisitWmb([NotNull] RedFoxAssemblyParser.WmbContext context) { return new InstructionCommand(InstructionType.WMB, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitWMWInstruction([NotNull] RedFoxAssemblyParser.WMWInstructionContext context) { return VisitWmw(context.wmw()); }
-        public override InstructionCommand VisitWmw([NotNull] RedFoxAssemblyParser.WmwContext context) { return new InstructionCommand(InstructionType.WMW, null, null); }
+        public override InstructionCommand VisitWmw([NotNull] RedFoxAssemblyParser.WmwContext context) { return new InstructionCommand(InstructionType.WMW, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitRVBInstruction([NotNull] RedFoxAssemblyParser.RVBInstructionContext context) { return VisitRvb(context.rvb()); }
-        public override InstructionCommand VisitRvb([NotNull] RedFoxAssemblyParser.RvbContext context) { return new InstructionCommand(InstructionType.RVB, null, null); }
+        public override InstructionCommand VisitRvb([NotNull] RedFoxAssemblyParser.RvbContext context) { return new InstructionCommand(InstructionType.RVB, VisitByte(context.arg1b), null); }
 
         public override InstructionCommand VisitRVWInstruction([NotNull] RedFoxAssemblyParser.RVWInstructionContext context) { return VisitRvw(context.rvw()); }
-        public override InstructionCommand VisitRvw([NotNull] RedFoxAssemblyParser.RvwContext context) { return new InstructionCommand(InstructionType.RVW, null, null); }
+        public override InstructionCommand VisitRvw([NotNull] RedFoxAssemblyParser.RvwContext context) { return new InstructionCommand(InstructionType.RVW, VisitWord(context.arg1w), null); }
 
         public override InstructionCommand VisitSINInstruction([NotNull] RedFoxAssemblyParser.SINInstructionContext context) { return VisitSin(context.sin()); }
-        public override InstructionCommand VisitSin([NotNull] RedFoxAssemblyParser.SinContext context) { return new InstructionCommand(InstructionType.SIN, null, null); }
+        public override InstructionCommand VisitSin([NotNull] RedFoxAssemblyParser.SinContext context) { return new InstructionCommand(InstructionType.SIN, VisitWord(context.arg1w), VisitByte(context.arg2b)); }
 
         public override InstructionCommand VisitINTInstruction([NotNull] RedFoxAssemblyParser.INTInstructionContext context) { return VisitInt(context.@int()); }
-        public override InstructionCommand VisitInt([NotNull] RedFoxAssemblyParser.IntContext context) { return new InstructionCommand(InstructionType.INT, null, null); }
+        public override InstructionCommand VisitInt([NotNull] RedFoxAssemblyParser.IntContext context) { return new InstructionCommand(InstructionType.INT, VisitByte(context.arg1b), null); }
 
         public override InstructionCommand VisitSFGInstruction([NotNull] RedFoxAssemblyParser.SFGInstructionContext context) { return VisitSfg(context.sfg()); }
-        public override InstructionCommand VisitSfg([NotNull] RedFoxAssemblyParser.SfgContext context) { return new InstructionCommand(InstructionType.SFG, null, null); }
+        public override InstructionCommand VisitSfg([NotNull] RedFoxAssemblyParser.SfgContext context) { return new InstructionCommand(InstructionType.SFG, VisitByte(context.arg1b), VisitByte(context.arg2b)); }
 
         public override InstructionCommand VisitANDInstruction([NotNull] RedFoxAssemblyParser.ANDInstructionContext context) { return VisitAnd(context.and()); }
         public override InstructionCommand VisitAnd([NotNull] RedFoxAssemblyParser.AndContext context) { return new InstructionCommand(InstructionType.AND, null, null); }

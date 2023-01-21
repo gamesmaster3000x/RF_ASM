@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RedFoxAssembly.CSharp.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,11 @@ namespace RedFoxAssembly.CSharp.Statements
         public WidthConfiguration(int width)
         {
             _width = width;
+        }
+
+        void IConfiguration.Resolve(RFASMCompiler compiler)
+        {
+            compiler.meta!.DataWidth = _width;
         }
     }
 }

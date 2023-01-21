@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RedFoxAssembly.CSharp.Statements
 {
-    internal interface IConfiguration
+    internal interface IData
     {
-        internal void Resolve(RFASMCompiler compiler);
+        public byte[] GetBytes(RFASMCompiler compiler);
     }
 }

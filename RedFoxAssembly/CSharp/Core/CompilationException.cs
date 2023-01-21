@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedFoxAssembly.CSharp.Compiler
+namespace RedFoxAssembly.CSharp.Core
 {
     internal class CompilationException : Exception
     {

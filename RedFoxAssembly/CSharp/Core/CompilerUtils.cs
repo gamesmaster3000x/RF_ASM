@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace RedFoxAssembly.CSharp.Compiler
+namespace RedFoxAssembly.CSharp.Core
 {
     /// <summary>
     /// Static utility methods for RF_ASM

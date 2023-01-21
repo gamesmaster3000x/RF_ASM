@@ -79,7 +79,7 @@ bfg: op=BFG arg1w=word arg2b=byte;
 //
 //
 //
-bsr: op=BSR w1=word;
+bsr: op=BSR arg1w=word;
 rtn: op=RTN;
 rrb: op=RRB arg1b=byte Comma arg2b=byte;
 rrw: op=RRW arg1b=byte;
@@ -99,16 +99,19 @@ lor: op=LOR;
 xor: op=XOR;
 
 // Data
+
 word
 	: Quote (data+=bytedata)+ Quote
+	| val=Identifier
 	;
 
 byte
 	: Quote data=bytedata Quote
+	| val=Identifier
 	;
 
 bytedata
-	: value=((ByteLetter | Number) (ByteLetter | Number))
+	: (ByteLetter | Number) (ByteLetter | Number)
 	;
 
 
@@ -159,8 +162,13 @@ Number: Digit+;
 ByteLetter: [a-fA-F];
 
 Identifier
-    : (Alphabetic) 
-    | (Alphabetic) (Alphabetic | Number | Underscore)* (Alphabetic | Number)
+    : Underscore (Alphabetic | Number | Underscore)+ Underscore
+    ;
+LineComment 
+    : '//' ~('\r' | '\n')*
+    ;
+SkipTokens
+    : (WhiteSpace | Newline | LineComment) -> skip
     ;
 fragment Alphabetic
     : [a-zA-Z]
