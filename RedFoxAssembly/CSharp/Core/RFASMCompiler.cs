@@ -85,8 +85,8 @@ namespace RedFoxAssembly.CSharp.Core
                 CommonTokenStream cts = new CommonTokenStream(lexer);
                 RedFoxAssemblyParser parser = new RedFoxAssemblyParser(cts);
 
-                //lexer.AddErrorListener(new LexerErrorListener(sourceName));
-                //parser.ErrorHandler = new ParserErrorStrategy(sourceName);
+                lexer.AddErrorListener(new LexerErrorListener(meta.InputPath));
+                parser.ErrorHandler = new ParserErrorStrategy(meta.InputPath);
 
                 RedFoxAssemblyParser.ProgramContext cuCtx = parser.program();
                 RFASMProgramVisitor visitor = new RFASMProgramVisitor();
