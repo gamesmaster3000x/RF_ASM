@@ -39,11 +39,19 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// Visit a parse tree produced by the <c>WidthConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context);
+	Result VisitWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ValueConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.width"/>.
 	/// </summary>
@@ -57,11 +65,19 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.command"/>.
+	/// Visit a parse tree produced by the <c>LabelCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCommand([NotNull] RedFoxAssemblyParser.CommandContext context);
+	Result VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>InstructionCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// </summary>

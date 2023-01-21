@@ -7,8 +7,8 @@ program
 // Configuration
 
 configuration
-	: width
-	| value
+	: width #WidthConfiguration
+	| value #ValueConfiguration
 	;
 
 width
@@ -22,8 +22,8 @@ value
 // Instructions
 
 command
-	: label
-	| instruction
+	: label #LabelCommand
+	| instruction #InstructionCommand
 	;
 
 label
@@ -100,15 +100,15 @@ xor: op=XOR;
 
 // Data
 word
-	: Quote bytedata+ Quote
+	: Quote (data+=bytedata)+ Quote
 	;
 
 byte
-	: Quote bytedata Quote
+	: Quote data=bytedata Quote
 	;
 
 bytedata
-	: (ByteLetter | Number) (ByteLetter | Number)
+	: value=((ByteLetter | Number) (ByteLetter | Number))
 	;
 
 

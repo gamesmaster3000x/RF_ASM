@@ -46,7 +46,8 @@ public partial class RedFoxAssemblyBaseVisitor<Result> : AbstractParseTreeVisito
 	/// <return>The visitor result.</return>
 	public virtual Result VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// Visit a parse tree produced by the <c>WidthConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -54,7 +55,18 @@ public partial class RedFoxAssemblyBaseVisitor<Result> : AbstractParseTreeVisito
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context) { return VisitChildren(context); }
+	public virtual Result VisitWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ValueConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.width"/>.
 	/// <para>
@@ -76,7 +88,8 @@ public partial class RedFoxAssemblyBaseVisitor<Result> : AbstractParseTreeVisito
 	/// <return>The visitor result.</return>
 	public virtual Result VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.command"/>.
+	/// Visit a parse tree produced by the <c>LabelCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -84,7 +97,18 @@ public partial class RedFoxAssemblyBaseVisitor<Result> : AbstractParseTreeVisito
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCommand([NotNull] RedFoxAssemblyParser.CommandContext context) { return VisitChildren(context); }
+	public virtual Result VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>InstructionCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// <para>

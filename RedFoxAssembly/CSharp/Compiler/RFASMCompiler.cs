@@ -4,6 +4,10 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using RedFoxAssembly.CSharp.Compiler.Tokens;
 using RedFoxAssembly.CSharp.TokenParser;
+using Antlr4.Runtime;
+using RedFoxAssembly.AntlrBuild;
+using System.IO;
+using RedFoxAssembly.CSharp.Statements;
 
 namespace RedFoxAssembly.CSharp.Compiler
 {
@@ -65,11 +69,27 @@ namespace RedFoxAssembly.CSharp.Compiler
             List<string> rawLines = rawLinesArr.ToList();
             Console.WriteLine("Found " + rawLinesArr.Length + " lines");
 
-            ITokenGenerator generator = new RFASMTokenGenerator(meta);
-            TokenParser.TokenParser parser = new TokenParser.TokenParser(RFASMTokenGenerator.GOOD_TOKEN, RFASMTokenGenerator.IGNORE_TOKEN, RFASMTokenGenerator.BAD_TOKEN, meta, generator);
-            List<IToken> tokens = parser.Parse(rawLines);
-            string tokenHash = ComputeTokenListHash(tokens);
-            Console.WriteLine("Hash of token raw values: " + tokenHash);
+            //ITokenGenerator generator = new RFASMTokenGenerator(meta);
+            //TokenParser.TokenParser parser = new TokenParser.TokenParser(RFASMTokenGenerator.GOOD_TOKEN, RFASMTokenGenerator.IGNORE_TOKEN, RFASMTokenGenerator.BAD_TOKEN, meta, generator);
+            //List<IToken> tokens = parser.Parse(rawLines);
+            //string tokenHash = ComputeTokenListHash(tokens);
+            //Console.WriteLine("Hash of token raw values: " + tokenHash);
+
+            // Get Antlr context
+            RFASMProgram program;
+            {
+                AntlrInputStream a4is = new AntlrInputStream(string.Join(Environment.NewLine, rawLinesArr));
+                RedFoxAssemblyLexer lexer = new RedFoxAssemblyLexer(a4is);
+                CommonTokenStream cts = new CommonTokenStream(lexer);
+                RedFoxAssemblyParser parser = new RedFoxAssemblyParser(cts);
+
+                //lexer.AddErrorListener(new LexerErrorListener(sourceName));
+                //parser.ErrorHandler = new ParserErrorStrategy(sourceName);
+
+                RedFoxAssemblyParser.ProgramContext cuCtx = parser.program();
+                RFASMProgramVisitor visitor = new RFASMProgramVisitor();
+                program = visitor.VisitProgram(cuCtx);
+            }
 
             // <==> Compiling
             Console.WriteLine("");

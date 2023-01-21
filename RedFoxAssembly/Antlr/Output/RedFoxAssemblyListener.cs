@@ -42,15 +42,29 @@ public interface IRedFoxAssemblyListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// Enter a parse tree produced by the <c>WidthConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context);
+	void EnterWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// Exit a parse tree produced by the <c>WidthConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context);
+	void ExitWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ValueConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ValueConfiguration</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.width"/>.
 	/// </summary>
@@ -72,15 +86,29 @@ public interface IRedFoxAssemblyListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitValue([NotNull] RedFoxAssemblyParser.ValueContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.command"/>.
+	/// Enter a parse tree produced by the <c>LabelCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCommand([NotNull] RedFoxAssemblyParser.CommandContext context);
+	void EnterLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.command"/>.
+	/// Exit a parse tree produced by the <c>LabelCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCommand([NotNull] RedFoxAssemblyParser.CommandContext context);
+	void ExitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>InstructionCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>InstructionCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// </summary>

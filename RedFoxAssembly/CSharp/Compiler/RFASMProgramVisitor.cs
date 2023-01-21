@@ -12,37 +12,77 @@ namespace RedFoxAssembly.CSharp.Compiler
 {
     internal class RFASMProgramVisitor : RedFoxAssemblyBaseVisitor<object>
     {
-        public override object VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context)
+        public override RFASMProgram VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context)
         {
-            return base.VisitProgram(context);
+            RFASMProgram program = new RFASMProgram();
+
+            foreach (var c in context._configurations)
+            {
+                program.AddConfiguration(ParseConfiguration(c));
+            }
+
+            foreach (var s in context._commands)
+            {
+                program.AddCommand(ParseCommand(s));
+            }
+
+            return program;
         }
 
-        public override object VisitConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context)
+        public IConfiguration ParseConfiguration([NotNull] RedFoxAssemblyParser.ConfigurationContext context)
         {
-            return base.VisitConfiguration(context);
+            if (context is RedFoxAssemblyParser.WidthConfigurationContext) return VisitWidthConfiguration((RedFoxAssemblyParser.WidthConfigurationContext)context);
+            if (context is RedFoxAssemblyParser.ValueConfigurationContext) return VisitValueConfiguration((RedFoxAssemblyParser.ValueConfigurationContext)context);
+            return null;
         }
 
-        public override object VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context)
+        public override WidthConfiguration VisitWidthConfiguration([NotNull] RedFoxAssemblyParser.WidthConfigurationContext context){return VisitWidth(context.width());}
+        public override WidthConfiguration VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context){return new WidthConfiguration(int.Parse(context.val.Text));}
+
+        public override ValueConfiguration VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context){return VisitValue(context.value());}
+        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context){return new ValueConfiguration(context.id.Text, VisitWord(context.val));}
+
+        public override Word VisitWord([NotNull] RedFoxAssemblyParser.WordContext context)
         {
-            return base.VisitWidth(context);
+            if (String.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
+
+            List<byte> data = new List<byte>();
+            foreach (var b in context._data)
+            {
+                string d = b.GetText();
+                byte[] bs = Convert.FromHexString(d);
+                data.AddRange(bs);
+            }
+
+            if (data.Count < 1) throw new ParsingException("Word " + context.GetText() + " must contain at least 1 hex byte");
+
+            return new Word(data.ToArray());
         }
 
-        public override object VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context)
+        public override RByte VisitByte([NotNull] RedFoxAssemblyParser.ByteContext context)
         {
-            return base.VisitValue(context);
+            byte[] data = Convert.FromHexString(context.GetText());
+            return new RByte(data[0]);
         }
 
-        public override object VisitCommand([NotNull] RedFoxAssemblyParser.CommandContext context)
+        public override object VisitBytedata([NotNull] RedFoxAssemblyParser.BytedataContext context)
         {
-            return base.VisitCommand(context);
+            return base.VisitBytedata(context);
         }
 
-        public override object VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context)
+        public ICommand ParseCommand([NotNull] RedFoxAssemblyParser.CommandContext context)
         {
-            return base.VisitLabel(context);
+            if (context == null) throw new ParsingException("RedFoxAssemblyParser.CommandContext cannot be null");
+            if (context is RedFoxAssemblyParser.LabelCommandContext) return VisitLabelCommand((RedFoxAssemblyParser.LabelCommandContext)context);
+            if (context is RedFoxAssemblyParser.InstructionCommandContext) return VisitInstructionCommand((RedFoxAssemblyParser.InstructionCommandContext)context);
+            throw new ParsingException("Cannot parse RedFoxAssemblyParser.CommandContext of type " + context.GetType());
         }
 
-        public object ParseInstruction(RedFoxAssemblyParser.InstructionContext context)
+        public override LabelCommand VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context){return VisitLabel(context.label());}
+        public override LabelCommand VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context){return new LabelCommand(context.id.Text);}
+
+        public override InstructionCommand VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context){return ParseInstruction(context.instruction());}
+        public InstructionCommand ParseInstruction(RedFoxAssemblyParser.InstructionContext context)
         {
             if (context == null) throw new ParsingException("Cannot parse null InstructionContext");
             if (context is RedFoxAssemblyParser.HLTInstructionContext) return VisitHLTInstruction((RedFoxAssemblyParser.HLTInstructionContext)context);
@@ -80,41 +120,38 @@ namespace RedFoxAssembly.CSharp.Compiler
             else throw new ParsingException("Unable to ParseInstruction of type " + context.GetType());
         }
 
-        public override Instruction VisitHLTInstruction([NotNull] RedFoxAssemblyParser.HLTInstructionContext context) { return VisitHlt(context.hlt()); }
-        public override Instruction VisitHlt([NotNull] RedFoxAssemblyParser.HltContext context) { return new Instruction(InstructionType.HLT, null, null); }
+        public override InstructionCommand VisitHLTInstruction([NotNull] RedFoxAssemblyParser.HLTInstructionContext context) { return VisitHlt(context.hlt()); }
+        public override InstructionCommand VisitHlt([NotNull] RedFoxAssemblyParser.HltContext context) { return new InstructionCommand(InstructionType.HLT, null, null); }
 
-        public override Instruction VisitNOPInstruction([NotNull] RedFoxAssemblyParser.NOPInstructionContext context) { return VisitNop(context.nop()); }
-        public override Instruction VisitNop([NotNull] RedFoxAssemblyParser.NopContext context) { return new Instruction(InstructionType.NOP, null, null); }
+        public override InstructionCommand VisitNOPInstruction([NotNull] RedFoxAssemblyParser.NOPInstructionContext context) { return VisitNop(context.nop()); }
+        public override InstructionCommand VisitNop([NotNull] RedFoxAssemblyParser.NopContext context) { return new InstructionCommand(InstructionType.NOP, null, null); }
 
-        public override Instruction VisitADDInstruction([NotNull] RedFoxAssemblyParser.ADDInstructionContext context) { return VisitAdd(context.add()); }
-        public override Instruction VisitAdd([NotNull] RedFoxAssemblyParser.AddContext context) { return new Instruction(InstructionType.ADD, null, null); }
+        public override InstructionCommand VisitADDInstruction([NotNull] RedFoxAssemblyParser.ADDInstructionContext context) { return VisitAdd(context.add()); }
+        public override InstructionCommand VisitAdd([NotNull] RedFoxAssemblyParser.AddContext context) { return new InstructionCommand(InstructionType.ADD, null, null); }
 
-        public override Instruction VisitSUBInstruction([NotNull] RedFoxAssemblyParser.SUBInstructionContext context) { return VisitSub(context.sub()); }
-        public override Instruction VisitSub([NotNull] RedFoxAssemblyParser.SubContext context) { return new Instruction(InstructionType.SUB, null, null); }
+        public override InstructionCommand VisitSUBInstruction([NotNull] RedFoxAssemblyParser.SUBInstructionContext context) { return VisitSub(context.sub()); }
+        public override InstructionCommand VisitSub([NotNull] RedFoxAssemblyParser.SubContext context) { return new InstructionCommand(InstructionType.SUB, null, null); }
 
-        public override Instruction VisitLSLInstruction([NotNull] RedFoxAssemblyParser.LSLInstructionContext context) { return VisitLsl(context.lsl()); }
-        public override Instruction VisitLsl([NotNull] RedFoxAssemblyParser.LslContext context) { return new Instruction(InstructionType.LSL, null, null); }
+        public override InstructionCommand VisitLSLInstruction([NotNull] RedFoxAssemblyParser.LSLInstructionContext context) { return VisitLsl(context.lsl()); }
+        public override InstructionCommand VisitLsl([NotNull] RedFoxAssemblyParser.LslContext context) { return new InstructionCommand(InstructionType.LSL, null, null); }
 
-        public override Instruction VisitLSRInstruction([NotNull] RedFoxAssemblyParser.LSRInstructionContext context) { return VisitLsr(context.lsr()); }
-        public override Instruction VisitLsr([NotNull] RedFoxAssemblyParser.LsrContext context) { return new Instruction(InstructionType.LSR, null, null); }
+        public override InstructionCommand VisitLSRInstruction([NotNull] RedFoxAssemblyParser.LSRInstructionContext context) { return VisitLsr(context.lsr()); }
+        public override InstructionCommand VisitLsr([NotNull] RedFoxAssemblyParser.LsrContext context) { return new InstructionCommand(InstructionType.LSR, null, null); }
 
-        public override Instruction VisitNEGInstruction([NotNull] RedFoxAssemblyParser.NEGInstructionContext context) { return VisitNeg(context.neg()); }
-        public override Instruction VisitNeg([NotNull] RedFoxAssemblyParser.NegContext context) { return new Instruction(InstructionType.NEG, null, null); }
+        public override InstructionCommand VisitNEGInstruction([NotNull] RedFoxAssemblyParser.NEGInstructionContext context) { return VisitNeg(context.neg()); }
+        public override InstructionCommand VisitNeg([NotNull] RedFoxAssemblyParser.NegContext context) { return new InstructionCommand(InstructionType.NEG, null, null); }
 
-        public override Instruction VisitNOTInstruction([NotNull] RedFoxAssemblyParser.NOTInstructionContext context) { return VisitNot(context.not()); }
-        public override Instruction VisitNot([NotNull] RedFoxAssemblyParser.NotContext context) { return new Instruction(InstructionType.NOT, null, null); }
+        public override InstructionCommand VisitNOTInstruction([NotNull] RedFoxAssemblyParser.NOTInstructionContext context) { return VisitNot(context.not()); }
+        public override InstructionCommand VisitNot([NotNull] RedFoxAssemblyParser.NotContext context) { return new InstructionCommand(InstructionType.NOT, null, null); }
 
-        public override Instruction VisitCMPInstruction([NotNull] RedFoxAssemblyParser.CMPInstructionContext context) { return VisitCmp(context.cmp()); }
-        public override Instruction VisitCmp([NotNull] RedFoxAssemblyParser.CmpContext context) { return new Instruction(InstructionType.CMP, null, null); }
+        public override InstructionCommand VisitCMPInstruction([NotNull] RedFoxAssemblyParser.CMPInstructionContext context) { return VisitCmp(context.cmp()); }
+        public override InstructionCommand VisitCmp([NotNull] RedFoxAssemblyParser.CmpContext context) { return new InstructionCommand(InstructionType.CMP, null, null); }
 
-        public override Instruction VisitJMPInstruction([NotNull] RedFoxAssemblyParser.JMPInstructionContext context) { return VisitJmp(context.jmp()); }
-        public override Instruction VisitJmp([NotNull] RedFoxAssemblyParser.JmpContext context) { return new Instruction(InstructionType.JMP, null, null); }
+        public override InstructionCommand VisitJMPInstruction([NotNull] RedFoxAssemblyParser.JMPInstructionContext context) { return VisitJmp(context.jmp()); }
+        public override InstructionCommand VisitJmp([NotNull] RedFoxAssemblyParser.JmpContext context) { return new InstructionCommand(InstructionType.JMP, null, null); }
 
-        public override Instruction VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
-        public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
-
-        //public override Instruction VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
-        //public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
+        public override InstructionCommand VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
+        public override InstructionCommand VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new InstructionCommand(InstructionType.BFG, null, null); }
 
         //public override Instruction VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
         //public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
@@ -122,58 +159,61 @@ namespace RedFoxAssembly.CSharp.Compiler
         //public override Instruction VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
         //public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
 
-        public override Instruction VisitBSRInstruction([NotNull] RedFoxAssemblyParser.BSRInstructionContext context) { return VisitBsr(context.bsr()); }
-        public override Instruction VisitBsr([NotNull] RedFoxAssemblyParser.BsrContext context) { return new Instruction(InstructionType.BSR, null, null); }
+        //public override Instruction VisitBFGInstruction([NotNull] RedFoxAssemblyParser.BFGInstructionContext context) { return VisitBfg(context.bfg()); }
+        //public override Instruction VisitBfg([NotNull] RedFoxAssemblyParser.BfgContext context) { return new Instruction(InstructionType.BFG, null, null); }
 
-        public override Instruction VisitRTNInstruction([NotNull] RedFoxAssemblyParser.RTNInstructionContext context) { return VisitRtn(context.rtn()); }
-        public override Instruction VisitRtn([NotNull] RedFoxAssemblyParser.RtnContext context) { return new Instruction(InstructionType.RTN, null, null); }
+        public override InstructionCommand VisitBSRInstruction([NotNull] RedFoxAssemblyParser.BSRInstructionContext context) { return VisitBsr(context.bsr()); }
+        public override InstructionCommand VisitBsr([NotNull] RedFoxAssemblyParser.BsrContext context) { return new InstructionCommand(InstructionType.BSR, null, null); }
 
-        public override Instruction VisitRRBInstruction([NotNull] RedFoxAssemblyParser.RRBInstructionContext context) { return VisitRrb(context.rrb()); }
-        public override Instruction VisitRrb([NotNull] RedFoxAssemblyParser.RrbContext context) { return new Instruction(InstructionType.RRB, null, null); }
+        public override InstructionCommand VisitRTNInstruction([NotNull] RedFoxAssemblyParser.RTNInstructionContext context) { return VisitRtn(context.rtn()); }
+        public override InstructionCommand VisitRtn([NotNull] RedFoxAssemblyParser.RtnContext context) { return new InstructionCommand(InstructionType.RTN, null, null); }
 
-        public override Instruction VisitRRWInstruction([NotNull] RedFoxAssemblyParser.RRWInstructionContext context) { return VisitRrw(context.rrw()); }
-        public override Instruction VisitRrw([NotNull] RedFoxAssemblyParser.RrwContext context) { return new Instruction(InstructionType.RRW, null, null); }
+        public override InstructionCommand VisitRRBInstruction([NotNull] RedFoxAssemblyParser.RRBInstructionContext context) { return VisitRrb(context.rrb()); }
+        public override InstructionCommand VisitRrb([NotNull] RedFoxAssemblyParser.RrbContext context) { return new InstructionCommand(InstructionType.RRB, null, null); }
 
-        public override Instruction VisitRMBInstruction([NotNull] RedFoxAssemblyParser.RMBInstructionContext context) { return VisitRmb(context.rmb()); }
-        public override Instruction VisitRmb([NotNull] RedFoxAssemblyParser.RmbContext context) { return new Instruction(InstructionType.RMB, null, null); }
+        public override InstructionCommand VisitRRWInstruction([NotNull] RedFoxAssemblyParser.RRWInstructionContext context) { return VisitRrw(context.rrw()); }
+        public override InstructionCommand VisitRrw([NotNull] RedFoxAssemblyParser.RrwContext context) { return new InstructionCommand(InstructionType.RRW, null, null); }
 
-        public override Instruction VisitRMWInstruction([NotNull] RedFoxAssemblyParser.RMWInstructionContext context) { return VisitRmw(context.rmw()); }
-        public override Instruction VisitRmw([NotNull] RedFoxAssemblyParser.RmwContext context) { return new Instruction(InstructionType.RMW, null, null); }
+        public override InstructionCommand VisitRMBInstruction([NotNull] RedFoxAssemblyParser.RMBInstructionContext context) { return VisitRmb(context.rmb()); }
+        public override InstructionCommand VisitRmb([NotNull] RedFoxAssemblyParser.RmbContext context) { return new InstructionCommand(InstructionType.RMB, null, null); }
 
-        public override Instruction VisitWRBInstruction([NotNull] RedFoxAssemblyParser.WRBInstructionContext context) { return VisitWrb(context.wrb()); }
-        public override Instruction VisitWrb([NotNull] RedFoxAssemblyParser.WrbContext context) { return new Instruction(InstructionType.WRB, null, null); }
+        public override InstructionCommand VisitRMWInstruction([NotNull] RedFoxAssemblyParser.RMWInstructionContext context) { return VisitRmw(context.rmw()); }
+        public override InstructionCommand VisitRmw([NotNull] RedFoxAssemblyParser.RmwContext context) { return new InstructionCommand(InstructionType.RMW, null, null); }
 
-        public override Instruction VisitWRWInstruction([NotNull] RedFoxAssemblyParser.WRWInstructionContext context) { return VisitWrw(context.wrw()); }
-        public override Instruction VisitWrw([NotNull] RedFoxAssemblyParser.WrwContext context) { return new Instruction(InstructionType.WRW, null, null); }
+        public override InstructionCommand VisitWRBInstruction([NotNull] RedFoxAssemblyParser.WRBInstructionContext context) { return VisitWrb(context.wrb()); }
+        public override InstructionCommand VisitWrb([NotNull] RedFoxAssemblyParser.WrbContext context) { return new InstructionCommand(InstructionType.WRB, null, null); }
 
-        public override Instruction VisitWMBInstruction([NotNull] RedFoxAssemblyParser.WMBInstructionContext context) { return VisitWmb(context.wmb()); }
-        public override Instruction VisitWmb([NotNull] RedFoxAssemblyParser.WmbContext context) { return new Instruction(InstructionType.WMB, null, null); }
+        public override InstructionCommand VisitWRWInstruction([NotNull] RedFoxAssemblyParser.WRWInstructionContext context) { return VisitWrw(context.wrw()); }
+        public override InstructionCommand VisitWrw([NotNull] RedFoxAssemblyParser.WrwContext context) { return new InstructionCommand(InstructionType.WRW, null, null); }
 
-        public override Instruction VisitWMWInstruction([NotNull] RedFoxAssemblyParser.WMWInstructionContext context) { return VisitWmw(context.wmw()); }
-        public override Instruction VisitWmw([NotNull] RedFoxAssemblyParser.WmwContext context) { return new Instruction(InstructionType.WMW, null, null); }
+        public override InstructionCommand VisitWMBInstruction([NotNull] RedFoxAssemblyParser.WMBInstructionContext context) { return VisitWmb(context.wmb()); }
+        public override InstructionCommand VisitWmb([NotNull] RedFoxAssemblyParser.WmbContext context) { return new InstructionCommand(InstructionType.WMB, null, null); }
 
-        public override Instruction VisitRVBInstruction([NotNull] RedFoxAssemblyParser.RVBInstructionContext context) { return VisitRvb(context.rvb()); }
-        public override Instruction VisitRvb([NotNull] RedFoxAssemblyParser.RvbContext context) { return new Instruction(InstructionType.RVB, null, null); }
+        public override InstructionCommand VisitWMWInstruction([NotNull] RedFoxAssemblyParser.WMWInstructionContext context) { return VisitWmw(context.wmw()); }
+        public override InstructionCommand VisitWmw([NotNull] RedFoxAssemblyParser.WmwContext context) { return new InstructionCommand(InstructionType.WMW, null, null); }
 
-        public override Instruction VisitRVWInstruction([NotNull] RedFoxAssemblyParser.RVWInstructionContext context) { return VisitRvw(context.rvw()); }
-        public override Instruction VisitRvw([NotNull] RedFoxAssemblyParser.RvwContext context) { return new Instruction(InstructionType.RVW, null, null); }
+        public override InstructionCommand VisitRVBInstruction([NotNull] RedFoxAssemblyParser.RVBInstructionContext context) { return VisitRvb(context.rvb()); }
+        public override InstructionCommand VisitRvb([NotNull] RedFoxAssemblyParser.RvbContext context) { return new InstructionCommand(InstructionType.RVB, null, null); }
 
-        public override Instruction VisitSINInstruction([NotNull] RedFoxAssemblyParser.SINInstructionContext context) { return VisitSin(context.sin()); }
-        public override Instruction VisitSin([NotNull] RedFoxAssemblyParser.SinContext context) { return new Instruction(InstructionType.SIN, null, null); }
+        public override InstructionCommand VisitRVWInstruction([NotNull] RedFoxAssemblyParser.RVWInstructionContext context) { return VisitRvw(context.rvw()); }
+        public override InstructionCommand VisitRvw([NotNull] RedFoxAssemblyParser.RvwContext context) { return new InstructionCommand(InstructionType.RVW, null, null); }
 
-        public override Instruction VisitINTInstruction([NotNull] RedFoxAssemblyParser.INTInstructionContext context) { return VisitInt(context.@int()); }
-        public override Instruction VisitInt([NotNull] RedFoxAssemblyParser.IntContext context) { return new Instruction(InstructionType.INT, null, null); }
+        public override InstructionCommand VisitSINInstruction([NotNull] RedFoxAssemblyParser.SINInstructionContext context) { return VisitSin(context.sin()); }
+        public override InstructionCommand VisitSin([NotNull] RedFoxAssemblyParser.SinContext context) { return new InstructionCommand(InstructionType.SIN, null, null); }
 
-        public override Instruction VisitSFGInstruction([NotNull] RedFoxAssemblyParser.SFGInstructionContext context) { return VisitSfg(context.sfg()); }
-        public override Instruction VisitSfg([NotNull] RedFoxAssemblyParser.SfgContext context) { return new Instruction(InstructionType.SFG, null, null); }
+        public override InstructionCommand VisitINTInstruction([NotNull] RedFoxAssemblyParser.INTInstructionContext context) { return VisitInt(context.@int()); }
+        public override InstructionCommand VisitInt([NotNull] RedFoxAssemblyParser.IntContext context) { return new InstructionCommand(InstructionType.INT, null, null); }
 
-        public override Instruction VisitANDInstruction([NotNull] RedFoxAssemblyParser.ANDInstructionContext context) { return VisitAnd(context.and()); }
-        public override Instruction VisitAnd([NotNull] RedFoxAssemblyParser.AndContext context) { return new Instruction(InstructionType.AND, null, null); }
+        public override InstructionCommand VisitSFGInstruction([NotNull] RedFoxAssemblyParser.SFGInstructionContext context) { return VisitSfg(context.sfg()); }
+        public override InstructionCommand VisitSfg([NotNull] RedFoxAssemblyParser.SfgContext context) { return new InstructionCommand(InstructionType.SFG, null, null); }
 
-        public override Instruction VisitLORInstruction([NotNull] RedFoxAssemblyParser.LORInstructionContext context) { return VisitLor(context.lor()); }
-        public override Instruction VisitLor([NotNull] RedFoxAssemblyParser.LorContext context) { return new Instruction(InstructionType.LOR, null, null); }
+        public override InstructionCommand VisitANDInstruction([NotNull] RedFoxAssemblyParser.ANDInstructionContext context) { return VisitAnd(context.and()); }
+        public override InstructionCommand VisitAnd([NotNull] RedFoxAssemblyParser.AndContext context) { return new InstructionCommand(InstructionType.AND, null, null); }
 
-        public override Instruction VisitXORInstruction([NotNull] RedFoxAssemblyParser.XORInstructionContext context) { return VisitXor(context.xor()); }
-        public override Instruction VisitXor([NotNull] RedFoxAssemblyParser.XorContext context) { return new Instruction(InstructionType.XOR, null, null); }
+        public override InstructionCommand VisitLORInstruction([NotNull] RedFoxAssemblyParser.LORInstructionContext context) { return VisitLor(context.lor()); }
+        public override InstructionCommand VisitLor([NotNull] RedFoxAssemblyParser.LorContext context) { return new InstructionCommand(InstructionType.LOR, null, null); }
+
+        public override InstructionCommand VisitXORInstruction([NotNull] RedFoxAssemblyParser.XORInstructionContext context) { return VisitXor(context.xor()); }
+        public override InstructionCommand VisitXor([NotNull] RedFoxAssemblyParser.XorContext context) { return new InstructionCommand(InstructionType.XOR, null, null); }
     }
 }

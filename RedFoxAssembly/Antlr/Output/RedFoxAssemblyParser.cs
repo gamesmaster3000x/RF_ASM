@@ -202,31 +202,58 @@ public partial class RedFoxAssemblyParser : Parser {
 	}
 
 	public partial class ConfigurationContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public WidthContext width() {
-			return GetRuleContext<WidthContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ValueContext value() {
-			return GetRuleContext<ValueContext>(0);
-		}
 		public ConfigurationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_configuration; } }
+	 
+		public ConfigurationContext() { }
+		public virtual void CopyFrom(ConfigurationContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class WidthConfigurationContext : ConfigurationContext {
+		[System.Diagnostics.DebuggerNonUserCode] public WidthContext width() {
+			return GetRuleContext<WidthContext>(0);
+		}
+		public WidthConfigurationContext(ConfigurationContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
-			if (typedListener != null) typedListener.EnterConfiguration(this);
+			if (typedListener != null) typedListener.EnterWidthConfiguration(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
-			if (typedListener != null) typedListener.ExitConfiguration(this);
+			if (typedListener != null) typedListener.ExitWidthConfiguration(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IRedFoxAssemblyVisitor<TResult> typedVisitor = visitor as IRedFoxAssemblyVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitConfiguration(this);
+			if (typedVisitor != null) return typedVisitor.VisitWidthConfiguration(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueConfigurationContext : ConfigurationContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ValueContext value() {
+			return GetRuleContext<ValueContext>(0);
+		}
+		public ValueConfigurationContext(ConfigurationContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.EnterValueConfiguration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.ExitValueConfiguration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRedFoxAssemblyVisitor<TResult> typedVisitor = visitor as IRedFoxAssemblyVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueConfiguration(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -240,6 +267,7 @@ public partial class RedFoxAssemblyParser : Parser {
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case Width:
+				_localctx = new WidthConfigurationContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 90;
@@ -247,6 +275,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				}
 				break;
 			case Value:
+				_localctx = new ValueConfigurationContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 91;
@@ -380,31 +409,58 @@ public partial class RedFoxAssemblyParser : Parser {
 	}
 
 	public partial class CommandContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public LabelContext label() {
-			return GetRuleContext<LabelContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public InstructionContext instruction() {
-			return GetRuleContext<InstructionContext>(0);
-		}
 		public CommandContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_command; } }
+	 
+		public CommandContext() { }
+		public virtual void CopyFrom(CommandContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class InstructionCommandContext : CommandContext {
+		[System.Diagnostics.DebuggerNonUserCode] public InstructionContext instruction() {
+			return GetRuleContext<InstructionContext>(0);
+		}
+		public InstructionCommandContext(CommandContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
-			if (typedListener != null) typedListener.EnterCommand(this);
+			if (typedListener != null) typedListener.EnterInstructionCommand(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
-			if (typedListener != null) typedListener.ExitCommand(this);
+			if (typedListener != null) typedListener.ExitInstructionCommand(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IRedFoxAssemblyVisitor<TResult> typedVisitor = visitor as IRedFoxAssemblyVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitCommand(this);
+			if (typedVisitor != null) return typedVisitor.VisitInstructionCommand(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class LabelCommandContext : CommandContext {
+		[System.Diagnostics.DebuggerNonUserCode] public LabelContext label() {
+			return GetRuleContext<LabelContext>(0);
+		}
+		public LabelCommandContext(CommandContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.EnterLabelCommand(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.ExitLabelCommand(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRedFoxAssemblyVisitor<TResult> typedVisitor = visitor as IRedFoxAssemblyVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLabelCommand(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -418,6 +474,7 @@ public partial class RedFoxAssemblyParser : Parser {
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case Label:
+				_localctx = new LabelCommandContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 102;
@@ -453,6 +510,7 @@ public partial class RedFoxAssemblyParser : Parser {
 			case AND:
 			case LOR:
 			case XOR:
+				_localctx = new InstructionCommandContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 103;
@@ -2962,6 +3020,8 @@ public partial class RedFoxAssemblyParser : Parser {
 	}
 
 	public partial class WordContext : ParserRuleContext {
+		public BytedataContext _bytedata;
+		public IList<BytedataContext> _data = new List<BytedataContext>();
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] Quote() { return GetTokens(RedFoxAssemblyParser.Quote); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Quote(int i) {
 			return GetToken(RedFoxAssemblyParser.Quote, i);
@@ -3012,7 +3072,8 @@ public partial class RedFoxAssemblyParser : Parser {
 				{
 				{
 				State = 224;
-				bytedata();
+				_localctx._bytedata = bytedata();
+				_localctx._data.Add(_localctx._bytedata);
 				}
 				}
 				State = 227;
@@ -3035,6 +3096,7 @@ public partial class RedFoxAssemblyParser : Parser {
 	}
 
 	public partial class ByteContext : ParserRuleContext {
+		public BytedataContext data;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] Quote() { return GetTokens(RedFoxAssemblyParser.Quote); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Quote(int i) {
 			return GetToken(RedFoxAssemblyParser.Quote, i);
@@ -3075,7 +3137,7 @@ public partial class RedFoxAssemblyParser : Parser {
 			State = 231;
 			Match(Quote);
 			State = 232;
-			bytedata();
+			_localctx.data = bytedata();
 			State = 233;
 			Match(Quote);
 			}
