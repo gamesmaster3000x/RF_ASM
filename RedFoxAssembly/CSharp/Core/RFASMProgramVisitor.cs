@@ -41,6 +41,8 @@ namespace RedFoxAssembly.CSharp.Core
         {
             if (string.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
 
+            bool isTargettingRegister = context.isTargettingRegister != null;
+
             if (context._data != null)
             {
                 List<byte> data = new List<byte>();
@@ -51,12 +53,12 @@ namespace RedFoxAssembly.CSharp.Core
                     data.AddRange(bs);
                 }
                 if (data.Count < 1) throw new ParsingException("Word " + context.GetText() + " must contain at least 1 hex byte");
-                return new Word(data.ToArray());
+                return new Word(isTargettingRegister, data.ToArray());
             }
 
             if (!string.IsNullOrWhiteSpace(context.val.Text))
             {
-                return new Word(context.val.Text);
+                return new Word(isTargettingRegister, context.val.Text);
             }
 
             throw new ParsingException("Cannot create word with no bytedata or value-mapping");
@@ -66,23 +68,37 @@ namespace RedFoxAssembly.CSharp.Core
         {
             if (string.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
 
+            bool isTargettingRegister = context.isTargettingRegister != null;
+            bool isContentHex = context.isHex != null;
+
+            // If using hex/decimal
             if (context.data != null)
             {
-                byte[] data = Convert.FromHexString(context.data.GetText());
-                return new RByte(data[0]);
+                if (isContentHex)
+                {
+                    byte[] data = Convert.FromHexString(context.data.GetText());
+                    return new RByte(isTargettingRegister, data[0]);
+                }
+                else
+                {
+                    uint i = Convert.ToUInt32(context.data.GetText());
+                    byte[] data = BitConverter.GetBytes(i);
+                    return new RByte(isTargettingRegister, data[0]);
+                }
             }
 
+            // If using a constant value
             if (!string.IsNullOrWhiteSpace(context.val.Text))
             {
-                return new RByte(context.val.Text);
+                return new RByte(isTargettingRegister, context.val.Text);
             }
 
             throw new ParsingException("Cannot create byte with no bytedata or value-mapping");
         }
 
-        public override object VisitBytedata([NotNull] RedFoxAssemblyParser.BytedataContext context)
+        public override string VisitBytedata([NotNull] RedFoxAssemblyParser.BytedataContext context)
         {
-            return base.VisitBytedata(context);
+            return context.GetText();
         }
 
         public ICommand ParseCommand([NotNull] RedFoxAssemblyParser.CommandContext context)

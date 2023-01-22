@@ -101,12 +101,12 @@ xor: op=XOR;
 // Data
 
 word
-	: Quote (data+=bytedata)+ Quote
+	: Quote isTargettingRegister=IsTargettingRegister? isHex=HexPrefix? (data+=bytedata)+ Quote
 	| val=Identifier
 	;
 
 byte
-	: Quote data=bytedata Quote
+	: Quote isTargettingRegister=IsTargettingRegister? isHex=HexPrefix? data=bytedata Quote
 	| val=Identifier
 	;
 
@@ -153,6 +153,9 @@ SFG: 'SFG';
 AND: 'AND';
 LOR: 'LOR';
 XOR: 'XOR';
+
+IsTargettingRegister: 'R';
+HexPrefix: '0x';
 
 Underscore: '_'; 
 Quote: '\'';

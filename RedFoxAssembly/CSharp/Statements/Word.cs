@@ -9,17 +9,22 @@ namespace RedFoxAssembly.CSharp.Statements
 {
     internal class Word : IData
     {
+        private bool _isTargettingRegister;
         private byte[]? _data;
         private string? _value;
 
-        public Word(byte[] data)
+        public Word(bool targetRegisterMode, byte[] data)
         {
+            _isTargettingRegister = targetRegisterMode;
+
             if (data == null | data.Length < 1) throw new ParsingException("Cannot assign fewer than 1 byte to a word");
             _data = data;
         }
 
-        public Word(string value)
+        public Word(bool isTargettingRegister, string value)
         {
+            _isTargettingRegister = isTargettingRegister;
+
             if (String.IsNullOrWhiteSpace(value)) throw new ParsingException("Cannot assign a null or whitespace value-mapping to a word");
             _value = value;
         }
@@ -38,6 +43,11 @@ namespace RedFoxAssembly.CSharp.Statements
                 else throw new CompilationException("Word cannot return a null byte array");
 
             throw new CompilationException("Unable to get bytes of word with null constant-value and null byte-value");
+        }
+
+        public bool IsTargettingRegister()
+        {
+            return _isTargettingRegister;
         }
     }
 }

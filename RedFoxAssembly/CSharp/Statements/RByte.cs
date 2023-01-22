@@ -9,16 +9,19 @@ namespace RedFoxAssembly.CSharp.Statements
 {
     internal class RByte : IData
     {
+        private bool _isTargettingRegister;
         private byte? _data;
         private string? _value;
 
-        public RByte(byte data)
+        public RByte(bool isTargettingRegister, byte data)
         {
+            _isTargettingRegister = isTargettingRegister;
             _data = data;
         }
 
-        public RByte(string value)
+        public RByte(bool targetRegisterMode, string value)
         {
+            _isTargettingRegister = targetRegisterMode;
             _value = value;
         }
 
@@ -33,6 +36,11 @@ namespace RedFoxAssembly.CSharp.Statements
             if (_data != null)
                 return new byte[] { (byte)_data }; // Casting byte? to byte implicitly makes C# sad
             else throw new CompilationException("Word cannot return a null byte array");
+        }
+
+        public bool IsTargettingRegister()
+        {
+            return _isTargettingRegister;
         }
     }
 }
