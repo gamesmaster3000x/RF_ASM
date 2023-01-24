@@ -1,6 +1,6 @@
 ﻿namespace Crimson.CSharp.Statements
 {
-    internal class FunctionArgumentCToken
+    public class FunctionArgumentCToken
     {
     }
 }

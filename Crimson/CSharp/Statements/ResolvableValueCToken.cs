@@ -42,7 +42,7 @@ namespace Crimson.CSharp.Statements
          * var rval_2 = cond_0 > cond_1
          * 
          */
-        public Fragment GetCrimsonBasic()
+        public virtual Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
 
@@ -58,14 +58,14 @@ namespace Crimson.CSharp.Statements
                     return GetBasicAsBoolean();
                 case ValueType.NUMBER:
                     return GetBasicAsNumber();
-                case ValueType.MATHS:
-                    return GetBasicAsMaths();
+                case ValueType.OPERATION:
+                    return GetBasicAsOperation();
             }
 
             throw new FlatteningException($"ResolvableValues of type {_valueType} cannot be flattened");
         }
 
-        private Fragment GetBasicAsMaths()
+        private Fragment GetBasicAsOperation()
         {
             Fragment fragment = new Fragment(0);
             fragment.ResultHolder = _stringContent;
@@ -125,7 +125,7 @@ namespace Crimson.CSharp.Statements
             BOOLEAN, 
             FUNCTION_CALL, 
             NUMBER, 
-            MATHS,
+            OPERATION,
             IDENTIFIER
         }
     }

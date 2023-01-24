@@ -27,6 +27,14 @@ namespace Crimson.CSharp.Core
             }
 
             // Visit Compilation-Unit statements
+            IList<CrimsonParser.OperationHandlerContext> operationHandlersCtxs = context._opHandlers;
+            foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs)
+            {
+                OperationHandlerCStatement unitStatement = VisitOperationHandler(unitStatementCtx);
+                compilation.AddOpHandler(unitStatement);
+            }
+
+            // Visit Compilation-Unit statements
             IList<CrimsonParser.GlobalStatementContext> unitStatementCtxs = context._statements;
             foreach (CrimsonParser.GlobalStatementContext unitStatementCtx in unitStatementCtxs)
             {
@@ -42,6 +50,18 @@ namespace Crimson.CSharp.Core
         // ----------------------------------------------------
         // -------------------------- GLOBAL STATEMENTS
         // ----------------------------------------------------
+
+        public override OperationHandlerCStatement VisitOperationHandler([NotNull] CrimsonParser.OperationHandlerContext context)
+        {
+            OperationCToken op = VisitOperation(context.op);
+            CrimsonTypeCToken type1;
+            OperationCToken.OpType opType = op.opType;
+            CrimsonTypeCToken type2;
+            string identifier = context.identifier.Text;
+            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, identifier);
+
+            return ohsc;
+        }
 
         private GlobalCStatement ParseGlobalStatement(CrimsonParser.GlobalStatementContext context)
         {
@@ -135,10 +155,10 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.NumberResolvableValueStatementContext nrvsc = (CrimsonParser.NumberResolvableValueStatementContext)context;
                 return VisitNumberResolvableValueStatement(nrvsc);
             }
-            else if (context is CrimsonParser.MathsResolvableValueStatementContext)
+            else if (context is CrimsonParser.OperationResolvableValueStatementContext)
             {
-                CrimsonParser.MathsResolvableValueStatementContext mrfsc = (CrimsonParser.MathsResolvableValueStatementContext)context;
-                return VisitMathsResolvableValueStatement(mrfsc);
+                CrimsonParser.OperationResolvableValueStatementContext mrfsc = (CrimsonParser.OperationResolvableValueStatementContext)context;
+                return VisitOperationResolvableValueStatement(mrfsc);
             }
             else
             {
@@ -193,14 +213,9 @@ namespace Crimson.CSharp.Core
             return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.NUMBER);
         }
 
-        public override ResolvableValueCToken VisitMathsResolvableValueStatement([NotNull] CrimsonParser.MathsResolvableValueStatementContext context)
+        public override ResolvableValueCToken VisitOperationResolvableValueStatement([NotNull] CrimsonParser.OperationResolvableValueStatementContext context)
         {
-            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.MATHS);
-        }
-
-        public override ResolvableValueCToken VisitMaths([NotNull] CrimsonParser.MathsContext context)
-        {
-            return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.MATHS);
+            return VisitOperation(context.operation());
         }
 
         public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
@@ -360,6 +375,13 @@ namespace Crimson.CSharp.Core
             ResolvableValueCToken value = rvc == null ? new ResolvableValueCToken("NULL", ResolvableValueCToken.ValueType.NULL) : ParseResolvableValue(rvc);
             ReturnCStatement ret = new ReturnCStatement(value);
             return ret;
+        }
+
+        public override OperationCToken VisitOperation([NotNull] CrimsonParser.OperationContext context)
+        {
+            OperationCToken oct = new OperationCToken();
+            return oct;
+            // return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.OPERATION);
         }
 
         public override AssemblyCallCStatement VisitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context)
