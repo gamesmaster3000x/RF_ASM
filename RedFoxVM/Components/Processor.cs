@@ -84,7 +84,7 @@
                     //CMP
                     break;
                 case 9:
-                    //JMP
+                    Jump();
                     break;
                 case 10:
                     //BFG
@@ -202,6 +202,12 @@
                 registers[6].Byte = Computer.memory.GetByte(registers[3].Word);
                 registers[3].Word++;
             }
+        }
+
+        public void Jump()
+        {
+            loadOperandAWord();
+            registers[3].Word = registers[5].Word;
         }
 
         private void ReadRegisterByte()
