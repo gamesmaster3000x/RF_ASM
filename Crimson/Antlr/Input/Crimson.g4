@@ -2,12 +2,15 @@ grammar Crimson;
 
 // Parser rules
 translationUnit 
-    : (imports+=importUnit)* (statements+=globalStatement)* eof=EOF
+    : (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
     ;
 
 // Compilation-Unit statements
 importUnit
     : Hashtag Using path=String As identifier=Identifier
+    ;
+operationHandler
+    : Hashtag OpHandler OpenBracket op=operation CloseBracket RightArrow identifier=Identifier
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -74,12 +77,12 @@ functionReturn
 resolvableValue
     : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
     | Number                             #NumberResolvableValueStatement
-	| maths                              #MathsResolvableValueStatement
+	| operation                          #OperationResolvableValueStatement
     | functionCall                       #FunctionCallResolvableValueStatement
     | Null pointer=Asterisk?             #NullResolvableValueStatement
     | BooleanValue                       #BooleanResolvableValueStatement
     ;
-maths
+operation
 	: leftValue=(Number | Identifier) operator=(Plus | Minus | Asterisk | Slash) rightValue=(Number | Identifier)
 	;
 
@@ -127,6 +130,7 @@ Global: 'global';
 Return: 'return';
 Structure: 'structure';
 Using: 'using';
+OpHandler: 'ophandler';
 As: 'as';
 If: 'if';
 While: 'while';
@@ -142,6 +146,7 @@ fragment True: 'true';
 fragment False: 'false';
 BooleanValue: True | False;
 
+RightArrow: '->';
 fragment Less: '<';
 fragment LessEqual: '<=';
 fragment Greater: '>';
