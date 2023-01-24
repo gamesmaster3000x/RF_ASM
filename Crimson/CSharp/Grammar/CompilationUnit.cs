@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Exception;
+using Crimson.CSharp.Grammar.Statements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar
 {
     /// <summary>
     /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.

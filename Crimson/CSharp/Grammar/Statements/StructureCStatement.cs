@@ -1,6 +1,6 @@
 ﻿using Crimson.CSharp.Core;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     public class StructureCStatement : GlobalCStatement
     {

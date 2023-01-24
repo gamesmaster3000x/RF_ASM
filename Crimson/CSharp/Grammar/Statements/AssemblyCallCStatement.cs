@@ -1,8 +1,8 @@
 ﻿using Crimson.CSharp.Core;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     internal class AssemblyCallCStatement : InternalStatement
     {
@@ -13,16 +13,16 @@ namespace Crimson.CSharp.Statements
             this.assemblyText = assemblyText;
         }
 
-        public override void Link(LinkingContext ctx)
-        {
-            return;
-        }
-
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
             f.Add(new AssemblyBStatement(assemblyText));
             return f;
+        }
+
+        public override void Link(LinkingContext ctx)
+        {
+
         }
     }
 }

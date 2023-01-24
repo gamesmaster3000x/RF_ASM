@@ -1,10 +1,11 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Statements;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Tokens
 {
-    internal class ElseIfBlockCToken: ICrimsonToken
+    internal class ElseIfBlockCToken : ICrimsonToken
     {
         /// <summary>
         /// 

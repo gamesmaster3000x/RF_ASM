@@ -1,13 +1,14 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
@@ -47,7 +48,7 @@ namespace Crimson.CSharp.Statements
         public class Parameter
         {
             public CrimsonTypeCToken Type { get; }
-            public string Identifier { get; set;  }
+            public string Identifier { get; set; }
 
             public Parameter(CrimsonTypeCToken type, string identifier)
             {

@@ -1,9 +1,10 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     public class InternalVariableCStatement : InternalStatement
     {
@@ -15,7 +16,7 @@ namespace Crimson.CSharp.Statements
         {
             this.type = type;
             this.identifier = identifier;
-            this.Value = value;
+            Value = value;
 
             if (identifier == null) throw new ParserException("Null identifier");
             if (type == null) throw new ParserException($"Null type for variable {identifier}");
@@ -40,7 +41,7 @@ namespace Crimson.CSharp.Statements
                 statements.Add(new SetBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
 
             }
-            
+
             return statements;
         }
     }

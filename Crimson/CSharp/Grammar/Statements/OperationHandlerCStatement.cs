@@ -1,4 +1,6 @@
-﻿namespace Crimson.CSharp.Statements
+﻿using Crimson.CSharp.Grammar.Tokens;
+
+namespace Crimson.CSharp.Grammar.Statements
 {
     public class OperationHandlerCStatement
     {

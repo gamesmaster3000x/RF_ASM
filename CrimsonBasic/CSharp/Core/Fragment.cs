@@ -1,4 +1,4 @@
-﻿using CrimsonBasic.CSharp.Core.Statements;
+﻿using CrimsonBasic.CSharp.Statements;
 using System;
 using System.Collections.Generic;
 using System.Linq;

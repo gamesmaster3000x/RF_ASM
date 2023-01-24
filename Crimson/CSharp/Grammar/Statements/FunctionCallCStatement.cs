@@ -1,9 +1,10 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     public class FunctionCallCStatement : InternalStatement
     {
@@ -13,7 +14,7 @@ namespace Crimson.CSharp.Statements
 
         public static readonly string FUNCTION_RETURN_VARIABLE_NAME = "FUNC_RETURN";
 
-        public FunctionCallCStatement(string identifier, IList<ResolvableValueCToken> arguments): base()
+        public FunctionCallCStatement(string identifier, IList<ResolvableValueCToken> arguments) : base()
         {
             this.identifier = identifier;
             this.arguments = arguments;
@@ -51,14 +52,13 @@ namespace Crimson.CSharp.Statements
 
                 // If argument is BOOLEAN, NUMBER, NULL, IDENTIFIER
                 else if (
-                    argValue.TypeOfValue == ResolvableValueCToken.ValueType.BOOLEAN
-                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.NUMBER
-                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.NULL
-                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.IDENTIFIER
+                    argValue.TypeOfValue == ResolvableValueCToken.ValueType.IDENTIFIER
+                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.OPERATION
+                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.RAW
                     )
                 {
                     argumentHolders.Add(argValue.StringContent!);
-                } 
+                }
 
                 else
                 {
@@ -79,7 +79,7 @@ namespace Crimson.CSharp.Statements
             f.Add(new HeapBStatement(HeapBStatement.HeapOperation.ALLOCATE, returnName, "6969"));
             f.Add(new RegisterBStatement(RegisterBStatement.RegisterOperation.SET, "REG_RETURN", returnName));
             f.Add(new SetBStatement(returnName, FUNCTION_RETURN_VARIABLE_NAME));
-            
+
             f.ResultHolder = returnName;
 
             return f;

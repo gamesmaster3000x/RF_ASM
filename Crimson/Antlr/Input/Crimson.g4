@@ -10,7 +10,7 @@ importUnit
     : Hashtag Using path=String As identifier=Identifier
     ;
 operationHandler
-    : Hashtag OpHandler OpenBracket op=operation CloseBracket RightArrow identifier=Identifier
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow identifier=Identifier
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -76,14 +76,17 @@ functionReturn
     ;
 resolvableValue
     : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
-    | Number                             #NumberResolvableValueStatement
 	| operation                          #OperationResolvableValueStatement
     | functionCall                       #FunctionCallResolvableValueStatement
-    | Null pointer=Asterisk?             #NullResolvableValueStatement
-    | BooleanValue                       #BooleanResolvableValueStatement
+    | rawValue                           #RawValueResolvableValueStatement
     ;
+rawValue
+    : Null
+    | Number
+    | BooleanValue
+	;
 operation
-	: leftValue=(Number | Identifier) operator=(Plus | Minus | Asterisk | Slash) rightValue=(Number | Identifier)
+	: leftValue=(Number | Identifier) operator=Operator rightValue=(Number | Identifier)
 	;
 
 // Parameters 
@@ -145,6 +148,8 @@ Null: 'null';
 fragment True: 'true';
 fragment False: 'false';
 BooleanValue: True | False;
+
+Operator: (Plus | Minus | Asterisk | Slash);
 
 RightArrow: '->';
 fragment Less: '<';

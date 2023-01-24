@@ -1,6 +1,6 @@
-﻿using static Crimson.CSharp.Statements.Comparator;
+﻿using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Tokens
 {
     public class Comparator
     {
@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Statements
             EQUAL_TO
         }
 
-        public static Comparator.Values Get(string value)
+        public static Values Get(string value)
         {
             switch (value)
             {

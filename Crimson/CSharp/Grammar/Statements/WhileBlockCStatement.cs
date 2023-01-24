@@ -1,8 +1,9 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     internal class WhileBlockCStatement : InternalStatement
     {
@@ -20,7 +21,7 @@ namespace Crimson.CSharp.Statements
         {
             Condition.Link(ctx);
 
-            foreach(var s in Body)
+            foreach (var s in Body)
             {
                 s.Link(ctx);
             }

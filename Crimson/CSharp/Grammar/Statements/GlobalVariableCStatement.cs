@@ -1,13 +1,14 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonBasic.CSharp.Core.Statements
+namespace CrimsonBasic.CSharp.Statements
 {
     public class LabelBStatement : BasicStatement
     {

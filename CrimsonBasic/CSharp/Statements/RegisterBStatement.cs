@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonBasic.CSharp.Core.Statements
+namespace CrimsonBasic.CSharp.Statements
 {
     public class RegisterBStatement : BasicStatement
     {
@@ -19,7 +19,7 @@ namespace CrimsonBasic.CSharp.Core.Statements
 
         public override string ToString()
         {
-            return $"register {_operation.ToString().ToLower()} {String.Join(' ', _arguments)}";
+            return $"register {_operation.ToString().ToLower()} {string.Join(' ', _arguments)}";
         }
 
         public enum RegisterOperation

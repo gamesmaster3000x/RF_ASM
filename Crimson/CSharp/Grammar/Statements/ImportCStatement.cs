@@ -1,4 +1,4 @@
-﻿namespace Crimson.CSharp.Statements
+﻿namespace Crimson.CSharp.Grammar.Statements
 {
     public class ImportCStatement
     {

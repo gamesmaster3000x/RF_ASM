@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime.Misc;
 using Crimson.CSharp.Exception;
-using Crimson.CSharp.Statements;
+using Crimson.CSharp.Grammar;
+using Crimson.CSharp.Grammar.Statements;
 using CrimsonBasic.CSharp.Core;
 using NLog;
 using System.Linq;
@@ -78,9 +79,9 @@ namespace Crimson.CSharp.Core
             return;
         }
 
-        private static List<CrimsonStatement> GetAllStatements(CompilationUnit unit)
+        private static List<ICrimsonStatement> GetAllStatements(CompilationUnit unit)
         {
-            var statements = new List<CrimsonStatement>();
+            var statements = new List<ICrimsonStatement>();
             foreach (var s in unit.Functions.Values)
             {
                 statements.Add(s);

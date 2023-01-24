@@ -1,5 +1,5 @@
 ﻿using Crimson.CSharp.Exception;
-using Crimson.CSharp.Statements;
+using Crimson.CSharp.Grammar;
 
 namespace Crimson.CSharp.Core
 {

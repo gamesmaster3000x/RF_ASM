@@ -1,6 +1,4 @@
-﻿using CrimsonBasic.CSharp.Core.Statements;
-
-namespace Crimson.CSharp.Statements
+﻿namespace CrimsonBasic.CSharp.Statements
 {
     public class AssemblyBStatement : BasicStatement
     {

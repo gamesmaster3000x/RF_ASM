@@ -1,8 +1,9 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
     internal class IfBlockCStatement : InternalStatement
     {
@@ -27,7 +28,7 @@ namespace Crimson.CSharp.Statements
         {
             Condition.Link(ctx);
 
-            foreach(var s in Body)
+            foreach (var s in Body)
             {
                 s.Link(ctx);
             }
@@ -75,9 +76,9 @@ namespace Crimson.CSharp.Statements
             string endLabelName = "END_" + uniqueBranchName;
             ifHead.Add(new JumpEqualBStatement(condition.ResultHolder!, "0", "NEXT_ELIF"));
             Fragment ifBody = new Fragment(1);
-            foreach (var s in Body) 
+            foreach (var s in Body)
             {
-                ifBody.Add(s.GetCrimsonBasic()); 
+                ifBody.Add(s.GetCrimsonBasic());
             }
             Fragment ifFoot = new Fragment(1);
             ifFoot.Add(new JumpBStatement(endLabelName));
@@ -88,9 +89,9 @@ namespace Crimson.CSharp.Statements
             wholeBlock.Add(ifFoot);
 
             // Elif and/or Else
-            if (ElifBlock != null) 
+            if (ElifBlock != null)
                 wholeBlock.Add(ElifBlock.GetCrimsonBasic());
-            else if (ElseBlock != null) 
+            else if (ElseBlock != null)
                 wholeBlock.Add(ElseBlock.GetCrimsonBasic());
 
             // End of if

@@ -1,11 +1,12 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class VariableAssignmentCStatement: InternalStatement
+    internal class VariableAssignmentCStatement : InternalStatement
     {
         public VariableAssignmentCStatement(string identifier, ResolvableValueCToken value)
         {

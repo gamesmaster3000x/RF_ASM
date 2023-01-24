@@ -1,4 +1,4 @@
-﻿namespace Crimson.CSharp.Statements
+﻿namespace Crimson.CSharp.Grammar.Tokens
 {
     public class FunctionArgumentCToken
     {

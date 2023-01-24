@@ -2,9 +2,9 @@
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Core.Statements;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Tokens
 {
-    internal class ConditionCToken: ICrimsonToken
+    internal class ConditionCToken : ICrimsonToken
     {
         private ResolvableValueCToken leftValue;
         private Comparator.Values comparator;

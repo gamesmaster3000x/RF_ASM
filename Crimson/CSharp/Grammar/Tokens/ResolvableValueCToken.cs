@@ -1,13 +1,14 @@
 ﻿using Crimson.AntlrBuild;
 using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
+using Crimson.CSharp.Grammar.Statements;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 using System.Net.Http;
 
-namespace Crimson.CSharp.Statements
+namespace Crimson.CSharp.Grammar.Tokens
 {
-    public class ResolvableValueCToken: ICrimsonToken
+    public abstract class ResolvableValueCToken : ICrimsonToken
     {
         private string? _stringContent;
         private FunctionCallCStatement? _functionContent;
@@ -17,13 +18,13 @@ namespace Crimson.CSharp.Statements
         public FunctionCallCStatement? FunctionContent { get => _functionContent; }
         public string? StringContent { get => _stringContent; }
 
-        public ResolvableValueCToken(string? stringContent, ResolvableValueCToken.ValueType valueType)
+        public ResolvableValueCToken(string? stringContent, ValueType valueType)
         {
             _stringContent = stringContent;
             _valueType = valueType;
         }
 
-        public ResolvableValueCToken(FunctionCallCStatement functionContent, ResolvableValueCToken.ValueType valueType)
+        public ResolvableValueCToken(FunctionCallCStatement functionContent, ValueType valueType)
         {
             _functionContent = functionContent;
             _valueType = valueType;
@@ -48,52 +49,27 @@ namespace Crimson.CSharp.Statements
 
             switch (_valueType)
             {
-                case ValueType.FUNCTION_CALL:
-                    return GetBasicAsFunctionCall();
                 case ValueType.IDENTIFIER:
                     return GetBasicAsIdentifier();
-                case ValueType.NULL:
-                    return GetBasicAsNull();
-                case ValueType.BOOLEAN:
-                    return GetBasicAsBoolean();
-                case ValueType.NUMBER:
-                    return GetBasicAsNumber();
                 case ValueType.OPERATION:
                     return GetBasicAsOperation();
+                case ValueType.FUNCTION_CALL:
+                    return GetBasicAsFunctionCall();
+                case ValueType.RAW:
+                    return GetBasicAsRaw();
             }
 
             throw new FlatteningException($"ResolvableValues of type {_valueType} cannot be flattened");
         }
 
-        private Fragment GetBasicAsOperation()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.ResultHolder = _stringContent;
-            return fragment;
-        }
-
-        private Fragment GetBasicAsNumber()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.ResultHolder = _stringContent;
-            return fragment;
-        }
-
-        private Fragment GetBasicAsBoolean()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.ResultHolder = _stringContent;
-            return fragment;
-        }
-
-        private Fragment GetBasicAsNull()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.ResultHolder = _stringContent;
-            return fragment;
-        }
-
         private Fragment GetBasicAsIdentifier()
+        {
+            Fragment fragment = new Fragment(0);
+            fragment.ResultHolder = _stringContent;
+            return fragment;
+        }
+
+        private Fragment GetBasicAsOperation()
         {
             Fragment fragment = new Fragment(0);
             fragment.ResultHolder = _stringContent;
@@ -106,12 +82,20 @@ namespace Crimson.CSharp.Statements
             return functionCallFragment;
         }
 
+        private Fragment GetBasicAsRaw()
+        {
+            Fragment fragment = new Fragment(0);
+            fragment.ResultHolder = _stringContent;
+            return fragment;
+        }
+
         public void Link(LinkingContext ctx)
         {
             if (_valueType == ValueType.IDENTIFIER)
             {
                 _stringContent = LinkerHelper.LinkIdentifier(_stringContent, ctx);
-            } else if (_valueType == ValueType.FUNCTION_CALL)
+            }
+            else if (_valueType == ValueType.FUNCTION_CALL)
             {
                 _functionContent!.Link(ctx);
             }
@@ -121,12 +105,10 @@ namespace Crimson.CSharp.Statements
 
         public enum ValueType
         {
-            NULL, 
-            BOOLEAN, 
-            FUNCTION_CALL, 
-            NUMBER, 
+            IDENTIFIER,
             OPERATION,
-            IDENTIFIER
+            FUNCTION_CALL,
+            RAW
         }
     }
 }
