@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Statements;
@@ -39,18 +40,28 @@ namespace Crimson.CSharp.Grammar.Statements
             return;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
             Fragment statements = new Fragment(0);
 
-            if (Value != null)
+            // int i = (6 + 5);
+            if (Complex != null)
             {
-                Fragment valueStatements = Value.GetBasicFragment();
+                Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-            }
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(Name, valueStatements.ResultHolder!));
 
-            statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
-            statements.Add(new SetBStatement(Name, "GLO_VAR_ASSIGN_VAL"));
+            }
+            else if (Simple != null)
+            {
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(Name, Simple.GetText()));
+            }
+            else
+            {
+                throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");
+            }
 
             return statements;
         }

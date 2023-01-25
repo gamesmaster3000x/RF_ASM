@@ -17,5 +17,10 @@ namespace Crimson.CSharp.Grammar.Tokens
         public override void Link(LinkingContext ctx)
         {
         }
+
+        public override string GetText()
+        {
+            return Content;
+        }
     }
 }

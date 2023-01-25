@@ -18,5 +18,10 @@ namespace Crimson.CSharp.Grammar.Tokens
         {
             Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
         }
+
+        public override string GetText()
+        {
+            return Identifier;
+        }
     }
 }

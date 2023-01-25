@@ -16,5 +16,6 @@ namespace Crimson.CSharp.Grammar.Tokens
         }
 
         public abstract void Link(LinkingContext ctx);
+        public abstract string GetText();
     }
 }

@@ -9,7 +9,7 @@ namespace Crimson.CSharp.Grammar.Statements
         public virtual string Name { get; set; } = "";
         public bool _linked = false;
 
-        public Fragment GetCrimsonBasic()
+        public virtual Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
             f.Add(new CommentBStatement("GlobalC:" + Name));

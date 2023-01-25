@@ -51,12 +51,22 @@ namespace Crimson.CSharp.Grammar.Statements
             Fragment statements = new Fragment(0);
 
             // int i = (6 + 5);
+            if (Complex != null)
             {
-                Fragment valueStatements = Value.GetBasicFragment();
+                Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
                 statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Identifier, type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Identifier, "INT_VAR_ASSIGN_VAL"));
+                statements.Add(new SetBStatement(Identifier, valueStatements.ResultHolder!));
 
+            } 
+            else if (Simple != null)
+            {
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Identifier, type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(Identifier, Simple.GetText()));
+            } 
+            else
+            {
+                throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");
             }
 
             return statements;
