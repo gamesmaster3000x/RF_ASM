@@ -20,11 +20,17 @@ namespace Crimson.CSharp.Grammar
         private Dictionary<string, StructureCStatement> structures = new Dictionary<string, StructureCStatement>();
         private Dictionary<string, GlobalVariableCStatement> globalVariables = new Dictionary<string, GlobalVariableCStatement>();
 
-        public Dictionary<string, ImportCStatement> Imports { get => imports; set => imports = value; }
-        public List<OperationHandlerCStatement> OpHandlers { get => opHandlers; set => opHandlers = value; }
-        public Dictionary<string, FunctionCStatement> Functions { get => functions; set => functions = value; }
-        public Dictionary<string, StructureCStatement> Structures { get => structures; set => structures = value; }
-        public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get => globalVariables; set => globalVariables = value; }
+        public HeapMemoryAllocatorCStatement? HeapMemoryAllocator { get; private set; }
+        public Dictionary<string, ImportCStatement> Imports { get => imports; private set => imports = value; }
+        public List<OperationHandlerCStatement> OpHandlers { get => opHandlers; private set => opHandlers = value; }
+        public Dictionary<string, FunctionCStatement> Functions { get => functions; private set => functions = value; }
+        public Dictionary<string, StructureCStatement> Structures { get => structures; private set => structures = value; }
+        public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get => globalVariables; private set => globalVariables = value; }
+
+        public void SetHeapMemoryAllocator(HeapMemoryAllocatorCStatement allocator)
+        {
+            HeapMemoryAllocator= allocator;
+        }
 
         public void AddImport(ImportCStatement import)
         {

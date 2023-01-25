@@ -15,6 +15,10 @@ namespace Crimson.CSharp.Core
         {
             CompilationUnit compilation = new CompilationUnit();
 
+            // Visit allocator
+            HeapMemoryAllocatorCStatement allocator = VisitHeapMemoryAllocator(context.heapAllocator);
+            compilation.SetHeapMemoryAllocator(allocator);
+
             // Visit imports
             IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
             foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
@@ -53,6 +57,12 @@ namespace Crimson.CSharp.Core
         // ----------------------------------------------------
         // -------------------------- GLOBAL STATEMENTS
         // ----------------------------------------------------
+
+        public override HeapMemoryAllocatorCStatement VisitHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context)
+        {
+            FunctionCStatement.Header header = VisitFunctionHeader(context.header);
+            return new HeapMemoryAllocatorCStatement(header);
+        }
 
         public override OperationHandlerCStatement VisitOperationHandler([NotNull] CrimsonParser.OperationHandlerContext context)
         {

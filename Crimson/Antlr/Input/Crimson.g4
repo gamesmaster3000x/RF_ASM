@@ -7,7 +7,7 @@ translationUnit
 
 // Compilation-Unit statements
 heapMemoryAllocator
-	: header=functionHeader
+	: Hashtag Allocator header=functionHeader
 	;
 importUnit
     : Hashtag Using path=String As identifier=Identifier
@@ -135,6 +135,7 @@ array
  * =
  */
 
+Allocator: 'allocator';
 Function: 'function';
 Global: 'global';
 Return: 'return';
