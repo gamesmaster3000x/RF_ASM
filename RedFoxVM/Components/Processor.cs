@@ -81,13 +81,13 @@
                     alu.Not();
                     break;
                 case 8:
-                    //CMP
+                    alu.Compare();
                     break;
                 case 9:
                     Jump();
                     break;
                 case 10:
-                    //BFG
+                    BranchIfFlag();
                     break;
                 case 11:
                     //NA
@@ -208,6 +208,16 @@
         {
             loadOperandAWord();
             registers[3].Word = registers[5].Word;
+        }
+
+        public void BranchIfFlag()
+        {
+            loadOperandAWord();
+            loadOperandB();
+            if (flags[registers[6].Byte])
+            {
+                registers[3].Word = registers[5].Word;
+            }
         }
 
         private void ReadRegisterByte()
