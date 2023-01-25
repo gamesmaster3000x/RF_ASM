@@ -1,20 +1,21 @@
-﻿using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class OperationHandlerCStatement
+    public class OperationHandlerCStatement: GlobalCStatement
     {
         public CrimsonTypeCToken Type1 { get; }
         public OperationResolvableValueCToken.OperationType OpType { get; }
         public CrimsonTypeCToken Type2 { get; }
-        public string Identifier { get; }
+        public FunctionCStatement.Header Header { get; }
 
-        public OperationHandlerCStatement(CrimsonTypeCToken type1, OperationResolvableValueCToken.OperationType opType, CrimsonTypeCToken type2, string identifier)
+        public OperationHandlerCStatement(CrimsonTypeCToken type1, OperationResolvableValueCToken.OperationType opType, CrimsonTypeCToken type2, FunctionCStatement.Header header)
         {
             Type1 = type1;
             OpType = opType;
             Type2 = type2;
-            Identifier = identifier;
+            Header = header;
         }
 
         public bool CanApply(CrimsonTypeCToken type1, CrimsonTypeCToken type2)
@@ -25,6 +26,13 @@ namespace Crimson.CSharp.Grammar.Statements
         public FunctionCallCStatement Apply(FunctionArgumentCToken arg1, FunctionArgumentCToken arg2)
         {
             return null;
+        }
+
+        public override void Link(LinkingContext ctx)
+        {
+            Type1.Link(ctx);
+            Type2.Link(ctx);
+            ((ICrimsonToken)Header).Link(ctx);
         }
     }
 }

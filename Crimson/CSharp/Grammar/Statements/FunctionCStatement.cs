@@ -16,26 +16,23 @@ namespace Crimson.CSharp.Grammar.Statements
     public class FunctionCStatement : GlobalCStatement
     {
 
-        public FunctionCStatement(CrimsonTypeCToken returnType, string name, IList<Parameter> parameters, IList<InternalStatement> statements)
+        public FunctionCStatement(CrimsonTypeCToken returnType, Header header, IList<InternalStatement> statements)
         {
             ReturnType = returnType;
-            Name = name;
-            Parameters = parameters;
+            FunctionHeader = header;
             Statements = statements;
         }
 
         public CrimsonTypeCToken ReturnType { get; }
-        public IList<Parameter> Parameters { get; }
+        public Header FunctionHeader { get; }
         public IList<InternalStatement> Statements { get; }
 
         public override void Link(LinkingContext ctx)
         {
             if (IsLinked()) return;
 
-            foreach (var p in Parameters)
-            {
-                p.Link(ctx);
-            }
+            ReturnType.Link(ctx);
+            ((ICrimsonToken)FunctionHeader).Link(ctx);
 
             foreach (var s in Statements)
             {
@@ -43,24 +40,6 @@ namespace Crimson.CSharp.Grammar.Statements
             }
 
             SetLinked(true);
-        }
-
-        public class Parameter
-        {
-            public CrimsonTypeCToken Type { get; }
-            public string Identifier { get; set; }
-
-            public Parameter(CrimsonTypeCToken type, string identifier)
-            {
-                Type = type;
-                Identifier = identifier;
-            }
-
-            internal void Link(LinkingContext ctx)
-            {
-                Type.Link(ctx);
-                Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
-            }
         }
 
         public Fragment GetCrimsonBasic()
@@ -87,6 +66,45 @@ namespace Crimson.CSharp.Grammar.Statements
             function.Add(functionFoot);
 
             return function;
+        }
+
+        public class Parameter : ICrimsonToken
+        {
+            public CrimsonTypeCToken Type { get; }
+            public string Identifier { get; set; }
+
+            public Parameter(CrimsonTypeCToken type, string identifier)
+            {
+                Type = type;
+                Identifier = identifier;
+            }
+
+            void ICrimsonToken.Link(LinkingContext ctx)
+            {
+                Type.Link(ctx);
+                Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
+            }
+        }
+
+        public class Header : ICrimsonToken
+        {
+            public string Identifier { get; protected set; }
+            public List<Parameter> Parameters { get; protected set; }
+
+            public Header(string identifier, List<Parameter> parameters)
+            {
+                Identifier = identifier;
+                Parameters = parameters;
+            }
+
+            void ICrimsonToken.Link(LinkingContext ctx)
+            {
+                Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
+                foreach (var p in Parameters)
+                {
+                    ((ICrimsonToken)p).Link(ctx);
+                }
+            }
         }
     }
 }

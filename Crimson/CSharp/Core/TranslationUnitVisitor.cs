@@ -59,8 +59,8 @@ namespace Crimson.CSharp.Core
             CrimsonTypeCToken type1 = VisitType(context.t1);
             OperationResolvableValueCToken.OperationType opType = OperationResolvableValueCToken.ParseOpType(context.op.Text);
             CrimsonTypeCToken type2 = VisitType(context.t2);
-            string identifier = context.identifier.Text;
-            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, identifier);
+            FunctionCStatement.Header header = VisitFunctionHeader(context.header);
+            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, header);
 
             return ohsc;
         }
@@ -104,12 +104,18 @@ namespace Crimson.CSharp.Core
 
         public override FunctionCStatement VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context)
         {
-            string name = context.name.Text;
             CrimsonTypeCToken returnType = VisitType(context.returnType);
+            FunctionCStatement.Header header = VisitFunctionHeader(context.header);
             IList<InternalStatement> statements = VisitFunctionBody(context.body);
-            IList<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters); 
-            return new FunctionCStatement(returnType, name, parameters, statements);
+            return new FunctionCStatement(returnType, header, statements);
 
+        }
+
+        public override FunctionCStatement.Header VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context)
+        {
+            string identifier = context.name.Text;
+            List<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters);
+            return new FunctionCStatement.Header(identifier, parameters);
         }
 
         public override StructureCStatement VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
@@ -155,7 +161,7 @@ namespace Crimson.CSharp.Core
             return new CrimsonTypeCToken(context.name.GetText(), context.pointer != null);
         }
 
-        public override IList<FunctionCStatement.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
+        public override List<FunctionCStatement.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
         {
             List<FunctionCStatement.Parameter> parameters = new List<FunctionCStatement.Parameter>();
             foreach (CrimsonParser.ParameterContext paCxt in context.parameter())
