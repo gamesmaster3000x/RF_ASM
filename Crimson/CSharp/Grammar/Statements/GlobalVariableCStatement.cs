@@ -17,18 +17,22 @@ namespace Crimson.CSharp.Grammar.Statements
     {
         private CrimsonTypeCToken type;
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier)
+        public ComplexValueCToken? Complex { get; }
+        public SimpleValueCToken? Simple { get; }
+
+        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken value)
         {
             this.type = type;
             Name = identifier;
+            Complex = value;
         }
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken? value) : this(type, identifier)
+        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, SimpleValueCToken value)
         {
-            Value = value;
+            this.type = type;
+            Name = identifier;
+            Simple = value;
         }
-
-        public ComplexValueCToken? Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

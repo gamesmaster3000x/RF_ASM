@@ -7,12 +7,12 @@ namespace Crimson.CSharp.Grammar.Statements
 {
     internal class ReturnCStatement : InternalStatement
     {
-        public ReturnCStatement(ComplexValueCToken value)
+        public ReturnCStatement(SimpleValueCToken value)
         {
             Value = value;
         }
 
-        public ComplexValueCToken Value { get; }
+        public SimpleValueCToken Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

@@ -88,7 +88,7 @@ rawValue
     | BooleanValue
 	;
 operation
-	: leftValue=(Number | Identifier) operator=Operator rightValue=(Number | Identifier)
+	: leftValue=simpleValue operator=Operator rightValue=simpleValue
 	;
 
 // Parameters 

@@ -9,10 +9,10 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
 
         public OperationType OpType { get; }
-        public ComplexValueCToken LeftToken { get; }
-        public ComplexValueCToken RightToken { get; }
+        public SimpleValueCToken LeftToken { get; }
+        public SimpleValueCToken RightToken { get; }
 
-        public OperationResolvableValueCToken(ComplexValueCToken leftToken, OperationType opType, ComplexValueCToken rightToken)
+        public OperationResolvableValueCToken(SimpleValueCToken leftToken, OperationType opType, SimpleValueCToken rightToken)
         {
             LeftToken = leftToken;
             OpType = opType;
@@ -39,7 +39,7 @@ namespace Crimson.CSharp.Grammar.Tokens
                 case "/":
                     return OperationType.DIV;
             }
-            throw new ParserException("Illegal operator type '" + s + "'");
+            throw new CrimsonParserException("Illegal operator type '" + s + "'");
         }
 
         public override Fragment GetBasicFragment()

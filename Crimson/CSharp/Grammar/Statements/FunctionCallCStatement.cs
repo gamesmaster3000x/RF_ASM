@@ -10,11 +10,11 @@ namespace Crimson.CSharp.Grammar.Statements
     {
         private string identifier;
         private FunctionCStatement? targetFunction;
-        private IList<ComplexValueCToken> arguments;
+        private IList<SimpleValueCToken> arguments;
 
         public static readonly string FUNCTION_RETURN_VARIABLE_NAME = "FUNC_RETURN";
 
-        public FunctionCallCStatement(string identifier, IList<ComplexValueCToken> arguments) : base()
+        public FunctionCallCStatement(string identifier, IList<SimpleValueCToken> arguments) : base()
         {
             this.identifier = identifier;
             this.arguments = arguments;
@@ -37,26 +37,10 @@ namespace Crimson.CSharp.Grammar.Statements
             List<string> argumentHolders = new List<string>();
             foreach (var argValue in arguments)
             {
-                if (argValue is FunctionCallResolvableValueCToken)
-                {
-                    FunctionCallResolvableValueCToken fcrvct = (FunctionCallResolvableValueCToken) argValue;
-                    f.Add(new JumpBStatement(fcrvct.FunctionCall.identifier));
-                    //f.Add(new CommentBStatement("^^ FCCS Why is this not linked!? (utils.otherthing should be linked)"));
-                    string argReturnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
-                    f.Add(new SetBStatement(argReturnName, FUNCTION_RETURN_VARIABLE_NAME));
-                    //f.Add(new CommentBStatement("^^ FCCS Perhaps need to dereference and copy/change ownership to not be overwritten?"));
-
-                    argumentHolders.Add(argReturnName);
-                }
-                else if (argValue is IdentifierSimpleValueCToken)
+                if (argValue is IdentifierSimpleValueCToken)
                 {
                     IdentifierSimpleValueCToken irvct = (IdentifierSimpleValueCToken)argValue;
                     argumentHolders.Add(irvct.Identifier);
-                }
-                else if (argValue is OperationResolvableValueCToken)
-                {
-                    OperationResolvableValueCToken orvct = (OperationResolvableValueCToken)argValue;
-                    argumentHolders.Add(orvct.OpType.ToString());
                 }
                 else if (argValue is RawResolvableValueCToken)
                 {

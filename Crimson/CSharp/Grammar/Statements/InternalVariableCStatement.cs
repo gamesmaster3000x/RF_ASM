@@ -3,29 +3,46 @@ using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Statements;
+using System.Xml.Linq;
+using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
     public class InternalVariableCStatement : InternalStatement
     {
         private CrimsonTypeCToken type;
-        public string identifier { get; set; }
-        public ComplexValueCToken Value { get; }
+        public string Identifier { get; private set; }
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken value)
+        public ComplexValueCToken? Complex { get; }
+        public SimpleValueCToken? Simple { get; }
+
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, SimpleValueCToken simple)
         {
             this.type = type;
-            this.identifier = identifier;
-            Value = value;
+            this.Identifier = identifier;
+            Simple = simple;
 
-            if (identifier == null) throw new ParserException("Null identifier");
-            if (type == null) throw new ParserException($"Null type for variable {identifier}");
-            if (Value == null) throw new ParserException($"Cannot use null value for variable {identifier} (must assign value or allocate memory)");
+            if (identifier == null) throw new CrimsonParserException("Null identifier");
+            if (type == null) throw new CrimsonParserException($"Null type for variable {identifier}");
+            if (Simple == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
+        }
+
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken complex)
+        {
+            this.type = type;
+            this.Identifier = identifier;
+            Complex = complex;
+
+            if (identifier == null) throw new CrimsonParserException("Null identifier");
+            if (type == null) throw new CrimsonParserException($"Null type for variable {identifier}");
+            if (Complex == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
         public override void Link(LinkingContext ctx)
         {
-            Value.Link(ctx);
+            // Only run if not null
+            Simple?.Link(ctx);
+            Complex?.Link(ctx);
             return;
         }
 
@@ -37,8 +54,8 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Fragment valueStatements = Value.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(identifier, "INT_VAR_ASSIGN_VAL"));
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Identifier, type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(Identifier, "INT_VAR_ASSIGN_VAL"));
 
             }
 
