@@ -2,7 +2,6 @@
 using NLog;
 using Antlr4.Runtime;
 using Crimson.AntlrBuild;
-using Crimson.CSharp.Statements;
 using System.IO.Abstractions;
 
 namespace Crimson.CSharp.Core

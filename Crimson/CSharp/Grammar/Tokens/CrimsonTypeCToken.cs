@@ -1,6 +1,6 @@
 ﻿using Crimson.CSharp.Core;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 using System.Text.RegularExpressions;
 
 namespace Crimson.CSharp.Grammar.Tokens

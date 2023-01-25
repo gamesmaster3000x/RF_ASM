@@ -336,53 +336,25 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>IdentifierResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.simpleValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context);
+	void EnterSimpleValue([NotNull] CrimsonParser.SimpleValueContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>IdentifierResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.simpleValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context);
+	void ExitSimpleValue([NotNull] CrimsonParser.SimpleValueContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>OperationResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.complexValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterOperationResolvableValueStatement([NotNull] CrimsonParser.OperationResolvableValueStatementContext context);
+	void EnterComplexValue([NotNull] CrimsonParser.ComplexValueContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>OperationResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.complexValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitOperationResolvableValueStatement([NotNull] CrimsonParser.OperationResolvableValueStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>RawValueResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterRawValueResolvableValueStatement([NotNull] CrimsonParser.RawValueResolvableValueStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>RawValueResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitRawValueResolvableValueStatement([NotNull] CrimsonParser.RawValueResolvableValueStatementContext context);
+	void ExitComplexValue([NotNull] CrimsonParser.ComplexValueContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.rawValue"/>.
 	/// </summary>

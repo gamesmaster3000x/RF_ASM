@@ -3,7 +3,7 @@ using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar;
 using Crimson.CSharp.Grammar.Statements;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 using NLog;
 using System.Text.RegularExpressions;
 

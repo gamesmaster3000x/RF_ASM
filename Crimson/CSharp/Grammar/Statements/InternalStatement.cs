@@ -9,16 +9,20 @@ namespace Crimson.CSharp.Grammar.Statements
     {
         private bool _linked = false;
 
-        public Fragment GetCrimsonBasic()
+        public virtual Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
-            f.Add(new CommentBStatement($"{GetType()}: " + IsLinked()));
+            f.Add(new CommentBStatement($"{GetType()}: linked=" + IsLinked()));
             return f;
         }
 
         public bool IsLinked()
         {
             return _linked;
+        }
+        public void SetLinked(bool l)
+        {
+            _linked = l;
         }
         public abstract void Link(LinkingContext ctx);
     }

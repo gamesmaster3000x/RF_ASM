@@ -38,11 +38,11 @@ internalStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier DirectEquals value=resolvableValue SemiColon
+    : type Identifier DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
     ;
 assignVariable
-    : Identifier DirectEquals resolvableValue SemiColon     #AssignVariableDirect
-    | Identifier PointerEquals resolvableValue SemiColon    #AssignVariableAtPointer
+    : Identifier DirectEquals (complex=complexValue | simple=simpleValue) SemiColon     #AssignVariableDirect
+    | Identifier PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
@@ -51,7 +51,7 @@ whileBlock
     : While condition functionBody
     ;
 condition
-    : OpenBracket leftValue=resolvableValue comparator=Comparator rightValue=resolvableValue CloseBracket
+    : OpenBracket op=operation CloseBracket
     ;
 elseIfBlock
     : Else ifBlock
@@ -68,18 +68,20 @@ functionCall
     : Identifier arguments
     ;
 arguments
-    : OpenBracket (resolvableValue)? (Comma (resolvableValue))* CloseBracket
+    : OpenBracket (simpleValue)? (Comma (simpleValue))* CloseBracket
     ;
 functionReturn
-    : Return resolvableValue SemiColon
+    : Return simpleValue SemiColon
     | Return SemiColon
     ;
-resolvableValue
-    : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
-	| operation                          #OperationResolvableValueStatement
-    | functionCall                       #FunctionCallResolvableValueStatement
-    | rawValue                           #RawValueResolvableValueStatement
-    ;
+simpleValue
+	: id=Identifier pointer=Asterisk?
+	| raw=rawValue
+	;
+complexValue
+	: op=operation
+	| func=functionCall
+	;
 rawValue
     : Null
     | Number
@@ -113,7 +115,6 @@ type
 rawType
     : Integer
     | Boolean
-    | Pointer
     | Identifier
     | array
     | Null
@@ -142,16 +143,20 @@ Elif: 'elif';
 
 Integer: 'int';
 Boolean: 'bool';
-Pointer: 'ptr';
 Null: 'null';
 
 fragment True: 'true';
 fragment False: 'false';
 BooleanValue: True | False;
 
-Operator: (Plus | Minus | Asterisk | Slash);
+Operator: Comparator | MathsOperator;
 
-RightArrow: '->';
+fragment Plus: '+'; 
+fragment Minus: '-'; 
+Asterisk: '*'; 
+fragment Slash: '/';
+MathsOperator: Plus | Minus | Asterisk | Slash;
+
 fragment Less: '<';
 fragment LessEqual: '<=';
 fragment Greater: '>';
@@ -159,6 +164,7 @@ fragment GreaterEqual: '>=';
 fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
+RightArrow: '->';
 Tilda: '~';
 DirectEquals: '=';
 PointerEquals: '*=';
@@ -174,10 +180,6 @@ SemiColon: ';';
 Underscore: '_'; 
 Hashtag: '#'; 
 Quote: '"'; 
-Plus: '+'; 
-Minus: '-'; 
-Asterisk: '*'; 
-Slash: '/';
 
 SkipTokens
     : (WhiteSpace | Newline | LineComment) -> skip

@@ -23,12 +23,12 @@ namespace Crimson.CSharp.Grammar.Statements
             Name = identifier;
         }
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken? value) : this(type, identifier)
+        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken? value) : this(type, identifier)
         {
             Value = value;
         }
 
-        public ResolvableValueCToken? Value { get; }
+        public ComplexValueCToken? Value { get; }
 
         public override void Link(LinkingContext ctx)
         {
@@ -41,7 +41,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
             if (Value != null)
             {
-                Fragment valueStatements = Value.GetCrimsonBasic();
+                Fragment valueStatements = Value.GetBasicFragment();
                 statements.Add(valueStatements);
             }
 

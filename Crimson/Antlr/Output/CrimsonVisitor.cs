@@ -213,33 +213,17 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>IdentifierResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.simpleValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context);
+	Result VisitSimpleValue([NotNull] CrimsonParser.SimpleValueContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>OperationResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.complexValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOperationResolvableValueStatement([NotNull] CrimsonParser.OperationResolvableValueStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>RawValueResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitRawValueResolvableValueStatement([NotNull] CrimsonParser.RawValueResolvableValueStatementContext context);
+	Result VisitComplexValue([NotNull] CrimsonParser.ComplexValueContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.rawValue"/>.
 	/// </summary>

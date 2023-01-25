@@ -1,18 +1,18 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
     internal class ReturnCStatement : InternalStatement
     {
-        public ReturnCStatement(ResolvableValueCToken value)
+        public ReturnCStatement(ComplexValueCToken value)
         {
             Value = value;
         }
 
-        public ResolvableValueCToken Value { get; }
+        public ComplexValueCToken Value { get; }
 
         public override void Link(LinkingContext ctx)
         {

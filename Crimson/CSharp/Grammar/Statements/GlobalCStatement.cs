@@ -22,5 +22,9 @@ namespace Crimson.CSharp.Grammar.Statements
         {
             return _linked;
         }
+        public void SetLinked(bool l)
+        {
+            _linked = l;
+        }
     }
 }

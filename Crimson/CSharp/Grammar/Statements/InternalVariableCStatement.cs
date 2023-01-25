@@ -10,9 +10,9 @@ namespace Crimson.CSharp.Grammar.Statements
     {
         private CrimsonTypeCToken type;
         public string identifier { get; set; }
-        public ResolvableValueCToken Value { get; }
+        public ComplexValueCToken Value { get; }
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ResolvableValueCToken value)
+        public InternalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken value)
         {
             this.type = type;
             this.identifier = identifier;
@@ -35,7 +35,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
             // int i = (6 + 5);
             {
-                Fragment valueStatements = Value.GetCrimsonBasic();
+                Fragment valueStatements = Value.GetBasicFragment();
                 statements.Add(valueStatements);
                 statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, identifier, type.GetByteSize().ToString()));
                 statements.Add(new SetBStatement(identifier, "INT_VAR_ASSIGN_VAL"));

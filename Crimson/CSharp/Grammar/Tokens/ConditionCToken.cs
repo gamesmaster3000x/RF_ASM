@@ -1,21 +1,18 @@
 ﻿using Crimson.CSharp.Core;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Tokens
 {
     internal class ConditionCToken : ICrimsonToken
     {
-        private ResolvableValueCToken leftValue;
-        private Comparator.Values comparator;
-        private ResolvableValueCToken rightValue;
+        public OperationResolvableValueCToken Operation { get; }
 
-        public ConditionCToken(ResolvableValueCToken leftValue, Comparator.Values comparator, ResolvableValueCToken rightValue)
+        public ConditionCToken(OperationResolvableValueCToken operation)
         {
-            this.leftValue = leftValue;
-            this.comparator = comparator;
-            this.rightValue = rightValue;
+            Operation = operation;
         }
+
 
         public Fragment GetCrimsonBasic()
         {
@@ -33,22 +30,21 @@ namespace Crimson.CSharp.Grammar.Tokens
              * var rval_2 = cond_0 > cond_1
              * 
              */
-            Fragment left = leftValue.GetCrimsonBasic();
-            Fragment right = rightValue.GetCrimsonBasic();
+            /*Fragment left = leftValue.GetBasicFragment();
+            Fragment right = rightValue.GetBasicFragment();*/
             Fragment combined = new Fragment(0);
-            combined.Add(left);
+            /*combined.Add(left);
             combined.Add(right);
             string combinedName = FlattenerHelper.GetUniqueResolvableValueFieldName();
             string combinedValue = $"{left.ResultHolder} {Comparator.ToString(comparator)} {right.ResultHolder}";
             combined.Add(new SetBStatement(combinedName, combinedValue));
-            combined.ResultHolder = combinedName;
+            combined.ResultHolder = combinedName;*/
             return combined;
         }
 
         public void Link(LinkingContext ctx)
         {
-            leftValue.Link(ctx);
-            rightValue.Link(ctx);
+            Operation.Link(ctx);
         }
     }
 }

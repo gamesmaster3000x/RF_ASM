@@ -5,11 +5,11 @@ namespace Crimson.CSharp.Grammar.Statements
     public class OperationHandlerCStatement
     {
         public CrimsonTypeCToken Type1 { get; }
-        public OperationCToken.OpType OpType { get; }
+        public OperationResolvableValueCToken.OperationType OpType { get; }
         public CrimsonTypeCToken Type2 { get; }
         public string Identifier { get; }
 
-        public OperationHandlerCStatement(CrimsonTypeCToken type1, OperationCToken.OpType opType, CrimsonTypeCToken type2, string identifier)
+        public OperationHandlerCStatement(CrimsonTypeCToken type1, OperationResolvableValueCToken.OperationType opType, CrimsonTypeCToken type2, string identifier)
         {
             Type1 = type1;
             OpType = opType;

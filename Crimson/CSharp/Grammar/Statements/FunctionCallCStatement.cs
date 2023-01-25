@@ -10,11 +10,11 @@ namespace Crimson.CSharp.Grammar.Statements
     {
         private string identifier;
         private FunctionCStatement? targetFunction;
-        private IList<ResolvableValueCToken> arguments;
+        private IList<ComplexValueCToken> arguments;
 
         public static readonly string FUNCTION_RETURN_VARIABLE_NAME = "FUNC_RETURN";
 
-        public FunctionCallCStatement(string identifier, IList<ResolvableValueCToken> arguments) : base()
+        public FunctionCallCStatement(string identifier, IList<ComplexValueCToken> arguments) : base()
         {
             this.identifier = identifier;
             this.arguments = arguments;
@@ -37,11 +37,10 @@ namespace Crimson.CSharp.Grammar.Statements
             List<string> argumentHolders = new List<string>();
             foreach (var argValue in arguments)
             {
-
-                // If argument is FUNCTION_CALL
-                if (argValue.TypeOfValue == ResolvableValueCToken.ValueType.FUNCTION_CALL)
+                if (argValue is FunctionCallResolvableValueCToken)
                 {
-                    f.Add(new JumpBStatement(argValue.FunctionContent!.identifier));
+                    FunctionCallResolvableValueCToken fcrvct = (FunctionCallResolvableValueCToken) argValue;
+                    f.Add(new JumpBStatement(fcrvct.FunctionCall.identifier));
                     //f.Add(new CommentBStatement("^^ FCCS Why is this not linked!? (utils.otherthing should be linked)"));
                     string argReturnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
                     f.Add(new SetBStatement(argReturnName, FUNCTION_RETURN_VARIABLE_NAME));
@@ -49,17 +48,21 @@ namespace Crimson.CSharp.Grammar.Statements
 
                     argumentHolders.Add(argReturnName);
                 }
-
-                // If argument is BOOLEAN, NUMBER, NULL, IDENTIFIER
-                else if (
-                    argValue.TypeOfValue == ResolvableValueCToken.ValueType.IDENTIFIER
-                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.OPERATION
-                    || argValue.TypeOfValue == ResolvableValueCToken.ValueType.RAW
-                    )
+                else if (argValue is IdentifierSimpleValueCToken)
                 {
-                    argumentHolders.Add(argValue.StringContent!);
+                    IdentifierSimpleValueCToken irvct = (IdentifierSimpleValueCToken)argValue;
+                    argumentHolders.Add(irvct.Identifier);
                 }
-
+                else if (argValue is OperationResolvableValueCToken)
+                {
+                    OperationResolvableValueCToken orvct = (OperationResolvableValueCToken)argValue;
+                    argumentHolders.Add(orvct.OpType.ToString());
+                }
+                else if (argValue is RawResolvableValueCToken)
+                {
+                    RawResolvableValueCToken rrvct = (RawResolvableValueCToken)argValue;
+                    argumentHolders.Add(rrvct.Content);
+                }
                 else
                 {
                     throw new FlatteningException($"Illegal type {argValue.GetType()} for ResolvableValue " + argValue);

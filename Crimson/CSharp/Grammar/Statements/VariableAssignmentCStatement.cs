@@ -2,20 +2,20 @@
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Core.Statements;
+using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
     internal class VariableAssignmentCStatement : InternalStatement
     {
-        public VariableAssignmentCStatement(string identifier, ResolvableValueCToken value)
+        public VariableAssignmentCStatement(string identifier, ComplexValueCToken value)
         {
             Identifier = identifier;
             Value = value;
         }
 
         public string Identifier { get; set; }
-        public ResolvableValueCToken Value { get; }
+        public ComplexValueCToken Value { get; }
 
         public override void Link(LinkingContext ctx)
         {
@@ -28,7 +28,7 @@ namespace Crimson.CSharp.Grammar.Statements
             Fragment result = new Fragment(0);
 
             if (Value == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
-            result.Add(Value.GetCrimsonBasic());
+            result.Add(Value.GetBasicFragment());
             result.Add(new SetBStatement(Identifier, "VAR_ASSIGN_C_VAL"));
 
             return result;
