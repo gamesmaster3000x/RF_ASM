@@ -2,15 +2,18 @@ grammar Crimson;
 
 // Parser rules
 translationUnit 
-    : (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
+    : (heapAllocator=heapMemoryAllocator) (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
     ;
 
 // Compilation-Unit statements
+heapMemoryAllocator
+	: header=functionHeader
+	;
 importUnit
     : Hashtag Using path=String As identifier=Identifier
     ;
 operationHandler
-    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow identifier=Identifier
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow header=functionHeader
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -21,8 +24,11 @@ globalVariableDeclaration
     : Global declaration=internalVariableDeclaration // Need to add =value or =func()
     ;
 functionDeclaration
-    : Function name=Identifier returnType=type parameters=parameterList body=functionBody
-    ; 
+    : Function returnType=type header=functionHeader body=functionBody
+    ;
+functionHeader
+	: name=Identifier parameters=parameterList
+	;
 functionBody
     : OpenBrace (statements+=internalStatement)* CloseBrace 
     ; 

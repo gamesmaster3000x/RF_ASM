@@ -42,6 +42,16 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.heapMemoryAllocator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.heapMemoryAllocator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -117,6 +127,16 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.functionHeader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.functionHeader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
 	/// </summary>
