@@ -54,7 +54,7 @@ namespace RedFoxAssembly.CSharp.Core
                 Console.WriteLine();
             }
         }
-        public static byte[] FitToDataWidth(int desiredLength, byte[] ba)
+        public static byte[] FixArrayWidthPreservingBack(int desiredLength, byte[] ba)
         {
             if (ba.Length > desiredLength)
             {

@@ -189,10 +189,13 @@ Hashtag: '#';
 Quote: '"'; 
 
 SkipTokens
-    : (WhiteSpace | Newline | LineComment) -> skip
+    : (WhiteSpace | Newline | LineComment | BlockComment) -> skip
     ;
 LineComment 
     : '//' ~('\r' | '\n')*
+    ;
+BlockComment 
+    : '/*' .* '*/'
     ;
 Number
     : Digit+

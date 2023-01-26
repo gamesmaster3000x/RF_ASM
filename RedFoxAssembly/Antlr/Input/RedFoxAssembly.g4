@@ -7,27 +7,28 @@ program
 // Configuration
 
 configuration
-	: width #WidthConfiguration
-	| value #ValueConfiguration
+	: width SemiColon  #WidthConfiguration
+	| value SemiColon  #ValueConfiguration
 	;
 
 width
-	: Width val=Number
+	: Width val=Digit
 	;
 
 value
-	: Value id=Identifier Comma val=word
+	: WordValue id=Identifier Comma wordValue=word
+	| ByteValue id=Identifier Comma byteValue=byte
 	;
 
 // Instructions
 
 command
-	: label #LabelCommand
-	| instruction #InstructionCommand
+	: label SemiColon         #LabelCommand
+	| instruction SemiColon   #InstructionCommand
 	;
 
 label
-	: Label id=Identifier
+	: LabelStart id=Identifier
 	;
 
 instruction
@@ -101,25 +102,28 @@ xor: op=XOR;
 // Data
 
 word
-	: Quote isTargettingRegister=IsTargettingRegister? isHex=HexPrefix? (data+=bytedata)+ Quote
+	: isHex=HexPrefix (hexData+=bytedata)+
+	| registerTarget=RegisterPrefix registerData=bytedata
 	| val=Identifier
 	;
 
 byte
-	: Quote isTargettingRegister=IsTargettingRegister? isHex=HexPrefix? data=bytedata Quote
+	: isHex=HexPrefix hexData=bytedata
+	| registerTarget=RegisterPrefix registerData=bytedata
 	| val=Identifier
 	;
 
 bytedata
-	: (ByteLetter | Number) (ByteLetter | Number)
+	: (ByteLetter | Digit) (ByteLetter | Digit)
 	;
 
 
 // ===== LEXER =====
 
-Label: '::';
+LabelStart: '::';
 Width: '.width';
-Value: '.value';
+WordValue: '.word';
+ByteValue: '.byte';
 
 HLT: 'HLT';
 NOP: 'NOP';
@@ -154,30 +158,37 @@ AND: 'AND';
 LOR: 'LOR';
 XOR: 'XOR';
 
-IsTargettingRegister: 'R';
+RegisterPrefix
+	: Register 
+	| GeneralRegister 
+	| ComponentRegister 
+	| SpecialisedRegister
+	;
+fragment Register: 'Rx';
+fragment GeneralRegister: 'Gx';
+fragment ComponentRegister: 'Cx';
+fragment SpecialisedRegister: 'Sx';
 HexPrefix: '0x';
 
 Underscore: '_'; 
 Quote: '\'';
 Comma: ',';
+SemiColon: ';';
 
-Number: Digit+;
+Digit: [0-9];
 ByteLetter: [a-fA-F];
 
 Identifier
-    : Underscore (Alphabetic | Number | Underscore)+ Underscore
-    ;
-LineComment 
-    : '//' ~('\r' | '\n')*
+    : Underscore (Alphabetic | Digit | Underscore)+ Underscore
     ;
 SkipTokens
     : (WhiteSpace | Newline | LineComment) -> skip
     ;
+LineComment 
+    : '//' ~('\r' | '\n')*
+    ;
 fragment Alphabetic
     : [a-zA-Z]
-    ;
-fragment Digit 
-    : [0-9]
     ;
 fragment WhiteSpace
     : [ \t]+

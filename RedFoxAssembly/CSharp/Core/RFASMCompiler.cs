@@ -13,6 +13,7 @@ namespace RedFoxAssembly.CSharp.Core
     {
         public const int DATA_WIDTH = 2;
 
+
         internal Dictionary<string, LabelCommand> Labels { get; set; }
         internal Dictionary<string, IData> Constants { get; set; }
 
@@ -48,7 +49,7 @@ namespace RedFoxAssembly.CSharp.Core
             {
                 Console.WriteLine("Using autowired program arguments (ignoring " + args.Length + " input arguments)");
                 string testProgramsPath = "../../../Documentation/TestPrograms/"; // Escape bin, Debug, and net6.0
-                args = new string[] { "-INPUT_PATH", testProgramsPath + "test_dw1.rfp", "-DATA_WIDTH", "1", "-RANDOM_ARG", "-OTHER_RANDOM_ARG", " ", "CONFUSION", "-" };
+                args = new string[] { "-INPUT_PATH", testProgramsPath + "CustomOperation.rfp", "-DATA_WIDTH", "1", "-RANDOM_ARG", "-OTHER_RANDOM_ARG", " ", "CONFUSION", "-" };
             }
 
             Console.WriteLine("Parsing arguments");
@@ -82,11 +83,12 @@ namespace RedFoxAssembly.CSharp.Core
             {
                 AntlrInputStream a4is = new AntlrInputStream(string.Join(Environment.NewLine, rawLinesArr));
                 RedFoxAssemblyLexer lexer = new RedFoxAssemblyLexer(a4is);
+                // lexer.AddErrorListener(new LexerErrorListener(meta.InputPath));
+
                 CommonTokenStream cts = new CommonTokenStream(lexer);
                 RedFoxAssemblyParser parser = new RedFoxAssemblyParser(cts);
-
-                lexer.AddErrorListener(new LexerErrorListener(meta.InputPath));
-                parser.ErrorHandler = new ParserErrorStrategy(meta.InputPath);
+                // parser.ErrorHandler = new BailErrorStrategy();
+                parser.AddErrorListener(new ParserErrorListener(meta.InputPath));
 
                 RedFoxAssemblyParser.ProgramContext cuCtx = parser.program();
                 RFASMProgramVisitor visitor = new RFASMProgramVisitor();
@@ -163,6 +165,7 @@ namespace RedFoxAssembly.CSharp.Core
             string outputPath = GetOutputFileName(inputPath);
             FileInfo outputFileInfo = new FileInfo(outputPath);
             Console.WriteLine("Storing compilation to " + outputFileInfo.FullName);
+            if (File.Exists(outputPath)) File.Delete(outputPath);
             BinaryWriter writer = new BinaryWriter(File.Open(outputPath, FileMode.OpenOrCreate));
             writer.Write(bytes);
             writer.Flush();

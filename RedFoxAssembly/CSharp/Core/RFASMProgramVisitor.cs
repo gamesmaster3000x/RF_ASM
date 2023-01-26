@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
+using NLog.Targets;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
 
@@ -35,65 +36,116 @@ namespace RedFoxAssembly.CSharp.Core
         public override WidthConfiguration VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context) { return new WidthConfiguration(int.Parse(context.val.Text)); }
 
         public override ValueConfiguration VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context) { return VisitValue(context.value()); }
-        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context) { return new ValueConfiguration(context.id.Text, VisitWord(context.val)); }
+        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context) 
+        {
+            string id = context.id.Text;
+
+            try
+            {
+                if (context.byteValue != null) 
+                {
+                    RByte b = VisitByte(context.byteValue);
+                    return new ValueConfiguration(context.id.Text, b); 
+                }
+                if (context.wordValue != null)
+                {
+                    Word w = VisitWord(context.wordValue);
+                    return new ValueConfiguration(context.id.Text, VisitWord(context.wordValue));
+                }
+            } catch (Exception e)
+            {
+                throw new ParsingException($"Error parsing byte value '{context.byteValue?.GetText()}' or word value '{context.wordValue?.GetText()}' for {id}", e);
+            }
+
+            throw new ParsingException($"Value {id} must be assigned either a word or byte value.");
+        }
 
         public override Word VisitWord([NotNull] RedFoxAssemblyParser.WordContext context)
         {
-            if (string.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
+            if (string.IsNullOrWhiteSpace(context.GetText())) 
+                throw new ParsingException("Word cannot be null or whitespace");
 
-            bool isTargettingRegister = context.isTargettingRegister != null;
-
-            if (context._data != null)
+            // Process as raw hex
+            string? isHex = context.isHex?.Text;
+            if (!String.IsNullOrWhiteSpace(isHex))
             {
-                List<byte> data = new List<byte>();
-                foreach (var b in context._data)
+                if (context._hexData != null)
                 {
-                    string d = b.GetText();
-                    byte[] bs = Convert.FromHexString(d);
-                    data.AddRange(bs);
+                    List<byte> data = new List<byte>();
+                    foreach (var b in context._hexData)
+                    {
+                        string d = b.GetText();
+                        if (String.IsNullOrWhiteSpace(d)) throw new ParsingException("Cannot parse null or whitespace byte data");
+                        byte[] bs = Convert.FromHexString(d);
+                        data.AddRange(bs);
+                    }
+                    if (data.Count < 1) throw new ParsingException("Word " + context.GetText() + " must contain at least 1 hex byte");
+                    return new Word(false, data.ToArray());
                 }
-                if (data.Count < 1) throw new ParsingException("Word " + context.GetText() + " must contain at least 1 hex byte");
-                return new Word(isTargettingRegister, data.ToArray());
             }
 
-            if (!string.IsNullOrWhiteSpace(context.val.Text))
+            // Process as register reference
+            string? registerTarget = context.registerTarget?.Text;
+            if (!String.IsNullOrWhiteSpace(registerTarget))
             {
-                return new Word(isTargettingRegister, context.val.Text);
+                if (registerTarget.Length != 2) throw new ParsingException("Register prefix '" + registerTarget + "' is not of length 2");
+                IData.RegisterTarget target = IData.ParseRegisterTarget(registerTarget[0]);
+
+                string registerData = VisitBytedata(context.registerData);
+                byte[] rd = Convert.FromHexString(registerData);
+                if (rd.Length != 1) throw new ParsingException("Cannot parse register data of > 1 bytes");
+                rd[0] = (byte)(rd[0] + IData.GetRegisterOffset(target));
+
+                return new Word(true, rd);
             }
 
-            throw new ParsingException("Cannot create word with no bytedata or value-mapping");
+            // Process as value/identifer
+            string? valText = context.val?.Text;
+            if (!String.IsNullOrWhiteSpace(valText))
+            {
+                return new Word(false, valText);
+            }
+
+            throw new ParsingException("Failed to visit word with no bytedata or value-mapping");
         }
 
         public override RByte VisitByte([NotNull] RedFoxAssemblyParser.ByteContext context)
         {
             if (string.IsNullOrWhiteSpace(context.GetText())) throw new ParsingException("Word cannot be null or whitespace");
 
-            bool isTargettingRegister = context.isTargettingRegister != null;
-            bool isContentHex = context.isHex != null;
-
-            // If using hex/decimal
-            if (context.data != null)
+            // Process as raw hex
+            if (context.isHex != null && !String.IsNullOrWhiteSpace(context.isHex.Text))
             {
-                if (isContentHex)
-                {
-                    byte[] data = Convert.FromHexString(context.data.GetText());
-                    return new RByte(isTargettingRegister, data[0]);
-                }
-                else
-                {
-                    uint i = Convert.ToUInt32(context.data.GetText());
-                    byte[] data = BitConverter.GetBytes(i);
-                    return new RByte(isTargettingRegister, data[0]);
-                }
+                string d = context.hexData.GetText();
+                if (String.IsNullOrWhiteSpace(d)) throw new ParsingException("Cannot parse null or whitespace byte data");
+                byte[] bs = Convert.FromHexString(d);
+                return new RByte(false, bs[0]);
             }
 
-            // If using a constant value
-            if (!string.IsNullOrWhiteSpace(context.val.Text))
+            // Process as register reference
+            string? registerTarget = context.registerTarget?.Text;
+            if (!String.IsNullOrWhiteSpace(registerTarget))
             {
-                return new RByte(isTargettingRegister, context.val.Text);
+                if (registerTarget.Length != 2) throw new ParsingException("Register prefix '" + registerTarget + "' is not of length 2");
+                IData.RegisterTarget target = IData.ParseRegisterTarget(registerTarget[0]);
+
+                string registerData = VisitBytedata(context.registerData);
+                byte[] rd = Convert.FromHexString(registerData);
+                if (rd.Length != 1) throw new ParsingException("Cannot parse register data of > 1 bytes");
+                byte r = rd[0];
+                r = (byte)(r + IData.GetRegisterOffset(target));
+
+                return new RByte(true, r);
             }
 
-            throw new ParsingException("Cannot create byte with no bytedata or value-mapping");
+            // Process as value/identifer
+            string? valText = context.val?.Text;
+            if (!String.IsNullOrWhiteSpace(valText))
+            {
+                return new RByte(false, context.val!.Text);
+            }
+
+            throw new ParsingException("Failed to visit byte with no bytedata or value-mapping");
         }
 
         public override string VisitBytedata([NotNull] RedFoxAssemblyParser.BytedataContext context)

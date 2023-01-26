@@ -9,38 +9,59 @@ namespace RedFoxAssembly.CSharp.Statements
 {
     internal class RByte : IData
     {
-        private bool _isTargettingRegister;
+        private bool _isTargetingRegister;
         private byte? _data;
-        private string? _value;
+        private string? _identifier;
 
-        public RByte(bool isTargettingRegister, byte data)
+        public RByte(bool isTargetingRegister, byte data)
         {
-            _isTargettingRegister = isTargettingRegister;
+            _isTargetingRegister = isTargetingRegister;
             _data = data;
         }
 
-        public RByte(bool targetRegisterMode, string value)
+        public RByte(bool isTargetingRegister, string identifier)
         {
-            _isTargettingRegister = targetRegisterMode;
-            _value = value;
+            _isTargetingRegister = isTargetingRegister;
+            _identifier = identifier;
         }
 
         public byte[] GetBytes(RFASMCompiler compiler)
         {
-            if (_value != null)
-                if (compiler.Constants.TryGetValue(_value, out IData? val))
-                    return val.GetBytes(compiler);
+            // Return the value of the named constant 
+            if (_identifier != null)
+            {
+                if (compiler.Constants.TryGetValue(_identifier, out IData? val))
+                {
+                    byte[] v = val.GetBytes(compiler);
+                    if (v.Length != 1)
+                        throw new CompilationException($"Cannot assign value [{String.Join(',', v)}] of constant {_identifier} to a byte (incorrect width {v.Length}.");
+                    return v;
+                }
                 else
+                {
                     throw new CompilationException("Cannot get byte value of undeclared constant value " + val);
+                }
+            }
 
+            // Return _data
             if (_data != null)
-                return new byte[] { (byte)_data }; // Casting byte? to byte implicitly makes C# sad
-            else throw new CompilationException("Word cannot return a null byte array");
+            {
+                return new byte[] { (byte)_data };
+            }
+
+            throw new CompilationException("Byte's data is null.");
         }
 
-        public bool IsTargettingRegister()
+        public override string ToString()
         {
-            return _isTargettingRegister;
+            if (!String.IsNullOrWhiteSpace(_identifier)) return _identifier;
+            else if (_data != null) return String.Join("", _data!);
+            else return "Word(Empty)";
+        }
+
+        public bool IsTargetingRegister()
+        {
+            return _isTargetingRegister;
         }
     }
 }

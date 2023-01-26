@@ -24,13 +24,40 @@ namespace RedFoxAssembly.CSharp.Statements
         {
             List<byte> bytes = new List<byte>();
             byte instructionCode;
-            byte[] arg1value;
-            byte[] arg2value;
+            byte[] arg1value = new byte[0];
+            byte[] arg2value = new byte[0]; ;
 
-            Console.WriteLine("Addressing modes not yet implemented in ICommand.GetBytes (InstructionCommand?)");
-            instructionCode = (byte) _type;
-            arg1value = _arg1 != null ? _arg1.GetBytes(compiler) : new byte[0];
-            arg2value = _arg2 != null ? _arg2.GetBytes(compiler) : new byte[0];
+            instructionCode = (byte)_type;
+
+            if (_type == InstructionType.JMP)
+            {
+                string k = _arg1!.ToString()!;
+                LabelCommand l = compiler.Labels[k];
+                arg1value = l.GetBytes(compiler);
+            }
+            else if (_type == InstructionType.BSR)
+            {
+                string k = _arg1!.ToString()!;
+                LabelCommand l = compiler.Labels[k];
+                arg1value = l.GetBytes(compiler);
+            }
+            else if (_type == InstructionType.BFG)
+            {
+                string k = _arg1!.ToString()!;
+                LabelCommand l = compiler.Labels[k];
+                arg1value = l.GetBytes(compiler);
+                arg2value= _arg2!.GetBytes(compiler);
+            }
+            else
+            {
+                arg1value = (_arg1 != null) ? (_arg1.GetBytes(compiler)) : (new byte[0]);
+                arg2value = (_arg2 != null) ? (_arg2.GetBytes(compiler)) : (new byte[0]);
+            }
+
+            // Set addressing modes
+            // If targetting register, set addressing mode bit in the instruction
+            if (_arg1 != null) instructionCode = (byte)(instructionCode | (_arg1.IsTargetingRegister() ? 0b10000000 : 0x00)); // code | 10000000
+            if (_arg2 != null) instructionCode = (byte)(instructionCode | (_arg2.IsTargetingRegister() ? 0b01000000 : 0x00)); // code | 01000000
 
             bytes.Add(instructionCode);
             bytes.AddRange(arg1value);
