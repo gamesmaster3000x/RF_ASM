@@ -146,6 +146,7 @@
                     carry = true;
                 }
             }
+            Computer.processor.flags[5] = carry;
             Computer.processor.registers[0].Word = o;
         }
         
@@ -170,7 +171,20 @@
             }
             else 
             {
-            
+                for (int i = 0; i < Computer.processor.registers[0].Word.Length; i++)
+                {
+                    if (Computer.processor.registers[0].Word[i])
+                    {
+                        Computer.processor.flags[4] = true;
+                        Computer.processor.flags[2] = false;
+                        Computer.processor.flags[3] = false;
+                        return;
+                    }
+                }
+
+                Computer.processor.flags[2] = true;
+                Computer.processor.flags[3] = false;
+                Computer.processor.flags[4] = false;
             }
         }
 

@@ -6,6 +6,7 @@
         public Register[] registers = new Register[256];
         public Register[] interrupts = new Register[256];
         public ALU alu = new ALU();
+        public Stack stack;
         
         public Processor()
         {
@@ -15,6 +16,7 @@
                 interrupts[i] = new Register(Computer.DataWidth);
                 flags[i] = false;
             }
+            stack = new Stack(256);
         }
 
         public void Clock()
@@ -81,13 +83,13 @@
                     alu.Not();
                     break;
                 case 8:
-                    //CMP
+                    alu.Compare();
                     break;
                 case 9:
-                    //JMP
+                    Jump();
                     break;
                 case 10:
-                    //BFG
+                    BranchIfFlag();
                     break;
                 case 11:
                     //NA
@@ -99,10 +101,10 @@
                     //NA
                     break;
                 case 14:
-                    //BSR
+                    BranchSubroutine();
                     break;
                 case 15:
-                    //RTN
+                    Return();
                     break;
                 case 16:
                     ReadRegisterByte();
@@ -138,7 +140,7 @@
                     SetInterrupt();
                     break;
                 case 27:
-                    //INT
+                    Interrupt();
                     break;
                 case 28:
                     SetFlag();
@@ -185,7 +187,7 @@
             }
             else
             {
-                /**/registers[5].Byte = Computer.memory.GetByte(registers[3].Word);
+                registers[5].Byte = Computer.memory.GetByte(registers[3].Word);
                 registers[3].Word++;
             }
         }
@@ -202,6 +204,34 @@
                 registers[6].Byte = Computer.memory.GetByte(registers[3].Word);
                 registers[3].Word++;
             }
+        }
+
+        private void Jump()
+        {
+            loadOperandAWord();
+            registers[3].Word = registers[5].Word;
+        }
+
+        private void BranchIfFlag()
+        {
+            loadOperandAWord();
+            loadOperandB();
+            if (flags[registers[6].Byte])
+            {
+                registers[3].Word = registers[5].Word;
+            }
+        }
+
+        private void BranchSubroutine()
+        {
+            loadOperandAWord();
+            stack.Push(registers[3].Word);
+            registers[3].Word = registers[5].Word;
+        }
+
+        private void Return()
+        {
+            registers[3].Word = stack.Pop();
         }
 
         private void ReadRegisterByte()
@@ -283,6 +313,12 @@
             loadOperandAWord();
             loadOperandB();
             interrupts[registers[6].Byte].Word = registers[5].Word;
+        }
+
+        private void Interrupt()
+        {
+            loadOperandAByte();
+            registers[3].Word = interrupts[registers[5].Byte].Word;
         }
 
         private void SetFlag()
