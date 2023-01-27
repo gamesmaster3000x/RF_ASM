@@ -65,5 +65,16 @@ namespace RedFoxAssembly.CSharp.Statements
 
             return bytes.ToArray();
         }
+
+        public int GetPredictedLength(RFASMCompiler compiler)
+        {
+            int width = 0;
+
+            width += 1; // Instruction code
+            if (_arg1 != null) width += _arg1!.GetWidth(compiler);
+            if (_arg2 != null) width += _arg2!.GetWidth(compiler);
+
+            return width;
+        }
     }
 }

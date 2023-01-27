@@ -95,5 +95,10 @@ namespace RedFoxAssembly.CSharp.Statements
         {
             return _isTargetingRegister;
         }
+
+        public int GetWidth(RFASMCompiler compiler)
+        {
+            return compiler.meta!.DataWidth;
+        }
     }
 }

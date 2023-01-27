@@ -146,7 +146,7 @@ namespace RedFoxAssembly.CSharp.Core
                 }
                 else
                 {
-                    programLength += c.GetBytes(this).Length;
+                    programLength += c.GetPredictedLength(this);
                 }
             }
         }

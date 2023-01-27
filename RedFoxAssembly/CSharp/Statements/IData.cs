@@ -12,7 +12,11 @@ namespace RedFoxAssembly.CSharp.Statements
     internal interface IData
     {
         public byte[] GetBytes(RFASMCompiler compiler);
+
+        int GetWidth(RFASMCompiler compiler);
+
         public bool IsTargetingRegister();
+
         public string ToString();
 
         public static RegisterTarget ParseRegisterTarget(char c)

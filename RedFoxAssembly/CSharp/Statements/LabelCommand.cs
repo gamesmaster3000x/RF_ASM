@@ -33,6 +33,11 @@ namespace RedFoxAssembly.CSharp.Statements
             return result;
         }
 
+        public int GetPredictedLength(RFASMCompiler compiler)
+        {
+            return 0;
+        }
+
         internal void DeclareLabel(RFASMCompiler compiler, int position)
         {
             if (compiler.Labels.ContainsKey(_id)) throw new PreCompilationException($"Illegal duplicate declaration of label {_id}");
