@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonBasic.CSharp.Core.Statements
+namespace CrimsonBasic.CSharp.Statements
 {
     public class SetBStatement : BasicStatement
     {
@@ -14,8 +14,8 @@ namespace CrimsonBasic.CSharp.Core.Statements
 
         public SetBStatement(string text, string value)
         {
-            this._name = text;
-            this._value = value;
+            _name = text;
+            _value = value;
         }
 
         public override string ToString()

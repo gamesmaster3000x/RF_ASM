@@ -1,4 +1,4 @@
-﻿namespace CrimsonBasic.CSharp.Core.Statements
+﻿namespace CrimsonBasic.CSharp.Statements
 {
     public abstract class BasicStatement
     {
