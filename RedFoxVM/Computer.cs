@@ -12,8 +12,10 @@ namespace RedFoxVM
 
         public static void Initialise(int dataWidth, byte[] data)
         {
+            Console.WriteLine("Started creating VM...");
             Computer.dataWidth = dataWidth;
             memory = new RAM(data);
+            Console.WriteLine("Successfully created VM with " + memory.Capacity + " bytes of memory.");
         }
 
         public static void Run()
