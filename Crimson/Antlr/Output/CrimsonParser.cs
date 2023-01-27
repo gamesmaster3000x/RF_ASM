@@ -37,46 +37,50 @@ public partial class CrimsonParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, Function=3, Global=4, Return=5, Structure=6, Using=7, 
-		As=8, If=9, While=10, Else=11, Elif=12, Integer=13, Boolean=14, Pointer=15, 
-		Null=16, BooleanValue=17, Comparator=18, Tilda=19, DirectEquals=20, PointerEquals=21, 
-		OpenBracket=22, CloseBracket=23, OpenSquare=24, CloseSquare=25, OpenBrace=26, 
-		CloseBrace=27, Comma=28, Dot=29, SemiColon=30, Underscore=31, Hashtag=32, 
-		Quote=33, Plus=34, Minus=35, Asterisk=36, Slash=37, SkipTokens=38, LineComment=39, 
-		Number=40, String=41, Identifier=42;
+		T__0=1, T__1=2, Allocator=3, Function=4, Global=5, Return=6, Structure=7, 
+		Using=8, OpHandler=9, As=10, If=11, While=12, Else=13, Elif=14, Integer=15, 
+		Boolean=16, Null=17, BooleanValue=18, Operator=19, Asterisk=20, MathsOperator=21, 
+		Comparator=22, RightArrow=23, Tilda=24, DirectEquals=25, PointerEquals=26, 
+		OpenBracket=27, CloseBracket=28, OpenSquare=29, CloseSquare=30, OpenBrace=31, 
+		CloseBrace=32, Comma=33, Dot=34, SemiColon=35, Underscore=36, Hashtag=37, 
+		Quote=38, SkipTokens=39, LineComment=40, Number=41, String=42, Identifier=43;
 	public const int
-		RULE_translationUnit = 0, RULE_importUnit = 1, RULE_globalStatement = 2, 
-		RULE_globalVariableDeclaration = 3, RULE_functionDeclaration = 4, RULE_functionBody = 5, 
-		RULE_internalStatement = 6, RULE_internalVariableDeclaration = 7, RULE_assignVariable = 8, 
-		RULE_ifBlock = 9, RULE_whileBlock = 10, RULE_condition = 11, RULE_elseIfBlock = 12, 
-		RULE_elseBlock = 13, RULE_assemblyCall = 14, RULE_functionCall = 15, RULE_arguments = 16, 
-		RULE_functionReturn = 17, RULE_resolvableValue = 18, RULE_maths = 19, 
-		RULE_parameterList = 20, RULE_parameter = 21, RULE_structureDeclaration = 22, 
-		RULE_structureBody = 23, RULE_type = 24, RULE_rawType = 25, RULE_array = 26;
+		RULE_translationUnit = 0, RULE_heapMemoryAllocator = 1, RULE_importUnit = 2, 
+		RULE_operationHandler = 3, RULE_globalStatement = 4, RULE_globalVariableDeclaration = 5, 
+		RULE_functionDeclaration = 6, RULE_functionHeader = 7, RULE_functionBody = 8, 
+		RULE_internalStatement = 9, RULE_internalVariableDeclaration = 10, RULE_assignVariable = 11, 
+		RULE_ifBlock = 12, RULE_whileBlock = 13, RULE_condition = 14, RULE_elseIfBlock = 15, 
+		RULE_elseBlock = 16, RULE_assemblyCall = 17, RULE_functionCall = 18, RULE_arguments = 19, 
+		RULE_functionReturn = 20, RULE_simpleValue = 21, RULE_complexValue = 22, 
+		RULE_rawValue = 23, RULE_operation = 24, RULE_parameterList = 25, RULE_parameter = 26, 
+		RULE_structureDeclaration = 27, RULE_structureBody = 28, RULE_type = 29, 
+		RULE_rawType = 30, RULE_array = 31;
 	public static readonly string[] ruleNames = {
-		"translationUnit", "importUnit", "globalStatement", "globalVariableDeclaration", 
-		"functionDeclaration", "functionBody", "internalStatement", "internalVariableDeclaration", 
+		"translationUnit", "heapMemoryAllocator", "importUnit", "operationHandler", 
+		"globalStatement", "globalVariableDeclaration", "functionDeclaration", 
+		"functionHeader", "functionBody", "internalStatement", "internalVariableDeclaration", 
 		"assignVariable", "ifBlock", "whileBlock", "condition", "elseIfBlock", 
 		"elseBlock", "assemblyCall", "functionCall", "arguments", "functionReturn", 
-		"resolvableValue", "maths", "parameterList", "parameter", "structureDeclaration", 
-		"structureBody", "type", "rawType", "array"
+		"simpleValue", "complexValue", "rawValue", "operation", "parameterList", 
+		"parameter", "structureDeclaration", "structureBody", "type", "rawType", 
+		"array"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'\\r'", "'\\n'", "'function'", "'global'", "'return'", "'structure'", 
-		"'using'", "'as'", "'if'", "'while'", "'else'", "'elif'", "'int'", "'bool'", 
-		"'ptr'", "'null'", null, null, "'~'", "'='", "'*='", "'('", "')'", "'['", 
-		"']'", "'{'", "'}'", "','", "'.'", "';'", "'_'", "'#'", "'\"'", "'+'", 
-		"'-'", "'*'", "'/'"
+		null, "'\\r'", "'\\n'", "'allocator'", "'function'", "'global'", "'return'", 
+		"'structure'", "'using'", "'ophandler'", "'as'", "'if'", "'while'", "'else'", 
+		"'elif'", "'int'", "'bool'", "'null'", null, null, "'*'", null, null, 
+		"'->'", "'~'", "'='", "'*='", "'('", "')'", "'['", "']'", "'{'", "'}'", 
+		"','", "'.'", "';'", "'_'", "'#'", "'\"'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, "Function", "Global", "Return", "Structure", "Using", 
-		"As", "If", "While", "Else", "Elif", "Integer", "Boolean", "Pointer", 
-		"Null", "BooleanValue", "Comparator", "Tilda", "DirectEquals", "PointerEquals", 
+		null, null, null, "Allocator", "Function", "Global", "Return", "Structure", 
+		"Using", "OpHandler", "As", "If", "While", "Else", "Elif", "Integer", 
+		"Boolean", "Null", "BooleanValue", "Operator", "Asterisk", "MathsOperator", 
+		"Comparator", "RightArrow", "Tilda", "DirectEquals", "PointerEquals", 
 		"OpenBracket", "CloseBracket", "OpenSquare", "CloseSquare", "OpenBrace", 
 		"CloseBrace", "Comma", "Dot", "SemiColon", "Underscore", "Hashtag", "Quote", 
-		"Plus", "Minus", "Asterisk", "Slash", "SkipTokens", "LineComment", "Number", 
-		"String", "Identifier"
+		"SkipTokens", "LineComment", "Number", "String", "Identifier"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -111,17 +115,29 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class TranslationUnitContext : ParserRuleContext {
+		public HeapMemoryAllocatorContext heapAllocator;
 		public ImportUnitContext _importUnit;
 		public IList<ImportUnitContext> _imports = new List<ImportUnitContext>();
+		public OperationHandlerContext _operationHandler;
+		public IList<OperationHandlerContext> _opHandlers = new List<OperationHandlerContext>();
 		public GlobalStatementContext _globalStatement;
 		public IList<GlobalStatementContext> _statements = new List<GlobalStatementContext>();
 		public IToken eof;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(CrimsonParser.Eof, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public HeapMemoryAllocatorContext heapMemoryAllocator() {
+			return GetRuleContext<HeapMemoryAllocatorContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ImportUnitContext[] importUnit() {
 			return GetRuleContexts<ImportUnitContext>();
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ImportUnitContext importUnit(int i) {
 			return GetRuleContext<ImportUnitContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public OperationHandlerContext[] operationHandler() {
+			return GetRuleContexts<OperationHandlerContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public OperationHandlerContext operationHandler(int i) {
+			return GetRuleContext<OperationHandlerContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public GlobalStatementContext[] globalStatement() {
 			return GetRuleContexts<GlobalStatementContext>();
@@ -158,40 +174,118 @@ public partial class CrimsonParser : Parser {
 		EnterRule(_localctx, 0, RULE_translationUnit);
 		int _la;
 		try {
+			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 57;
+			{
+			State = 64;
+			_localctx.heapAllocator = heapMemoryAllocator();
+			}
+			State = 68;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,0,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 65;
+					_localctx._importUnit = importUnit();
+					_localctx._imports.Add(_localctx._importUnit);
+					}
+					} 
+				}
+				State = 70;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,0,Context);
+			}
+			State = 74;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==Hashtag) {
 				{
 				{
-				State = 54;
-				_localctx._importUnit = importUnit();
-				_localctx._imports.Add(_localctx._importUnit);
+				State = 71;
+				_localctx._operationHandler = operationHandler();
+				_localctx._opHandlers.Add(_localctx._operationHandler);
 				}
 				}
-				State = 59;
+				State = 76;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 63;
+			State = 80;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 88L) != 0) {
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 176L) != 0) {
 				{
 				{
-				State = 60;
+				State = 77;
 				_localctx._globalStatement = globalStatement();
 				_localctx._statements.Add(_localctx._globalStatement);
 				}
 				}
-				State = 65;
+				State = 82;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 66;
+			State = 83;
 			_localctx.eof = Match(Eof);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class HeapMemoryAllocatorContext : ParserRuleContext {
+		public FunctionHeaderContext header;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Hashtag() { return GetToken(CrimsonParser.Hashtag, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Allocator() { return GetToken(CrimsonParser.Allocator, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
+			return GetRuleContext<FunctionHeaderContext>(0);
+		}
+		public HeapMemoryAllocatorContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_heapMemoryAllocator; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterHeapMemoryAllocator(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitHeapMemoryAllocator(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitHeapMemoryAllocator(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public HeapMemoryAllocatorContext heapMemoryAllocator() {
+		HeapMemoryAllocatorContext _localctx = new HeapMemoryAllocatorContext(Context, State);
+		EnterRule(_localctx, 2, RULE_heapMemoryAllocator);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 85;
+			Match(Hashtag);
+			State = 86;
+			Match(Allocator);
+			State = 87;
+			_localctx.header = functionHeader();
 			}
 		}
 		catch (RecognitionException re) {
@@ -239,20 +333,101 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ImportUnitContext importUnit() {
 		ImportUnitContext _localctx = new ImportUnitContext(Context, State);
-		EnterRule(_localctx, 2, RULE_importUnit);
+		EnterRule(_localctx, 4, RULE_importUnit);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 68;
+			State = 89;
 			Match(Hashtag);
-			State = 69;
+			State = 90;
 			Match(Using);
-			State = 70;
+			State = 91;
 			_localctx.path = Match(String);
-			State = 71;
+			State = 92;
 			Match(As);
-			State = 72;
+			State = 93;
 			_localctx.identifier = Match(Identifier);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class OperationHandlerContext : ParserRuleContext {
+		public TypeContext t1;
+		public IToken op;
+		public TypeContext t2;
+		public FunctionHeaderContext header;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Hashtag() { return GetToken(CrimsonParser.Hashtag, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpHandler() { return GetToken(CrimsonParser.OpHandler, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBracket() { return GetToken(CrimsonParser.OpenBracket, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBracket() { return GetToken(CrimsonParser.CloseBracket, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RightArrow() { return GetToken(CrimsonParser.RightArrow, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext[] type() {
+			return GetRuleContexts<TypeContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type(int i) {
+			return GetRuleContext<TypeContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Operator() { return GetToken(CrimsonParser.Operator, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
+			return GetRuleContext<FunctionHeaderContext>(0);
+		}
+		public OperationHandlerContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_operationHandler; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterOperationHandler(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitOperationHandler(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitOperationHandler(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public OperationHandlerContext operationHandler() {
+		OperationHandlerContext _localctx = new OperationHandlerContext(Context, State);
+		EnterRule(_localctx, 6, RULE_operationHandler);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 95;
+			Match(Hashtag);
+			State = 96;
+			Match(OpHandler);
+			State = 97;
+			Match(OpenBracket);
+			State = 98;
+			_localctx.t1 = type();
+			State = 99;
+			_localctx.op = Match(Operator);
+			State = 100;
+			_localctx.t2 = type();
+			State = 101;
+			Match(CloseBracket);
+			State = 102;
+			Match(RightArrow);
+			State = 103;
+			_localctx.header = functionHeader();
 			}
 		}
 		catch (RecognitionException re) {
@@ -348,16 +523,16 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public GlobalStatementContext globalStatement() {
 		GlobalStatementContext _localctx = new GlobalStatementContext(Context, State);
-		EnterRule(_localctx, 4, RULE_globalStatement);
+		EnterRule(_localctx, 8, RULE_globalStatement);
 		try {
-			State = 77;
+			State = 108;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case Global:
 				_localctx = new GlobalVariableUnitStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 74;
+				State = 105;
 				globalVariableDeclaration();
 				}
 				break;
@@ -365,7 +540,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionUnitStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 75;
+				State = 106;
 				functionDeclaration();
 				}
 				break;
@@ -373,7 +548,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new StructureUnitStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 76;
+				State = 107;
 				structureDeclaration();
 				}
 				break;
@@ -424,13 +599,13 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public GlobalVariableDeclarationContext globalVariableDeclaration() {
 		GlobalVariableDeclarationContext _localctx = new GlobalVariableDeclarationContext(Context, State);
-		EnterRule(_localctx, 6, RULE_globalVariableDeclaration);
+		EnterRule(_localctx, 10, RULE_globalVariableDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 79;
+			State = 110;
 			Match(Global);
-			State = 80;
+			State = 111;
 			_localctx.declaration = internalVariableDeclaration();
 			}
 		}
@@ -446,17 +621,15 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class FunctionDeclarationContext : ParserRuleContext {
-		public IToken name;
 		public TypeContext returnType;
-		public ParameterListContext parameters;
+		public FunctionHeaderContext header;
 		public FunctionBodyContext body;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Function() { return GetToken(CrimsonParser.Function, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
 			return GetRuleContext<TypeContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ParameterListContext parameterList() {
-			return GetRuleContext<ParameterListContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
+			return GetRuleContext<FunctionHeaderContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
 			return GetRuleContext<FunctionBodyContext>(0);
@@ -487,20 +660,72 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public FunctionDeclarationContext functionDeclaration() {
 		FunctionDeclarationContext _localctx = new FunctionDeclarationContext(Context, State);
-		EnterRule(_localctx, 8, RULE_functionDeclaration);
+		EnterRule(_localctx, 12, RULE_functionDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 82;
+			State = 113;
 			Match(Function);
-			State = 83;
-			_localctx.name = Match(Identifier);
-			State = 84;
+			State = 114;
 			_localctx.returnType = type();
-			State = 85;
-			_localctx.parameters = parameterList();
-			State = 86;
+			State = 115;
+			_localctx.header = functionHeader();
+			State = 116;
 			_localctx.body = functionBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class FunctionHeaderContext : ParserRuleContext {
+		public IToken name;
+		public ParameterListContext parameters;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ParameterListContext parameterList() {
+			return GetRuleContext<ParameterListContext>(0);
+		}
+		public FunctionHeaderContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_functionHeader; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterFunctionHeader(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitFunctionHeader(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFunctionHeader(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public FunctionHeaderContext functionHeader() {
+		FunctionHeaderContext _localctx = new FunctionHeaderContext(Context, State);
+		EnterRule(_localctx, 14, RULE_functionHeader);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 118;
+			_localctx.name = Match(Identifier);
+			State = 119;
+			_localctx.parameters = parameterList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -551,29 +776,29 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public FunctionBodyContext functionBody() {
 		FunctionBodyContext _localctx = new FunctionBodyContext(Context, State);
-		EnterRule(_localctx, 10, RULE_functionBody);
+		EnterRule(_localctx, 16, RULE_functionBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 88;
+			State = 121;
 			Match(OpenBrace);
-			State = 92;
+			State = 125;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 4398063937056L) != 0) {
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 8796646905920L) != 0) {
 				{
 				{
-				State = 89;
+				State = 122;
 				_localctx._internalStatement = internalStatement();
 				_localctx._statements.Add(_localctx._internalStatement);
 				}
 				}
-				State = 94;
+				State = 127;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 95;
+			State = 128;
 			Match(CloseBrace);
 			}
 		}
@@ -759,16 +984,16 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public InternalStatementContext internalStatement() {
 		InternalStatementContext _localctx = new InternalStatementContext(Context, State);
-		EnterRule(_localctx, 12, RULE_internalStatement);
+		EnterRule(_localctx, 18, RULE_internalStatement);
 		try {
-			State = 106;
+			State = 139;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,4,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
 			case 1:
 				_localctx = new FunctionVariableDeclarationStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 97;
+				State = 130;
 				internalVariableDeclaration();
 				}
 				break;
@@ -776,7 +1001,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionReturnStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 98;
+				State = 131;
 				functionReturn();
 				}
 				break;
@@ -784,7 +1009,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionAssignVariableStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 99;
+				State = 132;
 				assignVariable();
 				}
 				break;
@@ -792,9 +1017,9 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionFunctionCallStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 100;
+				State = 133;
 				functionCall();
-				State = 101;
+				State = 134;
 				Match(SemiColon);
 				}
 				break;
@@ -802,7 +1027,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionIfStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 103;
+				State = 136;
 				ifBlock();
 				}
 				break;
@@ -810,7 +1035,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionWhileStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 104;
+				State = 137;
 				whileBlock();
 				}
 				break;
@@ -818,7 +1043,7 @@ public partial class CrimsonParser : Parser {
 				_localctx = new FunctionAssemblyCallStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 105;
+				State = 138;
 				assemblyCall();
 				}
 				break;
@@ -836,15 +1061,19 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class InternalVariableDeclarationContext : ParserRuleContext {
-		public ResolvableValueContext value;
+		public ComplexValueContext complex;
+		public SimpleValueContext simple;
 		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
 			return GetRuleContext<TypeContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DirectEquals() { return GetToken(CrimsonParser.DirectEquals, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext resolvableValue() {
-			return GetRuleContext<ResolvableValueContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ComplexValueContext complexValue() {
+			return GetRuleContext<ComplexValueContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext simpleValue() {
+			return GetRuleContext<SimpleValueContext>(0);
 		}
 		public InternalVariableDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -872,19 +1101,33 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public InternalVariableDeclarationContext internalVariableDeclaration() {
 		InternalVariableDeclarationContext _localctx = new InternalVariableDeclarationContext(Context, State);
-		EnterRule(_localctx, 14, RULE_internalVariableDeclaration);
+		EnterRule(_localctx, 20, RULE_internalVariableDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 108;
+			State = 141;
 			type();
-			State = 109;
+			State = 142;
 			Match(Identifier);
-			State = 110;
+			State = 143;
 			Match(DirectEquals);
-			State = 111;
-			_localctx.value = resolvableValue();
-			State = 112;
+			State = 146;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+			case 1:
+				{
+				State = 144;
+				_localctx.complex = complexValue();
+				}
+				break;
+			case 2:
+				{
+				State = 145;
+				_localctx.simple = simpleValue();
+				}
+				break;
+			}
+			State = 148;
 			Match(SemiColon);
 			}
 		}
@@ -912,12 +1155,17 @@ public partial class CrimsonParser : Parser {
 		}
 	}
 	public partial class AssignVariableAtPointerContext : AssignVariableContext {
+		public ComplexValueContext complex;
+		public SimpleValueContext simple;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PointerEquals() { return GetToken(CrimsonParser.PointerEquals, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext resolvableValue() {
-			return GetRuleContext<ResolvableValueContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ComplexValueContext complexValue() {
+			return GetRuleContext<ComplexValueContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext simpleValue() {
+			return GetRuleContext<SimpleValueContext>(0);
+		}
 		public AssignVariableAtPointerContext(AssignVariableContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -937,12 +1185,17 @@ public partial class CrimsonParser : Parser {
 		}
 	}
 	public partial class AssignVariableDirectContext : AssignVariableContext {
+		public ComplexValueContext complex;
+		public SimpleValueContext simple;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DirectEquals() { return GetToken(CrimsonParser.DirectEquals, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext resolvableValue() {
-			return GetRuleContext<ResolvableValueContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ComplexValueContext complexValue() {
+			return GetRuleContext<ComplexValueContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext simpleValue() {
+			return GetRuleContext<SimpleValueContext>(0);
+		}
 		public AssignVariableDirectContext(AssignVariableContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -965,22 +1218,36 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public AssignVariableContext assignVariable() {
 		AssignVariableContext _localctx = new AssignVariableContext(Context, State);
-		EnterRule(_localctx, 16, RULE_assignVariable);
+		EnterRule(_localctx, 22, RULE_assignVariable);
 		try {
-			State = 124;
+			State = 166;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
 			case 1:
 				_localctx = new AssignVariableDirectContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 114;
+				State = 150;
 				Match(Identifier);
-				State = 115;
+				State = 151;
 				Match(DirectEquals);
-				State = 116;
-				resolvableValue();
-				State = 117;
+				State = 154;
+				ErrorHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
+				case 1:
+					{
+					State = 152;
+					((AssignVariableDirectContext)_localctx).complex = complexValue();
+					}
+					break;
+				case 2:
+					{
+					State = 153;
+					((AssignVariableDirectContext)_localctx).simple = simpleValue();
+					}
+					break;
+				}
+				State = 156;
 				Match(SemiColon);
 				}
 				break;
@@ -988,13 +1255,27 @@ public partial class CrimsonParser : Parser {
 				_localctx = new AssignVariableAtPointerContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 119;
+				State = 158;
 				Match(Identifier);
-				State = 120;
+				State = 159;
 				Match(PointerEquals);
-				State = 121;
-				resolvableValue();
-				State = 122;
+				State = 162;
+				ErrorHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
+				case 1:
+					{
+					State = 160;
+					((AssignVariableAtPointerContext)_localctx).complex = complexValue();
+					}
+					break;
+				case 2:
+					{
+					State = 161;
+					((AssignVariableAtPointerContext)_localctx).simple = simpleValue();
+					}
+					break;
+				}
+				State = 164;
 				Match(SemiColon);
 				}
 				break;
@@ -1051,28 +1332,28 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public IfBlockContext ifBlock() {
 		IfBlockContext _localctx = new IfBlockContext(Context, State);
-		EnterRule(_localctx, 18, RULE_ifBlock);
+		EnterRule(_localctx, 24, RULE_ifBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 126;
+			State = 168;
 			Match(If);
-			State = 127;
+			State = 169;
 			condition();
-			State = 128;
+			State = 170;
 			functionBody();
-			State = 131;
+			State = 173;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
 			case 1:
 				{
-				State = 129;
+				State = 171;
 				elseBlock();
 				}
 				break;
 			case 2:
 				{
-				State = 130;
+				State = 172;
 				elseIfBlock();
 				}
 				break;
@@ -1124,15 +1405,15 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public WhileBlockContext whileBlock() {
 		WhileBlockContext _localctx = new WhileBlockContext(Context, State);
-		EnterRule(_localctx, 20, RULE_whileBlock);
+		EnterRule(_localctx, 26, RULE_whileBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 133;
+			State = 175;
 			Match(While);
-			State = 134;
+			State = 176;
 			condition();
-			State = 135;
+			State = 177;
 			functionBody();
 			}
 		}
@@ -1148,18 +1429,12 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class ConditionContext : ParserRuleContext {
-		public ResolvableValueContext leftValue;
-		public IToken comparator;
-		public ResolvableValueContext rightValue;
+		public OperationContext op;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBracket() { return GetToken(CrimsonParser.OpenBracket, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBracket() { return GetToken(CrimsonParser.CloseBracket, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext[] resolvableValue() {
-			return GetRuleContexts<ResolvableValueContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public OperationContext operation() {
+			return GetRuleContext<OperationContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext resolvableValue(int i) {
-			return GetRuleContext<ResolvableValueContext>(i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Comparator() { return GetToken(CrimsonParser.Comparator, 0); }
 		public ConditionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1186,19 +1461,15 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ConditionContext condition() {
 		ConditionContext _localctx = new ConditionContext(Context, State);
-		EnterRule(_localctx, 22, RULE_condition);
+		EnterRule(_localctx, 28, RULE_condition);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 137;
+			State = 179;
 			Match(OpenBracket);
-			State = 138;
-			_localctx.leftValue = resolvableValue();
-			State = 139;
-			_localctx.comparator = Match(Comparator);
-			State = 140;
-			_localctx.rightValue = resolvableValue();
-			State = 141;
+			State = 180;
+			_localctx.op = operation();
+			State = 181;
 			Match(CloseBracket);
 			}
 		}
@@ -1244,13 +1515,13 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ElseIfBlockContext elseIfBlock() {
 		ElseIfBlockContext _localctx = new ElseIfBlockContext(Context, State);
-		EnterRule(_localctx, 24, RULE_elseIfBlock);
+		EnterRule(_localctx, 30, RULE_elseIfBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 143;
+			State = 183;
 			Match(Else);
-			State = 144;
+			State = 184;
 			ifBlock();
 			}
 		}
@@ -1296,13 +1567,13 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ElseBlockContext elseBlock() {
 		ElseBlockContext _localctx = new ElseBlockContext(Context, State);
-		EnterRule(_localctx, 26, RULE_elseBlock);
+		EnterRule(_localctx, 32, RULE_elseBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 146;
+			State = 186;
 			Match(Else);
-			State = 147;
+			State = 187;
 			functionBody();
 			}
 		}
@@ -1346,22 +1617,22 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public AssemblyCallContext assemblyCall() {
 		AssemblyCallContext _localctx = new AssemblyCallContext(Context, State);
-		EnterRule(_localctx, 28, RULE_assemblyCall);
+		EnterRule(_localctx, 34, RULE_assemblyCall);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 149;
+			State = 189;
 			Match(Tilda);
-			State = 153;
+			State = 193;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,7,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 150;
+					State = 190;
 					_localctx.assemblyText = TokenStream.LT(1);
 					_la = TokenStream.LA(1);
 					if ( _la <= 0 || (_la==T__0 || _la==T__1) ) {
@@ -1374,9 +1645,9 @@ public partial class CrimsonParser : Parser {
 					}
 					} 
 				}
-				State = 155;
+				State = 195;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,7,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
 			}
 			}
 		}
@@ -1422,13 +1693,13 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public FunctionCallContext functionCall() {
 		FunctionCallContext _localctx = new FunctionCallContext(Context, State);
-		EnterRule(_localctx, 30, RULE_functionCall);
+		EnterRule(_localctx, 36, RULE_functionCall);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 156;
+			State = 196;
 			Match(Identifier);
-			State = 157;
+			State = 197;
 			arguments();
 			}
 		}
@@ -1446,11 +1717,11 @@ public partial class CrimsonParser : Parser {
 	public partial class ArgumentsContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBracket() { return GetToken(CrimsonParser.OpenBracket, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBracket() { return GetToken(CrimsonParser.CloseBracket, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext[] resolvableValue() {
-			return GetRuleContexts<ResolvableValueContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext[] simpleValue() {
+			return GetRuleContexts<SimpleValueContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext resolvableValue(int i) {
-			return GetRuleContext<ResolvableValueContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext simpleValue(int i) {
+			return GetRuleContext<SimpleValueContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] Comma() { return GetTokens(CrimsonParser.Comma); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Comma(int i) {
@@ -1482,42 +1753,42 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ArgumentsContext arguments() {
 		ArgumentsContext _localctx = new ArgumentsContext(Context, State);
-		EnterRule(_localctx, 32, RULE_arguments);
+		EnterRule(_localctx, 38, RULE_arguments);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 159;
+			State = 199;
 			Match(OpenBracket);
-			State = 161;
+			State = 201;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (((_la) & ~0x3f) == 0 && ((1L << _la) & 5497558335488L) != 0) {
+			if (((_la) & ~0x3f) == 0 && ((1L << _la) & 10995116670976L) != 0) {
 				{
-				State = 160;
-				resolvableValue();
+				State = 200;
+				simpleValue();
 				}
 			}
 
-			State = 167;
+			State = 207;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==Comma) {
 				{
 				{
-				State = 163;
+				State = 203;
 				Match(Comma);
 				{
-				State = 164;
-				resolvableValue();
+				State = 204;
+				simpleValue();
 				}
 				}
 				}
-				State = 169;
+				State = 209;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 170;
+			State = 210;
 			Match(CloseBracket);
 			}
 		}
@@ -1534,8 +1805,8 @@ public partial class CrimsonParser : Parser {
 
 	public partial class FunctionReturnContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Return() { return GetToken(CrimsonParser.Return, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ResolvableValueContext resolvableValue() {
-			return GetRuleContext<ResolvableValueContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext simpleValue() {
+			return GetRuleContext<SimpleValueContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
 		public FunctionReturnContext(ParserRuleContext parent, int invokingState)
@@ -1564,28 +1835,28 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public FunctionReturnContext functionReturn() {
 		FunctionReturnContext _localctx = new FunctionReturnContext(Context, State);
-		EnterRule(_localctx, 34, RULE_functionReturn);
+		EnterRule(_localctx, 40, RULE_functionReturn);
 		try {
-			State = 178;
+			State = 218;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 172;
+				State = 212;
 				Match(Return);
-				State = 173;
-				resolvableValue();
-				State = 174;
+				State = 213;
+				simpleValue();
+				State = 214;
 				Match(SemiColon);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 176;
+				State = 216;
 				Match(Return);
-				State = 177;
+				State = 217;
 				Match(SemiColon);
 				}
 				break;
@@ -1602,222 +1873,140 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class ResolvableValueContext : ParserRuleContext {
-		public ResolvableValueContext(ParserRuleContext parent, int invokingState)
+	public partial class SimpleValueContext : ParserRuleContext {
+		public IToken id;
+		public IToken pointer;
+		public RawValueContext raw;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Asterisk() { return GetToken(CrimsonParser.Asterisk, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public RawValueContext rawValue() {
+			return GetRuleContext<RawValueContext>(0);
+		}
+		public SimpleValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_resolvableValue; } }
-	 
-		public ResolvableValueContext() { }
-		public virtual void CopyFrom(ResolvableValueContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class NumberResolvableValueStatementContext : ResolvableValueContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Number() { return GetToken(CrimsonParser.Number, 0); }
-		public NumberResolvableValueStatementContext(ResolvableValueContext context) { CopyFrom(context); }
+		public override int RuleIndex { get { return RULE_simpleValue; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterNumberResolvableValueStatement(this);
+			if (typedListener != null) typedListener.EnterSimpleValue(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitNumberResolvableValueStatement(this);
+			if (typedListener != null) typedListener.ExitSimpleValue(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNumberResolvableValueStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitSimpleValue(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class BooleanResolvableValueStatementContext : ResolvableValueContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BooleanValue() { return GetToken(CrimsonParser.BooleanValue, 0); }
-		public BooleanResolvableValueStatementContext(ResolvableValueContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterBooleanResolvableValueStatement(this);
+
+	[RuleVersion(0)]
+	public SimpleValueContext simpleValue() {
+		SimpleValueContext _localctx = new SimpleValueContext(Context, State);
+		EnterRule(_localctx, 42, RULE_simpleValue);
+		int _la;
+		try {
+			State = 225;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case Identifier:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 220;
+				_localctx.id = Match(Identifier);
+				State = 222;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==Asterisk) {
+					{
+					State = 221;
+					_localctx.pointer = Match(Asterisk);
+					}
+				}
+
+				}
+				break;
+			case Null:
+			case BooleanValue:
+			case Number:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 224;
+				_localctx.raw = rawValue();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitBooleanResolvableValueStatement(this);
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitBooleanResolvableValueStatement(this);
-			else return visitor.VisitChildren(this);
+		finally {
+			ExitRule();
 		}
+		return _localctx;
 	}
-	public partial class IdentifierResolvableValueStatementContext : ResolvableValueContext {
-		public IToken pointer;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Asterisk() { return GetToken(CrimsonParser.Asterisk, 0); }
-		public IdentifierResolvableValueStatementContext(ResolvableValueContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterIdentifierResolvableValueStatement(this);
+
+	public partial class ComplexValueContext : ParserRuleContext {
+		public OperationContext op;
+		public FunctionCallContext func;
+		[System.Diagnostics.DebuggerNonUserCode] public OperationContext operation() {
+			return GetRuleContext<OperationContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitIdentifierResolvableValueStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitIdentifierResolvableValueStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class NullResolvableValueStatementContext : ResolvableValueContext {
-		public IToken pointer;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Null() { return GetToken(CrimsonParser.Null, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Asterisk() { return GetToken(CrimsonParser.Asterisk, 0); }
-		public NullResolvableValueStatementContext(ResolvableValueContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterNullResolvableValueStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitNullResolvableValueStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNullResolvableValueStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class FunctionCallResolvableValueStatementContext : ResolvableValueContext {
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionCallContext functionCall() {
 			return GetRuleContext<FunctionCallContext>(0);
 		}
-		public FunctionCallResolvableValueStatementContext(ResolvableValueContext context) { CopyFrom(context); }
+		public ComplexValueContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_complexValue; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionCallResolvableValueStatement(this);
+			if (typedListener != null) typedListener.EnterComplexValue(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionCallResolvableValueStatement(this);
+			if (typedListener != null) typedListener.ExitComplexValue(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionCallResolvableValueStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class MathsResolvableValueStatementContext : ResolvableValueContext {
-		[System.Diagnostics.DebuggerNonUserCode] public MathsContext maths() {
-			return GetRuleContext<MathsContext>(0);
-		}
-		public MathsResolvableValueStatementContext(ResolvableValueContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterMathsResolvableValueStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitMathsResolvableValueStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitMathsResolvableValueStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitComplexValue(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ResolvableValueContext resolvableValue() {
-		ResolvableValueContext _localctx = new ResolvableValueContext(Context, State);
-		EnterRule(_localctx, 36, RULE_resolvableValue);
-		int _la;
+	public ComplexValueContext complexValue() {
+		ComplexValueContext _localctx = new ComplexValueContext(Context, State);
+		EnterRule(_localctx, 44, RULE_complexValue);
 		try {
-			State = 192;
+			State = 229;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,13,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,17,Context) ) {
 			case 1:
-				_localctx = new IdentifierResolvableValueStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 180;
-				Match(Identifier);
-				State = 182;
-				ErrorHandler.Sync(this);
-				_la = TokenStream.LA(1);
-				if (_la==Asterisk) {
-					{
-					State = 181;
-					((IdentifierResolvableValueStatementContext)_localctx).pointer = Match(Asterisk);
-					}
-				}
-
+				State = 227;
+				_localctx.op = operation();
 				}
 				break;
 			case 2:
-				_localctx = new NumberResolvableValueStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 184;
-				Match(Number);
-				}
-				break;
-			case 3:
-				_localctx = new MathsResolvableValueStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 185;
-				maths();
-				}
-				break;
-			case 4:
-				_localctx = new FunctionCallResolvableValueStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 4);
-				{
-				State = 186;
-				functionCall();
-				}
-				break;
-			case 5:
-				_localctx = new NullResolvableValueStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 5);
-				{
-				State = 187;
-				Match(Null);
-				State = 189;
-				ErrorHandler.Sync(this);
-				_la = TokenStream.LA(1);
-				if (_la==Asterisk) {
-					{
-					State = 188;
-					((NullResolvableValueStatementContext)_localctx).pointer = Match(Asterisk);
-					}
-				}
-
-				}
-				break;
-			case 6:
-				_localctx = new BooleanResolvableValueStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 6);
-				{
-				State = 191;
-				Match(BooleanValue);
+				State = 228;
+				_localctx.func = functionCall();
 				}
 				break;
 			}
@@ -1833,83 +2022,110 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class MathsContext : ParserRuleContext {
-		public IToken leftValue;
-		public IToken @operator;
-		public IToken rightValue;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] Number() { return GetTokens(CrimsonParser.Number); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Number(int i) {
-			return GetToken(CrimsonParser.Number, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] Identifier() { return GetTokens(CrimsonParser.Identifier); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier(int i) {
-			return GetToken(CrimsonParser.Identifier, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Plus() { return GetToken(CrimsonParser.Plus, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Minus() { return GetToken(CrimsonParser.Minus, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Asterisk() { return GetToken(CrimsonParser.Asterisk, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Slash() { return GetToken(CrimsonParser.Slash, 0); }
-		public MathsContext(ParserRuleContext parent, int invokingState)
+	public partial class RawValueContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Null() { return GetToken(CrimsonParser.Null, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Number() { return GetToken(CrimsonParser.Number, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BooleanValue() { return GetToken(CrimsonParser.BooleanValue, 0); }
+		public RawValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_maths; } }
+		public override int RuleIndex { get { return RULE_rawValue; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterMaths(this);
+			if (typedListener != null) typedListener.EnterRawValue(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitMaths(this);
+			if (typedListener != null) typedListener.ExitRawValue(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitMaths(this);
+			if (typedVisitor != null) return typedVisitor.VisitRawValue(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public MathsContext maths() {
-		MathsContext _localctx = new MathsContext(Context, State);
-		EnterRule(_localctx, 38, RULE_maths);
+	public RawValueContext rawValue() {
+		RawValueContext _localctx = new RawValueContext(Context, State);
+		EnterRule(_localctx, 46, RULE_rawValue);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 194;
-			_localctx.leftValue = TokenStream.LT(1);
+			State = 231;
 			_la = TokenStream.LA(1);
-			if ( !(_la==Number || _la==Identifier) ) {
-				_localctx.leftValue = ErrorHandler.RecoverInline(this);
+			if ( !(((_la) & ~0x3f) == 0 && ((1L << _la) & 2199023648768L) != 0) ) {
+			ErrorHandler.RecoverInline(this);
 			}
 			else {
 				ErrorHandler.ReportMatch(this);
 			    Consume();
 			}
-			State = 195;
-			_localctx.@operator = TokenStream.LT(1);
-			_la = TokenStream.LA(1);
-			if ( !(((_la) & ~0x3f) == 0 && ((1L << _la) & 257698037760L) != 0) ) {
-				_localctx.@operator = ErrorHandler.RecoverInline(this);
 			}
-			else {
-				ErrorHandler.ReportMatch(this);
-			    Consume();
-			}
-			State = 196;
-			_localctx.rightValue = TokenStream.LT(1);
-			_la = TokenStream.LA(1);
-			if ( !(_la==Number || _la==Identifier) ) {
-				_localctx.rightValue = ErrorHandler.RecoverInline(this);
-			}
-			else {
-				ErrorHandler.ReportMatch(this);
-			    Consume();
-			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class OperationContext : ParserRuleContext {
+		public SimpleValueContext leftValue;
+		public IToken @operator;
+		public SimpleValueContext rightValue;
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext[] simpleValue() {
+			return GetRuleContexts<SimpleValueContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public SimpleValueContext simpleValue(int i) {
+			return GetRuleContext<SimpleValueContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Operator() { return GetToken(CrimsonParser.Operator, 0); }
+		public OperationContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_operation; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterOperation(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitOperation(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitOperation(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public OperationContext operation() {
+		OperationContext _localctx = new OperationContext(Context, State);
+		EnterRule(_localctx, 48, RULE_operation);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 233;
+			_localctx.leftValue = simpleValue();
+			State = 234;
+			_localctx.@operator = Match(Operator);
+			State = 235;
+			_localctx.rightValue = simpleValue();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1962,45 +2178,45 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ParameterListContext parameterList() {
 		ParameterListContext _localctx = new ParameterListContext(Context, State);
-		EnterRule(_localctx, 40, RULE_parameterList);
+		EnterRule(_localctx, 50, RULE_parameterList);
 		int _la;
 		try {
-			State = 211;
+			State = 250;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,15,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,19,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 198;
+				State = 237;
 				Match(OpenBracket);
-				State = 199;
+				State = 238;
 				Match(CloseBracket);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 200;
+				State = 239;
 				Match(OpenBracket);
-				State = 201;
+				State = 240;
 				parameter();
-				State = 206;
+				State = 245;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==Comma) {
 					{
 					{
-					State = 202;
+					State = 241;
 					Match(Comma);
-					State = 203;
+					State = 242;
 					parameter();
 					}
 					}
-					State = 208;
+					State = 247;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 209;
+				State = 248;
 				Match(CloseBracket);
 				}
 				break;
@@ -2048,13 +2264,13 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ParameterContext parameter() {
 		ParameterContext _localctx = new ParameterContext(Context, State);
-		EnterRule(_localctx, 42, RULE_parameter);
+		EnterRule(_localctx, 52, RULE_parameter);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 213;
+			State = 252;
 			type();
-			State = 214;
+			State = 253;
 			Match(Identifier);
 			}
 		}
@@ -2101,15 +2317,15 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public StructureDeclarationContext structureDeclaration() {
 		StructureDeclarationContext _localctx = new StructureDeclarationContext(Context, State);
-		EnterRule(_localctx, 44, RULE_structureDeclaration);
+		EnterRule(_localctx, 54, RULE_structureDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 216;
+			State = 255;
 			Match(Structure);
-			State = 217;
+			State = 256;
 			Match(Identifier);
-			State = 218;
+			State = 257;
 			structureBody();
 			}
 		}
@@ -2159,28 +2375,28 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public StructureBodyContext structureBody() {
 		StructureBodyContext _localctx = new StructureBodyContext(Context, State);
-		EnterRule(_localctx, 46, RULE_structureBody);
+		EnterRule(_localctx, 56, RULE_structureBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 220;
+			State = 259;
 			Match(OpenBrace);
-			State = 224;
+			State = 263;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 4398063411200L) != 0) {
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 8796630122496L) != 0) {
 				{
 				{
-				State = 221;
+				State = 260;
 				internalVariableDeclaration();
 				}
 				}
-				State = 226;
+				State = 265;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 227;
+			State = 266;
 			Match(CloseBrace);
 			}
 		}
@@ -2228,19 +2444,19 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public TypeContext type() {
 		TypeContext _localctx = new TypeContext(Context, State);
-		EnterRule(_localctx, 48, RULE_type);
+		EnterRule(_localctx, 58, RULE_type);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 229;
+			State = 268;
 			_localctx.name = rawType();
-			State = 231;
+			State = 270;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==Asterisk) {
 				{
-				State = 230;
+				State = 269;
 				_localctx.pointer = Match(Asterisk);
 				}
 			}
@@ -2261,7 +2477,6 @@ public partial class CrimsonParser : Parser {
 	public partial class RawTypeContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Integer() { return GetToken(CrimsonParser.Integer, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Boolean() { return GetToken(CrimsonParser.Boolean, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Pointer() { return GetToken(CrimsonParser.Pointer, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Identifier() { return GetToken(CrimsonParser.Identifier, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ArrayContext array() {
 			return GetRuleContext<ArrayContext>(0);
@@ -2293,50 +2508,43 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public RawTypeContext rawType() {
 		RawTypeContext _localctx = new RawTypeContext(Context, State);
-		EnterRule(_localctx, 50, RULE_rawType);
+		EnterRule(_localctx, 60, RULE_rawType);
 		try {
-			State = 239;
+			State = 277;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case Integer:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 233;
+				State = 272;
 				Match(Integer);
 				}
 				break;
 			case Boolean:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 234;
+				State = 273;
 				Match(Boolean);
 				}
 				break;
-			case Pointer:
+			case Identifier:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 235;
-				Match(Pointer);
-				}
-				break;
-			case Identifier:
-				EnterOuterAlt(_localctx, 4);
-				{
-				State = 236;
+				State = 274;
 				Match(Identifier);
 				}
 				break;
 			case OpenSquare:
-				EnterOuterAlt(_localctx, 5);
+				EnterOuterAlt(_localctx, 4);
 				{
-				State = 237;
+				State = 275;
 				array();
 				}
 				break;
 			case Null:
-				EnterOuterAlt(_localctx, 6);
+				EnterOuterAlt(_localctx, 5);
 				{
-				State = 238;
+				State = 276;
 				Match(Null);
 				}
 				break;
@@ -2387,15 +2595,15 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ArrayContext array() {
 		ArrayContext _localctx = new ArrayContext(Context, State);
-		EnterRule(_localctx, 52, RULE_array);
+		EnterRule(_localctx, 62, RULE_array);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 241;
+			State = 279;
 			Match(OpenSquare);
-			State = 242;
+			State = 280;
 			type();
-			State = 243;
+			State = 281;
 			Match(CloseSquare);
 			}
 		}
@@ -2411,83 +2619,94 @@ public partial class CrimsonParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,42,246,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,43,284,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
-		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,1,0,5,0,56,8,0,10,0,
-		12,0,59,9,0,1,0,5,0,62,8,0,10,0,12,0,65,9,0,1,0,1,0,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,2,1,2,1,2,3,2,78,8,2,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,
-		5,5,5,91,8,5,10,5,12,5,94,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,
-		1,6,3,6,107,8,6,1,7,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,
-		8,1,8,1,8,3,8,125,8,8,1,9,1,9,1,9,1,9,1,9,3,9,132,8,9,1,10,1,10,1,10,1,
-		10,1,11,1,11,1,11,1,11,1,11,1,11,1,12,1,12,1,12,1,13,1,13,1,13,1,14,1,
-		14,5,14,152,8,14,10,14,12,14,155,9,14,1,15,1,15,1,15,1,16,1,16,3,16,162,
-		8,16,1,16,1,16,5,16,166,8,16,10,16,12,16,169,9,16,1,16,1,16,1,17,1,17,
-		1,17,1,17,1,17,1,17,3,17,179,8,17,1,18,1,18,3,18,183,8,18,1,18,1,18,1,
-		18,1,18,1,18,3,18,190,8,18,1,18,3,18,193,8,18,1,19,1,19,1,19,1,19,1,20,
-		1,20,1,20,1,20,1,20,1,20,5,20,205,8,20,10,20,12,20,208,9,20,1,20,1,20,
-		3,20,212,8,20,1,21,1,21,1,21,1,22,1,22,1,22,1,22,1,23,1,23,5,23,223,8,
-		23,10,23,12,23,226,9,23,1,23,1,23,1,24,1,24,3,24,232,8,24,1,25,1,25,1,
-		25,1,25,1,25,1,25,3,25,240,8,25,1,26,1,26,1,26,1,26,1,26,0,0,27,0,2,4,
+		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
+		2,29,7,29,2,30,7,30,2,31,7,31,1,0,1,0,5,0,67,8,0,10,0,12,0,70,9,0,1,0,
+		5,0,73,8,0,10,0,12,0,76,9,0,1,0,5,0,79,8,0,10,0,12,0,82,9,0,1,0,1,0,1,
+		1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
+		1,3,1,3,1,4,1,4,1,4,3,4,109,8,4,1,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,7,1,
+		7,1,7,1,8,1,8,5,8,124,8,8,10,8,12,8,127,9,8,1,8,1,8,1,9,1,9,1,9,1,9,1,
+		9,1,9,1,9,1,9,1,9,3,9,140,8,9,1,10,1,10,1,10,1,10,1,10,3,10,147,8,10,1,
+		10,1,10,1,11,1,11,1,11,1,11,3,11,155,8,11,1,11,1,11,1,11,1,11,1,11,1,11,
+		3,11,163,8,11,1,11,1,11,3,11,167,8,11,1,12,1,12,1,12,1,12,1,12,3,12,174,
+		8,12,1,13,1,13,1,13,1,13,1,14,1,14,1,14,1,14,1,15,1,15,1,15,1,16,1,16,
+		1,16,1,17,1,17,5,17,192,8,17,10,17,12,17,195,9,17,1,18,1,18,1,18,1,19,
+		1,19,3,19,202,8,19,1,19,1,19,5,19,206,8,19,10,19,12,19,209,9,19,1,19,1,
+		19,1,20,1,20,1,20,1,20,1,20,1,20,3,20,219,8,20,1,21,1,21,3,21,223,8,21,
+		1,21,3,21,226,8,21,1,22,1,22,3,22,230,8,22,1,23,1,23,1,24,1,24,1,24,1,
+		24,1,25,1,25,1,25,1,25,1,25,1,25,5,25,244,8,25,10,25,12,25,247,9,25,1,
+		25,1,25,3,25,251,8,25,1,26,1,26,1,26,1,27,1,27,1,27,1,27,1,28,1,28,5,28,
+		262,8,28,10,28,12,28,265,9,28,1,28,1,28,1,29,1,29,3,29,271,8,29,1,30,1,
+		30,1,30,1,30,1,30,3,30,278,8,30,1,31,1,31,1,31,1,31,1,31,0,0,32,0,2,4,
 		6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,
-		0,3,1,0,1,2,2,0,40,40,42,42,1,0,34,37,252,0,57,1,0,0,0,2,68,1,0,0,0,4,
-		77,1,0,0,0,6,79,1,0,0,0,8,82,1,0,0,0,10,88,1,0,0,0,12,106,1,0,0,0,14,108,
-		1,0,0,0,16,124,1,0,0,0,18,126,1,0,0,0,20,133,1,0,0,0,22,137,1,0,0,0,24,
-		143,1,0,0,0,26,146,1,0,0,0,28,149,1,0,0,0,30,156,1,0,0,0,32,159,1,0,0,
-		0,34,178,1,0,0,0,36,192,1,0,0,0,38,194,1,0,0,0,40,211,1,0,0,0,42,213,1,
-		0,0,0,44,216,1,0,0,0,46,220,1,0,0,0,48,229,1,0,0,0,50,239,1,0,0,0,52,241,
-		1,0,0,0,54,56,3,2,1,0,55,54,1,0,0,0,56,59,1,0,0,0,57,55,1,0,0,0,57,58,
-		1,0,0,0,58,63,1,0,0,0,59,57,1,0,0,0,60,62,3,4,2,0,61,60,1,0,0,0,62,65,
-		1,0,0,0,63,61,1,0,0,0,63,64,1,0,0,0,64,66,1,0,0,0,65,63,1,0,0,0,66,67,
-		5,0,0,1,67,1,1,0,0,0,68,69,5,32,0,0,69,70,5,7,0,0,70,71,5,41,0,0,71,72,
-		5,8,0,0,72,73,5,42,0,0,73,3,1,0,0,0,74,78,3,6,3,0,75,78,3,8,4,0,76,78,
-		3,44,22,0,77,74,1,0,0,0,77,75,1,0,0,0,77,76,1,0,0,0,78,5,1,0,0,0,79,80,
-		5,4,0,0,80,81,3,14,7,0,81,7,1,0,0,0,82,83,5,3,0,0,83,84,5,42,0,0,84,85,
-		3,48,24,0,85,86,3,40,20,0,86,87,3,10,5,0,87,9,1,0,0,0,88,92,5,26,0,0,89,
-		91,3,12,6,0,90,89,1,0,0,0,91,94,1,0,0,0,92,90,1,0,0,0,92,93,1,0,0,0,93,
-		95,1,0,0,0,94,92,1,0,0,0,95,96,5,27,0,0,96,11,1,0,0,0,97,107,3,14,7,0,
-		98,107,3,34,17,0,99,107,3,16,8,0,100,101,3,30,15,0,101,102,5,30,0,0,102,
-		107,1,0,0,0,103,107,3,18,9,0,104,107,3,20,10,0,105,107,3,28,14,0,106,97,
-		1,0,0,0,106,98,1,0,0,0,106,99,1,0,0,0,106,100,1,0,0,0,106,103,1,0,0,0,
-		106,104,1,0,0,0,106,105,1,0,0,0,107,13,1,0,0,0,108,109,3,48,24,0,109,110,
-		5,42,0,0,110,111,5,20,0,0,111,112,3,36,18,0,112,113,5,30,0,0,113,15,1,
-		0,0,0,114,115,5,42,0,0,115,116,5,20,0,0,116,117,3,36,18,0,117,118,5,30,
-		0,0,118,125,1,0,0,0,119,120,5,42,0,0,120,121,5,21,0,0,121,122,3,36,18,
-		0,122,123,5,30,0,0,123,125,1,0,0,0,124,114,1,0,0,0,124,119,1,0,0,0,125,
-		17,1,0,0,0,126,127,5,9,0,0,127,128,3,22,11,0,128,131,3,10,5,0,129,132,
-		3,26,13,0,130,132,3,24,12,0,131,129,1,0,0,0,131,130,1,0,0,0,131,132,1,
-		0,0,0,132,19,1,0,0,0,133,134,5,10,0,0,134,135,3,22,11,0,135,136,3,10,5,
-		0,136,21,1,0,0,0,137,138,5,22,0,0,138,139,3,36,18,0,139,140,5,18,0,0,140,
-		141,3,36,18,0,141,142,5,23,0,0,142,23,1,0,0,0,143,144,5,11,0,0,144,145,
-		3,18,9,0,145,25,1,0,0,0,146,147,5,11,0,0,147,148,3,10,5,0,148,27,1,0,0,
-		0,149,153,5,19,0,0,150,152,8,0,0,0,151,150,1,0,0,0,152,155,1,0,0,0,153,
-		151,1,0,0,0,153,154,1,0,0,0,154,29,1,0,0,0,155,153,1,0,0,0,156,157,5,42,
-		0,0,157,158,3,32,16,0,158,31,1,0,0,0,159,161,5,22,0,0,160,162,3,36,18,
-		0,161,160,1,0,0,0,161,162,1,0,0,0,162,167,1,0,0,0,163,164,5,28,0,0,164,
-		166,3,36,18,0,165,163,1,0,0,0,166,169,1,0,0,0,167,165,1,0,0,0,167,168,
-		1,0,0,0,168,170,1,0,0,0,169,167,1,0,0,0,170,171,5,23,0,0,171,33,1,0,0,
-		0,172,173,5,5,0,0,173,174,3,36,18,0,174,175,5,30,0,0,175,179,1,0,0,0,176,
-		177,5,5,0,0,177,179,5,30,0,0,178,172,1,0,0,0,178,176,1,0,0,0,179,35,1,
-		0,0,0,180,182,5,42,0,0,181,183,5,36,0,0,182,181,1,0,0,0,182,183,1,0,0,
-		0,183,193,1,0,0,0,184,193,5,40,0,0,185,193,3,38,19,0,186,193,3,30,15,0,
-		187,189,5,16,0,0,188,190,5,36,0,0,189,188,1,0,0,0,189,190,1,0,0,0,190,
-		193,1,0,0,0,191,193,5,17,0,0,192,180,1,0,0,0,192,184,1,0,0,0,192,185,1,
-		0,0,0,192,186,1,0,0,0,192,187,1,0,0,0,192,191,1,0,0,0,193,37,1,0,0,0,194,
-		195,7,1,0,0,195,196,7,2,0,0,196,197,7,1,0,0,197,39,1,0,0,0,198,199,5,22,
-		0,0,199,212,5,23,0,0,200,201,5,22,0,0,201,206,3,42,21,0,202,203,5,28,0,
-		0,203,205,3,42,21,0,204,202,1,0,0,0,205,208,1,0,0,0,206,204,1,0,0,0,206,
-		207,1,0,0,0,207,209,1,0,0,0,208,206,1,0,0,0,209,210,5,23,0,0,210,212,1,
-		0,0,0,211,198,1,0,0,0,211,200,1,0,0,0,212,41,1,0,0,0,213,214,3,48,24,0,
-		214,215,5,42,0,0,215,43,1,0,0,0,216,217,5,6,0,0,217,218,5,42,0,0,218,219,
-		3,46,23,0,219,45,1,0,0,0,220,224,5,26,0,0,221,223,3,14,7,0,222,221,1,0,
-		0,0,223,226,1,0,0,0,224,222,1,0,0,0,224,225,1,0,0,0,225,227,1,0,0,0,226,
-		224,1,0,0,0,227,228,5,27,0,0,228,47,1,0,0,0,229,231,3,50,25,0,230,232,
-		5,36,0,0,231,230,1,0,0,0,231,232,1,0,0,0,232,49,1,0,0,0,233,240,5,13,0,
-		0,234,240,5,14,0,0,235,240,5,15,0,0,236,240,5,42,0,0,237,240,3,52,26,0,
-		238,240,5,16,0,0,239,233,1,0,0,0,239,234,1,0,0,0,239,235,1,0,0,0,239,236,
-		1,0,0,0,239,237,1,0,0,0,239,238,1,0,0,0,240,51,1,0,0,0,241,242,5,24,0,
-		0,242,243,3,48,24,0,243,244,5,25,0,0,244,53,1,0,0,0,19,57,63,77,92,106,
-		124,131,153,161,167,178,182,189,192,206,211,224,231,239
+		54,56,58,60,62,0,2,1,0,1,2,2,0,17,18,41,41,284,0,64,1,0,0,0,2,85,1,0,0,
+		0,4,89,1,0,0,0,6,95,1,0,0,0,8,108,1,0,0,0,10,110,1,0,0,0,12,113,1,0,0,
+		0,14,118,1,0,0,0,16,121,1,0,0,0,18,139,1,0,0,0,20,141,1,0,0,0,22,166,1,
+		0,0,0,24,168,1,0,0,0,26,175,1,0,0,0,28,179,1,0,0,0,30,183,1,0,0,0,32,186,
+		1,0,0,0,34,189,1,0,0,0,36,196,1,0,0,0,38,199,1,0,0,0,40,218,1,0,0,0,42,
+		225,1,0,0,0,44,229,1,0,0,0,46,231,1,0,0,0,48,233,1,0,0,0,50,250,1,0,0,
+		0,52,252,1,0,0,0,54,255,1,0,0,0,56,259,1,0,0,0,58,268,1,0,0,0,60,277,1,
+		0,0,0,62,279,1,0,0,0,64,68,3,2,1,0,65,67,3,4,2,0,66,65,1,0,0,0,67,70,1,
+		0,0,0,68,66,1,0,0,0,68,69,1,0,0,0,69,74,1,0,0,0,70,68,1,0,0,0,71,73,3,
+		6,3,0,72,71,1,0,0,0,73,76,1,0,0,0,74,72,1,0,0,0,74,75,1,0,0,0,75,80,1,
+		0,0,0,76,74,1,0,0,0,77,79,3,8,4,0,78,77,1,0,0,0,79,82,1,0,0,0,80,78,1,
+		0,0,0,80,81,1,0,0,0,81,83,1,0,0,0,82,80,1,0,0,0,83,84,5,0,0,1,84,1,1,0,
+		0,0,85,86,5,37,0,0,86,87,5,3,0,0,87,88,3,14,7,0,88,3,1,0,0,0,89,90,5,37,
+		0,0,90,91,5,8,0,0,91,92,5,42,0,0,92,93,5,10,0,0,93,94,5,43,0,0,94,5,1,
+		0,0,0,95,96,5,37,0,0,96,97,5,9,0,0,97,98,5,27,0,0,98,99,3,58,29,0,99,100,
+		5,19,0,0,100,101,3,58,29,0,101,102,5,28,0,0,102,103,5,23,0,0,103,104,3,
+		14,7,0,104,7,1,0,0,0,105,109,3,10,5,0,106,109,3,12,6,0,107,109,3,54,27,
+		0,108,105,1,0,0,0,108,106,1,0,0,0,108,107,1,0,0,0,109,9,1,0,0,0,110,111,
+		5,5,0,0,111,112,3,20,10,0,112,11,1,0,0,0,113,114,5,4,0,0,114,115,3,58,
+		29,0,115,116,3,14,7,0,116,117,3,16,8,0,117,13,1,0,0,0,118,119,5,43,0,0,
+		119,120,3,50,25,0,120,15,1,0,0,0,121,125,5,31,0,0,122,124,3,18,9,0,123,
+		122,1,0,0,0,124,127,1,0,0,0,125,123,1,0,0,0,125,126,1,0,0,0,126,128,1,
+		0,0,0,127,125,1,0,0,0,128,129,5,32,0,0,129,17,1,0,0,0,130,140,3,20,10,
+		0,131,140,3,40,20,0,132,140,3,22,11,0,133,134,3,36,18,0,134,135,5,35,0,
+		0,135,140,1,0,0,0,136,140,3,24,12,0,137,140,3,26,13,0,138,140,3,34,17,
+		0,139,130,1,0,0,0,139,131,1,0,0,0,139,132,1,0,0,0,139,133,1,0,0,0,139,
+		136,1,0,0,0,139,137,1,0,0,0,139,138,1,0,0,0,140,19,1,0,0,0,141,142,3,58,
+		29,0,142,143,5,43,0,0,143,146,5,25,0,0,144,147,3,44,22,0,145,147,3,42,
+		21,0,146,144,1,0,0,0,146,145,1,0,0,0,147,148,1,0,0,0,148,149,5,35,0,0,
+		149,21,1,0,0,0,150,151,5,43,0,0,151,154,5,25,0,0,152,155,3,44,22,0,153,
+		155,3,42,21,0,154,152,1,0,0,0,154,153,1,0,0,0,155,156,1,0,0,0,156,157,
+		5,35,0,0,157,167,1,0,0,0,158,159,5,43,0,0,159,162,5,26,0,0,160,163,3,44,
+		22,0,161,163,3,42,21,0,162,160,1,0,0,0,162,161,1,0,0,0,163,164,1,0,0,0,
+		164,165,5,35,0,0,165,167,1,0,0,0,166,150,1,0,0,0,166,158,1,0,0,0,167,23,
+		1,0,0,0,168,169,5,11,0,0,169,170,3,28,14,0,170,173,3,16,8,0,171,174,3,
+		32,16,0,172,174,3,30,15,0,173,171,1,0,0,0,173,172,1,0,0,0,173,174,1,0,
+		0,0,174,25,1,0,0,0,175,176,5,12,0,0,176,177,3,28,14,0,177,178,3,16,8,0,
+		178,27,1,0,0,0,179,180,5,27,0,0,180,181,3,48,24,0,181,182,5,28,0,0,182,
+		29,1,0,0,0,183,184,5,13,0,0,184,185,3,24,12,0,185,31,1,0,0,0,186,187,5,
+		13,0,0,187,188,3,16,8,0,188,33,1,0,0,0,189,193,5,24,0,0,190,192,8,0,0,
+		0,191,190,1,0,0,0,192,195,1,0,0,0,193,191,1,0,0,0,193,194,1,0,0,0,194,
+		35,1,0,0,0,195,193,1,0,0,0,196,197,5,43,0,0,197,198,3,38,19,0,198,37,1,
+		0,0,0,199,201,5,27,0,0,200,202,3,42,21,0,201,200,1,0,0,0,201,202,1,0,0,
+		0,202,207,1,0,0,0,203,204,5,33,0,0,204,206,3,42,21,0,205,203,1,0,0,0,206,
+		209,1,0,0,0,207,205,1,0,0,0,207,208,1,0,0,0,208,210,1,0,0,0,209,207,1,
+		0,0,0,210,211,5,28,0,0,211,39,1,0,0,0,212,213,5,6,0,0,213,214,3,42,21,
+		0,214,215,5,35,0,0,215,219,1,0,0,0,216,217,5,6,0,0,217,219,5,35,0,0,218,
+		212,1,0,0,0,218,216,1,0,0,0,219,41,1,0,0,0,220,222,5,43,0,0,221,223,5,
+		20,0,0,222,221,1,0,0,0,222,223,1,0,0,0,223,226,1,0,0,0,224,226,3,46,23,
+		0,225,220,1,0,0,0,225,224,1,0,0,0,226,43,1,0,0,0,227,230,3,48,24,0,228,
+		230,3,36,18,0,229,227,1,0,0,0,229,228,1,0,0,0,230,45,1,0,0,0,231,232,7,
+		1,0,0,232,47,1,0,0,0,233,234,3,42,21,0,234,235,5,19,0,0,235,236,3,42,21,
+		0,236,49,1,0,0,0,237,238,5,27,0,0,238,251,5,28,0,0,239,240,5,27,0,0,240,
+		245,3,52,26,0,241,242,5,33,0,0,242,244,3,52,26,0,243,241,1,0,0,0,244,247,
+		1,0,0,0,245,243,1,0,0,0,245,246,1,0,0,0,246,248,1,0,0,0,247,245,1,0,0,
+		0,248,249,5,28,0,0,249,251,1,0,0,0,250,237,1,0,0,0,250,239,1,0,0,0,251,
+		51,1,0,0,0,252,253,3,58,29,0,253,254,5,43,0,0,254,53,1,0,0,0,255,256,5,
+		7,0,0,256,257,5,43,0,0,257,258,3,56,28,0,258,55,1,0,0,0,259,263,5,31,0,
+		0,260,262,3,20,10,0,261,260,1,0,0,0,262,265,1,0,0,0,263,261,1,0,0,0,263,
+		264,1,0,0,0,264,266,1,0,0,0,265,263,1,0,0,0,266,267,5,32,0,0,267,57,1,
+		0,0,0,268,270,3,60,30,0,269,271,5,20,0,0,270,269,1,0,0,0,270,271,1,0,0,
+		0,271,59,1,0,0,0,272,278,5,15,0,0,273,278,5,16,0,0,274,278,5,43,0,0,275,
+		278,3,62,31,0,276,278,5,17,0,0,277,272,1,0,0,0,277,273,1,0,0,0,277,274,
+		1,0,0,0,277,275,1,0,0,0,277,276,1,0,0,0,278,61,1,0,0,0,279,280,5,29,0,
+		0,280,281,3,58,29,0,281,282,5,30,0,0,282,63,1,0,0,0,23,68,74,80,108,125,
+		139,146,154,162,166,173,193,201,207,218,222,225,229,245,250,263,270,277
 	};
 
 	public static readonly ATN _ATN =

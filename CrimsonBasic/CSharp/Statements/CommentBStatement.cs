@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace CrimsonBasic.CSharp.Core.Statements
+namespace CrimsonBasic.CSharp.Statements
 {
     public class CommentBStatement : BasicStatement
     {

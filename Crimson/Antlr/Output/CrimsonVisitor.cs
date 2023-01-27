@@ -39,11 +39,23 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.heapMemoryAllocator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitImportUnit([NotNull] CrimsonParser.ImportUnitContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.operationHandler"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperationHandler([NotNull] CrimsonParser.OperationHandlerContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>GlobalVariableUnitStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.globalStatement"/>.
@@ -77,6 +89,12 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.functionHeader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
 	/// </summary>
@@ -207,53 +225,29 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionReturn([NotNull] CrimsonParser.FunctionReturnContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>IdentifierResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.simpleValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIdentifierResolvableValueStatement([NotNull] CrimsonParser.IdentifierResolvableValueStatementContext context);
+	Result VisitSimpleValue([NotNull] CrimsonParser.SimpleValueContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>NumberResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.complexValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNumberResolvableValueStatement([NotNull] CrimsonParser.NumberResolvableValueStatementContext context);
+	Result VisitComplexValue([NotNull] CrimsonParser.ComplexValueContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>MathsResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.rawValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMathsResolvableValueStatement([NotNull] CrimsonParser.MathsResolvableValueStatementContext context);
+	Result VisitRawValue([NotNull] CrimsonParser.RawValueContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionCallResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.operation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionCallResolvableValueStatement([NotNull] CrimsonParser.FunctionCallResolvableValueStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>NullResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNullResolvableValueStatement([NotNull] CrimsonParser.NullResolvableValueStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>BooleanResolvableValueStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.resolvableValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBooleanResolvableValueStatement([NotNull] CrimsonParser.BooleanResolvableValueStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.maths"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitMaths([NotNull] CrimsonParser.MathsContext context);
+	Result VisitOperation([NotNull] CrimsonParser.OperationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
 	/// </summary>

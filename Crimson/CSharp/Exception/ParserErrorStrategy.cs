@@ -21,7 +21,7 @@ namespace Crimson.CSharp.Exception
         public override void ReportError(Parser recognizer, RecognitionException e)
         {
             base.ReportError(recognizer, e);
-            throw new ParserException("", e);
+            throw new CrimsonParserException("", e);
         }
     }
 }

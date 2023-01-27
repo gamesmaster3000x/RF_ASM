@@ -2,12 +2,18 @@ grammar Crimson;
 
 // Parser rules
 translationUnit 
-    : (imports+=importUnit)* (statements+=globalStatement)* eof=EOF
+    : (heapAllocator=heapMemoryAllocator) (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
     ;
 
 // Compilation-Unit statements
+heapMemoryAllocator
+	: Hashtag Allocator header=functionHeader
+	;
 importUnit
     : Hashtag Using path=String As identifier=Identifier
+    ;
+operationHandler
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow header=functionHeader
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -18,8 +24,11 @@ globalVariableDeclaration
     : Global declaration=internalVariableDeclaration // Need to add =value or =func()
     ;
 functionDeclaration
-    : Function name=Identifier returnType=type parameters=parameterList body=functionBody
-    ; 
+    : Function returnType=type header=functionHeader body=functionBody
+    ;
+functionHeader
+	: name=Identifier parameters=parameterList
+	;
 functionBody
     : OpenBrace (statements+=internalStatement)* CloseBrace 
     ; 
@@ -35,11 +44,11 @@ internalStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier DirectEquals value=resolvableValue SemiColon
+    : type Identifier DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
     ;
 assignVariable
-    : Identifier DirectEquals resolvableValue SemiColon     #AssignVariableDirect
-    | Identifier PointerEquals resolvableValue SemiColon    #AssignVariableAtPointer
+    : Identifier DirectEquals (complex=complexValue | simple=simpleValue) SemiColon     #AssignVariableDirect
+    | Identifier PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
@@ -48,7 +57,7 @@ whileBlock
     : While condition functionBody
     ;
 condition
-    : OpenBracket leftValue=resolvableValue comparator=Comparator rightValue=resolvableValue CloseBracket
+    : OpenBracket op=operation CloseBracket
     ;
 elseIfBlock
     : Else ifBlock
@@ -65,22 +74,27 @@ functionCall
     : Identifier arguments
     ;
 arguments
-    : OpenBracket (resolvableValue)? (Comma (resolvableValue))* CloseBracket
+    : OpenBracket (simpleValue)? (Comma (simpleValue))* CloseBracket
     ;
 functionReturn
-    : Return resolvableValue SemiColon
+    : Return simpleValue SemiColon
     | Return SemiColon
     ;
-resolvableValue
-    : Identifier pointer=Asterisk?       #IdentifierResolvableValueStatement
-    | Number                             #NumberResolvableValueStatement
-	| maths                              #MathsResolvableValueStatement
-    | functionCall                       #FunctionCallResolvableValueStatement
-    | Null pointer=Asterisk?             #NullResolvableValueStatement
-    | BooleanValue                       #BooleanResolvableValueStatement
-    ;
-maths
-	: leftValue=(Number | Identifier) operator=(Plus | Minus | Asterisk | Slash) rightValue=(Number | Identifier)
+simpleValue
+	: id=Identifier pointer=Asterisk?
+	| raw=rawValue
+	;
+complexValue
+	: op=operation
+	| func=functionCall
+	;
+rawValue
+    : Null
+    | Number
+    | BooleanValue
+	;
+operation
+	: leftValue=simpleValue operator=Operator rightValue=simpleValue
 	;
 
 // Parameters 
@@ -107,7 +121,6 @@ type
 rawType
     : Integer
     | Boolean
-    | Pointer
     | Identifier
     | array
     | Null
@@ -122,11 +135,13 @@ array
  * =
  */
 
+Allocator: 'allocator';
 Function: 'function';
 Global: 'global';
 Return: 'return';
 Structure: 'structure';
 Using: 'using';
+OpHandler: 'ophandler';
 As: 'as';
 If: 'if';
 While: 'while';
@@ -135,12 +150,19 @@ Elif: 'elif';
 
 Integer: 'int';
 Boolean: 'bool';
-Pointer: 'ptr';
 Null: 'null';
 
 fragment True: 'true';
 fragment False: 'false';
 BooleanValue: True | False;
+
+Operator: Comparator | MathsOperator;
+
+fragment Plus: '+'; 
+fragment Minus: '-'; 
+Asterisk: '*'; 
+fragment Slash: '/';
+MathsOperator: Plus | Minus | Asterisk | Slash;
 
 fragment Less: '<';
 fragment LessEqual: '<=';
@@ -149,6 +171,7 @@ fragment GreaterEqual: '>=';
 fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
+RightArrow: '->';
 Tilda: '~';
 DirectEquals: '=';
 PointerEquals: '*=';
@@ -164,16 +187,15 @@ SemiColon: ';';
 Underscore: '_'; 
 Hashtag: '#'; 
 Quote: '"'; 
-Plus: '+'; 
-Minus: '-'; 
-Asterisk: '*'; 
-Slash: '/';
 
 SkipTokens
-    : (WhiteSpace | Newline | LineComment) -> skip
+    : (WhiteSpace | Newline | LineComment | BlockComment) -> skip
     ;
 LineComment 
     : '//' ~('\r' | '\n')*
+    ;
+BlockComment 
+    : '/*' .* '*/'
     ;
 Number
     : Digit+
