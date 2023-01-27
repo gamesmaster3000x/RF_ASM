@@ -40,9 +40,9 @@ namespace RedFoxAssembly.CSharp.Statements
             {
                 case RegisterTarget.NONE: return 0;
                 case RegisterTarget.REGISTER: return 0;
-                case RegisterTarget.SPECIALISED_REGISTER: return 7;
-                case RegisterTarget.GENERAL_REGISTER: return 63;
-                case RegisterTarget.COMPONENT_REGISTER: return 127;
+                case RegisterTarget.SPECIALISED_REGISTER: return 0;
+                case RegisterTarget.GENERAL_REGISTER: return 128;
+                case RegisterTarget.COMPONENT_REGISTER: return 64;
             }
 
             throw new ParsingException("Cannot get offset for register target " + t);
