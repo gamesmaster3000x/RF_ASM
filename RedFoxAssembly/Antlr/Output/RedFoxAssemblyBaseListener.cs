@@ -895,6 +895,18 @@ public partial class RedFoxAssemblyBaseListener : IRedFoxAssemblyListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitXor([NotNull] RedFoxAssemblyParser.XorContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.end"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEnd([NotNull] RedFoxAssemblyParser.EndContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.end"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEnd([NotNull] RedFoxAssemblyParser.EndContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.word"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

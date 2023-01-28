@@ -462,6 +462,12 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitXor([NotNull] RedFoxAssemblyParser.XorContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.end"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnd([NotNull] RedFoxAssemblyParser.EndContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.word"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

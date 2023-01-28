@@ -758,6 +758,16 @@ public interface IRedFoxAssemblyListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitXor([NotNull] RedFoxAssemblyParser.XorContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.end"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnd([NotNull] RedFoxAssemblyParser.EndContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.end"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnd([NotNull] RedFoxAssemblyParser.EndContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.word"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
