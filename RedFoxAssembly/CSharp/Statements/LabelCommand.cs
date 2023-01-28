@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RedFoxAssembly.CSharp.Statements
 {
-    internal class LabelCommand: ICommand
+    internal class LabelCommand : ICommand
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 

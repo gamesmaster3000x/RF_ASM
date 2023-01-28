@@ -36,23 +36,24 @@ namespace RedFoxAssembly.CSharp.Core
         public override WidthConfiguration VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context) { return new WidthConfiguration(int.Parse(context.val.Text)); }
 
         public override ValueConfiguration VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context) { return VisitValue(context.value()); }
-        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context) 
+        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context)
         {
             string id = context.id.Text;
 
             try
             {
-                if (context.byteValue != null) 
+                if (context.byteValue != null)
                 {
                     RByte b = VisitByte(context.byteValue);
-                    return new ValueConfiguration(context.id.Text, b); 
+                    return new ValueConfiguration(context.id.Text, b);
                 }
                 if (context.wordValue != null)
                 {
                     Word w = VisitWord(context.wordValue);
                     return new ValueConfiguration(context.id.Text, VisitWord(context.wordValue));
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 throw new ParsingException($"Error parsing byte value '{context.byteValue?.GetText()}' or word value '{context.wordValue?.GetText()}' for {id}", e);
             }
@@ -62,7 +63,7 @@ namespace RedFoxAssembly.CSharp.Core
 
         public override Word VisitWord([NotNull] RedFoxAssemblyParser.WordContext context)
         {
-            if (string.IsNullOrWhiteSpace(context.GetText())) 
+            if (string.IsNullOrWhiteSpace(context.GetText()))
                 throw new ParsingException("Word cannot be null or whitespace");
 
             // Process as raw hex

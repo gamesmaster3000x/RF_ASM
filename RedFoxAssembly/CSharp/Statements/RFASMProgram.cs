@@ -11,7 +11,7 @@ namespace RedFoxAssembly.CSharp.Statements
         public List<IConfiguration> Configuations { get; }
         public List<ICommand> Commands { get; }
 
-        public RFASMProgram(): this(new List<IConfiguration>(), new List<ICommand>())
+        public RFASMProgram() : this(new List<IConfiguration>(), new List<ICommand>())
         {
         }
 

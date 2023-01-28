@@ -49,7 +49,7 @@ namespace RedFoxAssembly.CSharp.Core
             {
                 Console.WriteLine("Using autowired program arguments (ignoring " + args.Length + " input arguments)");
                 string testProgramsPath = "../../../Documentation/TestPrograms/"; // Escape bin, Debug, and net6.0
-                args = new string[] { 
+                args = new string[] {
                     "-INPUT_PATH", testProgramsPath + "TestAll.txt", //
                     "-DATA_WIDTH", "1", //
                     "-RANDOM_ARG", //

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RedFoxAssembly.CSharp.Statements
 {
-    internal class WidthConfiguration: IConfiguration
+    internal class WidthConfiguration : IConfiguration
     {
         private int _width;
 
