@@ -10,12 +10,10 @@ namespace Crimson.CSharp.Grammar.Tokens
         private static readonly Regex WHITESPACE = new Regex(@"\s+");
 
         public string Text { get; set; }
-        public bool IsPointer { get; set; }
 
-        public CrimsonTypeCToken(string text, bool isPointer)
+        public CrimsonTypeCToken(string text)
         {
             Text = text;
-            IsPointer = isPointer;
         }
 
         public void Link(LinkingContext ctx)

@@ -16,16 +16,18 @@ namespace Crimson.CSharp.Grammar.Statements
     public class FunctionCStatement : GlobalCStatement
     {
 
+
+        public CrimsonTypeCToken ReturnType { get; }
+        public Header FunctionHeader { get; }
+        public IList<InternalStatement> Statements { get; }
+        public override string Name { get => FunctionHeader.Identifier; }
+
         public FunctionCStatement(CrimsonTypeCToken returnType, Header header, IList<InternalStatement> statements)
         {
             ReturnType = returnType;
             FunctionHeader = header;
             Statements = statements;
         }
-
-        public CrimsonTypeCToken ReturnType { get; }
-        public Header FunctionHeader { get; }
-        public IList<InternalStatement> Statements { get; }
 
         public override void Link(LinkingContext ctx)
         {

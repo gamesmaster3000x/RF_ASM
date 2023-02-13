@@ -15,10 +15,6 @@ namespace Crimson.CSharp.Core
         {
             CompilationUnit compilation = new CompilationUnit();
 
-            // Visit allocator
-            HeapMemoryAllocatorCStatement allocator = VisitHeapMemoryAllocator(context.heapAllocator);
-            compilation.SetHeapMemoryAllocator(allocator);
-
             // Visit imports
             IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
             foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
@@ -33,7 +29,7 @@ namespace Crimson.CSharp.Core
                 compilation.AddImport(import);
             }
 
-            // Visit Compilation-Unit statements
+            // Add operation handlers
             IList<CrimsonParser.OperationHandlerContext> operationHandlersCtxs = context._opHandlers;
             foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs)
             {
@@ -58,43 +54,35 @@ namespace Crimson.CSharp.Core
         // -------------------------- GLOBAL STATEMENTS
         // ----------------------------------------------------
 
-        public override HeapMemoryAllocatorCStatement VisitHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context)
-        {
-            FunctionCStatement.Header header = VisitFunctionHeader(context.header);
-            return new HeapMemoryAllocatorCStatement(header);
-        }
-
         public override OperationHandlerCStatement VisitOperationHandler([NotNull] CrimsonParser.OperationHandlerContext context)
         {
             CrimsonTypeCToken type1 = VisitType(context.t1);
             OperationResolvableValueCToken.OperationType opType = OperationResolvableValueCToken.ParseOpType(context.op.Text);
             CrimsonTypeCToken type2 = VisitType(context.t2);
-            FunctionCStatement.Header header = VisitFunctionHeader(context.header);
-            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, header);
+            string id = context.identifier.Text;
+            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, id);
 
             return ohsc;
         }
 
         private GlobalCStatement ParseGlobalStatement(CrimsonParser.GlobalStatementContext context)
         {
-            if (context is CrimsonParser.GlobalVariableUnitStatementContext)
+            if (context is CrimsonParser.GlobalVariableUnitStatementContext gvCtx)
             {
-                CrimsonParser.GlobalVariableUnitStatementContext gvCtx = (CrimsonParser.GlobalVariableUnitStatementContext)context;
                 CrimsonParser.GlobalVariableDeclarationContext declaration = gvCtx.globalVariableDeclaration();
                 return VisitGlobalVariableDeclaration(declaration);
-            } 
-            else if (context is CrimsonParser.FunctionUnitStatementContext)
+            }
+            else if (context is CrimsonParser.FunctionUnitStatementContext fnCtx)
             {
-                CrimsonParser.FunctionUnitStatementContext fnCtx = (CrimsonParser.FunctionUnitStatementContext)context;
                 CrimsonParser.FunctionDeclarationContext declaration = fnCtx.functionDeclaration();
                 return VisitFunctionDeclaration(declaration);
-            } 
-            else if (context is CrimsonParser.StructureUnitStatementContext)
+            }
+            else if (context is CrimsonParser.StructureUnitStatementContext structureCtx)
             {
-                CrimsonParser.StructureUnitStatementContext structureCtx = (CrimsonParser.StructureUnitStatementContext)context;
                 CrimsonParser.StructureDeclarationContext declaration = structureCtx.structureDeclaration();
                 return VisitStructureDeclaration(declaration);
-            } else
+            }
+            else
             {
                 throw new StatementParseException("The given CrimsonParser.CompilationUnitStatementContext " + context + " is not of a permissable type");
             }
@@ -107,6 +95,7 @@ namespace Crimson.CSharp.Core
             string identifier = ivdc.Identifier().GetText();
             SimpleValueCToken? simple;
             ComplexValueCToken? complex;
+            if (String.IsNullOrWhiteSpace(identifier)) throw new CrimsonParserException("Failed to parse whitespace Global Variable name");
             if (ivdc.simple != null) return new GlobalVariableCStatement(type, identifier, VisitSimpleValue(ivdc.simple));
             else if (ivdc.complex != null) return new GlobalVariableCStatement(type, identifier, VisitComplexValue(ivdc.complex));
             else throw new CrimsonParserException("Cannot parse GlobalVariableDeclarationContext with value " + ivdc.GetText());
@@ -124,6 +113,8 @@ namespace Crimson.CSharp.Core
         public override FunctionCStatement.Header VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context)
         {
             string identifier = context.name.Text;
+            if (String.IsNullOrWhiteSpace(identifier))
+                throw new CrimsonParserException("Failed to parse whitespace Function name");
             List<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters);
             return new FunctionCStatement.Header(identifier, parameters);
         }
@@ -131,6 +122,8 @@ namespace Crimson.CSharp.Core
         public override StructureCStatement VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
         {
             string identifier = context.Identifier().GetText();
+            if (String.IsNullOrWhiteSpace(identifier))
+                throw new CrimsonParserException("Failed to parse whitespace Structure name");
             IList<InternalStatement> body = VisitStructureBody(context.structureBody());
             StructureCStatement structure = new StructureCStatement(identifier, body);
             return structure;
@@ -150,14 +143,12 @@ namespace Crimson.CSharp.Core
         public VariableAssignmentCStatement ParseAssignVariable([NotNull] CrimsonParser.AssignVariableContext context)
         {
             if (context == null) throw new StatementParseException("Illegal null CrimsonParser.AssignVariableContext");
-            if (context is CrimsonParser.AssignVariableDirectContext)
+            if (context is CrimsonParser.AssignVariableDirectContext avdc)
             {
-                CrimsonParser.AssignVariableDirectContext avdc = (CrimsonParser.AssignVariableDirectContext)context;
                 return VisitAssignVariableDirect(avdc);
             }
-            else if (context is CrimsonParser.AssignVariableAtPointerContext)
+            else if (context is CrimsonParser.AssignVariableAtPointerContext avapc)
             {
-                CrimsonParser.AssignVariableAtPointerContext avapc = (CrimsonParser.AssignVariableAtPointerContext)context;
                 return VisitAssignVariableAtPointer(avapc);
             }
             else
@@ -168,7 +159,7 @@ namespace Crimson.CSharp.Core
 
         public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
         {
-            return new CrimsonTypeCToken(context.name.GetText(), context.pointer != null);
+            return new CrimsonTypeCToken(context.name.GetText());
         }
 
         public override List<FunctionCStatement.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
@@ -237,9 +228,8 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.WhileBlockContext whileCtx = context.whileBlock();
                 return VisitWhileBlock(whileCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext)
+            else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext context)
             {
-                CrimsonParser.FunctionAssemblyCallStatementContext context = (CrimsonParser.FunctionAssemblyCallStatementContext)stCtx;
                 CrimsonParser.AssemblyCallContext acCtx = context.assemblyCall();
                 return VisitAssemblyCall(acCtx);
             }
@@ -331,7 +321,7 @@ namespace Crimson.CSharp.Core
 
         public override SimpleValueCToken VisitSimpleValue([NotNull] CrimsonParser.SimpleValueContext context)
         {
-            if (!String.IsNullOrWhiteSpace(context.id.Text)) return new IdentifierSimpleValueCToken(context.id.Text);
+            if (context.id != null && !String.IsNullOrWhiteSpace(context.id.Text)) return new IdentifierSimpleValueCToken(context.id.Text);
             else if (context.raw != null) return VisitRawValue(context.raw);
             throw new CrimsonParserException("Cannot parse SimpleValueContext " + context.GetText());
         }

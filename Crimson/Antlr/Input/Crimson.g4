@@ -2,18 +2,15 @@ grammar Crimson;
 
 // Parser rules
 translationUnit 
-    : (heapAllocator=heapMemoryAllocator) (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
+    : (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
     ;
 
 // Compilation-Unit statements
-heapMemoryAllocator
-	: Hashtag Allocator header=functionHeader
-	;
 importUnit
     : Hashtag Using path=String As identifier=Identifier
     ;
 operationHandler
-    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow header=functionHeader
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=Identifier CloseBrace
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -116,7 +113,7 @@ structureBody
 
 // Types 
 type
-    : name=rawType pointer=Asterisk?
+    : name=rawType
 	;
 rawType
     : Integer

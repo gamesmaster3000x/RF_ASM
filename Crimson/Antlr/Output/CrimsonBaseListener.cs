@@ -49,18 +49,6 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.heapMemoryAllocator"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.heapMemoryAllocator"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

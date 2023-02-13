@@ -65,10 +65,14 @@ namespace Crimson.CSharp.Core
             catch (IOException io) 
             {
                 throw new UnitGeneratorException("Unable to find source file for CompilationUnit " + path + " (" + pathIn + ")", io);
-            } 
+            }
+            catch (StatementParseException spe)
+            {
+                throw new UnitGeneratorException("Error while parsing '" + path + "' (" + pathIn + ")", spe);
+            }
             catch (System.Exception e) 
             {
-                throw new UnitGeneratorException("Error while creating CompilationUnit from " + path + " (" + pathIn + ")", e);
+                throw new UnitGeneratorException("Unexpected error while creating CompilationUnit from " + path + " (" + pathIn + ")", e);
             }
         }
 

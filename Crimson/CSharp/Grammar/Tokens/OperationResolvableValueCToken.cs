@@ -28,18 +28,19 @@ namespace Crimson.CSharp.Grammar.Tokens
         public static OperationType ParseOpType(string s)
         {
             s = s.Trim();
-            switch (s)
+            return s switch
             {
-                case "+":
-                    return OperationType.ADD;
-                case "-":
-                    return OperationType.SUB;
-                case "*":
-                    return OperationType.MUL;
-                case "/":
-                    return OperationType.DIV;
-            }
-            throw new CrimsonParserException("Illegal operator type '" + s + "'");
+                "+" => OperationType.ADD,
+                "-" => OperationType.SUB,
+                "*" => OperationType.MUL,
+                "/" => OperationType.DIV,
+                "==" => OperationType.EQU,
+                "<" => OperationType.LES,
+                "<=" => OperationType.LEQ,
+                ">" => OperationType.GTR,
+                ">=" => OperationType.GEQ,
+                _ => throw new CrimsonParserException("Illegal operator type '" + s + "'"),
+            };
         }
 
         public override Fragment GetBasicFragment()
@@ -49,7 +50,11 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public enum OperationType
         {
-            ADD, SUB, MUL, DIV
+            // Maths
+            ADD, SUB, MUL, DIV,
+
+            // Comparison
+            EQU, LEQ, LES, GEQ, GTR
         }
     }
 }
