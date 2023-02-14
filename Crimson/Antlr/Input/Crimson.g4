@@ -7,10 +7,10 @@ translationUnit
 
 // Compilation-Unit statements
 importUnit
-    : Hashtag Using path=String As identifier=Identifier
+    : Hashtag Using path=String As identifier=fullName
     ;
 operationHandler
-    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=Identifier CloseBrace
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -24,7 +24,7 @@ functionDeclaration
     : Function returnType=type header=functionHeader body=functionBody
     ;
 functionHeader
-	: name=Identifier parameters=parameterList
+	: name=fullName parameters=parameterList
 	;
 functionBody
     : OpenBrace (statements+=internalStatement)* CloseBrace 
@@ -41,11 +41,11 @@ internalStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
-    : type Identifier DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
+    : type fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
     ;
 assignVariable
-    : Identifier DirectEquals (complex=complexValue | simple=simpleValue) SemiColon     #AssignVariableDirect
-    | Identifier PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
+    : name=fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon     #AssignVariableDirect
+    | name=fullName PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
     : If condition functionBody (elseBlock | elseIfBlock)?
@@ -68,7 +68,7 @@ assemblyCall
  
 // Function
 functionCall
-    : Identifier arguments
+    : name=fullName args=arguments
     ;
 arguments
     : OpenBracket (simpleValue)? (Comma (simpleValue))* CloseBracket
@@ -78,7 +78,7 @@ functionReturn
     | Return SemiColon
     ;
 simpleValue
-	: id=Identifier pointer=Asterisk?
+	: id=fullName pointer=Asterisk?
 	| raw=rawValue
 	;
 complexValue
@@ -100,12 +100,12 @@ parameterList
     | OpenBracket parameter (Comma parameter)* CloseBracket 
     ;
 parameter
-    : type Identifier
+    : t=type name=fullName
     ;
 
 // Structures
 structureDeclaration
-    : Structure Identifier structureBody
+    : Structure name=fullName body=structureBody
     ;
 structureBody
     : OpenBrace internalVariableDeclaration* CloseBrace
@@ -113,18 +113,20 @@ structureBody
 
 // Types 
 type
-    : name=rawType
-	;
-rawType
     : Integer
     | Boolean
-    | Identifier
+    | fullName
     | array
     | Null
-    ;
+	;
 array
     : OpenSquare type CloseSquare
     ;
+
+// Misc
+fullName
+	: (libraryName=ShortName Dot)? memberName=ShortName
+	; 
 
 /*
  * =
@@ -192,7 +194,7 @@ LineComment
     : '//' ~('\r' | '\n')*
     ;
 BlockComment 
-    : '/*' .* '*/'
+    : '/*' .*? '*/'
     ;
 Number
     : Digit+
@@ -200,9 +202,8 @@ Number
 String
     : Quote ~('"')* Quote
     ;
-Identifier
-    : (Alphabetic) 
-    | (Alphabetic) (Alphabetic | Number | Underscore | Dot)* (Alphabetic | Number)
+ShortName
+    : (Alphabetic) (Alphabetic | Number | Underscore)+?
     ;
 fragment Alphabetic
     : [a-zA-Z]

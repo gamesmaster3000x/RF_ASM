@@ -8,10 +8,10 @@ namespace Crimson.CSharp.Grammar.Statements
         public CrimsonTypeCToken Type1 { get; protected set; }
         public OperationResolvableValueCToken.OperationType OpType { get; protected set; }
         public CrimsonTypeCToken Type2 { get; protected set; }
-        public string FunctionIdentifier { get; protected set; }
+        public FullNameCToken FunctionIdentifier { get; protected set; }
         public FunctionCStatement? TargetFunction { get; protected set; }
 
-        public OperationHandlerCStatement(CrimsonTypeCToken type1, OperationResolvableValueCToken.OperationType opType, CrimsonTypeCToken type2, string identifier)
+        public OperationHandlerCStatement(CrimsonTypeCToken type1, OperationResolvableValueCToken.OperationType opType, CrimsonTypeCToken type2, FullNameCToken identifier)
         {
             Type1 = type1;
             OpType = opType;

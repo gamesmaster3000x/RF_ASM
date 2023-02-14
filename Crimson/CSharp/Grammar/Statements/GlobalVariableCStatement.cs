@@ -21,14 +21,14 @@ namespace Crimson.CSharp.Grammar.Statements
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, ComplexValueCToken value)
+        public GlobalVariableCStatement(CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken value)
         {
             this.type = type;
             Name = identifier;
             Complex = value;
         }
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, string identifier, SimpleValueCToken value)
+        public GlobalVariableCStatement(CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken value)
         {
             this.type = type;
             Name = identifier;
@@ -49,14 +49,14 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Name, valueStatements.ResultHolder!));
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name.ToString(), type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(Name.ToString(), valueStatements.ResultHolder!));
 
             }
             else if (Simple != null)
             {
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name, type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Name, Simple.GetText()));
+                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name.ToString(), type.GetByteSize().ToString()));
+                statements.Add(new SetBStatement(Name.ToString(), Simple.GetText()));
             }
             else
             {

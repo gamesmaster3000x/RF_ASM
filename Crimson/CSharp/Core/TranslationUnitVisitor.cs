@@ -24,7 +24,7 @@ namespace Crimson.CSharp.Core
                 {
                     path = path.Substring(1, path.Length - 2);
                 }
-                string id = importCtx.identifier.Text;
+                FullNameCToken id = VisitFullName(importCtx.fullName());
                 ImportCStatement import = new ImportCStatement(path, id);
                 compilation.AddImport(import);
             }
@@ -59,7 +59,7 @@ namespace Crimson.CSharp.Core
             CrimsonTypeCToken type1 = VisitType(context.t1);
             OperationResolvableValueCToken.OperationType opType = OperationResolvableValueCToken.ParseOpType(context.op.Text);
             CrimsonTypeCToken type2 = VisitType(context.t2);
-            string id = context.identifier.Text;
+            FullNameCToken id = VisitFullName(context.identifier);
             OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, id);
 
             return ohsc;
@@ -92,10 +92,9 @@ namespace Crimson.CSharp.Core
         {
             CrimsonParser.InternalVariableDeclarationContext ivdc = context.internalVariableDeclaration();
             CrimsonTypeCToken type = VisitType(ivdc.type());
-            string identifier = ivdc.Identifier().GetText();
+            FullNameCToken identifier = VisitFullName(ivdc.fullName());
             SimpleValueCToken? simple;
             ComplexValueCToken? complex;
-            if (String.IsNullOrWhiteSpace(identifier)) throw new CrimsonParserException("Failed to parse whitespace Global Variable name");
             if (ivdc.simple != null) return new GlobalVariableCStatement(type, identifier, VisitSimpleValue(ivdc.simple));
             else if (ivdc.complex != null) return new GlobalVariableCStatement(type, identifier, VisitComplexValue(ivdc.complex));
             else throw new CrimsonParserException("Cannot parse GlobalVariableDeclarationContext with value " + ivdc.GetText());
@@ -112,18 +111,14 @@ namespace Crimson.CSharp.Core
 
         public override FunctionCStatement.Header VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context)
         {
-            string identifier = context.name.Text;
-            if (String.IsNullOrWhiteSpace(identifier))
-                throw new CrimsonParserException("Failed to parse whitespace Function name");
+            FullNameCToken identifier = VisitFullName(context.name);
             List<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters);
             return new FunctionCStatement.Header(identifier, parameters);
         }
 
         public override StructureCStatement VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
         {
-            string identifier = context.Identifier().GetText();
-            if (String.IsNullOrWhiteSpace(identifier))
-                throw new CrimsonParserException("Failed to parse whitespace Structure name");
+            FullNameCToken identifier = VisitFullName(context.name);
             IList<InternalStatement> body = VisitStructureBody(context.structureBody());
             StructureCStatement structure = new StructureCStatement(identifier, body);
             return structure;
@@ -159,7 +154,8 @@ namespace Crimson.CSharp.Core
 
         public override CrimsonTypeCToken VisitType([NotNull] CrimsonParser.TypeContext context)
         {
-            return new CrimsonTypeCToken(context.name.GetText());
+            FullNameCToken name = new FullNameCToken(context.GetText());
+            return new CrimsonTypeCToken(name);
         }
 
         public override List<FunctionCStatement.Parameter> VisitParameterList([NotNull] CrimsonParser.ParameterListContext context)
@@ -168,7 +164,7 @@ namespace Crimson.CSharp.Core
             foreach (CrimsonParser.ParameterContext paCxt in context.parameter())
             {
                 CrimsonTypeCToken type = VisitType(paCxt.type());
-                string identifier = paCxt.Identifier().GetText();
+                FullNameCToken identifier = VisitFullName(paCxt.name);
                 FunctionCStatement.Parameter parameter = new FunctionCStatement.Parameter(type, identifier);
                 parameters.Add(parameter);
             }
@@ -242,7 +238,7 @@ namespace Crimson.CSharp.Core
         public override InternalVariableCStatement VisitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context)
         {
             CrimsonTypeCToken type = VisitType(context.type());
-            string identifier = context.Identifier().GetText();
+            FullNameCToken identifier = VisitFullName(context.fullName());
             SimpleValueCToken? simple;
             ComplexValueCToken? complex;
             if (context.simple != null) return new InternalVariableCStatement(type, identifier, VisitSimpleValue(context.simple));
@@ -252,7 +248,7 @@ namespace Crimson.CSharp.Core
 
         public override FunctionCallCStatement VisitFunctionCall([NotNull] CrimsonParser.FunctionCallContext context)
         {
-            string identifier = context.Identifier().GetText();
+            FullNameCToken identifier = VisitFullName(context.name);
             IList<SimpleValueCToken> arguments = VisitArguments(context.arguments());
             FunctionCallCStatement call = new FunctionCallCStatement(identifier, arguments);
             return call;
@@ -289,7 +285,7 @@ namespace Crimson.CSharp.Core
 
         public override VariableAssignmentCStatement VisitAssignVariableDirect([NotNull] CrimsonParser.AssignVariableDirectContext context)
         {
-            string identifier = context.Identifier().GetText();
+            FullNameCToken identifier = VisitFullName(context.name);
             if (context.simple != null) return new VariableAssignmentCStatement(identifier, VisitSimpleValue(context.simple));
             else if (context.complex != null) return new VariableAssignmentCStatement(identifier, VisitComplexValue(context.complex));
             else throw new CrimsonParserException($"Cannot assign no value to variable {identifier}");
@@ -298,9 +294,9 @@ namespace Crimson.CSharp.Core
         public override VariableAssignmentCStatement VisitAssignVariableAtPointer([NotNull] CrimsonParser.AssignVariableAtPointerContext context)
         {
             //TODO AssignVariableAtPointer just adds an asterisk to the variable name
-            string identifier = context.Identifier().GetText();
-            if (context.simple != null) return new VariableAssignmentCStatement(identifier + "*", VisitSimpleValue(context.simple));
-            else if (context.complex != null) return new VariableAssignmentCStatement(identifier + "*", VisitComplexValue(context.complex));
+            FullNameCToken identifier = VisitFullName(context.fullName());
+            if (context.simple != null) return new VariableAssignmentCStatement(identifier, VisitSimpleValue(context.simple));
+            else if (context.complex != null) return new VariableAssignmentCStatement(identifier, VisitComplexValue(context.complex));
             else throw new CrimsonParserException($"Cannot assign no value to variable {identifier}");
         }
 
@@ -321,7 +317,8 @@ namespace Crimson.CSharp.Core
 
         public override SimpleValueCToken VisitSimpleValue([NotNull] CrimsonParser.SimpleValueContext context)
         {
-            if (context.id != null && !String.IsNullOrWhiteSpace(context.id.Text)) return new IdentifierSimpleValueCToken(context.id.Text);
+            FullNameCToken identifier = VisitFullName(context.fullName());
+            if (context.id != null) return new IdentifierSimpleValueCToken(VisitFullName(context.fullName()));
             else if (context.raw != null) return VisitRawValue(context.raw);
             throw new CrimsonParserException("Cannot parse SimpleValueContext " + context.GetText());
         }
@@ -396,6 +393,11 @@ namespace Crimson.CSharp.Core
             IList<InternalStatement> statements = VisitFunctionBody(context.functionBody());
             ElseBlockCToken elseBlock = new ElseBlockCToken(statements);
             return elseBlock;
+        }
+
+        public override FullNameCToken VisitFullName ([NotNull] CrimsonParser.FullNameContext context)
+        {
+            return new FullNameCToken(context.libraryName.Text, context.memberName.Text);
         }
     }
 }

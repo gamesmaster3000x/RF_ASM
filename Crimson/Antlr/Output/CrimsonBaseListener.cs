@@ -517,18 +517,6 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitType([NotNull] CrimsonParser.TypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.rawType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRawType([NotNull] CrimsonParser.RawTypeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.rawType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRawType([NotNull] CrimsonParser.RawTypeContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -540,6 +528,18 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArray([NotNull] CrimsonParser.ArrayContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.fullName"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFullName([NotNull] CrimsonParser.FullNameContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.fullName"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFullName([NotNull] CrimsonParser.FullNameContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

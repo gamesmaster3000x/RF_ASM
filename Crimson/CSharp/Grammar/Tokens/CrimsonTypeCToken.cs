@@ -9,9 +9,9 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
         private static readonly Regex WHITESPACE = new Regex(@"\s+");
 
-        public string Text { get; set; }
+        public FullNameCToken Text { get; set; }
 
-        public CrimsonTypeCToken(string text)
+        public CrimsonTypeCToken(FullNameCToken text)
         {
             Text = text;
         }
@@ -30,7 +30,7 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public override string ToString()
         {
-            return Text;
+            return Text.ToString();
         }
 
         internal int GetByteSize()

@@ -7,9 +7,9 @@ namespace Crimson.CSharp.Grammar.Tokens
 {
     public class IdentifierSimpleValueCToken : SimpleValueCToken
     {
-        public string Identifier { get; private set; }
+        public FullNameCToken Identifier { get; private set; }
 
-        public IdentifierSimpleValueCToken(string identifier)
+        public IdentifierSimpleValueCToken(FullNameCToken identifier)
         {
             Identifier = identifier;
         }
@@ -21,7 +21,7 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public override string GetText()
         {
-            return Identifier;
+            return Identifier.ToString();
         }
     }
 }

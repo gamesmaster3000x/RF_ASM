@@ -28,7 +28,7 @@ namespace Crimson.CSharp.Grammar
 
         public void AddImport(ImportCStatement import)
         {
-            Imports.Add(import.Alias, import);
+            Imports.Add(import.Alias.ToString(), import);
         }
 
         public void AddOpHandler(OperationHandlerCStatement handler)
@@ -39,13 +39,10 @@ namespace Crimson.CSharp.Grammar
         public void AddStatement(GlobalCStatement statement)
         {
 
-            void CheckContentsAndNameElseAdd<T> (Dictionary<string, T> d, T item, string typeNameForError) where T : GlobalCStatement
+            void CheckContentsAndNameElseAdd<GCS> (Dictionary<string, GCS> d, GCS gcs, string typeNameForError) where GCS : GlobalCStatement
             {
-                if (String.IsNullOrWhiteSpace(item.Name))
-                    throw new StatementParseException($"Cannot give a null or whitespace name to a {typeNameForError}");
-                if (d.ContainsKey(item.Name))
-                    throw new StatementParseException($"Duplicate GlobalStatement name '{item.Name}' for statement '{statement}' in unit: {this}");
-                d.Add(item.Name, item);
+                if (d.ContainsKey(gcs.Name.ToString())) throw new StatementParseException($"Duplicate GlobalStatement name '{gcs.Name}' for statement '{statement}' in unit: {this}");
+                d.Add(gcs.Name.ToString(), gcs);
             }
 
             if (statement is FunctionCStatement f) CheckContentsAndNameElseAdd(functions, f, "Function");

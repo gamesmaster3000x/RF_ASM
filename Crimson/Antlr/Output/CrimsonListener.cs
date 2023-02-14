@@ -436,16 +436,6 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitType([NotNull] CrimsonParser.TypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.rawType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterRawType([NotNull] CrimsonParser.RawTypeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.rawType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitRawType([NotNull] CrimsonParser.RawTypeContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -455,5 +445,15 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArray([NotNull] CrimsonParser.ArrayContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.fullName"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFullName([NotNull] CrimsonParser.FullNameContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.fullName"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFullName([NotNull] CrimsonParser.FullNameContext context);
 }
 } // namespace Crimson.AntlrBuild
