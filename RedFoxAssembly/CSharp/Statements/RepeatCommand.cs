@@ -16,6 +16,10 @@ namespace RedFoxAssembly.CSharp.Statements
         public int Times { get; protected set; }
         public byte[] Contents { get; protected set; }
 
+        public RepeatCommand (int times, List<RByte> rBytes): this(times, RByte.MakeByteArr(rBytes)) {}
+
+        public RepeatCommand (int times, List<Word> words): this(times, Word.MakeByteArr(words)) {}
+
         public RepeatCommand (int times, byte[] contents)
         {
             if (times < 1) throw new ParsingException($"Cannot repeat less than once (recieved {times})");

@@ -68,5 +68,13 @@ namespace RedFoxAssembly.CSharp.Statements
         {
             return 1;
         }
+
+        public static byte[] MakeByteArr (List<RByte> rBytes)
+        {
+            byte[] bytes = new byte[rBytes.Count];
+            for (int i = 0; i < rBytes.Count; i++)
+                bytes[i] = (byte) rBytes[i].Data;
+            return bytes;
+        }
     }
 }

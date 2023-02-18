@@ -11,37 +11,37 @@ namespace RedFoxAssembly.CSharp.Statements
 {
     internal class Word : IData
     {
-        private bool _isTargetingRegister;
-        private bool _isTargetingLabel;
-        private byte[]? _data;
-        private string? _identifier;
+        public bool TargetingRegister { get; protected set; }
+        public bool TargetingLabel { get; protected set; }
+        public byte[]? Data { get; protected set; }
+        public string? Identifier { get; protected set; }
 
         public Word(bool isTargetingRegister, byte[] data)
         {
-            _isTargetingRegister = isTargetingRegister;
+            TargetingRegister = isTargetingRegister;
 
             if (data == null | data.Length < 1) throw new ParsingException("Cannot assign fewer than 1 byte to a word");
-            _data = data;
+            Data = data;
         }
 
         public Word(bool isTargetingRegister, string identifier)
         {
-            _isTargetingRegister = isTargetingRegister;
+            TargetingRegister = isTargetingRegister;
 
             if (String.IsNullOrWhiteSpace(identifier)) throw new ParsingException("Cannot assign a null or whitespace value-mapping to a word");
-            _identifier = identifier;
+            Identifier = identifier;
         }
 
         public byte[] GetBytes(RFASMCompiler compiler)
         {
             // Return the value of the named constant 
-            if (_identifier != null)
+            if (Identifier != null)
             {
-                if (compiler.Constants.TryGetValue(_identifier, out IData? val))
+                if (compiler.Constants.TryGetValue(Identifier, out IData? val))
                 {
                     byte[] v = val.GetBytes(compiler);
                     if (v.Length != compiler.meta!.DataWidth)
-                        throw new CompilationException($"Constant {_identifier} with value [{String.Join(',', v)}] is not of correct width {compiler.meta.DataWidth} for word.");
+                        throw new CompilationException($"Constant {Identifier} with value [{String.Join(',', v)}] is not of correct width {compiler.meta.DataWidth} for word.");
                     return v;
                 }
                 else
@@ -51,33 +51,33 @@ namespace RedFoxAssembly.CSharp.Statements
             }
 
             // Return _data
-            if (_data != null)
+            if (Data != null)
             {
 
                 // Is targeting register, so return register address (1 byte only)
                 if (IsTargetingRegister())
                 {
-                    if (_data.Length != 1)
-                        throw new CompilationException($"Word [{String.Join(',', _data)}] targetting register is length {_data.Length}, but it should have length 1.");
+                    if (Data.Length != 1)
+                        throw new CompilationException($"Word [{String.Join(',', Data)}] targetting register is length {Data.Length}, but it should have length 1.");
                     else
-                        return _data;
+                        return Data;
                 }
 
                 // Not targeting register, so return whole value (must be of correct data width)
                 else
                 {
                     // Illegal data width
-                    if (_data.Length != compiler.meta!.DataWidth)
+                    if (Data.Length != compiler.meta!.DataWidth)
                     {
-                        throw new CompilationException($"Width {_data.Length} of word [{String.Join(',', _data)}] does not match defined data width {compiler.meta.DataWidth}.");
+                        throw new CompilationException($"Width {Data.Length} of word [{String.Join(',', Data)}] does not match defined data width {compiler.meta.DataWidth}.");
                     }
                     // If contains no data
-                    else if (_data.Length < 1)
+                    else if (Data.Length < 1)
                     {
-                        throw new CompilationException($"Word [{String.Join(',', _data)}] width {_data.Length} shorter than 1 byte.");
+                        throw new CompilationException($"Word [{String.Join(',', Data)}] width {Data.Length} shorter than 1 byte.");
                     }
 
-                    return _data;
+                    return Data;
                 }
             }
 
@@ -86,19 +86,27 @@ namespace RedFoxAssembly.CSharp.Statements
 
         public override string ToString()
         {
-            if (!String.IsNullOrWhiteSpace(_identifier)) return _identifier;
-            else if (_data != null) return String.Join("", _data!);
+            if (!String.IsNullOrWhiteSpace(Identifier)) return Identifier;
+            else if (Data != null) return String.Join("", Data!);
             else return "Word(Empty)";
         }
 
         public bool IsTargetingRegister()
         {
-            return _isTargetingRegister;
+            return TargetingRegister;
         }
 
         public int GetWidth(RFASMCompiler compiler)
         {
             return compiler.meta!.DataWidth;
+        }
+
+        public static byte[] MakeByteArr (List<Word> words)
+        {
+            List<byte> bytes = new List<byte>();
+            for (int i = 0; i < words.Count; i++)
+                bytes.AddRange(words[i].Data);
+            return bytes.ToArray();
         }
     }
 }
