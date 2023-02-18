@@ -25,10 +25,15 @@ value
 command
 	: label EOL         #LabelCommand
 	| instruction EOL   #InstructionCommand
+	| repeat EOL        #RepeatCommand
 	;
 
 label
 	: LabelStart id=Identifier
+	;
+
+repeat
+	: Repeat Blank (times+=Digit)+ (Blank bytes+=byte)+
 	;
 
 instruction
@@ -124,6 +129,7 @@ bytedata
 
 LabelStart: '::';
 Width: '.width';
+Repeat: '.repeat';
 WordValue: '.word';
 ByteValue: '.byte';
 End: '.end';

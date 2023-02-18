@@ -79,11 +79,24 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>RepeatCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeatCommand([NotNull] RedFoxAssemblyParser.RepeatCommandContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.repeat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeat([NotNull] RedFoxAssemblyParser.RepeatContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>HLTInstruction</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.instruction"/>.

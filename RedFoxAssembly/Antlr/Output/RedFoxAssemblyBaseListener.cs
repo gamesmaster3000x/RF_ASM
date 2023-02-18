@@ -129,6 +129,20 @@ public partial class RedFoxAssemblyBaseListener : IRedFoxAssemblyListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>RepeatCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRepeatCommand([NotNull] RedFoxAssemblyParser.RepeatCommandContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>RepeatCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRepeatCommand([NotNull] RedFoxAssemblyParser.RepeatCommandContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -140,6 +154,18 @@ public partial class RedFoxAssemblyBaseListener : IRedFoxAssemblyListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLabel([NotNull] RedFoxAssemblyParser.LabelContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.repeat"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRepeat([NotNull] RedFoxAssemblyParser.RepeatContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.repeat"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRepeat([NotNull] RedFoxAssemblyParser.RepeatContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>HLTInstruction</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.instruction"/>.

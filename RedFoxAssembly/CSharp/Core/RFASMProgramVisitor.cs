@@ -1,7 +1,9 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using NLog.Targets;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
+using System.Text;
 
 namespace RedFoxAssembly.CSharp.Core
 {
@@ -159,11 +161,26 @@ namespace RedFoxAssembly.CSharp.Core
             if (context == null) throw new ParsingException("RedFoxAssemblyParser.CommandContext cannot be null");
             if (context is RedFoxAssemblyParser.LabelCommandContext) return VisitLabelCommand((RedFoxAssemblyParser.LabelCommandContext)context);
             if (context is RedFoxAssemblyParser.InstructionCommandContext) return VisitInstructionCommand((RedFoxAssemblyParser.InstructionCommandContext)context);
+            if (context is RedFoxAssemblyParser.RepeatCommandContext) return VisitRepeatCommand((RedFoxAssemblyParser.RepeatCommandContext) context);
             throw new ParsingException("Cannot parse RedFoxAssemblyParser.CommandContext of type " + context.GetType());
         }
 
         public override LabelCommand VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context) { return VisitLabel(context.label()); }
         public override LabelCommand VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context) { return new LabelCommand(context.id.Text); }
+
+        public override RepeatCommand VisitRepeatCommand ([NotNull] RedFoxAssemblyParser.RepeatCommandContext context) { return VisitRepeat(context.repeat()); }
+        public override RepeatCommand VisitRepeat ([NotNull] RedFoxAssemblyParser.RepeatContext context) 
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach(IToken t in context._times) builder.Append(t.Text);
+            int times = Int32.Parse(builder.ToString());
+
+            byte[] bytes = new byte[context._bytes.Count];
+            for(int i = 0; i < bytes.Length; i++)
+                bytes[i] = (byte) VisitByte(context._bytes[i]).Data;
+                
+            return new RepeatCommand(times, bytes);
+        }
 
         public override InstructionCommand VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context) { return ParseInstruction(context.instruction()); }
         public InstructionCommand ParseInstruction(RedFoxAssemblyParser.InstructionContext context)

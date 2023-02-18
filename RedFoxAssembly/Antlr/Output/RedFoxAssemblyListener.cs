@@ -110,6 +110,18 @@ public interface IRedFoxAssemblyListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>RepeatCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRepeatCommand([NotNull] RedFoxAssemblyParser.RepeatCommandContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>RepeatCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRepeatCommand([NotNull] RedFoxAssemblyParser.RepeatCommandContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -119,6 +131,16 @@ public interface IRedFoxAssemblyListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitLabel([NotNull] RedFoxAssemblyParser.LabelContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.repeat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRepeat([NotNull] RedFoxAssemblyParser.RepeatContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.repeat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRepeat([NotNull] RedFoxAssemblyParser.RepeatContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>HLTInstruction</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.instruction"/>.

@@ -2,6 +2,8 @@
 .word _OpA_ 0x2358
 .word _OpB_ 0x41f0
 
+.repeat 15 0x05 0x06 0x07
+
 JMP _start_
 
 ::_label_
