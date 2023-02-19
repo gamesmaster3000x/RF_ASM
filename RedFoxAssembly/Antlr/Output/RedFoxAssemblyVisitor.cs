@@ -39,6 +39,19 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>LiteralMetadata</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.metadata"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralMetadata([NotNull] RedFoxAssemblyParser.LiteralMetadataContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteral([NotNull] RedFoxAssemblyParser.LiteralContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>WidthConfiguration</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// </summary>

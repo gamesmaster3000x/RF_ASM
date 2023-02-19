@@ -42,6 +42,28 @@ public interface IRedFoxAssemblyListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>LiteralMetadata</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.metadata"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLiteralMetadata([NotNull] RedFoxAssemblyParser.LiteralMetadataContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>LiteralMetadata</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.metadata"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLiteralMetadata([NotNull] RedFoxAssemblyParser.LiteralMetadataContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLiteral([NotNull] RedFoxAssemblyParser.LiteralContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLiteral([NotNull] RedFoxAssemblyParser.LiteralContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>WidthConfiguration</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// </summary>

@@ -37,33 +37,33 @@ public partial class RedFoxAssemblyParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		LabelStart=1, Width=2, Repeat=3, WordValue=4, ByteValue=5, End=6, HLT=7, 
-		NOP=8, ADD=9, SUB=10, LSL=11, LSR=12, NEG=13, NOT=14, CMP=15, JMP=16, 
-		BFG=17, BSR=18, RTN=19, RRB=20, RRW=21, RMB=22, RMW=23, WRB=24, WRW=25, 
-		WMB=26, WMW=27, RVB=28, RVW=29, SIN=30, INT=31, SFG=32, AND=33, LOR=34, 
-		XOR=35, RegisterPrefix=36, HexPrefix=37, Underscore=38, Quote=39, Blank=40, 
-		Space=41, Tab=42, Digit=43, ByteLetter=44, Identifier=45, SkipTokens=46, 
-		LineComment=47, EOL=48;
+		LabelStart=1, Width=2, Repeat=3, Literal=4, WordValue=5, ByteValue=6, 
+		End=7, HLT=8, NOP=9, ADD=10, SUB=11, LSL=12, LSR=13, NEG=14, NOT=15, CMP=16, 
+		JMP=17, BFG=18, BSR=19, RTN=20, RRB=21, RRW=22, RMB=23, RMW=24, WRB=25, 
+		WRW=26, WMB=27, WMW=28, RVB=29, RVW=30, SIN=31, INT=32, SFG=33, AND=34, 
+		LOR=35, XOR=36, RegisterPrefix=37, HexPrefix=38, Underscore=39, Quote=40, 
+		Blank=41, Space=42, Tab=43, Digit=44, ByteLetter=45, Identifier=46, SkipTokens=47, 
+		LineComment=48, EOL=49;
 	public const int
-		RULE_program = 0, RULE_configuration = 1, RULE_width = 2, RULE_value = 3, 
-		RULE_command = 4, RULE_label = 5, RULE_repeat = 6, RULE_instruction = 7, 
-		RULE_hlt = 8, RULE_nop = 9, RULE_add = 10, RULE_sub = 11, RULE_lsl = 12, 
-		RULE_lsr = 13, RULE_neg = 14, RULE_not = 15, RULE_cmp = 16, RULE_jmp = 17, 
-		RULE_bfg = 18, RULE_bsr = 19, RULE_rtn = 20, RULE_rrb = 21, RULE_rrw = 22, 
-		RULE_rmb = 23, RULE_rmw = 24, RULE_wrb = 25, RULE_wrw = 26, RULE_wmb = 27, 
-		RULE_wmw = 28, RULE_rvb = 29, RULE_rvw = 30, RULE_sin = 31, RULE_int = 32, 
-		RULE_sfg = 33, RULE_and = 34, RULE_lor = 35, RULE_xor = 36, RULE_end = 37, 
-		RULE_word = 38, RULE_byte = 39, RULE_bytedata = 40;
+		RULE_program = 0, RULE_metadata = 1, RULE_literal = 2, RULE_configuration = 3, 
+		RULE_width = 4, RULE_value = 5, RULE_command = 6, RULE_label = 7, RULE_repeat = 8, 
+		RULE_instruction = 9, RULE_hlt = 10, RULE_nop = 11, RULE_add = 12, RULE_sub = 13, 
+		RULE_lsl = 14, RULE_lsr = 15, RULE_neg = 16, RULE_not = 17, RULE_cmp = 18, 
+		RULE_jmp = 19, RULE_bfg = 20, RULE_bsr = 21, RULE_rtn = 22, RULE_rrb = 23, 
+		RULE_rrw = 24, RULE_rmb = 25, RULE_rmw = 26, RULE_wrb = 27, RULE_wrw = 28, 
+		RULE_wmb = 29, RULE_wmw = 30, RULE_rvb = 31, RULE_rvw = 32, RULE_sin = 33, 
+		RULE_int = 34, RULE_sfg = 35, RULE_and = 36, RULE_lor = 37, RULE_xor = 38, 
+		RULE_end = 39, RULE_word = 40, RULE_byte = 41, RULE_bytedata = 42;
 	public static readonly string[] ruleNames = {
-		"program", "configuration", "width", "value", "command", "label", "repeat", 
-		"instruction", "hlt", "nop", "add", "sub", "lsl", "lsr", "neg", "not", 
-		"cmp", "jmp", "bfg", "bsr", "rtn", "rrb", "rrw", "rmb", "rmw", "wrb", 
-		"wrw", "wmb", "wmw", "rvb", "rvw", "sin", "int", "sfg", "and", "lor", 
-		"xor", "end", "word", "byte", "bytedata"
+		"program", "metadata", "literal", "configuration", "width", "value", "command", 
+		"label", "repeat", "instruction", "hlt", "nop", "add", "sub", "lsl", "lsr", 
+		"neg", "not", "cmp", "jmp", "bfg", "bsr", "rtn", "rrb", "rrw", "rmb", 
+		"rmw", "wrb", "wrw", "wmb", "wmw", "rvb", "rvw", "sin", "int", "sfg", 
+		"and", "lor", "xor", "end", "word", "byte", "bytedata"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'::'", "'.width'", "'.repeat'", "'.word'", "'.byte'", "'.end'", 
+		null, "'::'", "'.width'", "'.repeat'", "'$'", "'.word'", "'.byte'", "'.end'", 
 		"'HLT'", "'NOP'", "'ADD'", "'SUB'", "'LSL'", "'LSR'", "'NEG'", "'NOT'", 
 		"'CMP'", "'JMP'", "'BFG'", "'BSR'", "'RTN'", "'RRB'", "'RRW'", "'RMB'", 
 		"'RMW'", "'WRB'", "'WRW'", "'WMB'", "'WMW'", "'RVB'", "'RVW'", "'SIN'", 
@@ -71,12 +71,13 @@ public partial class RedFoxAssemblyParser : Parser {
 		null, "' '", "'\\t'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "LabelStart", "Width", "Repeat", "WordValue", "ByteValue", "End", 
-		"HLT", "NOP", "ADD", "SUB", "LSL", "LSR", "NEG", "NOT", "CMP", "JMP", 
-		"BFG", "BSR", "RTN", "RRB", "RRW", "RMB", "RMW", "WRB", "WRW", "WMB", 
-		"WMW", "RVB", "RVW", "SIN", "INT", "SFG", "AND", "LOR", "XOR", "RegisterPrefix", 
-		"HexPrefix", "Underscore", "Quote", "Blank", "Space", "Tab", "Digit", 
-		"ByteLetter", "Identifier", "SkipTokens", "LineComment", "EOL"
+		null, "LabelStart", "Width", "Repeat", "Literal", "WordValue", "ByteValue", 
+		"End", "HLT", "NOP", "ADD", "SUB", "LSL", "LSR", "NEG", "NOT", "CMP", 
+		"JMP", "BFG", "BSR", "RTN", "RRB", "RRW", "RMB", "RMW", "WRB", "WRW", 
+		"WMB", "WMW", "RVB", "RVW", "SIN", "INT", "SFG", "AND", "LOR", "XOR", 
+		"RegisterPrefix", "HexPrefix", "Underscore", "Quote", "Blank", "Space", 
+		"Tab", "Digit", "ByteLetter", "Identifier", "SkipTokens", "LineComment", 
+		"EOL"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -111,12 +112,20 @@ public partial class RedFoxAssemblyParser : Parser {
 	}
 
 	public partial class ProgramContext : ParserRuleContext {
+		public MetadataContext _metadata;
+		public IList<MetadataContext> _metadatas = new List<MetadataContext>();
 		public ConfigurationContext _configuration;
 		public IList<ConfigurationContext> _configurations = new List<ConfigurationContext>();
 		public CommandContext _command;
 		public IList<CommandContext> _commands = new List<CommandContext>();
 		[System.Diagnostics.DebuggerNonUserCode] public EndContext end() {
 			return GetRuleContext<EndContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public MetadataContext[] metadata() {
+			return GetRuleContexts<MetadataContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public MetadataContext metadata(int i) {
+			return GetRuleContext<MetadataContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ConfigurationContext[] configuration() {
 			return GetRuleContexts<ConfigurationContext>();
@@ -161,40 +170,196 @@ public partial class RedFoxAssemblyParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 83;
+			State = 89;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==Literal) {
+				{
+				{
+				State = 86;
+				_localctx._metadata = metadata();
+				_localctx._metadatas.Add(_localctx._metadata);
+				}
+				}
+				State = 91;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 93;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 82;
+				State = 92;
 				_localctx._configuration = configuration();
 				_localctx._configurations.Add(_localctx._configuration);
 				}
 				}
-				State = 85;
+				State = 95;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( ((_la) & ~0x3f) == 0 && ((1L << _la) & 52L) != 0 );
-			State = 88;
+			} while ( ((_la) & ~0x3f) == 0 && ((1L << _la) & 100L) != 0 );
+			State = 98;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 87;
+				State = 97;
 				_localctx._command = command();
 				_localctx._commands.Add(_localctx._command);
 				}
 				}
-				State = 90;
+				State = 100;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( ((_la) & ~0x3f) == 0 && ((1L << _la) & 68719476618L) != 0 );
+			} while ( ((_la) & ~0x3f) == 0 && ((1L << _la) & 137438953226L) != 0 );
 			{
-			State = 92;
+			State = 102;
 			end();
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class MetadataContext : ParserRuleContext {
+		public MetadataContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_metadata; } }
+	 
+		public MetadataContext() { }
+		public virtual void CopyFrom(MetadataContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class LiteralMetadataContext : MetadataContext {
+		[System.Diagnostics.DebuggerNonUserCode] public LiteralContext literal() {
+			return GetRuleContext<LiteralContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EOL() { return GetToken(RedFoxAssemblyParser.EOL, 0); }
+		public LiteralMetadataContext(MetadataContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.EnterLiteralMetadata(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.ExitLiteralMetadata(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRedFoxAssemblyVisitor<TResult> typedVisitor = visitor as IRedFoxAssemblyVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLiteralMetadata(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public MetadataContext metadata() {
+		MetadataContext _localctx = new MetadataContext(Context, State);
+		EnterRule(_localctx, 2, RULE_metadata);
+		try {
+			_localctx = new LiteralMetadataContext(_localctx);
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 104;
+			literal();
+			State = 105;
+			Match(EOL);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class LiteralContext : ParserRuleContext {
+		public IToken contents;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] Literal() { return GetTokens(RedFoxAssemblyParser.Literal); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Literal(int i) {
+			return GetToken(RedFoxAssemblyParser.Literal, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] EOL() { return GetTokens(RedFoxAssemblyParser.EOL); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EOL(int i) {
+			return GetToken(RedFoxAssemblyParser.EOL, i);
+		}
+		public LiteralContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_literal; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.EnterLiteral(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRedFoxAssemblyListener typedListener = listener as IRedFoxAssemblyListener;
+			if (typedListener != null) typedListener.ExitLiteral(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRedFoxAssemblyVisitor<TResult> typedVisitor = visitor as IRedFoxAssemblyVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public LiteralContext literal() {
+		LiteralContext _localctx = new LiteralContext(Context, State);
+		EnterRule(_localctx, 4, RULE_literal);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 107;
+			Match(Literal);
+			State = 111;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 562949953421294L) != 0) {
+				{
+				{
+				State = 108;
+				_localctx.contents = TokenStream.LT(1);
+				_la = TokenStream.LA(1);
+				if ( _la <= 0 || (_la==Literal || _la==EOL) ) {
+					_localctx.contents = ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
+				}
+				}
+				State = 113;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 114;
+			Match(Literal);
 			}
 		}
 		catch (RecognitionException re) {
@@ -270,18 +435,18 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public ConfigurationContext configuration() {
 		ConfigurationContext _localctx = new ConfigurationContext(Context, State);
-		EnterRule(_localctx, 2, RULE_configuration);
+		EnterRule(_localctx, 6, RULE_configuration);
 		try {
-			State = 100;
+			State = 122;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case Width:
 				_localctx = new WidthConfigurationContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 94;
+				State = 116;
 				width();
-				State = 95;
+				State = 117;
 				Match(EOL);
 				}
 				break;
@@ -290,9 +455,9 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new ValueConfigurationContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 97;
+				State = 119;
 				value();
-				State = 98;
+				State = 120;
 				Match(EOL);
 				}
 				break;
@@ -342,15 +507,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public WidthContext width() {
 		WidthContext _localctx = new WidthContext(Context, State);
-		EnterRule(_localctx, 4, RULE_width);
+		EnterRule(_localctx, 8, RULE_width);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 102;
+			State = 124;
 			Match(Width);
-			State = 103;
+			State = 125;
 			Match(Blank);
-			State = 104;
+			State = 126;
 			_localctx.val = Match(Digit);
 			}
 		}
@@ -408,38 +573,38 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public ValueContext value() {
 		ValueContext _localctx = new ValueContext(Context, State);
-		EnterRule(_localctx, 6, RULE_value);
+		EnterRule(_localctx, 10, RULE_value);
 		try {
-			State = 116;
+			State = 138;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case WordValue:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 106;
+				State = 128;
 				Match(WordValue);
-				State = 107;
+				State = 129;
 				Match(Blank);
-				State = 108;
+				State = 130;
 				_localctx.id = Match(Identifier);
-				State = 109;
+				State = 131;
 				Match(Blank);
-				State = 110;
+				State = 132;
 				_localctx.wordValue = word();
 				}
 				break;
 			case ByteValue:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 111;
+				State = 133;
 				Match(ByteValue);
-				State = 112;
+				State = 134;
 				Match(Blank);
-				State = 113;
+				State = 135;
 				_localctx.id = Match(Identifier);
-				State = 114;
+				State = 136;
 				Match(Blank);
-				State = 115;
+				State = 137;
 				_localctx.byteValue = @byte();
 				}
 				break;
@@ -543,18 +708,18 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public CommandContext command() {
 		CommandContext _localctx = new CommandContext(Context, State);
-		EnterRule(_localctx, 8, RULE_command);
+		EnterRule(_localctx, 12, RULE_command);
 		try {
-			State = 127;
+			State = 149;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case LabelStart:
 				_localctx = new LabelCommandContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 118;
+				State = 140;
 				label();
-				State = 119;
+				State = 141;
 				Match(EOL);
 				}
 				break;
@@ -590,9 +755,9 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new InstructionCommandContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 121;
+				State = 143;
 				instruction();
-				State = 122;
+				State = 144;
 				Match(EOL);
 				}
 				break;
@@ -600,9 +765,9 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RepeatCommandContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 124;
+				State = 146;
 				repeat();
-				State = 125;
+				State = 147;
 				Match(EOL);
 				}
 				break;
@@ -651,13 +816,13 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public LabelContext label() {
 		LabelContext _localctx = new LabelContext(Context, State);
-		EnterRule(_localctx, 10, RULE_label);
+		EnterRule(_localctx, 14, RULE_label);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 129;
+			State = 151;
 			Match(LabelStart);
-			State = 130;
+			State = 152;
 			_localctx.id = Match(Identifier);
 			}
 		}
@@ -718,44 +883,44 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RepeatContext repeat() {
 		RepeatContext _localctx = new RepeatContext(Context, State);
-		EnterRule(_localctx, 12, RULE_repeat);
+		EnterRule(_localctx, 16, RULE_repeat);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 132;
+			State = 154;
 			Match(Repeat);
-			State = 133;
+			State = 155;
 			Match(Blank);
-			State = 135;
+			State = 157;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 134;
+				State = 156;
 				_localctx._Digit = Match(Digit);
 				_localctx._times.Add(_localctx._Digit);
 				}
 				}
-				State = 137;
+				State = 159;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==Digit );
-			State = 141;
+			State = 163;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 139;
+				State = 161;
 				Match(Blank);
-				State = 140;
+				State = 162;
 				_localctx._byte = @byte();
 				_localctx._bytes.Add(_localctx._byte);
 				}
 				}
-				State = 143;
+				State = 165;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==Blank );
@@ -1426,16 +1591,16 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public InstructionContext instruction() {
 		InstructionContext _localctx = new InstructionContext(Context, State);
-		EnterRule(_localctx, 14, RULE_instruction);
+		EnterRule(_localctx, 18, RULE_instruction);
 		try {
-			State = 174;
+			State = 196;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case HLT:
 				_localctx = new HLTInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 145;
+				State = 167;
 				hlt();
 				}
 				break;
@@ -1443,7 +1608,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new NOPInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 146;
+				State = 168;
 				nop();
 				}
 				break;
@@ -1451,7 +1616,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new ADDInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 147;
+				State = 169;
 				add();
 				}
 				break;
@@ -1459,7 +1624,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new SUBInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 148;
+				State = 170;
 				sub();
 				}
 				break;
@@ -1467,7 +1632,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new LSLInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 149;
+				State = 171;
 				lsl();
 				}
 				break;
@@ -1475,7 +1640,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new LSRInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 150;
+				State = 172;
 				lsr();
 				}
 				break;
@@ -1483,7 +1648,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new NEGInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 151;
+				State = 173;
 				neg();
 				}
 				break;
@@ -1491,7 +1656,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new NOTInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 152;
+				State = 174;
 				not();
 				}
 				break;
@@ -1499,7 +1664,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new CMPInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 9);
 				{
-				State = 153;
+				State = 175;
 				cmp();
 				}
 				break;
@@ -1507,7 +1672,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new JMPInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 10);
 				{
-				State = 154;
+				State = 176;
 				jmp();
 				}
 				break;
@@ -1515,7 +1680,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new BFGInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 11);
 				{
-				State = 155;
+				State = 177;
 				bfg();
 				}
 				break;
@@ -1523,7 +1688,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new BSRInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 12);
 				{
-				State = 156;
+				State = 178;
 				bsr();
 				}
 				break;
@@ -1531,7 +1696,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RTNInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 13);
 				{
-				State = 157;
+				State = 179;
 				rtn();
 				}
 				break;
@@ -1539,7 +1704,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RRBInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 14);
 				{
-				State = 158;
+				State = 180;
 				rrb();
 				}
 				break;
@@ -1547,7 +1712,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RRWInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 15);
 				{
-				State = 159;
+				State = 181;
 				rrw();
 				}
 				break;
@@ -1555,7 +1720,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RMBInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 16);
 				{
-				State = 160;
+				State = 182;
 				rmb();
 				}
 				break;
@@ -1563,7 +1728,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RMWInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 17);
 				{
-				State = 161;
+				State = 183;
 				rmw();
 				}
 				break;
@@ -1571,7 +1736,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new WRBInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 18);
 				{
-				State = 162;
+				State = 184;
 				wrb();
 				}
 				break;
@@ -1579,7 +1744,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new WRWInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 19);
 				{
-				State = 163;
+				State = 185;
 				wrw();
 				}
 				break;
@@ -1587,7 +1752,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new WMBInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 20);
 				{
-				State = 164;
+				State = 186;
 				wmb();
 				}
 				break;
@@ -1595,7 +1760,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new WMWInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 21);
 				{
-				State = 165;
+				State = 187;
 				wmw();
 				}
 				break;
@@ -1603,7 +1768,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RVBInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 22);
 				{
-				State = 166;
+				State = 188;
 				rvb();
 				}
 				break;
@@ -1611,7 +1776,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new RVWInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 23);
 				{
-				State = 167;
+				State = 189;
 				rvw();
 				}
 				break;
@@ -1619,7 +1784,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new SINInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 24);
 				{
-				State = 168;
+				State = 190;
 				sin();
 				}
 				break;
@@ -1627,7 +1792,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new INTInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 25);
 				{
-				State = 169;
+				State = 191;
 				@int();
 				}
 				break;
@@ -1635,7 +1800,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new SFGInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 26);
 				{
-				State = 170;
+				State = 192;
 				sfg();
 				}
 				break;
@@ -1643,7 +1808,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new ANDInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 27);
 				{
-				State = 171;
+				State = 193;
 				and();
 				}
 				break;
@@ -1651,7 +1816,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new LORInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 28);
 				{
-				State = 172;
+				State = 194;
 				lor();
 				}
 				break;
@@ -1659,7 +1824,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				_localctx = new XORInstructionContext(_localctx);
 				EnterOuterAlt(_localctx, 29);
 				{
-				State = 173;
+				State = 195;
 				xor();
 				}
 				break;
@@ -1707,11 +1872,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public HltContext hlt() {
 		HltContext _localctx = new HltContext(Context, State);
-		EnterRule(_localctx, 16, RULE_hlt);
+		EnterRule(_localctx, 20, RULE_hlt);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 176;
+			State = 198;
 			_localctx.op = Match(HLT);
 			}
 		}
@@ -1755,11 +1920,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public NopContext nop() {
 		NopContext _localctx = new NopContext(Context, State);
-		EnterRule(_localctx, 18, RULE_nop);
+		EnterRule(_localctx, 22, RULE_nop);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 178;
+			State = 200;
 			_localctx.op = Match(NOP);
 			}
 		}
@@ -1803,11 +1968,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public AddContext add() {
 		AddContext _localctx = new AddContext(Context, State);
-		EnterRule(_localctx, 20, RULE_add);
+		EnterRule(_localctx, 24, RULE_add);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 180;
+			State = 202;
 			_localctx.op = Match(ADD);
 			}
 		}
@@ -1851,11 +2016,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public SubContext sub() {
 		SubContext _localctx = new SubContext(Context, State);
-		EnterRule(_localctx, 22, RULE_sub);
+		EnterRule(_localctx, 26, RULE_sub);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 182;
+			State = 204;
 			_localctx.op = Match(SUB);
 			}
 		}
@@ -1899,11 +2064,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public LslContext lsl() {
 		LslContext _localctx = new LslContext(Context, State);
-		EnterRule(_localctx, 24, RULE_lsl);
+		EnterRule(_localctx, 28, RULE_lsl);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 184;
+			State = 206;
 			_localctx.op = Match(LSL);
 			}
 		}
@@ -1947,11 +2112,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public LsrContext lsr() {
 		LsrContext _localctx = new LsrContext(Context, State);
-		EnterRule(_localctx, 26, RULE_lsr);
+		EnterRule(_localctx, 30, RULE_lsr);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 186;
+			State = 208;
 			_localctx.op = Match(LSR);
 			}
 		}
@@ -1995,11 +2160,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public NegContext neg() {
 		NegContext _localctx = new NegContext(Context, State);
-		EnterRule(_localctx, 28, RULE_neg);
+		EnterRule(_localctx, 32, RULE_neg);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 188;
+			State = 210;
 			_localctx.op = Match(NEG);
 			}
 		}
@@ -2043,11 +2208,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public NotContext not() {
 		NotContext _localctx = new NotContext(Context, State);
-		EnterRule(_localctx, 30, RULE_not);
+		EnterRule(_localctx, 34, RULE_not);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 190;
+			State = 212;
 			_localctx.op = Match(NOT);
 			}
 		}
@@ -2091,11 +2256,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public CmpContext cmp() {
 		CmpContext _localctx = new CmpContext(Context, State);
-		EnterRule(_localctx, 32, RULE_cmp);
+		EnterRule(_localctx, 36, RULE_cmp);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 192;
+			State = 214;
 			_localctx.op = Match(CMP);
 			}
 		}
@@ -2144,15 +2309,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public JmpContext jmp() {
 		JmpContext _localctx = new JmpContext(Context, State);
-		EnterRule(_localctx, 34, RULE_jmp);
+		EnterRule(_localctx, 38, RULE_jmp);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 194;
+			State = 216;
 			_localctx.op = Match(JMP);
-			State = 195;
+			State = 217;
 			Match(Blank);
-			State = 196;
+			State = 218;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2205,17 +2370,17 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public BfgContext bfg() {
 		BfgContext _localctx = new BfgContext(Context, State);
-		EnterRule(_localctx, 36, RULE_bfg);
+		EnterRule(_localctx, 40, RULE_bfg);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 198;
+			State = 220;
 			_localctx.op = Match(BFG);
-			State = 199;
+			State = 221;
 			Match(Blank);
-			State = 200;
+			State = 222;
 			_localctx.arg1w = word();
-			State = 201;
+			State = 223;
 			_localctx.arg2b = @byte();
 			}
 		}
@@ -2264,15 +2429,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public BsrContext bsr() {
 		BsrContext _localctx = new BsrContext(Context, State);
-		EnterRule(_localctx, 38, RULE_bsr);
+		EnterRule(_localctx, 42, RULE_bsr);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 203;
+			State = 225;
 			_localctx.op = Match(BSR);
-			State = 204;
+			State = 226;
 			Match(Blank);
-			State = 205;
+			State = 227;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2316,11 +2481,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RtnContext rtn() {
 		RtnContext _localctx = new RtnContext(Context, State);
-		EnterRule(_localctx, 40, RULE_rtn);
+		EnterRule(_localctx, 44, RULE_rtn);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 207;
+			State = 229;
 			_localctx.op = Match(RTN);
 			}
 		}
@@ -2376,19 +2541,19 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RrbContext rrb() {
 		RrbContext _localctx = new RrbContext(Context, State);
-		EnterRule(_localctx, 42, RULE_rrb);
+		EnterRule(_localctx, 46, RULE_rrb);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 209;
+			State = 231;
 			_localctx.op = Match(RRB);
-			State = 210;
+			State = 232;
 			Match(Blank);
-			State = 211;
+			State = 233;
 			_localctx.arg1b = @byte();
-			State = 212;
+			State = 234;
 			Match(Blank);
-			State = 213;
+			State = 235;
 			_localctx.arg2b = @byte();
 			}
 		}
@@ -2437,15 +2602,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RrwContext rrw() {
 		RrwContext _localctx = new RrwContext(Context, State);
-		EnterRule(_localctx, 44, RULE_rrw);
+		EnterRule(_localctx, 48, RULE_rrw);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 215;
+			State = 237;
 			_localctx.op = Match(RRW);
-			State = 216;
+			State = 238;
 			Match(Blank);
-			State = 217;
+			State = 239;
 			_localctx.arg1b = @byte();
 			}
 		}
@@ -2494,15 +2659,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RmbContext rmb() {
 		RmbContext _localctx = new RmbContext(Context, State);
-		EnterRule(_localctx, 46, RULE_rmb);
+		EnterRule(_localctx, 50, RULE_rmb);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 219;
+			State = 241;
 			_localctx.op = Match(RMB);
-			State = 220;
+			State = 242;
 			Match(Blank);
-			State = 221;
+			State = 243;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2551,15 +2716,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RmwContext rmw() {
 		RmwContext _localctx = new RmwContext(Context, State);
-		EnterRule(_localctx, 48, RULE_rmw);
+		EnterRule(_localctx, 52, RULE_rmw);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 223;
+			State = 245;
 			_localctx.op = Match(RMW);
-			State = 224;
+			State = 246;
 			Match(Blank);
-			State = 225;
+			State = 247;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2615,19 +2780,19 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public WrbContext wrb() {
 		WrbContext _localctx = new WrbContext(Context, State);
-		EnterRule(_localctx, 50, RULE_wrb);
+		EnterRule(_localctx, 54, RULE_wrb);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 227;
+			State = 249;
 			_localctx.op = Match(WRB);
-			State = 228;
+			State = 250;
 			Match(Blank);
-			State = 229;
+			State = 251;
 			_localctx.arg1b = @byte();
-			State = 230;
+			State = 252;
 			Match(Blank);
-			State = 231;
+			State = 253;
 			_localctx.arg2b = @byte();
 			}
 		}
@@ -2676,15 +2841,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public WrwContext wrw() {
 		WrwContext _localctx = new WrwContext(Context, State);
-		EnterRule(_localctx, 52, RULE_wrw);
+		EnterRule(_localctx, 56, RULE_wrw);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 233;
+			State = 255;
 			_localctx.op = Match(WRW);
-			State = 234;
+			State = 256;
 			Match(Blank);
-			State = 235;
+			State = 257;
 			_localctx.arg1b = @byte();
 			}
 		}
@@ -2733,15 +2898,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public WmbContext wmb() {
 		WmbContext _localctx = new WmbContext(Context, State);
-		EnterRule(_localctx, 54, RULE_wmb);
+		EnterRule(_localctx, 58, RULE_wmb);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 237;
+			State = 259;
 			_localctx.op = Match(WMB);
-			State = 238;
+			State = 260;
 			Match(Blank);
-			State = 239;
+			State = 261;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2790,15 +2955,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public WmwContext wmw() {
 		WmwContext _localctx = new WmwContext(Context, State);
-		EnterRule(_localctx, 56, RULE_wmw);
+		EnterRule(_localctx, 60, RULE_wmw);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 241;
+			State = 263;
 			_localctx.op = Match(WMW);
-			State = 242;
+			State = 264;
 			Match(Blank);
-			State = 243;
+			State = 265;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2847,15 +3012,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RvbContext rvb() {
 		RvbContext _localctx = new RvbContext(Context, State);
-		EnterRule(_localctx, 58, RULE_rvb);
+		EnterRule(_localctx, 62, RULE_rvb);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 245;
+			State = 267;
 			_localctx.op = Match(RVB);
-			State = 246;
+			State = 268;
 			Match(Blank);
-			State = 247;
+			State = 269;
 			_localctx.arg1b = @byte();
 			}
 		}
@@ -2904,15 +3069,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public RvwContext rvw() {
 		RvwContext _localctx = new RvwContext(Context, State);
-		EnterRule(_localctx, 60, RULE_rvw);
+		EnterRule(_localctx, 64, RULE_rvw);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 249;
+			State = 271;
 			_localctx.op = Match(RVW);
-			State = 250;
+			State = 272;
 			Match(Blank);
-			State = 251;
+			State = 273;
 			_localctx.arg1w = word();
 			}
 		}
@@ -2968,19 +3133,19 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public SinContext sin() {
 		SinContext _localctx = new SinContext(Context, State);
-		EnterRule(_localctx, 62, RULE_sin);
+		EnterRule(_localctx, 66, RULE_sin);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 253;
+			State = 275;
 			_localctx.op = Match(SIN);
-			State = 254;
+			State = 276;
 			Match(Blank);
-			State = 255;
+			State = 277;
 			_localctx.arg1w = word();
-			State = 256;
+			State = 278;
 			Match(Blank);
-			State = 257;
+			State = 279;
 			_localctx.arg2b = @byte();
 			}
 		}
@@ -3029,15 +3194,15 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public IntContext @int() {
 		IntContext _localctx = new IntContext(Context, State);
-		EnterRule(_localctx, 64, RULE_int);
+		EnterRule(_localctx, 68, RULE_int);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 259;
+			State = 281;
 			_localctx.op = Match(INT);
-			State = 260;
+			State = 282;
 			Match(Blank);
-			State = 261;
+			State = 283;
 			_localctx.arg1b = @byte();
 			}
 		}
@@ -3093,19 +3258,19 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public SfgContext sfg() {
 		SfgContext _localctx = new SfgContext(Context, State);
-		EnterRule(_localctx, 66, RULE_sfg);
+		EnterRule(_localctx, 70, RULE_sfg);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 263;
+			State = 285;
 			_localctx.op = Match(SFG);
-			State = 264;
+			State = 286;
 			Match(Blank);
-			State = 265;
+			State = 287;
 			_localctx.arg1b = @byte();
-			State = 266;
+			State = 288;
 			Match(Blank);
-			State = 267;
+			State = 289;
 			_localctx.arg2b = @byte();
 			}
 		}
@@ -3149,11 +3314,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public AndContext and() {
 		AndContext _localctx = new AndContext(Context, State);
-		EnterRule(_localctx, 68, RULE_and);
+		EnterRule(_localctx, 72, RULE_and);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 269;
+			State = 291;
 			_localctx.op = Match(AND);
 			}
 		}
@@ -3197,11 +3362,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public LorContext lor() {
 		LorContext _localctx = new LorContext(Context, State);
-		EnterRule(_localctx, 70, RULE_lor);
+		EnterRule(_localctx, 74, RULE_lor);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 271;
+			State = 293;
 			_localctx.op = Match(LOR);
 			}
 		}
@@ -3245,11 +3410,11 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public XorContext xor() {
 		XorContext _localctx = new XorContext(Context, State);
-		EnterRule(_localctx, 72, RULE_xor);
+		EnterRule(_localctx, 76, RULE_xor);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 273;
+			State = 295;
 			_localctx.op = Match(XOR);
 			}
 		}
@@ -3293,13 +3458,13 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public EndContext end() {
 		EndContext _localctx = new EndContext(Context, State);
-		EnterRule(_localctx, 74, RULE_end);
+		EnterRule(_localctx, 78, RULE_end);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 275;
+			State = 297;
 			Match(End);
-			State = 276;
+			State = 298;
 			Match(Eof);
 			}
 		}
@@ -3356,29 +3521,29 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public WordContext word() {
 		WordContext _localctx = new WordContext(Context, State);
-		EnterRule(_localctx, 76, RULE_word);
+		EnterRule(_localctx, 80, RULE_word);
 		int _la;
 		try {
-			State = 287;
+			State = 309;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case HexPrefix:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 278;
+				State = 300;
 				_localctx.isHex = Match(HexPrefix);
-				State = 280;
+				State = 302;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				do {
 					{
 					{
-					State = 279;
+					State = 301;
 					_localctx._bytedata = bytedata();
 					_localctx._hexData.Add(_localctx._bytedata);
 					}
 					}
-					State = 282;
+					State = 304;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				} while ( _la==Digit || _la==ByteLetter );
@@ -3387,16 +3552,16 @@ public partial class RedFoxAssemblyParser : Parser {
 			case RegisterPrefix:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 284;
+				State = 306;
 				_localctx.registerTarget = Match(RegisterPrefix);
-				State = 285;
+				State = 307;
 				_localctx.registerData = bytedata();
 				}
 				break;
 			case Identifier:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 286;
+				State = 308;
 				_localctx.val = Match(Identifier);
 				}
 				break;
@@ -3453,33 +3618,33 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public ByteContext @byte() {
 		ByteContext _localctx = new ByteContext(Context, State);
-		EnterRule(_localctx, 78, RULE_byte);
+		EnterRule(_localctx, 82, RULE_byte);
 		try {
-			State = 294;
+			State = 316;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case HexPrefix:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 289;
+				State = 311;
 				_localctx.isHex = Match(HexPrefix);
-				State = 290;
+				State = 312;
 				_localctx.hexData = bytedata();
 				}
 				break;
 			case RegisterPrefix:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 291;
+				State = 313;
 				_localctx.registerTarget = Match(RegisterPrefix);
-				State = 292;
+				State = 314;
 				_localctx.registerData = bytedata();
 				}
 				break;
 			case Identifier:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 293;
+				State = 315;
 				_localctx.val = Match(Identifier);
 				}
 				break;
@@ -3533,12 +3698,12 @@ public partial class RedFoxAssemblyParser : Parser {
 	[RuleVersion(0)]
 	public BytedataContext bytedata() {
 		BytedataContext _localctx = new BytedataContext(Context, State);
-		EnterRule(_localctx, 80, RULE_bytedata);
+		EnterRule(_localctx, 84, RULE_bytedata);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 296;
+			State = 318;
 			_la = TokenStream.LA(1);
 			if ( !(_la==Digit || _la==ByteLetter) ) {
 			ErrorHandler.RecoverInline(this);
@@ -3547,7 +3712,7 @@ public partial class RedFoxAssemblyParser : Parser {
 				ErrorHandler.ReportMatch(this);
 			    Consume();
 			}
-			State = 297;
+			State = 319;
 			_la = TokenStream.LA(1);
 			if ( !(_la==Digit || _la==ByteLetter) ) {
 			ErrorHandler.RecoverInline(this);
@@ -3570,98 +3735,105 @@ public partial class RedFoxAssemblyParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,48,300,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,49,322,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
 		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
 		2,29,7,29,2,30,7,30,2,31,7,31,2,32,7,32,2,33,7,33,2,34,7,34,2,35,7,35,
-		2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,1,0,4,0,84,8,0,11,0,
-		12,0,85,1,0,4,0,89,8,0,11,0,12,0,90,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,3,
-		1,101,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,
-		117,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,128,8,4,1,5,1,5,1,5,1,
-		6,1,6,1,6,4,6,136,8,6,11,6,12,6,137,1,6,1,6,4,6,142,8,6,11,6,12,6,143,
-		1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,
-		7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,175,8,7,1,8,1,8,1,9,
-		1,9,1,10,1,10,1,11,1,11,1,12,1,12,1,13,1,13,1,14,1,14,1,15,1,15,1,16,1,
-		16,1,17,1,17,1,17,1,17,1,18,1,18,1,18,1,18,1,18,1,19,1,19,1,19,1,19,1,
-		20,1,20,1,21,1,21,1,21,1,21,1,21,1,21,1,22,1,22,1,22,1,22,1,23,1,23,1,
-		23,1,23,1,24,1,24,1,24,1,24,1,25,1,25,1,25,1,25,1,25,1,25,1,26,1,26,1,
-		26,1,26,1,27,1,27,1,27,1,27,1,28,1,28,1,28,1,28,1,29,1,29,1,29,1,29,1,
-		30,1,30,1,30,1,30,1,31,1,31,1,31,1,31,1,31,1,31,1,32,1,32,1,32,1,32,1,
-		33,1,33,1,33,1,33,1,33,1,33,1,34,1,34,1,35,1,35,1,36,1,36,1,37,1,37,1,
-		37,1,38,1,38,4,38,281,8,38,11,38,12,38,282,1,38,1,38,1,38,3,38,288,8,38,
-		1,39,1,39,1,39,1,39,1,39,3,39,295,8,39,1,40,1,40,1,40,1,40,0,0,41,0,2,
-		4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,
-		54,56,58,60,62,64,66,68,70,72,74,76,78,80,0,1,1,0,43,44,299,0,83,1,0,0,
-		0,2,100,1,0,0,0,4,102,1,0,0,0,6,116,1,0,0,0,8,127,1,0,0,0,10,129,1,0,0,
-		0,12,132,1,0,0,0,14,174,1,0,0,0,16,176,1,0,0,0,18,178,1,0,0,0,20,180,1,
-		0,0,0,22,182,1,0,0,0,24,184,1,0,0,0,26,186,1,0,0,0,28,188,1,0,0,0,30,190,
-		1,0,0,0,32,192,1,0,0,0,34,194,1,0,0,0,36,198,1,0,0,0,38,203,1,0,0,0,40,
-		207,1,0,0,0,42,209,1,0,0,0,44,215,1,0,0,0,46,219,1,0,0,0,48,223,1,0,0,
-		0,50,227,1,0,0,0,52,233,1,0,0,0,54,237,1,0,0,0,56,241,1,0,0,0,58,245,1,
-		0,0,0,60,249,1,0,0,0,62,253,1,0,0,0,64,259,1,0,0,0,66,263,1,0,0,0,68,269,
-		1,0,0,0,70,271,1,0,0,0,72,273,1,0,0,0,74,275,1,0,0,0,76,287,1,0,0,0,78,
-		294,1,0,0,0,80,296,1,0,0,0,82,84,3,2,1,0,83,82,1,0,0,0,84,85,1,0,0,0,85,
-		83,1,0,0,0,85,86,1,0,0,0,86,88,1,0,0,0,87,89,3,8,4,0,88,87,1,0,0,0,89,
-		90,1,0,0,0,90,88,1,0,0,0,90,91,1,0,0,0,91,92,1,0,0,0,92,93,3,74,37,0,93,
-		1,1,0,0,0,94,95,3,4,2,0,95,96,5,48,0,0,96,101,1,0,0,0,97,98,3,6,3,0,98,
-		99,5,48,0,0,99,101,1,0,0,0,100,94,1,0,0,0,100,97,1,0,0,0,101,3,1,0,0,0,
-		102,103,5,2,0,0,103,104,5,40,0,0,104,105,5,43,0,0,105,5,1,0,0,0,106,107,
-		5,4,0,0,107,108,5,40,0,0,108,109,5,45,0,0,109,110,5,40,0,0,110,117,3,76,
-		38,0,111,112,5,5,0,0,112,113,5,40,0,0,113,114,5,45,0,0,114,115,5,40,0,
-		0,115,117,3,78,39,0,116,106,1,0,0,0,116,111,1,0,0,0,117,7,1,0,0,0,118,
-		119,3,10,5,0,119,120,5,48,0,0,120,128,1,0,0,0,121,122,3,14,7,0,122,123,
-		5,48,0,0,123,128,1,0,0,0,124,125,3,12,6,0,125,126,5,48,0,0,126,128,1,0,
-		0,0,127,118,1,0,0,0,127,121,1,0,0,0,127,124,1,0,0,0,128,9,1,0,0,0,129,
-		130,5,1,0,0,130,131,5,45,0,0,131,11,1,0,0,0,132,133,5,3,0,0,133,135,5,
-		40,0,0,134,136,5,43,0,0,135,134,1,0,0,0,136,137,1,0,0,0,137,135,1,0,0,
-		0,137,138,1,0,0,0,138,141,1,0,0,0,139,140,5,40,0,0,140,142,3,78,39,0,141,
-		139,1,0,0,0,142,143,1,0,0,0,143,141,1,0,0,0,143,144,1,0,0,0,144,13,1,0,
-		0,0,145,175,3,16,8,0,146,175,3,18,9,0,147,175,3,20,10,0,148,175,3,22,11,
-		0,149,175,3,24,12,0,150,175,3,26,13,0,151,175,3,28,14,0,152,175,3,30,15,
-		0,153,175,3,32,16,0,154,175,3,34,17,0,155,175,3,36,18,0,156,175,3,38,19,
-		0,157,175,3,40,20,0,158,175,3,42,21,0,159,175,3,44,22,0,160,175,3,46,23,
-		0,161,175,3,48,24,0,162,175,3,50,25,0,163,175,3,52,26,0,164,175,3,54,27,
-		0,165,175,3,56,28,0,166,175,3,58,29,0,167,175,3,60,30,0,168,175,3,62,31,
-		0,169,175,3,64,32,0,170,175,3,66,33,0,171,175,3,68,34,0,172,175,3,70,35,
-		0,173,175,3,72,36,0,174,145,1,0,0,0,174,146,1,0,0,0,174,147,1,0,0,0,174,
-		148,1,0,0,0,174,149,1,0,0,0,174,150,1,0,0,0,174,151,1,0,0,0,174,152,1,
-		0,0,0,174,153,1,0,0,0,174,154,1,0,0,0,174,155,1,0,0,0,174,156,1,0,0,0,
-		174,157,1,0,0,0,174,158,1,0,0,0,174,159,1,0,0,0,174,160,1,0,0,0,174,161,
-		1,0,0,0,174,162,1,0,0,0,174,163,1,0,0,0,174,164,1,0,0,0,174,165,1,0,0,
-		0,174,166,1,0,0,0,174,167,1,0,0,0,174,168,1,0,0,0,174,169,1,0,0,0,174,
-		170,1,0,0,0,174,171,1,0,0,0,174,172,1,0,0,0,174,173,1,0,0,0,175,15,1,0,
-		0,0,176,177,5,7,0,0,177,17,1,0,0,0,178,179,5,8,0,0,179,19,1,0,0,0,180,
-		181,5,9,0,0,181,21,1,0,0,0,182,183,5,10,0,0,183,23,1,0,0,0,184,185,5,11,
-		0,0,185,25,1,0,0,0,186,187,5,12,0,0,187,27,1,0,0,0,188,189,5,13,0,0,189,
-		29,1,0,0,0,190,191,5,14,0,0,191,31,1,0,0,0,192,193,5,15,0,0,193,33,1,0,
-		0,0,194,195,5,16,0,0,195,196,5,40,0,0,196,197,3,76,38,0,197,35,1,0,0,0,
-		198,199,5,17,0,0,199,200,5,40,0,0,200,201,3,76,38,0,201,202,3,78,39,0,
-		202,37,1,0,0,0,203,204,5,18,0,0,204,205,5,40,0,0,205,206,3,76,38,0,206,
-		39,1,0,0,0,207,208,5,19,0,0,208,41,1,0,0,0,209,210,5,20,0,0,210,211,5,
-		40,0,0,211,212,3,78,39,0,212,213,5,40,0,0,213,214,3,78,39,0,214,43,1,0,
-		0,0,215,216,5,21,0,0,216,217,5,40,0,0,217,218,3,78,39,0,218,45,1,0,0,0,
-		219,220,5,22,0,0,220,221,5,40,0,0,221,222,3,76,38,0,222,47,1,0,0,0,223,
-		224,5,23,0,0,224,225,5,40,0,0,225,226,3,76,38,0,226,49,1,0,0,0,227,228,
-		5,24,0,0,228,229,5,40,0,0,229,230,3,78,39,0,230,231,5,40,0,0,231,232,3,
-		78,39,0,232,51,1,0,0,0,233,234,5,25,0,0,234,235,5,40,0,0,235,236,3,78,
-		39,0,236,53,1,0,0,0,237,238,5,26,0,0,238,239,5,40,0,0,239,240,3,76,38,
-		0,240,55,1,0,0,0,241,242,5,27,0,0,242,243,5,40,0,0,243,244,3,76,38,0,244,
-		57,1,0,0,0,245,246,5,28,0,0,246,247,5,40,0,0,247,248,3,78,39,0,248,59,
-		1,0,0,0,249,250,5,29,0,0,250,251,5,40,0,0,251,252,3,76,38,0,252,61,1,0,
-		0,0,253,254,5,30,0,0,254,255,5,40,0,0,255,256,3,76,38,0,256,257,5,40,0,
-		0,257,258,3,78,39,0,258,63,1,0,0,0,259,260,5,31,0,0,260,261,5,40,0,0,261,
-		262,3,78,39,0,262,65,1,0,0,0,263,264,5,32,0,0,264,265,5,40,0,0,265,266,
-		3,78,39,0,266,267,5,40,0,0,267,268,3,78,39,0,268,67,1,0,0,0,269,270,5,
-		33,0,0,270,69,1,0,0,0,271,272,5,34,0,0,272,71,1,0,0,0,273,274,5,35,0,0,
-		274,73,1,0,0,0,275,276,5,6,0,0,276,277,5,0,0,1,277,75,1,0,0,0,278,280,
-		5,37,0,0,279,281,3,80,40,0,280,279,1,0,0,0,281,282,1,0,0,0,282,280,1,0,
-		0,0,282,283,1,0,0,0,283,288,1,0,0,0,284,285,5,36,0,0,285,288,3,80,40,0,
-		286,288,5,45,0,0,287,278,1,0,0,0,287,284,1,0,0,0,287,286,1,0,0,0,288,77,
-		1,0,0,0,289,290,5,37,0,0,290,295,3,80,40,0,291,292,5,36,0,0,292,295,3,
-		80,40,0,293,295,5,45,0,0,294,289,1,0,0,0,294,291,1,0,0,0,294,293,1,0,0,
-		0,295,79,1,0,0,0,296,297,7,0,0,0,297,298,7,0,0,0,298,81,1,0,0,0,11,85,
-		90,100,116,127,137,143,174,282,287,294
+		2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,2,41,7,41,2,42,7,42,
+		1,0,5,0,88,8,0,10,0,12,0,91,9,0,1,0,4,0,94,8,0,11,0,12,0,95,1,0,4,0,99,
+		8,0,11,0,12,0,100,1,0,1,0,1,1,1,1,1,1,1,2,1,2,5,2,110,8,2,10,2,12,2,113,
+		9,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,123,8,3,1,4,1,4,1,4,1,4,1,5,1,
+		5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,3,5,139,8,5,1,6,1,6,1,6,1,6,1,6,1,6,
+		1,6,1,6,1,6,3,6,150,8,6,1,7,1,7,1,7,1,8,1,8,1,8,4,8,158,8,8,11,8,12,8,
+		159,1,8,1,8,4,8,164,8,8,11,8,12,8,165,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,
+		1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,
+		9,1,9,1,9,1,9,3,9,197,8,9,1,10,1,10,1,11,1,11,1,12,1,12,1,13,1,13,1,14,
+		1,14,1,15,1,15,1,16,1,16,1,17,1,17,1,18,1,18,1,19,1,19,1,19,1,19,1,20,
+		1,20,1,20,1,20,1,20,1,21,1,21,1,21,1,21,1,22,1,22,1,23,1,23,1,23,1,23,
+		1,23,1,23,1,24,1,24,1,24,1,24,1,25,1,25,1,25,1,25,1,26,1,26,1,26,1,26,
+		1,27,1,27,1,27,1,27,1,27,1,27,1,28,1,28,1,28,1,28,1,29,1,29,1,29,1,29,
+		1,30,1,30,1,30,1,30,1,31,1,31,1,31,1,31,1,32,1,32,1,32,1,32,1,33,1,33,
+		1,33,1,33,1,33,1,33,1,34,1,34,1,34,1,34,1,35,1,35,1,35,1,35,1,35,1,35,
+		1,36,1,36,1,37,1,37,1,38,1,38,1,39,1,39,1,39,1,40,1,40,4,40,303,8,40,11,
+		40,12,40,304,1,40,1,40,1,40,3,40,310,8,40,1,41,1,41,1,41,1,41,1,41,3,41,
+		317,8,41,1,42,1,42,1,42,1,42,0,0,43,0,2,4,6,8,10,12,14,16,18,20,22,24,
+		26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,
+		74,76,78,80,82,84,0,2,2,0,4,4,49,49,1,0,44,45,321,0,89,1,0,0,0,2,104,1,
+		0,0,0,4,107,1,0,0,0,6,122,1,0,0,0,8,124,1,0,0,0,10,138,1,0,0,0,12,149,
+		1,0,0,0,14,151,1,0,0,0,16,154,1,0,0,0,18,196,1,0,0,0,20,198,1,0,0,0,22,
+		200,1,0,0,0,24,202,1,0,0,0,26,204,1,0,0,0,28,206,1,0,0,0,30,208,1,0,0,
+		0,32,210,1,0,0,0,34,212,1,0,0,0,36,214,1,0,0,0,38,216,1,0,0,0,40,220,1,
+		0,0,0,42,225,1,0,0,0,44,229,1,0,0,0,46,231,1,0,0,0,48,237,1,0,0,0,50,241,
+		1,0,0,0,52,245,1,0,0,0,54,249,1,0,0,0,56,255,1,0,0,0,58,259,1,0,0,0,60,
+		263,1,0,0,0,62,267,1,0,0,0,64,271,1,0,0,0,66,275,1,0,0,0,68,281,1,0,0,
+		0,70,285,1,0,0,0,72,291,1,0,0,0,74,293,1,0,0,0,76,295,1,0,0,0,78,297,1,
+		0,0,0,80,309,1,0,0,0,82,316,1,0,0,0,84,318,1,0,0,0,86,88,3,2,1,0,87,86,
+		1,0,0,0,88,91,1,0,0,0,89,87,1,0,0,0,89,90,1,0,0,0,90,93,1,0,0,0,91,89,
+		1,0,0,0,92,94,3,6,3,0,93,92,1,0,0,0,94,95,1,0,0,0,95,93,1,0,0,0,95,96,
+		1,0,0,0,96,98,1,0,0,0,97,99,3,12,6,0,98,97,1,0,0,0,99,100,1,0,0,0,100,
+		98,1,0,0,0,100,101,1,0,0,0,101,102,1,0,0,0,102,103,3,78,39,0,103,1,1,0,
+		0,0,104,105,3,4,2,0,105,106,5,49,0,0,106,3,1,0,0,0,107,111,5,4,0,0,108,
+		110,8,0,0,0,109,108,1,0,0,0,110,113,1,0,0,0,111,109,1,0,0,0,111,112,1,
+		0,0,0,112,114,1,0,0,0,113,111,1,0,0,0,114,115,5,4,0,0,115,5,1,0,0,0,116,
+		117,3,8,4,0,117,118,5,49,0,0,118,123,1,0,0,0,119,120,3,10,5,0,120,121,
+		5,49,0,0,121,123,1,0,0,0,122,116,1,0,0,0,122,119,1,0,0,0,123,7,1,0,0,0,
+		124,125,5,2,0,0,125,126,5,41,0,0,126,127,5,44,0,0,127,9,1,0,0,0,128,129,
+		5,5,0,0,129,130,5,41,0,0,130,131,5,46,0,0,131,132,5,41,0,0,132,139,3,80,
+		40,0,133,134,5,6,0,0,134,135,5,41,0,0,135,136,5,46,0,0,136,137,5,41,0,
+		0,137,139,3,82,41,0,138,128,1,0,0,0,138,133,1,0,0,0,139,11,1,0,0,0,140,
+		141,3,14,7,0,141,142,5,49,0,0,142,150,1,0,0,0,143,144,3,18,9,0,144,145,
+		5,49,0,0,145,150,1,0,0,0,146,147,3,16,8,0,147,148,5,49,0,0,148,150,1,0,
+		0,0,149,140,1,0,0,0,149,143,1,0,0,0,149,146,1,0,0,0,150,13,1,0,0,0,151,
+		152,5,1,0,0,152,153,5,46,0,0,153,15,1,0,0,0,154,155,5,3,0,0,155,157,5,
+		41,0,0,156,158,5,44,0,0,157,156,1,0,0,0,158,159,1,0,0,0,159,157,1,0,0,
+		0,159,160,1,0,0,0,160,163,1,0,0,0,161,162,5,41,0,0,162,164,3,82,41,0,163,
+		161,1,0,0,0,164,165,1,0,0,0,165,163,1,0,0,0,165,166,1,0,0,0,166,17,1,0,
+		0,0,167,197,3,20,10,0,168,197,3,22,11,0,169,197,3,24,12,0,170,197,3,26,
+		13,0,171,197,3,28,14,0,172,197,3,30,15,0,173,197,3,32,16,0,174,197,3,34,
+		17,0,175,197,3,36,18,0,176,197,3,38,19,0,177,197,3,40,20,0,178,197,3,42,
+		21,0,179,197,3,44,22,0,180,197,3,46,23,0,181,197,3,48,24,0,182,197,3,50,
+		25,0,183,197,3,52,26,0,184,197,3,54,27,0,185,197,3,56,28,0,186,197,3,58,
+		29,0,187,197,3,60,30,0,188,197,3,62,31,0,189,197,3,64,32,0,190,197,3,66,
+		33,0,191,197,3,68,34,0,192,197,3,70,35,0,193,197,3,72,36,0,194,197,3,74,
+		37,0,195,197,3,76,38,0,196,167,1,0,0,0,196,168,1,0,0,0,196,169,1,0,0,0,
+		196,170,1,0,0,0,196,171,1,0,0,0,196,172,1,0,0,0,196,173,1,0,0,0,196,174,
+		1,0,0,0,196,175,1,0,0,0,196,176,1,0,0,0,196,177,1,0,0,0,196,178,1,0,0,
+		0,196,179,1,0,0,0,196,180,1,0,0,0,196,181,1,0,0,0,196,182,1,0,0,0,196,
+		183,1,0,0,0,196,184,1,0,0,0,196,185,1,0,0,0,196,186,1,0,0,0,196,187,1,
+		0,0,0,196,188,1,0,0,0,196,189,1,0,0,0,196,190,1,0,0,0,196,191,1,0,0,0,
+		196,192,1,0,0,0,196,193,1,0,0,0,196,194,1,0,0,0,196,195,1,0,0,0,197,19,
+		1,0,0,0,198,199,5,8,0,0,199,21,1,0,0,0,200,201,5,9,0,0,201,23,1,0,0,0,
+		202,203,5,10,0,0,203,25,1,0,0,0,204,205,5,11,0,0,205,27,1,0,0,0,206,207,
+		5,12,0,0,207,29,1,0,0,0,208,209,5,13,0,0,209,31,1,0,0,0,210,211,5,14,0,
+		0,211,33,1,0,0,0,212,213,5,15,0,0,213,35,1,0,0,0,214,215,5,16,0,0,215,
+		37,1,0,0,0,216,217,5,17,0,0,217,218,5,41,0,0,218,219,3,80,40,0,219,39,
+		1,0,0,0,220,221,5,18,0,0,221,222,5,41,0,0,222,223,3,80,40,0,223,224,3,
+		82,41,0,224,41,1,0,0,0,225,226,5,19,0,0,226,227,5,41,0,0,227,228,3,80,
+		40,0,228,43,1,0,0,0,229,230,5,20,0,0,230,45,1,0,0,0,231,232,5,21,0,0,232,
+		233,5,41,0,0,233,234,3,82,41,0,234,235,5,41,0,0,235,236,3,82,41,0,236,
+		47,1,0,0,0,237,238,5,22,0,0,238,239,5,41,0,0,239,240,3,82,41,0,240,49,
+		1,0,0,0,241,242,5,23,0,0,242,243,5,41,0,0,243,244,3,80,40,0,244,51,1,0,
+		0,0,245,246,5,24,0,0,246,247,5,41,0,0,247,248,3,80,40,0,248,53,1,0,0,0,
+		249,250,5,25,0,0,250,251,5,41,0,0,251,252,3,82,41,0,252,253,5,41,0,0,253,
+		254,3,82,41,0,254,55,1,0,0,0,255,256,5,26,0,0,256,257,5,41,0,0,257,258,
+		3,82,41,0,258,57,1,0,0,0,259,260,5,27,0,0,260,261,5,41,0,0,261,262,3,80,
+		40,0,262,59,1,0,0,0,263,264,5,28,0,0,264,265,5,41,0,0,265,266,3,80,40,
+		0,266,61,1,0,0,0,267,268,5,29,0,0,268,269,5,41,0,0,269,270,3,82,41,0,270,
+		63,1,0,0,0,271,272,5,30,0,0,272,273,5,41,0,0,273,274,3,80,40,0,274,65,
+		1,0,0,0,275,276,5,31,0,0,276,277,5,41,0,0,277,278,3,80,40,0,278,279,5,
+		41,0,0,279,280,3,82,41,0,280,67,1,0,0,0,281,282,5,32,0,0,282,283,5,41,
+		0,0,283,284,3,82,41,0,284,69,1,0,0,0,285,286,5,33,0,0,286,287,5,41,0,0,
+		287,288,3,82,41,0,288,289,5,41,0,0,289,290,3,82,41,0,290,71,1,0,0,0,291,
+		292,5,34,0,0,292,73,1,0,0,0,293,294,5,35,0,0,294,75,1,0,0,0,295,296,5,
+		36,0,0,296,77,1,0,0,0,297,298,5,7,0,0,298,299,5,0,0,1,299,79,1,0,0,0,300,
+		302,5,38,0,0,301,303,3,84,42,0,302,301,1,0,0,0,303,304,1,0,0,0,304,302,
+		1,0,0,0,304,305,1,0,0,0,305,310,1,0,0,0,306,307,5,37,0,0,307,310,3,84,
+		42,0,308,310,5,46,0,0,309,300,1,0,0,0,309,306,1,0,0,0,309,308,1,0,0,0,
+		310,81,1,0,0,0,311,312,5,38,0,0,312,317,3,84,42,0,313,314,5,37,0,0,314,
+		317,3,84,42,0,315,317,5,46,0,0,316,311,1,0,0,0,316,313,1,0,0,0,316,315,
+		1,0,0,0,317,83,1,0,0,0,318,319,7,1,0,0,319,320,7,1,0,0,320,85,1,0,0,0,
+		13,89,95,100,111,122,138,149,159,165,196,304,309,316
 	};
 
 	public static readonly ATN _ATN =

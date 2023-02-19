@@ -129,25 +129,39 @@ namespace RedFoxAssembly.CSharp.Core
 
         private void PreCompilationPass(RFASMProgram program)
         {
-
             // Resolve configuration (i.e. data widths and values)
             foreach (var c in program.Configuations)
             {
                 c.Resolve(this);
             }
 
+            program.Commands.Insert(0, new InstructionCommand(InstructionType.JMP, new Word(false, "_END_COMPILER_METADATA_"), null));
+            program.Commands.Insert(1, new InstructionCommand(InstructionType.NOP, null, null));
+            program.Commands.Insert(2, new LabelCommand("_END_COMPILER_METADATA_"));
+
             int programLength = 0;
             // Resolve labels
             foreach (var c in program.Commands)
             {
-                if (c is LabelCommand)
+                if (c is LabelCommand command)
                 {
-                    ((LabelCommand)c).DeclareLabel(this, programLength);
+                    command.DeclareLabel(this, programLength);
                 }
                 else
                 {
                     programLength += c.GetPredictedLength(this);
                 }
+            }
+
+            //TODO Auto fill metadata
+            program.Metadata.Authors.AddRange( new string[]{ "Me", "You" } );
+
+            // Collect names and widths of labels, values, etc.
+            // to be able to calculate metadata predicted width
+            int metaLength = program.Metadata.GetPredictedLength(this);
+            foreach (var l in Labels.Values)
+            {
+                l.Position += metaLength;
             }
         }
 
@@ -162,6 +176,8 @@ namespace RedFoxAssembly.CSharp.Core
                     compiledBytes.AddRange(c.GetBytes(this));
                 }
             }
+
+            compiledBytes.InsertRange(1 + meta!.DataWidth, program.Metadata.GetBytes(this));
 
             return compiledBytes;
         }

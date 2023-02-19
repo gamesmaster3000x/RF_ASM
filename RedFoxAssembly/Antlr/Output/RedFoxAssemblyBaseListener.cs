@@ -49,6 +49,32 @@ public partial class RedFoxAssemblyBaseListener : IRedFoxAssemblyListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>LiteralMetadata</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.metadata"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralMetadata([NotNull] RedFoxAssemblyParser.LiteralMetadataContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>LiteralMetadata</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.metadata"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralMetadata([NotNull] RedFoxAssemblyParser.LiteralMetadataContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RedFoxAssemblyParser.literal"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteral([NotNull] RedFoxAssemblyParser.LiteralContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RedFoxAssemblyParser.literal"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteral([NotNull] RedFoxAssemblyParser.LiteralContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>WidthConfiguration</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// <para>The default implementation does nothing.</para>

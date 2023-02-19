@@ -3,6 +3,15 @@ grammar RedFoxAssembly;
 program
 	: (configurations+=configuration)+ (commands+=command)+ (end)
 	;
+	
+// Metadata (not currently used)
+metadata
+	: literal EOL #LiteralMetadata
+	;
+
+literal
+	: Literal contents=~(EOL | Literal)* Literal
+	;
 
 // Configuration
 
@@ -130,6 +139,7 @@ bytedata
 LabelStart: '::';
 Width: '.width';
 Repeat: '.repeat';
+Literal: '$';
 WordValue: '.word';
 ByteValue: '.byte';
 End: '.end';
