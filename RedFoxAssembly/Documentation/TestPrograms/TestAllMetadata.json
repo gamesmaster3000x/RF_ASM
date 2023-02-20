@@ -1,0 +1,8 @@
+{
+	"Authors": ["Me, You"],
+	"Labels": ["Me, You"],
+	"AddAuthors": true,
+	"AddDateTime": true,
+	"AddConstants": true,
+	"AddLabels": true
+}

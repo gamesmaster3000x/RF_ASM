@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RedFoxAssembly.CSharp.Core
 {
@@ -14,23 +15,34 @@ namespace RedFoxAssembly.CSharp.Core
         public static readonly string CONSTANTS = "Constants:";
         public static readonly string LABELS = "Labels:";
 
-        public List<string> Authors { get; protected set; }
-        public Dictionary<string, int> Labels { get; protected set; }
-        public Dictionary<string, string> Constants { get; protected set; }
+        public static readonly string UNRESOLVED = "UNRESOLVED";
+
+        public List<string> Authors { get; set; }
 
         public ProgramMetadata () : this(new List<string>(), new Dictionary<string, int>(), new Dictionary<string, string>()) {}
 
         public ProgramMetadata (List<string> authors, Dictionary<string, int> labels, Dictionary<string, string> constants)
         {
             Authors = authors;
-            Labels = labels;
-            Constants = constants;
         }
 
         public bool AddAuthors { get; set; } = true;
         public bool AddDateTime { get; set; } = true;
         public bool AddConstants { get; set; } = true;
         public bool AddLabels { get; set; } = true;
+
+        public override string ToString ()
+        {
+            return $"{{" +
+                $"Authors:{{{String.Join(',', Authors)}}}, " +
+                $"Labels:{UNRESOLVED}, " +
+                $"Constants:{UNRESOLVED}, " +
+                $"AddAuthors:{AddAuthors}, " +
+                $"AddDateTime:{AddDateTime}, " +
+                $"AddConstants:{AddConstants}, " +
+                $"AddLabels:{AddLabels}" +
+                $"}}";
+        }
 
         public int GetPredictedLength (RFASMCompiler compiler)
         {
@@ -143,7 +155,7 @@ namespace RedFoxAssembly.CSharp.Core
 
         public byte[] GetBytes (RFASMCompiler compiler)
         {
-            int WORD = compiler.args!.DataWidth;
+            int WORD = compiler.Options!.DataWidth;
 
             List<byte> bWatermark = GetWatermarkBytes(WORD);
             List<byte> bAuthors = GetAuthorBytes(WORD);

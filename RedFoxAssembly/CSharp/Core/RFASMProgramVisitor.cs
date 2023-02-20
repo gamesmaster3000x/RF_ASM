@@ -11,7 +11,7 @@ namespace RedFoxAssembly.CSharp.Core
     {
         public override RFASMProgram VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context)
         {
-            RFASMProgram program = new RFASMProgram();
+            RFASMProgram program = new RFASMProgram(null, new List<IConfiguration>(), new List<ICommand>());
 
             foreach (var c in context._configurations)
             {

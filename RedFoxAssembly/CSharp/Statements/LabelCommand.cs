@@ -23,7 +23,7 @@ namespace RedFoxAssembly.CSharp.Statements
 
         public byte[] GetBytes(RFASMCompiler compiler)
         {
-            int targetWidth = compiler.args!.DataWidth;
+            int targetWidth = compiler.Options!.DataWidth;
             byte[] positionBytes = BitConverter.GetBytes(Position).Reverse().ToArray();
             // if (positionBytes.Length < 1) throw new CompilationException($"Byte position {_position} of label {_id} is illegal! ( <0 )");
             // if (positionBytes.Length > targetWidth) throw new CompilationException($"Byte position {_position} of label {_id} lies outside the possible range for a program with data width {targetWidth}");

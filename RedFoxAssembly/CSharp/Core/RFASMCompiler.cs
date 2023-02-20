@@ -1,5 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using Antlr4.Runtime;
+using CommandLine;
+using NLog;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
 
@@ -11,95 +14,27 @@ namespace RedFoxAssembly.CSharp.Core
     /// </summary>
     class RFASMCompiler
     {
-        public const int DATA_WIDTH = 2;
-
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         internal Dictionary<string, LabelCommand> Labels { get; set; }
         internal Dictionary<string, IData> Constants { get; set; }
 
-        public RFASMArguments? args;
+        public RFASMOptions Options { get; set; }
 
-        static Task<int> Main(string[] args)
+        public RFASMCompiler(RFASMOptions options)
         {
-            return Task.Run(() =>
-            {
-                RFASMCompiler compiler = new RFASMCompiler();
-                return compiler.Start(args);
-            });
-        }
-
-        public RFASMCompiler()
-        {
+            Options = options;
             Labels = new Dictionary<string, LabelCommand>();
             Constants = new Dictionary<string, IData>();
         }
 
-        private int Start(string[] args)
+        public int Compile(RFASMProgram program)
         {
-            Console.WriteLine("");
-            Console.WriteLine(" <==> RFASM Compiler, by GenElectrovise for Gamesmaster3000X");
-            Console.WriteLine(" <==> https://github.com/gamesmaster3000x/RF_ASM");
-
-            // <==> Preparing
-            Console.WriteLine("");
-            Console.WriteLine(" <==> Preparing");
-
-            bool USE_AUTOWIRED_ARGUMENTS = true;
-            if (USE_AUTOWIRED_ARGUMENTS)
-            {
-                Console.WriteLine("Using autowired program arguments (ignoring " + args.Length + " input arguments)");
-                string testProgramsPath = "../../../Documentation/TestPrograms/"; // Escape bin, Debug, and net6.0
-                args = new string[] {
-                    "-INPUT_PATH", testProgramsPath + "TestAll.txt", //
-                    "-DATA_WIDTH", "1", //
-                    "-RANDOM_ARG", //
-                    "-OTHER_RANDOM_ARG", " ", //
-                    "CONFUSION", "-" //
-                };
-            }
-
-            Console.WriteLine("Parsing arguments");
-            this.args = new RFASMArguments(args);
-
-            if (this.args.InputPath == null || this.args.InputPath.Equals(""))
-            {
-                this.args.InputPath = GetInputFilePath();
-            }
-            else
-            {
-                Console.WriteLine("Found input path " + this.args.InputPath + " via program arguments");
-            }
-
-            // <==> Parsing
-            Console.WriteLine("");
-            Console.WriteLine(" <==> Parsing");
-
-            string[] rawLinesArr = File.ReadAllLines(this.args.InputPath);
-            List<string> rawLines = rawLinesArr.ToList();
-            Console.WriteLine("Found " + rawLinesArr.Length + " lines");
-
-            //ITokenGenerator generator = new RFASMTokenGenerator(meta);
-            //TokenParser.TokenParser parser = new TokenParser.TokenParser(RFASMTokenGenerator.GOOD_TOKEN, RFASMTokenGenerator.IGNORE_TOKEN, RFASMTokenGenerator.BAD_TOKEN, meta, generator);
-            //List<IToken> tokens = parser.Parse(rawLines);
-            //string tokenHash = ComputeTokenListHash(tokens);
-            //Console.WriteLine("Hash of token raw values: " + tokenHash);
-
-            // Get Antlr context
-            RFASMProgram program;
-            {
-                AntlrInputStream a4is = new AntlrInputStream(string.Join(Environment.NewLine, rawLinesArr));
-                RedFoxAssemblyLexer lexer = new RedFoxAssemblyLexer(a4is);
-                // lexer.AddErrorListener(new LexerErrorListener(meta.InputPath));
-
-                CommonTokenStream cts = new CommonTokenStream(lexer);
-                RedFoxAssemblyParser parser = new RedFoxAssemblyParser(cts);
-                // parser.ErrorHandler = new BailErrorStrategy();
-                parser.AddErrorListener(new ParserErrorListener(this.args.InputPath));
-
-                RedFoxAssemblyParser.ProgramContext cuCtx = parser.program();
-                RFASMProgramVisitor visitor = new RFASMProgramVisitor();
-                program = visitor.VisitProgram(cuCtx);
-            }
+            if (!File.Exists(Options.MetadataPath)) throw new FileNotFoundException("Could not file metadata file: " + Options.MetadataPath);
+            LOGGER.Info("Reading metadata file: " + Options.MetadataPath);
+            string metadataJson = File.ReadAllText(Options.MetadataPath);
+            if (String.IsNullOrWhiteSpace(metadataJson)) throw new JsonException("Found null-or-whitespace JSON in metadata file");
+            program.ReloadSerialMetadata(metadataJson);
 
             // <==> Compiling
             Console.WriteLine("");
@@ -116,7 +51,7 @@ namespace RedFoxAssembly.CSharp.Core
             // <==> Writing
             Console.WriteLine("");
             Console.WriteLine(" <==> Writing");
-            WriteCompilation(this.args.InputPath, compiledBytes.ToArray());
+            WriteCompilation(Options.SourcePath, compiledBytes.ToArray());
 
             Console.WriteLine("");
             Console.WriteLine(" <==> Done");
@@ -153,9 +88,6 @@ namespace RedFoxAssembly.CSharp.Core
                 }
             }
 
-            //TODO Auto fill metadata
-            program.Metadata.Authors.AddRange( new string[]{ "Me", "You" } );
-
             // Collect names and widths of labels, values, etc.
             // to be able to calculate metadata predicted width
             int metaLength = program.Metadata.GetPredictedLength(this);
@@ -177,7 +109,7 @@ namespace RedFoxAssembly.CSharp.Core
                 }
             }
 
-            compiledBytes.InsertRange(1 + args!.DataWidth, program.Metadata.GetBytes(this));
+            compiledBytes.InsertRange(1 + Options!.DataWidth, program.Metadata.GetBytes(this));
 
             return compiledBytes;
         }

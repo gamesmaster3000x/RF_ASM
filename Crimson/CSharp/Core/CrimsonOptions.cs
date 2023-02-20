@@ -12,7 +12,7 @@ namespace Crimson.CSharp.Core
         // Source
         private string _translationSourcePath;
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
-            "If no file extension given, .rfp will be assumed.")]
+            "If no file extension given, .crm will be assumed.")]
         public string TranslationSourcePath
         {
             get { return _translationSourcePath; }
@@ -22,7 +22,7 @@ namespace Crimson.CSharp.Core
         // Target
         private string _translationTargetPath;
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
-            "If no file extension provided, will assume .rfp.")]
+            "If no file extension provided, will assume .crm.")]
         public string TranslationTargetPath
         {
             get { return _translationTargetPath; }
