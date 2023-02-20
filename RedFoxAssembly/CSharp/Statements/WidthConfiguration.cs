@@ -18,7 +18,7 @@ namespace RedFoxAssembly.CSharp.Statements
 
         void IConfiguration.Resolve(RFASMCompiler compiler)
         {
-            compiler.meta!.DataWidth = _width;
+            compiler.args!.DataWidth = _width;
         }
     }
 }

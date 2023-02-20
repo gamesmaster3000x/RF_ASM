@@ -40,8 +40,8 @@ namespace RedFoxAssembly.CSharp.Statements
                 if (compiler.Constants.TryGetValue(Identifier, out IData? val))
                 {
                     byte[] v = val.GetBytes(compiler);
-                    if (v.Length != compiler.meta!.DataWidth)
-                        throw new CompilationException($"Constant {Identifier} with value [{String.Join(',', v)}] is not of correct width {compiler.meta.DataWidth} for word.");
+                    if (v.Length != compiler.args!.DataWidth)
+                        throw new CompilationException($"Constant {Identifier} with value [{String.Join(',', v)}] is not of correct width {compiler.args.DataWidth} for word.");
                     return v;
                 }
                 else
@@ -67,9 +67,9 @@ namespace RedFoxAssembly.CSharp.Statements
                 else
                 {
                     // Illegal data width
-                    if (Data.Length != compiler.meta!.DataWidth)
+                    if (Data.Length != compiler.args!.DataWidth)
                     {
-                        throw new CompilationException($"Width {Data.Length} of word [{String.Join(',', Data)}] does not match defined data width {compiler.meta.DataWidth}.");
+                        throw new CompilationException($"Width {Data.Length} of word [{String.Join(',', Data)}] does not match defined data width {compiler.args.DataWidth}.");
                     }
                     // If contains no data
                     else if (Data.Length < 1)
@@ -98,7 +98,7 @@ namespace RedFoxAssembly.CSharp.Statements
 
         public int GetWidth(RFASMCompiler compiler)
         {
-            return compiler.meta!.DataWidth;
+            return compiler.args!.DataWidth;
         }
 
         public static byte[] MakeByteArr (List<Word> words)

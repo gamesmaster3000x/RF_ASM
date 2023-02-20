@@ -1,6 +1,6 @@
 ﻿namespace RedFoxAssembly.CSharp.Core
 {
-    public class RFASMCompilerMetadata
+    public class RFASMArguments
     {
 
         private Dictionary<string, string> metadata = new Dictionary<string, string>();
@@ -22,11 +22,11 @@
 
         // Constants
 
-        public RFASMCompilerMetadata()
+        public RFASMArguments()
         {
         }
 
-        public RFASMCompilerMetadata(string[] args)
+        public RFASMArguments(string[] args)
         {
             for (int i = 0; i < args.Length; i++)
             {

@@ -1,6 +1,7 @@
 ﻿using RedFoxAssembly.CSharp.Statements;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 
 namespace RedFoxAssembly.CSharp.Core
 {
@@ -142,7 +143,7 @@ namespace RedFoxAssembly.CSharp.Core
 
         public byte[] GetBytes (RFASMCompiler compiler)
         {
-            int WORD = compiler.meta!.DataWidth;
+            int WORD = compiler.args!.DataWidth;
 
             List<byte> bWatermark = GetWatermarkBytes(WORD);
             List<byte> bAuthors = GetAuthorBytes(WORD);

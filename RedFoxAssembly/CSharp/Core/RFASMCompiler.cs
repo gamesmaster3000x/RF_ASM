@@ -17,7 +17,7 @@ namespace RedFoxAssembly.CSharp.Core
         internal Dictionary<string, LabelCommand> Labels { get; set; }
         internal Dictionary<string, IData> Constants { get; set; }
 
-        public RFASMCompilerMetadata? meta;
+        public RFASMArguments? args;
 
         static Task<int> Main(string[] args)
         {
@@ -59,22 +59,22 @@ namespace RedFoxAssembly.CSharp.Core
             }
 
             Console.WriteLine("Parsing arguments");
-            meta = new RFASMCompilerMetadata(args);
+            this.args = new RFASMArguments(args);
 
-            if (meta.InputPath == null || meta.InputPath.Equals(""))
+            if (this.args.InputPath == null || this.args.InputPath.Equals(""))
             {
-                meta.InputPath = GetInputFilePath();
+                this.args.InputPath = GetInputFilePath();
             }
             else
             {
-                Console.WriteLine("Found input path " + meta.InputPath + " via program arguments");
+                Console.WriteLine("Found input path " + this.args.InputPath + " via program arguments");
             }
 
             // <==> Parsing
             Console.WriteLine("");
             Console.WriteLine(" <==> Parsing");
 
-            string[] rawLinesArr = File.ReadAllLines(meta.InputPath);
+            string[] rawLinesArr = File.ReadAllLines(this.args.InputPath);
             List<string> rawLines = rawLinesArr.ToList();
             Console.WriteLine("Found " + rawLinesArr.Length + " lines");
 
@@ -94,7 +94,7 @@ namespace RedFoxAssembly.CSharp.Core
                 CommonTokenStream cts = new CommonTokenStream(lexer);
                 RedFoxAssemblyParser parser = new RedFoxAssemblyParser(cts);
                 // parser.ErrorHandler = new BailErrorStrategy();
-                parser.AddErrorListener(new ParserErrorListener(meta.InputPath));
+                parser.AddErrorListener(new ParserErrorListener(this.args.InputPath));
 
                 RedFoxAssemblyParser.ProgramContext cuCtx = parser.program();
                 RFASMProgramVisitor visitor = new RFASMProgramVisitor();
@@ -116,7 +116,7 @@ namespace RedFoxAssembly.CSharp.Core
             // <==> Writing
             Console.WriteLine("");
             Console.WriteLine(" <==> Writing");
-            WriteCompilation(meta.InputPath, compiledBytes.ToArray());
+            WriteCompilation(this.args.InputPath, compiledBytes.ToArray());
 
             Console.WriteLine("");
             Console.WriteLine(" <==> Done");
@@ -177,7 +177,7 @@ namespace RedFoxAssembly.CSharp.Core
                 }
             }
 
-            compiledBytes.InsertRange(1 + meta!.DataWidth, program.Metadata.GetBytes(this));
+            compiledBytes.InsertRange(1 + args!.DataWidth, program.Metadata.GetBytes(this));
 
             return compiledBytes;
         }
