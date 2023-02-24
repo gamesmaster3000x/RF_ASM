@@ -9,6 +9,7 @@ namespace RedFoxVM
         public static int DataWidth { get { return dataWidth; } }
         public static Processor processor = new Processor();
         public static RAM memory;
+        public static Terminal terminal = new Terminal(0);
 
         public static void Initialise(int dataWidth, byte[] data)
         {
@@ -24,6 +25,7 @@ namespace RedFoxVM
             while (!halted)
             {
                 processor.Clock();
+                terminal.Clock();
                 cycles++;
             }
             Program.DumpInfo();
