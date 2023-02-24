@@ -1,28 +1,31 @@
-.width 2;
-.word _OpA_, 0x2358;
-.word _OpB_, 0x41f0;
+.width 2
+.word _OpA_ 0x2358
+.word _OpB_ 0x41f0
 
-JMP _start_;
+.repeat 15 0x05 0x06 0x07
 
-::_label_;
+JMP _start_
 
-SUB;
-RRW 0x00;
-WRW 0x80;
-RTN;
+::_label_
 
-::_start_;
+SUB
+RRW 0x00
+WRW 0x80
+RTN
 
-RVW _OpA_;
-WRW 0x01;
+::_start_
 
-RVW _OpB_;
-WRW 0x02;
+RVW _OpA_
+WRW 0x01
 
-BSR _label_;
+RVW _OpB_
+WRW 0x02
 
-RVB 0x80;
-WRB 0x85, 0x00;
+BSR _label_
 
-RRW Rx85;
-HLT;
+RVB 0x80
+WRB 0x85 0x00
+
+RRW Rx85
+HLT
+.end

@@ -9,13 +9,11 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
         private static readonly Regex WHITESPACE = new Regex(@"\s+");
 
-        public string Text { get; set; }
-        public bool IsPointer { get; set; }
+        public FullNameCToken Text { get; set; }
 
-        public CrimsonTypeCToken(string text, bool isPointer)
+        public CrimsonTypeCToken(FullNameCToken text)
         {
             Text = text;
-            IsPointer = isPointer;
         }
 
         public void Link(LinkingContext ctx)
@@ -32,7 +30,7 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public override string ToString()
         {
-            return Text;
+            return Text.ToString();
         }
 
         internal int GetByteSize()

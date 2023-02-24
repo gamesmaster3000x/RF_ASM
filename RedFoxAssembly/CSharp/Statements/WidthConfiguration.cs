@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RedFoxAssembly.CSharp.Statements
 {
-    internal class WidthConfiguration: IConfiguration
+    internal class WidthConfiguration : IConfiguration
     {
         private int _width;
 
@@ -18,7 +18,7 @@ namespace RedFoxAssembly.CSharp.Statements
 
         void IConfiguration.Resolve(RFASMCompiler compiler)
         {
-            compiler.meta!.DataWidth = _width;
+            compiler.Options!.DataWidth = _width;
         }
     }
 }

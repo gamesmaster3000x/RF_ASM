@@ -1,5 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using Antlr4.Runtime;
+using CommandLine;
+using NLog;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
 
@@ -11,95 +14,27 @@ namespace RedFoxAssembly.CSharp.Core
     /// </summary>
     class RFASMCompiler
     {
-        public const int DATA_WIDTH = 2;
-
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         internal Dictionary<string, LabelCommand> Labels { get; set; }
         internal Dictionary<string, IData> Constants { get; set; }
 
-        public RFASMCompilerMetadata? meta;
+        public RFASMOptions Options { get; set; }
 
-        static Task<int> Main(string[] args)
+        public RFASMCompiler(RFASMOptions options)
         {
-            return Task.Run(() =>
-            {
-                RFASMCompiler compiler = new RFASMCompiler();
-                return compiler.Start(args);
-            });
-        }
-
-        public RFASMCompiler()
-        {
+            Options = options;
             Labels = new Dictionary<string, LabelCommand>();
             Constants = new Dictionary<string, IData>();
         }
 
-        private int Start(string[] args)
+        public int Compile(RFASMProgram program)
         {
-            Console.WriteLine("");
-            Console.WriteLine(" <==> RFASM Compiler, by GenElectrovise for Gamesmaster3000X");
-            Console.WriteLine(" <==> https://github.com/gamesmaster3000x/RF_ASM");
-
-            // <==> Preparing
-            Console.WriteLine("");
-            Console.WriteLine(" <==> Preparing");
-
-            bool USE_AUTOWIRED_ARGUMENTS = true;
-            if (USE_AUTOWIRED_ARGUMENTS)
-            {
-                Console.WriteLine("Using autowired program arguments (ignoring " + args.Length + " input arguments)");
-                string testProgramsPath = "../../../Documentation/TestPrograms/"; // Escape bin, Debug, and net6.0
-                args = new string[] { 
-                    "-INPUT_PATH", testProgramsPath + "TestAll.txt", //
-                    "-DATA_WIDTH", "1", //
-                    "-RANDOM_ARG", //
-                    "-OTHER_RANDOM_ARG", " ", //
-                    "CONFUSION", "-" //
-                };
-            }
-
-            Console.WriteLine("Parsing arguments");
-            meta = new RFASMCompilerMetadata(args);
-
-            if (meta.InputPath == null || meta.InputPath.Equals(""))
-            {
-                meta.InputPath = GetInputFilePath();
-            }
-            else
-            {
-                Console.WriteLine("Found input path " + meta.InputPath + " via program arguments");
-            }
-
-            // <==> Parsing
-            Console.WriteLine("");
-            Console.WriteLine(" <==> Parsing");
-
-            string[] rawLinesArr = File.ReadAllLines(meta.InputPath);
-            List<string> rawLines = rawLinesArr.ToList();
-            Console.WriteLine("Found " + rawLinesArr.Length + " lines");
-
-            //ITokenGenerator generator = new RFASMTokenGenerator(meta);
-            //TokenParser.TokenParser parser = new TokenParser.TokenParser(RFASMTokenGenerator.GOOD_TOKEN, RFASMTokenGenerator.IGNORE_TOKEN, RFASMTokenGenerator.BAD_TOKEN, meta, generator);
-            //List<IToken> tokens = parser.Parse(rawLines);
-            //string tokenHash = ComputeTokenListHash(tokens);
-            //Console.WriteLine("Hash of token raw values: " + tokenHash);
-
-            // Get Antlr context
-            RFASMProgram program;
-            {
-                AntlrInputStream a4is = new AntlrInputStream(string.Join(Environment.NewLine, rawLinesArr));
-                RedFoxAssemblyLexer lexer = new RedFoxAssemblyLexer(a4is);
-                // lexer.AddErrorListener(new LexerErrorListener(meta.InputPath));
-
-                CommonTokenStream cts = new CommonTokenStream(lexer);
-                RedFoxAssemblyParser parser = new RedFoxAssemblyParser(cts);
-                // parser.ErrorHandler = new BailErrorStrategy();
-                parser.AddErrorListener(new ParserErrorListener(meta.InputPath));
-
-                RedFoxAssemblyParser.ProgramContext cuCtx = parser.program();
-                RFASMProgramVisitor visitor = new RFASMProgramVisitor();
-                program = visitor.VisitProgram(cuCtx);
-            }
+            if (!File.Exists(Options.MetadataPath)) throw new FileNotFoundException("Could not file metadata file: " + Options.MetadataPath);
+            LOGGER.Info("Reading metadata file: " + Options.MetadataPath);
+            string metadataJson = File.ReadAllText(Options.MetadataPath);
+            if (String.IsNullOrWhiteSpace(metadataJson)) throw new JsonException("Found null-or-whitespace JSON in metadata file");
+            program.ReloadSerialMetadata(metadataJson);
 
             // <==> Compiling
             Console.WriteLine("");
@@ -116,7 +51,7 @@ namespace RedFoxAssembly.CSharp.Core
             // <==> Writing
             Console.WriteLine("");
             Console.WriteLine(" <==> Writing");
-            WriteCompilation(meta.InputPath, compiledBytes.ToArray());
+            WriteCompilation(Options.SourcePath, compiledBytes.ToArray());
 
             Console.WriteLine("");
             Console.WriteLine(" <==> Done");
@@ -129,25 +64,36 @@ namespace RedFoxAssembly.CSharp.Core
 
         private void PreCompilationPass(RFASMProgram program)
         {
-
             // Resolve configuration (i.e. data widths and values)
             foreach (var c in program.Configuations)
             {
                 c.Resolve(this);
             }
 
+            program.Commands.Insert(0, new InstructionCommand(InstructionType.JMP, new Word(false, "_END_COMPILER_METADATA_"), null));
+            program.Commands.Insert(1, new InstructionCommand(InstructionType.NOP, null, null));
+            program.Commands.Insert(2, new LabelCommand("_END_COMPILER_METADATA_"));
+
             int programLength = 0;
             // Resolve labels
             foreach (var c in program.Commands)
             {
-                if (c is LabelCommand)
+                if (c is LabelCommand command)
                 {
-                    ((LabelCommand)c).DeclareLabel(this, programLength);
+                    command.DeclareLabel(this, programLength);
                 }
                 else
                 {
                     programLength += c.GetPredictedLength(this);
                 }
+            }
+
+            // Collect names and widths of labels, values, etc.
+            // to be able to calculate metadata predicted width
+            int metaLength = program.Metadata.GetPredictedLength(this);
+            foreach (var l in Labels.Values)
+            {
+                l.Position += metaLength;
             }
         }
 
@@ -162,6 +108,8 @@ namespace RedFoxAssembly.CSharp.Core
                     compiledBytes.AddRange(c.GetBytes(this));
                 }
             }
+
+            compiledBytes.InsertRange(1 + Options!.DataWidth, program.Metadata.GetBytes(this));
 
             return compiledBytes;
         }

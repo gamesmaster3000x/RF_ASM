@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Statements;
 
@@ -6,7 +7,7 @@ namespace Crimson.CSharp.Grammar.Statements
 {
     public abstract class GlobalCStatement : ICrimsonStatement
     {
-        public virtual string Name { get; set; } = "";
+        public virtual FullNameCToken Name { get; set; }
         public bool _linked = false;
 
         public virtual Fragment GetCrimsonBasic()

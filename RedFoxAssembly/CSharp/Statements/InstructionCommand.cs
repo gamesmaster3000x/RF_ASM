@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RedFoxAssembly.CSharp.Statements
 {
-    internal class InstructionCommand: ICommand
+    internal class InstructionCommand : ICommand
     {
         private InstructionType _type;
         private IData? _arg1;
@@ -46,7 +46,7 @@ namespace RedFoxAssembly.CSharp.Statements
                 string k = _arg1!.ToString()!;
                 LabelCommand l = compiler.Labels[k];
                 arg1value = l.GetBytes(compiler);
-                arg2value= _arg2!.GetBytes(compiler);
+                arg2value = _arg2!.GetBytes(compiler);
             }
             else
             {

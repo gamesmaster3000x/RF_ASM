@@ -1,10 +1,11 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Grammar.Tokens;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
     public class StructureCStatement : GlobalCStatement
     {
-        public StructureCStatement(string name, IList<InternalStatement> body)
+        public StructureCStatement(FullNameCToken name, IList<InternalStatement> body)
         {
             Name = name;
             Body = body;

@@ -10,17 +10,17 @@ namespace Crimson.CSharp.Grammar.Statements
     internal class VariableAssignmentCStatement : InternalStatement
     {
 
-        public string Identifier { get; set; }
+        public FullNameCToken Identifier { get; set; }
         public SimpleValueCToken? Simple { get; }
         public ComplexValueCToken? Complex { get; }
 
-        public VariableAssignmentCStatement(string identifier, SimpleValueCToken value)
+        public VariableAssignmentCStatement(FullNameCToken identifier, SimpleValueCToken value)
         {
             Identifier = identifier;
             Simple = value;
         }
 
-        public VariableAssignmentCStatement(string identifier, ComplexValueCToken value)
+        public VariableAssignmentCStatement(FullNameCToken identifier, ComplexValueCToken value)
         {
             Identifier = identifier;
             Complex = value;
@@ -39,7 +39,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
             if (Complex == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
             result.Add(Complex.GetBasicFragment());
-            result.Add(new SetBStatement(Identifier, "VAR_ASSIGN_C_VAL"));
+            result.Add(new SetBStatement(Identifier.ToString(), "VAR_ASSIGN_C_VAL"));
 
             return result;
         }
