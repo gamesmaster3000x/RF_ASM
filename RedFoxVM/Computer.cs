@@ -17,15 +17,18 @@ namespace RedFoxVM
             memory = new RAM(data);
             Console.WriteLine("Successfully created VM with " + memory.Capacity + " bytes of memory.");
         }
-
-        public static void Run()
+        
+        public static int Run()
         {
+            int cycles = 0;
             while (!halted)
             {
                 processor.Clock();
-                Program.DumpInfo();
+                cycles++;
             }
+            Program.DumpInfo();
             Console.WriteLine("Computer halted.");
+            return cycles;
         }
 
         public static void Halt()
