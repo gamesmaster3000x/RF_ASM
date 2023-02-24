@@ -33,14 +33,14 @@
 // IMPORTANT!!
 // regions_i and regions_region will be removed!!
 // They should not be used and are purely for testing linking
-int regions_i = 0;
-int regions_length = 0;
-int regions_region = 0;
+global int regions_i = 0;
+global int regions_length = 0;
+global int regions_region = 0;
 
 //
 // Return a pointer to a block of memory which is at least of the given size.
 //
-function alloc int (int size)
+function int alloc (int size)
 {
     int i = 0;
     while (i < regions_length)
@@ -49,7 +49,9 @@ function alloc int (int size)
         if ( regions_i == 0 ) // Region i is empty
         {
             regions_i = 1;
-            return get_region_ptr(r);
+			int region_ptr = 0;
+            region_ptr = get_region_ptr(r);
+			return region_ptr;
         }
         i = i + 1;
     }
@@ -61,7 +63,7 @@ function alloc int (int size)
 // This is given by the result of the calculation:
 //     HeapOffset + exponential_offset + r*RegionMetaSize;
 //
-function get_region_ptr int (int r)
+function int get_region_ptr (int r)
 {
     // Need to calculate this before r changes later on
 	int RRMS = r * RegionMetaSize;
@@ -96,17 +98,19 @@ function get_region_ptr int (int r)
 	return HO_EXP_RRMS;
 }
 
-function freeptr null (int pointer)
+function null freeptr (int pointer)
 {
     int r = 0;
-    while ( pointer < get_region_ptr(r) )
+	int region_ptr = get_region_ptr(r);
+    while ( pointer <  region_ptr )
     {
         r = r + 1;
+		region_ptr = get_region_ptr(r);
     }
     freeregion(r);
 }
 
-function freeregion null (int region)
+function null freeregion (int region)
 {
     // Replace with regions[region]
     regions_region = 0;

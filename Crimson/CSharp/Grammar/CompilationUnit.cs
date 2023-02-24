@@ -20,21 +20,15 @@ namespace Crimson.CSharp.Grammar
         private Dictionary<string, StructureCStatement> structures = new Dictionary<string, StructureCStatement>();
         private Dictionary<string, GlobalVariableCStatement> globalVariables = new Dictionary<string, GlobalVariableCStatement>();
 
-        public HeapMemoryAllocatorCStatement? HeapMemoryAllocator { get; private set; }
         public Dictionary<string, ImportCStatement> Imports { get => imports; private set => imports = value; }
         public List<OperationHandlerCStatement> OpHandlers { get => opHandlers; private set => opHandlers = value; }
         public Dictionary<string, FunctionCStatement> Functions { get => functions; private set => functions = value; }
         public Dictionary<string, StructureCStatement> Structures { get => structures; private set => structures = value; }
         public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get => globalVariables; private set => globalVariables = value; }
 
-        public void SetHeapMemoryAllocator(HeapMemoryAllocatorCStatement allocator)
-        {
-            HeapMemoryAllocator= allocator;
-        }
-
         public void AddImport(ImportCStatement import)
         {
-            Imports.Add(import.Alias, import);
+            Imports.Add(import.Alias.ToString(), import);
         }
 
         public void AddOpHandler(OperationHandlerCStatement handler)
@@ -44,29 +38,17 @@ namespace Crimson.CSharp.Grammar
 
         public void AddStatement(GlobalCStatement statement)
         {
-            if (statement is FunctionCStatement)
+
+            void CheckContentsAndNameElseAdd<GCS> (Dictionary<string, GCS> d, GCS gcs, string typeNameForError) where GCS : GlobalCStatement
             {
-                FunctionCStatement f = (FunctionCStatement)statement;
-                if (functions.ContainsKey(f.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {f.Name} for statement {statement} in unit {this}");
-                Functions.Add(f.Name, f);
-            }
-            else if (statement is GlobalVariableCStatement)
-            {
-                GlobalVariableCStatement v = (GlobalVariableCStatement)statement;
-                if (functions.ContainsKey(v.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {v.Name} for statement {statement} in unit {this}");
-                GlobalVariables.Add(v.Name, v);
-            }
-            else if (statement is StructureCStatement)
-            {
-                StructureCStatement s = (StructureCStatement)statement;
-                if (functions.ContainsKey(s.Name)) throw new StatementParseException($"Duplicate GlobalStatement name {s.Name} for statement {statement} in unit {this}");
-                Structures.Add(s.Name, s);
-            }
-            else
-            {
-                throw new StatementParseException("The given statement " + statement + " may not be added to a CompilationUnit");
+                if (d.ContainsKey(gcs.Name.ToString())) throw new StatementParseException($"Duplicate GlobalStatement name '{gcs.Name}' for statement '{statement}' in unit: {this}");
+                d.Add(gcs.Name.ToString(), gcs);
             }
 
+            if (statement is FunctionCStatement f) CheckContentsAndNameElseAdd(functions, f, "Function");
+            else if (statement is GlobalVariableCStatement g) CheckContentsAndNameElseAdd(globalVariables, g, "Global Variable");
+            else if (statement is StructureCStatement s) CheckContentsAndNameElseAdd(structures, s, "Structure");
+            else throw new StatementParseException("The given statement " + statement + " may not be added to a CompilationUnit");       
         }
 
         public override string ToString()

@@ -1,4 +1,3 @@
-
 // Import packages:
 // - Package "utils" from the file "utils.crm", with the name "utils"
 // - Package "console" from the system library, with the name "stdout"
@@ -7,14 +6,21 @@
 #using "${NATIVE}/console.crm" as stdout
 #using "${NATIVE}/heap.crm" as heap
 
+// Declare ophandlers:
+//
+#ophandler (int * int) -> {utils.multiply}
+
 global int counter = 0;
 
-function main [int] () {
+function ptr main () {
 	
+	int a = utils.multiply(8);
+	int b = utils.times();
 	if (true == true) {
 		counter = 5;
-	} else if (utils.times(utils.multiply(8)) == true) {
-		int a = heap.alloc(utils.times(5, 3));
+	} else if (b == true) {
+		int c = utils.times(5, 3);
+		int d = heap.alloc();
 	} else {
 		return b;
 	}
@@ -29,14 +35,17 @@ function main [int] () {
         
     // Note usage of functions from imported packages
     stdout.write(i);
-    return utils.multiply(i, 5);
+	
+	ptr ret = heap.alloc(4);
+	ret *= utils.utils.multiply(i, 5);
+    return ret;
 }
 
-function call [int] () {
-	int* test = heap.alloc(69);
-	return;
+function ptr call () {
+	ptr test = heap.alloc(69);
+	return test;
 }
 
 structure Person {
-	int* age = heap.alloc(5);
+	ptr age = heap.alloc(5);
 }

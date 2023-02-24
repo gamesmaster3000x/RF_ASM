@@ -8,14 +8,16 @@ namespace Crimson.CSharp.Grammar.Statements
 {
     public class FunctionCallCStatement : InternalStatement
     {
-        private string identifier;
+        private FullNameCToken identifier;
         private FunctionCStatement? targetFunction;
         private IList<SimpleValueCToken> arguments;
 
         public static readonly string FUNCTION_RETURN_VARIABLE_NAME = "FUNC_RETURN";
 
-        public FunctionCallCStatement(string identifier, IList<SimpleValueCToken> arguments) : base()
+        public FunctionCallCStatement(FullNameCToken identifier, IList<SimpleValueCToken> arguments) : base()
         {
+            if (!identifier.HasMember()) throw new CrimsonParserException($"Name {identifier} must contain a member name.");
+
             this.identifier = identifier;
             this.arguments = arguments;
         }
@@ -37,14 +39,12 @@ namespace Crimson.CSharp.Grammar.Statements
             List<string> argumentHolders = new List<string>();
             foreach (var argValue in arguments)
             {
-                if (argValue is IdentifierSimpleValueCToken)
+                if (argValue is IdentifierSimpleValueCToken irvct)
                 {
-                    IdentifierSimpleValueCToken irvct = (IdentifierSimpleValueCToken)argValue;
-                    argumentHolders.Add(irvct.Identifier);
+                    argumentHolders.Add(irvct.Identifier.ToString());
                 }
-                else if (argValue is RawResolvableValueCToken)
+                else if (argValue is RawResolvableValueCToken rrvct)
                 {
-                    RawResolvableValueCToken rrvct = (RawResolvableValueCToken)argValue;
                     argumentHolders.Add(rrvct.Content);
                 }
                 else
@@ -59,7 +59,7 @@ namespace Crimson.CSharp.Grammar.Statements
             }
 
             // Jump
-            f.Add(new JumpBStatement(identifier));
+            f.Add(new JumpBStatement(identifier.ToString()));
 
             // Store result
             string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();

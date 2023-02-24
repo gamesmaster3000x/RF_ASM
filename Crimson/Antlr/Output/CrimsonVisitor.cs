@@ -39,12 +39,6 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.heapMemoryAllocator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitHeapMemoryAllocator([NotNull] CrimsonParser.HeapMemoryAllocatorContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -279,16 +273,16 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType([NotNull] CrimsonParser.TypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.rawType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitRawType([NotNull] CrimsonParser.RawTypeContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArray([NotNull] CrimsonParser.ArrayContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.fullName"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFullName([NotNull] CrimsonParser.FullNameContext context);
 }
 } // namespace Crimson.AntlrBuild

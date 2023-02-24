@@ -2,6 +2,7 @@
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar;
 using Crimson.CSharp.Grammar.Statements;
+using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Statements;
 using NLog;
@@ -114,7 +115,7 @@ namespace Crimson.CSharp.Core
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 
-            IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name)).ToList();
+            IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
             if (funcs.Count < 1) throw new FlatteningException($"Found {funcs.Count} (exactly 1 required) valid entry methods {funcs} for root unit {rootUnit} of compilation {compilation}");
             if (funcs.Count > 1) throw new FlatteningException($"Multiple ({funcs.Count}) valid entry methods (maximum permissable 1) {funcs} for root unit {rootUnit} of compilation {compilation}");
             FunctionCStatement entry = funcs.Single();
@@ -129,8 +130,8 @@ namespace Crimson.CSharp.Core
             {
                 i++;
             }
-            gs.Name = $"{prefix}_{gs.Name}_{i}";
-            map.Add(gs.Name, gs);
+            gs.Name = new FullNameCToken($"{prefix}_{gs.Name}_{i}");
+            map.Add(gs.Name.ToString(), gs);
         }
 
         private string GetFlattenedPrefix(System.Type type)
