@@ -37,9 +37,19 @@ namespace Crimson.CSharp.Grammar.Statements
         {
             Fragment result = new Fragment(0);
 
-            if (Complex == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
-            result.Add(Complex.GetBasicFragment());
-            result.Add(new SetBStatement(Identifier.ToString(), "VAR_ASSIGN_C_VAL"));
+            if (Simple != null)
+            {
+                result.Add(new CommentBStatement(Simple.GetText()));
+            } 
+            else if (Complex != null)
+            {
+                result.Add(Complex.GetBasicFragment());
+                result.Add(new SetBStatement(Identifier.ToString(), "VAR_ASSIGN_C_VAL"));
+            } 
+            else
+            {
+                throw new FlatteningException($"No value to be assigned to variable {Identifier}");
+            }
 
             return result;
         }

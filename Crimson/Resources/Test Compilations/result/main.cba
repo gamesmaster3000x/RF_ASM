@@ -6,69 +6,22 @@
 
 
 // ============================== Global Variables ==============================
-stack allocate gvar_counter_0 4
-set gvar_counter_0 GLO_VAR_ASSIGN_VAL;
+stack allocate gvar_regions_i_0 666
+set gvar_regions_i_0 0;
+stack allocate gvar_regions_length_0 666
+set gvar_regions_length_0 0;
+stack allocate gvar_regions_region_0 666
+set gvar_regions_region_0 0;
+stack allocate gvar_counter_0 666
+set gvar_counter_0 0;
 
 // (Structures shouldn't be a part of CB)
 // ============================== Structures ==============================
-// GlobalC:stru_Person_0
 
 // ============================== Entry Function ==============================
 :func_main_0
 stack push_frame 
-    
-    set rval_0 true == true;
-    jeq rval_0 0 NEXT_ELIF
-        set counter VAR_ASSIGN_C_VAL;
-        jump END_branch_0
-    
-    jump utils.multiply
-    set rval_1 FUNC_RETURN;
-    // arg0=rval_1
-    jump utils.times
-    heap allocate rval_2 6969
-    register set REG_RETURN rval_2
-    set rval_2 FUNC_RETURN;
-    set rval_3 rval_2 == true;
-    jeq rval_3 0 NEXT_ELIF
-        jump utils.times
-        set rval_4 FUNC_RETURN;
-        // arg0=rval_4
-        jump heap.alloc
-        heap allocate rval_5 6969
-        register set REG_RETURN rval_5
-        set rval_5 FUNC_RETURN;
-        stack allocate a 4
-        set a INT_VAR_ASSIGN_VAL;
-        jump END_branch_1
-    
-    :ELSE
-        return;
-    :END_branch_1
-    
-    :END_branch_0
-    
-    // arg0=4
-    // arg1=7
-    // arg2=5
-    jump call
-    heap allocate rval_6 6969
-    register set REG_RETURN rval_6
-    set rval_6 FUNC_RETURN;
-    // arg0=4
-    jump heap.alloc
-    heap allocate rval_7 6969
-    register set REG_RETURN rval_7
-    set rval_7 FUNC_RETURN;
-    stack allocate i 666
-    set i INT_VAR_ASSIGN_VAL;
-    set i* VAR_ASSIGN_C_VAL;
-    // arg0=i
-    jump stdout.write
-    heap allocate rval_8 6969
-    register set REG_RETURN rval_8
-    set rval_8 FUNC_RETURN;
-    return;
+    // Crimson.CSharp.Grammar.Statements.BasicCallCStatement: linked=False
 stack pop_frame 
 return;
 
@@ -78,15 +31,18 @@ return;
 stack push_frame 
     // arg0=6
     jump utils_stdout.write
-    heap allocate rval_9 6969
-    register set REG_RETURN rval_9
-    set rval_9 FUNC_RETURN;
+    heap allocate rval_0 6969
+    register set REG_RETURN rval_0
+    set rval_0 FUNC_RETURN;
     return;
 stack pop_frame 
 return;
 
 :func_times_0
 stack push_frame 
+    // Function Call
+    stack allocate ret 666
+    set ret ;
     return;
 stack pop_frame 
 return;
@@ -98,8 +54,8 @@ return;
 
 :func_alloc_0
 stack push_frame 
-    stack allocate i 4
-    set i INT_VAR_ASSIGN_VAL;
+    stack allocate i 666
+    set i 0;
     
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
@@ -110,63 +66,66 @@ return;
 
 :func_get_region_ptr_0
 stack push_frame 
-    stack allocate RRMS 4
-    set RRMS INT_VAR_ASSIGN_VAL;
-    stack allocate exponential_offset 4
-    set exponential_offset INT_VAR_ASSIGN_VAL;
+    // Operation
+    stack allocate RRMS 666
+    set RRMS ;
+    stack allocate exponential_offset 666
+    set exponential_offset 4;
     
-    set rval_10 r < 0;
-    jeq rval_10 0 NEXT_ELIF
+    jeq c_r_h 0 NEXT_ELIF
+        jump END_branch_0
+    
+    jeq c_r_h 0 NEXT_ELIF
+        // 1
+        jump END_branch_1
+    
+    jeq c_r_h 0 NEXT_ELIF
+        // 2
         jump END_branch_2
-    
-    set rval_11 r == 0;
-    jeq rval_11 0 NEXT_ELIF
-        set exponential_offset VAR_ASSIGN_C_VAL;
-        jump END_branch_3
-    
-    set rval_12 r == 1;
-    jeq rval_12 0 NEXT_ELIF
-        set exponential_offset VAR_ASSIGN_C_VAL;
-        jump END_branch_4
     
     :ELSE
         
         //  >> TODO IMPLEMENT WHILE (start) <<
         //  >> TODO IMPLEMENT WHILE (end) <<
         
-    :END_branch_4
-    
-    :END_branch_3
-    
     :END_branch_2
     
-    stack allocate HO_EXP 4
-    set HO_EXP INT_VAR_ASSIGN_VAL;
-    stack allocate HO_EXP_RRMS 4
-    set HO_EXP_RRMS INT_VAR_ASSIGN_VAL;
+    :END_branch_1
+    
+    :END_branch_0
+    
+    // Operation
+    stack allocate HO_EXP 666
+    set HO_EXP ;
+    // Operation
+    stack allocate HO_EXP_RRMS 666
+    set HO_EXP_RRMS ;
     return;
 stack pop_frame 
 return;
 
 :func_freeptr_0
 stack push_frame 
-    stack allocate r 4
-    set r INT_VAR_ASSIGN_VAL;
+    stack allocate r 666
+    set r 0;
+    // Function Call
+    stack allocate region_ptr 666
+    set region_ptr ;
     
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
     
     // arg0=r
     jump freeregion
-    heap allocate rval_13 6969
-    register set REG_RETURN rval_13
-    set rval_13 FUNC_RETURN;
+    heap allocate rval_1 6969
+    register set REG_RETURN rval_1
+    set rval_1 FUNC_RETURN;
 stack pop_frame 
 return;
 
 :func_freeregion_0
 stack push_frame 
-    set regions_region VAR_ASSIGN_C_VAL;
+    // 0
 stack pop_frame 
 return;
 
@@ -176,19 +135,6 @@ stack push_frame
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
     
-stack pop_frame 
-return;
-
-:func_call_0
-stack push_frame 
-    // arg0=69
-    jump heap.alloc
-    heap allocate rval_14 6969
-    register set REG_RETURN rval_14
-    set rval_14 FUNC_RETURN;
-    stack allocate test 4
-    set test INT_VAR_ASSIGN_VAL;
-    return;
 stack pop_frame 
 return;
 

@@ -16,11 +16,10 @@ namespace Crimson.CSharp.Grammar.Statements
     public class FunctionCStatement : GlobalCStatement
     {
 
-
         public CrimsonTypeCToken ReturnType { get; }
         public Header FunctionHeader { get; }
         public IList<InternalStatement> Statements { get; }
-        public override FullNameCToken Name { get => FunctionHeader.Identifier; }
+        public override FullNameCToken Name { get => FunctionHeader.Identifier; set { FunctionHeader.Identifier = value; } }
 
         public FunctionCStatement(CrimsonTypeCToken returnType, Header header, IList<InternalStatement> statements)
         {
@@ -90,7 +89,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public class Header : ICrimsonToken
         {
-            public FullNameCToken Identifier { get; protected set; }
+            public FullNameCToken Identifier { get; set; }
             public List<Parameter> Parameters { get; protected set; }
 
             public Header(FullNameCToken identifier, List<Parameter> parameters)

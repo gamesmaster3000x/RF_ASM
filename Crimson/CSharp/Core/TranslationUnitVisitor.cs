@@ -224,9 +224,14 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.WhileBlockContext whileCtx = context.whileBlock();
                 return VisitWhileBlock(whileCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext context)
+            else if (stCtx is CrimsonParser.FunctionBasicCallStatementContext fbcsc)
             {
-                CrimsonParser.AssemblyCallContext acCtx = context.assemblyCall();
+                CrimsonParser.BasicCallContext bcCtx = fbcsc.basicCall();
+                return VisitBasicCall(bcCtx);
+            }
+            else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext facsc)
+            {
+                CrimsonParser.AssemblyCallContext acCtx = facsc.assemblyCall();
                 return VisitAssemblyCall(acCtx);
             }
             else
@@ -317,8 +322,7 @@ namespace Crimson.CSharp.Core
 
         public override SimpleValueCToken VisitSimpleValue([NotNull] CrimsonParser.SimpleValueContext context)
         {
-            FullNameCToken identifier = VisitFullName(context.fullName());
-            if (context.id != null) return new IdentifierSimpleValueCToken(VisitFullName(context.fullName()));
+            if (context.id != null) return new IdentifierSimpleValueCToken(VisitFullName(context.id));
             else if (context.raw != null) return VisitRawValue(context.raw);
             throw new CrimsonParserException("Cannot parse SimpleValueContext " + context.GetText());
         }
@@ -337,6 +341,13 @@ namespace Crimson.CSharp.Core
             OperationResolvableValueCToken oct = new OperationResolvableValueCToken(leftToken, t, rightToken);
             return oct;
             // return new ResolvableValueCToken(context.GetText(), ResolvableValueCToken.ValueType.OPERATION);
+        }
+
+        public override BasicCallCStatement VisitBasicCall ([NotNull] CrimsonParser.BasicCallContext context)
+        {
+            string assemblyText = context.basicText.Text;
+            BasicCallCStatement call = new BasicCallCStatement(assemblyText);
+            return call;
         }
 
         public override AssemblyCallCStatement VisitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context)
@@ -397,7 +408,7 @@ namespace Crimson.CSharp.Core
 
         public override FullNameCToken VisitFullName ([NotNull] CrimsonParser.FullNameContext context)
         {
-            return new FullNameCToken(context.libraryName.Text, context.memberName.Text);
+            return new FullNameCToken(context.libraryName != null ? context.libraryName.Text : "", context.memberName.Text);
         }
     }
 }

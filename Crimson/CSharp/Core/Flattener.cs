@@ -116,10 +116,23 @@ namespace Crimson.CSharp.Core
             Regex regex = new Regex(pattern);
 
             IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
-            if (funcs.Count < 1) throw new FlatteningException($"Found {funcs.Count} (exactly 1 required) valid entry methods {funcs} for root unit {rootUnit} of compilation {compilation}");
-            if (funcs.Count > 1) throw new FlatteningException($"Multiple ({funcs.Count}) valid entry methods (maximum permissable 1) {funcs} for root unit {rootUnit} of compilation {compilation}");
-            FunctionCStatement entry = funcs.Single();
-            return entry;
+            if (funcs.Count == 0) 
+            {
+                throw new FlatteningException($"No valid entry function found. Invalid contenders were: [{String.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Options.EntryFunctionName}' using Regex: '{pattern}'."); 
+            }
+            else if (funcs.Count == 1)
+            {
+                FunctionCStatement entry = funcs.Single();
+                return entry;
+            }
+            else if (funcs.Count > 1) 
+            { 
+                throw new FlatteningException($"Cannot determine correct entry function. Found {funcs.Count} valid contenders: [{String.Join(',', funcs.Select(f => f.Name))}]."); 
+            } 
+            else
+            {
+                throw new FlatteningException($"Congratulations, you've managed to find a very strange number of entry functions: {funcs.Count}");
+            }
         }
 
         private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: GlobalCStatement

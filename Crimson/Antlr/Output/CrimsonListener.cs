@@ -210,6 +210,18 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionBasicCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionBasicCallStatement([NotNull] CrimsonParser.FunctionBasicCallStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionBasicCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionBasicCallStatement([NotNull] CrimsonParser.FunctionBasicCallStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// </summary>
@@ -305,6 +317,16 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitElseBlock([NotNull] CrimsonParser.ElseBlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.basicCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBasicCall([NotNull] CrimsonParser.BasicCallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.basicCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBasicCall([NotNull] CrimsonParser.BasicCallContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.assemblyCall"/>.
 	/// </summary>

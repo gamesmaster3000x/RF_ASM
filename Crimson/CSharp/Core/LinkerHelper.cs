@@ -76,7 +76,7 @@ namespace Crimson.CSharp.Core
              */
             if (identifier.HasLibrary() && identifier.HasMember())
             {
-                string alias = identifier.LibraryName;
+                string alias = identifier.LibraryName!;
 
                 CompilationUnit unit = ctx.GetUnit(alias);
                 string call = identifier.MemberName;

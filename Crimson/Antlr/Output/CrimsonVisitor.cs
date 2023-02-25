@@ -138,6 +138,13 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionBasicCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionBasicCallStatement([NotNull] CrimsonParser.FunctionBasicCallStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// </summary>
@@ -194,6 +201,12 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.basicCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBasicCall([NotNull] CrimsonParser.BasicCallContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.assemblyCall"/>.
 	/// </summary>

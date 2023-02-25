@@ -7,10 +7,10 @@ translationUnit
 
 // Compilation-Unit statements
 importUnit
-    : Hashtag Using path=String As identifier=fullName
+    : Hashtag Using path=String As identifier=fullName SemiColon
     ;
 operationHandler
-    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace SemiColon
     ;
 globalStatement
     : globalVariableDeclaration #GlobalVariableUnitStatement
@@ -38,6 +38,7 @@ internalStatement
     | functionCall SemiColon        #FunctionFunctionCallStatement
     | ifBlock                       #FunctionIfStatement
     | whileBlock                    #FunctionWhileStatement
+    | basicCall                     #FunctionBasicCallStatement
     | assemblyCall                  #FunctionAssemblyCallStatement
     ;
 internalVariableDeclaration 
@@ -62,8 +63,11 @@ elseIfBlock
 elseBlock
     : Else functionBody
     ;
+basicCall
+    : BasicCall basicText=~('\r' | '\n')*
+    ;
 assemblyCall
-    : Tilda assemblyText=~('\r' | '\n')*
+    : AssemblyCall assemblyText=~('\r' | '\n')*
     ;
  
 // Function
@@ -171,7 +175,8 @@ fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
 RightArrow: '->';
-Tilda: '~';
+BasicCall: 'B~';
+AssemblyCall: 'A~';
 DirectEquals: '=';
 PointerEquals: '*=';
 OpenBracket: '(';
@@ -203,7 +208,7 @@ String
     : Quote ~('"')* Quote
     ;
 ShortName
-    : (Alphabetic) (Alphabetic | Number | Underscore)+?
+    : (Alphabetic) (Alphabetic | Number | Underscore)*
     ;
 fragment Alphabetic
     : [a-zA-Z]

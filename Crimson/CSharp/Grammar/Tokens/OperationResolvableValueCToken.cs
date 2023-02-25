@@ -1,6 +1,7 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
 using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Statements;
 using System.Net.Http;
 
 namespace Crimson.CSharp.Grammar.Tokens
@@ -45,7 +46,9 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public override Fragment GetBasicFragment()
         {
-            throw new NotImplementedException();
+            Fragment fragment = new Fragment(0);
+            fragment.Add(new CommentBStatement("Operation"));
+            return fragment;
         }
 
         public enum OperationType

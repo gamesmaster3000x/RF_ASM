@@ -247,6 +247,20 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionBasicCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionBasicCallStatement([NotNull] CrimsonParser.FunctionBasicCallStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionBasicCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionBasicCallStatement([NotNull] CrimsonParser.FunctionBasicCallStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -360,6 +374,18 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitElseBlock([NotNull] CrimsonParser.ElseBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.basicCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBasicCall([NotNull] CrimsonParser.BasicCallContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.basicCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBasicCall([NotNull] CrimsonParser.BasicCallContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.assemblyCall"/>.
 	/// <para>The default implementation does nothing.</para>
