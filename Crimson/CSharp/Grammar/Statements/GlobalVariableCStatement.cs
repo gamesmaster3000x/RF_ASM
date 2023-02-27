@@ -50,13 +50,13 @@ namespace Crimson.CSharp.Grammar.Statements
                 Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
                 statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name.ToString(), type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Name.ToString(), valueStatements.ResultHolder!));
+                statements.Add(new SetBStatement(Name.ToString(), -1, valueStatements.ResultHolder!));
 
             }
             else if (Simple != null)
             {
                 statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name.ToString(), type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Name.ToString(), Simple.GetText()));
+                statements.Add(new SetBStatement(Name.ToString(), -1, Simple.GetText()));
             }
             else
             {

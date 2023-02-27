@@ -6,71 +6,70 @@
 
 
 // ============================== Global Variables ==============================
-stack allocate gvar_regions_i_0 666
-set gvar_regions_i_0 0;
-stack allocate gvar_regions_length_0 666
-set gvar_regions_length_0 0;
-stack allocate gvar_regions_region_0 666
-set gvar_regions_region_0 0;
-stack allocate gvar_counter_0 666
-set gvar_counter_0 0;
+stack allocate gvar_regions_i_0 666;
+set gvar_regions_i_0, -1, 0;
+stack allocate gvar_regions_length_0 666;
+set gvar_regions_length_0, -1, 0;
+stack allocate gvar_regions_region_0 666;
+set gvar_regions_region_0, -1, 0;
+stack allocate gvar_counter_0 666;
+set gvar_counter_0, -1, 0;
 
 // (Structures shouldn't be a part of CB)
 // ============================== Structures ==============================
 
 // ============================== Entry Function ==============================
-:func_main_0
-stack push_frame 
+:func_main_0:
+stack push_frame ;
     // Crimson.CSharp.Grammar.Statements.BasicCallCStatement: linked=False
-stack pop_frame 
+stack pop_frame ;
 return;
 
 
 // ============================== Functions ==============================
-:func_multiply_0
-stack push_frame 
+:func_multiply_0:
+stack push_frame ;
     // arg0=6
     jump utils_stdout.write
-    heap allocate rval_0 6969
     register set REG_RETURN rval_0
-    set rval_0 FUNC_RETURN;
+    set rval_0, -1, FUNC_RETURN;
     return;
-stack pop_frame 
+stack pop_frame ;
 return;
 
-:func_times_0
-stack push_frame 
+:func_times_0:
+stack push_frame ;
     // Function Call
-    stack allocate ret 666
-    set ret ;
+    stack allocate ret 666;
+    set ret, -1, ;
     return;
-stack pop_frame 
+stack pop_frame ;
 return;
 
-:func_write_0
-stack push_frame 
-stack pop_frame 
+:func_write_0:
+stack push_frame ;
+stack pop_frame ;
 return;
 
-:func_alloc_0
-stack push_frame 
-    stack allocate i 666
-    set i 0;
+:func_alloc_0:
+stack push_frame ;
+    stack allocate i 666;
+    set i, -1, 0;
     
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
     
     return;
-stack pop_frame 
+stack pop_frame ;
 return;
 
-:func_get_region_ptr_0
-stack push_frame 
+:func_get_region_ptr_0:
+stack push_frame ;
     // Operation
-    stack allocate RRMS 666
-    set RRMS ;
-    stack allocate exponential_offset 666
-    set exponential_offset 4;
+    stack allocate RRMS 666;
+    set RRMS, -1, ;
+    stack allocate exponential_offset 666;
+    set exponential_offset, -1, 4;
     
     jeq c_r_h 0 NEXT_ELIF
         jump END_branch_0
@@ -83,58 +82,57 @@ stack push_frame
         // 2
         jump END_branch_2
     
-    :ELSE
+    :ELSE:
         
         //  >> TODO IMPLEMENT WHILE (start) <<
         //  >> TODO IMPLEMENT WHILE (end) <<
         
-    :END_branch_2
+    :END_branch_2:
     
-    :END_branch_1
+    :END_branch_1:
     
-    :END_branch_0
+    :END_branch_0:
     
     // Operation
-    stack allocate HO_EXP 666
-    set HO_EXP ;
+    stack allocate HO_EXP 666;
+    set HO_EXP, -1, ;
     // Operation
-    stack allocate HO_EXP_RRMS 666
-    set HO_EXP_RRMS ;
+    stack allocate HO_EXP_RRMS 666;
+    set HO_EXP_RRMS, -1, ;
     return;
-stack pop_frame 
+stack pop_frame ;
 return;
 
-:func_freeptr_0
-stack push_frame 
-    stack allocate r 666
-    set r 0;
+:func_freeptr_0:
+stack push_frame ;
+    stack allocate r 666;
+    set r, -1, 0;
     // Function Call
-    stack allocate region_ptr 666
-    set region_ptr ;
+    stack allocate region_ptr 666;
+    set region_ptr, -1, ;
     
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
     
     // arg0=r
     jump freeregion
-    heap allocate rval_1 6969
     register set REG_RETURN rval_1
-    set rval_1 FUNC_RETURN;
-stack pop_frame 
+    set rval_1, -1, FUNC_RETURN;
+stack pop_frame ;
 return;
 
-:func_freeregion_0
-stack push_frame 
+:func_freeregion_0:
+stack push_frame ;
     // 0
-stack pop_frame 
+stack pop_frame ;
 return;
 
-:func_pwr_0
-stack push_frame 
+:func_pwr_0:
+stack push_frame ;
     
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
     
-stack pop_frame 
+stack pop_frame ;
 return;
 

@@ -19,7 +19,7 @@ namespace CrimsonBasic.CSharp.Statements
 
         public override string ToString()
         {
-            return $"stack {_operation.ToString().ToLower()} {string.Join(' ', _arguments)}";
+            return $"stack {_operation.ToString().ToLower()} {string.Join(' ', _arguments)};";
         }
 
         public enum StackOperation

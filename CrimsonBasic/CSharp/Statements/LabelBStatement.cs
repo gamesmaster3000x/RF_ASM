@@ -17,7 +17,7 @@ namespace CrimsonBasic.CSharp.Statements
 
         public override string ToString()
         {
-            return _name.StartsWith(":") ? _name : ":" + _name;
+            return (_name.StartsWith(":") ? _name : ":" + _name) + (_name.EndsWith(":") ? "" : ":");
         }
     }
 }

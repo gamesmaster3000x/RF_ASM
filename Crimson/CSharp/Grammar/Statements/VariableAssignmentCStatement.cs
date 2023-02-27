@@ -44,7 +44,7 @@ namespace Crimson.CSharp.Grammar.Statements
             else if (Complex != null)
             {
                 result.Add(Complex.GetBasicFragment());
-                result.Add(new SetBStatement(Identifier.ToString(), "VAR_ASSIGN_C_VAL"));
+                result.Add(new SetBStatement(Identifier.ToString(), -1, "VAR_ASSIGN_C_VAL"));
             } 
             else
             {
