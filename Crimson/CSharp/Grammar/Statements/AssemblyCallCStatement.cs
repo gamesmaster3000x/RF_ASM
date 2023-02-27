@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Grammar.Statements
             this.assemblyText = assemblyText;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
             f.Add(new AssemblyBStatement(assemblyText));

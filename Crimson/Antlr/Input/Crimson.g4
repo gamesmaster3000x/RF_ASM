@@ -64,10 +64,10 @@ elseBlock
     : Else functionBody
     ;
 basicCall
-    : BasicCall basicText=~('\r' | '\n')*
+    : BasicCall basicText=String SemiColon
     ;
 assemblyCall
-    : AssemblyCall assemblyText=~('\r' | '\n')*
+    : AssemblyCall assemblyText=String SemiColon
     ;
  
 // Function

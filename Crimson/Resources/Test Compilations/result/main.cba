@@ -17,11 +17,59 @@ set gvar_counter_0, -1, 0;
 
 // (Structures shouldn't be a part of CB)
 // ============================== Structures ==============================
+// GlobalC:stru_Person_0
 
 // ============================== Entry Function ==============================
 :func_main_0:
 stack push_frame ;
-    // Crimson.CSharp.Grammar.Statements.BasicCallCStatement: linked=False
+    example basic call
+    ~A "example assemby call"
+    // Function Call
+    stack allocate a 666;
+    set a, -1, ;
+    // Function Call
+    stack allocate b 666;
+    set b, -1, ;
+    
+    jeq c_r_h 0 NEXT_ELIF
+        // 5
+        jump END_branch_0
+    
+    jeq c_r_h 0 NEXT_ELIF
+        // Function Call
+        stack allocate c 666;
+        set c, -1, ;
+        // Function Call
+        stack allocate d 666;
+        set d, -1, ;
+        jump END_branch_1
+    
+    :ELSE:
+        return;
+    :END_branch_1:
+    
+    :END_branch_0:
+    
+    // arg0=4
+    // arg1=7
+    // arg2=5
+    jump call
+    register set REG_RETURN rval_0
+    set rval_0, -1, FUNC_RETURN;
+    // Function Call
+    stack allocate i 666;
+    set i, -1, ;
+    // 4
+    // arg0=i
+    jump stdout.write
+    register set REG_RETURN rval_1
+    set rval_1, -1, FUNC_RETURN;
+    // Function Call
+    stack allocate ret 666;
+    set ret, -1, ;
+    // Function Call
+    set ret, -1, VAR_ASSIGN_C_VAL;
+    return;
 stack pop_frame ;
 return;
 
@@ -31,8 +79,8 @@ return;
 stack push_frame ;
     // arg0=6
     jump utils_stdout.write
-    register set REG_RETURN rval_0
-    set rval_0, -1, FUNC_RETURN;
+    register set REG_RETURN rval_2
+    set rval_2, -1, FUNC_RETURN;
     return;
 stack pop_frame ;
 return;
@@ -72,26 +120,26 @@ stack push_frame ;
     set exponential_offset, -1, 4;
     
     jeq c_r_h 0 NEXT_ELIF
-        jump END_branch_0
+        jump END_branch_2
     
     jeq c_r_h 0 NEXT_ELIF
         // 1
-        jump END_branch_1
+        jump END_branch_3
     
     jeq c_r_h 0 NEXT_ELIF
         // 2
-        jump END_branch_2
+        jump END_branch_4
     
     :ELSE:
         
         //  >> TODO IMPLEMENT WHILE (start) <<
         //  >> TODO IMPLEMENT WHILE (end) <<
         
+    :END_branch_4:
+    
+    :END_branch_3:
+    
     :END_branch_2:
-    
-    :END_branch_1:
-    
-    :END_branch_0:
     
     // Operation
     stack allocate HO_EXP 666;
@@ -116,8 +164,8 @@ stack push_frame ;
     
     // arg0=r
     jump freeregion
-    register set REG_RETURN rval_1
-    set rval_1, -1, FUNC_RETURN;
+    register set REG_RETURN rval_3
+    set rval_3, -1, FUNC_RETURN;
 stack pop_frame ;
 return;
 
@@ -133,6 +181,15 @@ stack push_frame ;
     //  >> TODO IMPLEMENT WHILE (start) <<
     //  >> TODO IMPLEMENT WHILE (end) <<
     
+stack pop_frame ;
+return;
+
+:func_call_0:
+stack push_frame ;
+    // Function Call
+    stack allocate test 666;
+    set test, -1, ;
+    return;
 stack pop_frame ;
 return;
 

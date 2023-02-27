@@ -13,10 +13,10 @@ namespace Crimson.CSharp.Grammar.Statements
             AssemblyText = assemblyText;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
-            f.Add(new CommentBStatement("BasicCallCStatement: " + AssemblyText));
+            f.Add(new ArbitraryBStatement(AssemblyText));
             return f;
         }
 

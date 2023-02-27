@@ -345,15 +345,15 @@ namespace Crimson.CSharp.Core
 
         public override BasicCallCStatement VisitBasicCall ([NotNull] CrimsonParser.BasicCallContext context)
         {
-            string assemblyText = context.basicText.Text;
-            BasicCallCStatement call = new BasicCallCStatement(assemblyText);
+            string basicText = context.basicText.Text;
+            BasicCallCStatement call = new BasicCallCStatement(basicText.Replace("\"", ""));
             return call;
         }
 
         public override AssemblyCallCStatement VisitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context)
         {
             string assemblyText = context.assemblyText.Text;
-            AssemblyCallCStatement call = new AssemblyCallCStatement(assemblyText);
+            AssemblyCallCStatement call = new AssemblyCallCStatement(assemblyText.Replace("\"", ""));
             return call;
         }
 

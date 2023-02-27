@@ -14,8 +14,8 @@ global int counter = 0;
 
 function ptr main () {
 
-	B~ example basic call;
-	A~ example assemby call;
+	B~ "example basic call";
+	A~ "example assemby call";
 	
 	int a = utils.multiply(8);
 	int b = utils.times();
@@ -40,7 +40,7 @@ function ptr main () {
     stdout.write(i);
 	
 	ptr ret = heap.alloc(4);
-	ret *= utils.utils.multiply(i, 5);
+	ret *= utils.multiply(i, 5);
     return ret;
 }
 
