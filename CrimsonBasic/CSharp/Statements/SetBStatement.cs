@@ -22,7 +22,7 @@ namespace CrimsonBasic.CSharp.Statements
 
         public override string ToString()
         {
-            return $"set {Name}, {Size}, {Value};";
+            return $"var_set {Name}, {Size}, {Value};";
         }
     }
 }

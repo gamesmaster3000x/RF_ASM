@@ -49,7 +49,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
             Fragment functionHead = new Fragment(0);
             functionHead.Add(new LabelBStatement(Name.ToString()));
-            functionHead.Add(new StackBStatement(StackBStatement.StackOperation.PUSH_FRAME));
+            functionHead.Add(new PushSfBStatement());
 
             Fragment functionBody = new Fragment(1);
             foreach (var s in Statements)
@@ -58,7 +58,7 @@ namespace Crimson.CSharp.Grammar.Statements
             }
 
             Fragment functionFoot = new Fragment(0);
-            functionFoot.Add(new StackBStatement(StackBStatement.StackOperation.POP_FRAME));
+            functionFoot.Add(new PushSfBStatement());
             functionFoot.Add(new ReturnBStatement());
             functionFoot.Add(new CommentBStatement(""));
 

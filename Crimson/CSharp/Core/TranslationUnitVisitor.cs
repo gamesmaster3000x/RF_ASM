@@ -357,23 +357,6 @@ namespace Crimson.CSharp.Core
             return call;
         }
 
-/*        public  MemoryAllocationCStatement VisitAllocateMemory([NotNull] CrimsonParser.AllocateMemoryContext context)
-        {
-            string identifier = context.Identifier().GetText();
-            string numberText = context.Number().GetText();
-            int number;
-            try
-            {
-                number = Int32.Parse(numberText);
-            }
-            catch (FormatException f)
-            {
-                throw new StatementParseException("Failed to parse string->int " + numberText + " while allocating memory for " + identifier, f);
-            }
-            MemoryAllocationCStatement allocation = new MemoryAllocationCStatement(identifier, number);
-            return allocation;
-        }
-*/
         public override IList<SimpleValueCToken> VisitArguments([NotNull] CrimsonParser.ArgumentsContext context)
         {
             IList<SimpleValueCToken> arguments = new List<SimpleValueCToken>();

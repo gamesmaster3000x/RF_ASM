@@ -63,7 +63,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
             // Store result
             string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
-            f.Add(new RegisterBStatement(RegisterBStatement.RegisterOperation.SET, "REG_RETURN", returnName));
+            f.Add(new RegSetBStatement("REG_RETURN", returnName));
             f.Add(new SetBStatement(returnName, -1, FUNCTION_RETURN_VARIABLE_NAME));
 
             f.ResultHolder = returnName;
