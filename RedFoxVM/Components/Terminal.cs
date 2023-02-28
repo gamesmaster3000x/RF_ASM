@@ -22,7 +22,7 @@ namespace RedFoxVM.Components
             flagIn = (byte)(128 + lane);
             flagOut = (byte)(192 + lane);
         }
-
+        
         public void Clock()
         {
             if (!Computer.processor.flags[flagIn])
