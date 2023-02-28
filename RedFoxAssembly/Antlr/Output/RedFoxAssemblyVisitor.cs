@@ -39,6 +39,19 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>LiteralMetadata</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.metadata"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralMetadata([NotNull] RedFoxAssemblyParser.LiteralMetadataContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteral([NotNull] RedFoxAssemblyParser.LiteralContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>WidthConfiguration</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.configuration"/>.
 	/// </summary>
@@ -79,11 +92,24 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>RepeatCommand</c>
+	/// labeled alternative in <see cref="RedFoxAssemblyParser.command"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeatCommand([NotNull] RedFoxAssemblyParser.RepeatCommandContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.label"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.repeat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeat([NotNull] RedFoxAssemblyParser.RepeatContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>HLTInstruction</c>
 	/// labeled alternative in <see cref="RedFoxAssemblyParser.instruction"/>.
@@ -461,6 +487,12 @@ public interface IRedFoxAssemblyVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitXor([NotNull] RedFoxAssemblyParser.XorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.end"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnd([NotNull] RedFoxAssemblyParser.EndContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RedFoxAssemblyParser.word"/>.
 	/// </summary>

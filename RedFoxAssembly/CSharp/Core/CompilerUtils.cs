@@ -69,6 +69,13 @@ namespace RedFoxAssembly.CSharp.Core
             return ba;
         }
 
+        public static byte[] IntToBytesAtWidth (int width, int value)
+        {
+            byte[] b = BitConverter.GetBytes(value).Reverse().ToArray();
+            byte[] c = CompilerUtils.FixArrayWidthPreservingBack(width, b);
+            return c;
+        }
+
         public static byte[] SetBitInByte(byte b, int bitIndex, bool bitValue)
         {
             BitArray bitArr = new BitArray(b);

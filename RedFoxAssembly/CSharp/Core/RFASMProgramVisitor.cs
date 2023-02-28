@@ -1,7 +1,9 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using NLog.Targets;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
+using System.Text;
 
 namespace RedFoxAssembly.CSharp.Core
 {
@@ -9,7 +11,7 @@ namespace RedFoxAssembly.CSharp.Core
     {
         public override RFASMProgram VisitProgram([NotNull] RedFoxAssemblyParser.ProgramContext context)
         {
-            RFASMProgram program = new RFASMProgram();
+            RFASMProgram program = new RFASMProgram(null, new List<IConfiguration>(), new List<ICommand>());
 
             foreach (var c in context._configurations)
             {
@@ -36,23 +38,24 @@ namespace RedFoxAssembly.CSharp.Core
         public override WidthConfiguration VisitWidth([NotNull] RedFoxAssemblyParser.WidthContext context) { return new WidthConfiguration(int.Parse(context.val.Text)); }
 
         public override ValueConfiguration VisitValueConfiguration([NotNull] RedFoxAssemblyParser.ValueConfigurationContext context) { return VisitValue(context.value()); }
-        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context) 
+        public override ValueConfiguration VisitValue([NotNull] RedFoxAssemblyParser.ValueContext context)
         {
             string id = context.id.Text;
 
             try
             {
-                if (context.byteValue != null) 
+                if (context.byteValue != null)
                 {
                     RByte b = VisitByte(context.byteValue);
-                    return new ValueConfiguration(context.id.Text, b); 
+                    return new ValueConfiguration(context.id.Text, b);
                 }
                 if (context.wordValue != null)
                 {
                     Word w = VisitWord(context.wordValue);
                     return new ValueConfiguration(context.id.Text, VisitWord(context.wordValue));
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 throw new ParsingException($"Error parsing byte value '{context.byteValue?.GetText()}' or word value '{context.wordValue?.GetText()}' for {id}", e);
             }
@@ -62,7 +65,7 @@ namespace RedFoxAssembly.CSharp.Core
 
         public override Word VisitWord([NotNull] RedFoxAssemblyParser.WordContext context)
         {
-            if (string.IsNullOrWhiteSpace(context.GetText())) 
+            if (string.IsNullOrWhiteSpace(context.GetText()))
                 throw new ParsingException("Word cannot be null or whitespace");
 
             // Process as raw hex
@@ -158,11 +161,26 @@ namespace RedFoxAssembly.CSharp.Core
             if (context == null) throw new ParsingException("RedFoxAssemblyParser.CommandContext cannot be null");
             if (context is RedFoxAssemblyParser.LabelCommandContext) return VisitLabelCommand((RedFoxAssemblyParser.LabelCommandContext)context);
             if (context is RedFoxAssemblyParser.InstructionCommandContext) return VisitInstructionCommand((RedFoxAssemblyParser.InstructionCommandContext)context);
+            if (context is RedFoxAssemblyParser.RepeatCommandContext) return VisitRepeatCommand((RedFoxAssemblyParser.RepeatCommandContext) context);
             throw new ParsingException("Cannot parse RedFoxAssemblyParser.CommandContext of type " + context.GetType());
         }
 
         public override LabelCommand VisitLabelCommand([NotNull] RedFoxAssemblyParser.LabelCommandContext context) { return VisitLabel(context.label()); }
         public override LabelCommand VisitLabel([NotNull] RedFoxAssemblyParser.LabelContext context) { return new LabelCommand(context.id.Text); }
+
+        public override RepeatCommand VisitRepeatCommand ([NotNull] RedFoxAssemblyParser.RepeatCommandContext context) { return VisitRepeat(context.repeat()); }
+        public override RepeatCommand VisitRepeat ([NotNull] RedFoxAssemblyParser.RepeatContext context) 
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach(IToken t in context._times) builder.Append(t.Text);
+            int times = Int32.Parse(builder.ToString());
+
+            byte[] bytes = new byte[context._bytes.Count];
+            for(int i = 0; i < bytes.Length; i++)
+                bytes[i] = (byte) VisitByte(context._bytes[i]).Data;
+                
+            return new RepeatCommand(times, bytes);
+        }
 
         public override InstructionCommand VisitInstructionCommand([NotNull] RedFoxAssemblyParser.InstructionCommandContext context) { return ParseInstruction(context.instruction()); }
         public InstructionCommand ParseInstruction(RedFoxAssemblyParser.InstructionContext context)

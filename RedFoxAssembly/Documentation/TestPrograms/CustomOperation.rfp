@@ -1,18 +1,18 @@
-.width 2;
-.byte _REG_, 0x69;
-.word _NUM_, 0x4200;
+.width 2
+.byte _REG_ 0x69
+.word _NUM_ 0x4200
 
-RVW 0xcb5b;    // Word( false, 'cb5b' )
-RVW 0xcb5b;    // Word( false, 'cb5b' )
-::_label_;
-::_labal_;
-::_labol_;
-WRW Rx01;      // Word( true, '1 + no offset' )
-RVW _NUM_;     // Word( false, '4200' )
-WRW _REG_;     // Word( true, '0x6969 + general register offset' )
-SUB;
-RRW 0x00;      // Word( false, '1' )
-JMP _label_;
-JMP _labal_;
-JMP _labol_;
-HLT;
+RVW 0xcb5b    // Word( false, 'cb5b' )
+RVW 0xcb5b    // Word( false, 'cb5b' )
+::_label_
+::_labal_
+::_labol_
+WRW Rx01      // Word( true, '1 + no offset' )
+RVW _NUM_     // Word( false, '4200' )
+WRW _REG_     // Word( true, '0x6969 + general register offset' )
+SUB
+RRW 0x00;     // Word( false, '1' )
+JMP _label_
+JMP _labal_
+JMP _labol_
+HLT

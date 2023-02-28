@@ -16,16 +16,18 @@ namespace Crimson.CSharp.Grammar.Statements
     public class FunctionCStatement : GlobalCStatement
     {
 
+
+        public CrimsonTypeCToken ReturnType { get; }
+        public Header FunctionHeader { get; }
+        public IList<InternalStatement> Statements { get; }
+        public override FullNameCToken Name { get => FunctionHeader.Identifier; }
+
         public FunctionCStatement(CrimsonTypeCToken returnType, Header header, IList<InternalStatement> statements)
         {
             ReturnType = returnType;
             FunctionHeader = header;
             Statements = statements;
         }
-
-        public CrimsonTypeCToken ReturnType { get; }
-        public Header FunctionHeader { get; }
-        public IList<InternalStatement> Statements { get; }
 
         public override void Link(LinkingContext ctx)
         {
@@ -47,7 +49,7 @@ namespace Crimson.CSharp.Grammar.Statements
             Fragment function = new Fragment(0);
 
             Fragment functionHead = new Fragment(0);
-            functionHead.Add(new LabelBStatement(Name));
+            functionHead.Add(new LabelBStatement(Name.ToString()));
             functionHead.Add(new StackBStatement(StackBStatement.StackOperation.PUSH_FRAME));
 
             Fragment functionBody = new Fragment(1);
@@ -71,9 +73,9 @@ namespace Crimson.CSharp.Grammar.Statements
         public class Parameter : ICrimsonToken
         {
             public CrimsonTypeCToken Type { get; }
-            public string Identifier { get; set; }
+            public FullNameCToken Identifier { get; set; }
 
-            public Parameter(CrimsonTypeCToken type, string identifier)
+            public Parameter(CrimsonTypeCToken type, FullNameCToken identifier)
             {
                 Type = type;
                 Identifier = identifier;
@@ -88,10 +90,10 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public class Header : ICrimsonToken
         {
-            public string Identifier { get; protected set; }
+            public FullNameCToken Identifier { get; protected set; }
             public List<Parameter> Parameters { get; protected set; }
 
-            public Header(string identifier, List<Parameter> parameters)
+            public Header(FullNameCToken identifier, List<Parameter> parameters)
             {
                 Identifier = identifier;
                 Parameters = parameters;
