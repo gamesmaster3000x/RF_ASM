@@ -59,7 +59,7 @@ namespace Crimson.CSharp.Grammar.Statements
             }
 
             // Jump
-            f.Add(new JumpBStatement(identifier.ToString()));
+            f.Add(new JumpBStatement(targetFunction!.Name.ToString()));
 
             // Store result
             string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();

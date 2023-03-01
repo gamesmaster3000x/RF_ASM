@@ -53,7 +53,7 @@ push_sf;
     // arg0=4
     // arg1=7
     // arg2=5
-    jump call
+    jump func_call_0
     reg_set REG_RETURN rval_0
     var_set rval_0, -1, FUNC_RETURN;
     // Function Call
@@ -61,7 +61,7 @@ push_sf;
     var_set i, -1, ;
     // 4
     // arg0=i
-    jump stdout.write
+    jump func_write_0
     reg_set REG_RETURN rval_1
     var_set rval_1, -1, FUNC_RETURN;
     // Function Call
@@ -78,7 +78,7 @@ return;
 :func_multiply_0:
 push_sf;
     // arg0=6
-    jump utils_stdout.write
+    jump func_write_0
     reg_set REG_RETURN rval_2
     var_set rval_2, -1, FUNC_RETURN;
     return;
@@ -163,7 +163,7 @@ push_sf;
     //  >> TODO IMPLEMENT WHILE (end) <<
     
     // arg0=r
-    jump freeregion
+    jump func_freeregion_0
     reg_set REG_RETURN rval_3
     var_set rval_3, -1, FUNC_RETURN;
 push_sf;
