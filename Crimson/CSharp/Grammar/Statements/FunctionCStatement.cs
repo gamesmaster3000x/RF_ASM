@@ -45,13 +45,11 @@ namespace Crimson.CSharp.Grammar.Statements
 
             Fragment functionHead = new Fragment(0);
             functionHead.Add(new LabelBStatement(Name.ToString()));
-            functionHead.Add(new PushSfBStatement());
 
             Fragment functionBody = new Fragment(1);
             functionBody.Add(Scope.GetCrimsonBasic());
 
             Fragment functionFoot = new Fragment(0);
-            functionFoot.Add(new PushSfBStatement());
             functionFoot.Add(new ReturnBStatement());
             functionFoot.Add(new CommentBStatement(""));
 

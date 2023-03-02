@@ -18,10 +18,12 @@ namespace Crimson.CSharp.Grammar.Tokens
         public Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
+            f.Add(new PushSfBStatement());
             foreach (var s in Statements)
             {
                 f.Add(s.GetCrimsonBasic());
             }
+            f.Add(new PopSfBStatement());
             return f;
         }
 
