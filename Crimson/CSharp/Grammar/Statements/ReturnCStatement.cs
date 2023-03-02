@@ -5,7 +5,7 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class ReturnCStatement : InternalStatement
+    internal class ReturnCStatement : ICrimsonStatement
     {
         public ReturnCStatement(SimpleValueCToken value)
         {
@@ -14,16 +14,21 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public SimpleValueCToken Value { get; }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             return;
         }
 
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
             f.Add(new ReturnBStatement());
             return f;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

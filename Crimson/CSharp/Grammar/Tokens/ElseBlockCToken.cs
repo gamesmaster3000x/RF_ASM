@@ -7,12 +7,12 @@ namespace Crimson.CSharp.Grammar.Tokens
 {
     internal class ElseBlockCToken : ICrimsonToken
     {
-        public ElseBlockCToken(ScopeCToken statements)
+        public ElseBlockCToken(Scope statements)
         {
             Scope = statements;
         }
 
-        public ScopeCToken Scope { get; }
+        public Scope Scope { get; }
 
         public Fragment GetCrimsonBasic()
         {

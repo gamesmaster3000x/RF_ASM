@@ -4,7 +4,7 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class AssemblyCallCStatement : InternalStatement
+    internal class AssemblyCallCStatement : ICrimsonStatement
     {
         private string assemblyText;
 
@@ -13,14 +13,19 @@ namespace Crimson.CSharp.Grammar.Statements
             this.assemblyText = assemblyText;
         }
 
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
             f.Add(new AssemblyBStatement(assemblyText));
             return f;
         }
 
-        public override void Link(LinkingContext ctx)
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Link(LinkingContext ctx)
         {
 
         }

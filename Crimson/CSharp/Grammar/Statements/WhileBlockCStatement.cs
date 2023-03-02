@@ -5,19 +5,19 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class WhileBlockCStatement : InternalStatement
+    internal class WhileBlockCStatement : ICrimsonStatement
     {
 
-        public WhileBlockCStatement(ConditionCToken condition, ScopeCToken scope)
+        public WhileBlockCStatement(ConditionCToken condition, Scope scope)
         {
             Condition = condition;
             Scope = scope;
         }
 
         public ConditionCToken Condition { get; }
-        public ScopeCToken Scope { get; }
+        public Scope Scope { get; }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             Condition.Link(ctx);
             Scope.Link(ctx);
@@ -48,7 +48,7 @@ namespace Crimson.CSharp.Grammar.Statements
          *  (3)
          * :END_IF
          */
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment wholeBlock = new Fragment(0);
 
@@ -58,6 +58,11 @@ namespace Crimson.CSharp.Grammar.Statements
             wholeBlock.Add(new CommentBStatement(""));
 
             return wholeBlock;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

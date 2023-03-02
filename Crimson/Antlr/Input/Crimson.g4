@@ -1,45 +1,31 @@
 grammar Crimson;
 
 // Parser rules
-translationUnit 
-    : (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
-    ;
+scope
+    : OpenBrace (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=statement)* CloseBrace 
+    ; 
 
-// Compilation-Unit statements
+// Scope header things
 importUnit
     : Hashtag Using path=String As identifier=fullName SemiColon
     ;
 operationHandler
     : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace SemiColon
     ;
-globalStatement
-    : globalVariableDeclaration #GlobalVariableUnitStatement
-    | functionDeclaration       #FunctionUnitStatement
-    | structureDeclaration      #StructureUnitStatement
-    ;
-globalVariableDeclaration
-    : Global declaration=internalVariableDeclaration // Need to add =value or =func()
-    ;
-functionDeclaration
-    : Function returnType=type header=functionHeader body=scope
-    ;
-functionHeader
-	: name=fullName parameters=parameterList
-	;
-scope
-    : OpenBrace (statements+=internalStatement)* CloseBrace 
-    ; 
 
 // Function-only statements
-internalStatement
-    : internalVariableDeclaration   #FunctionVariableDeclarationStatement
-    | functionReturn                #FunctionReturnStatement
-    | assignVariable                #FunctionAssignVariableStatement
-    | functionCall SemiColon        #FunctionFunctionCallStatement
-    | ifBlock                       #FunctionIfStatement
-    | whileBlock                    #FunctionWhileStatement
-    | basicCall                     #FunctionBasicCallStatement
-    | assemblyCall                  #FunctionAssemblyCallStatement
+statement
+    : internalVariableDeclaration   #VariableDeclarationStatement
+    | functionReturn                #ReturnStatement
+    | assignVariable                #AssignVariableStatement
+    | functionCall SemiColon        #FunctionCallStatement
+    | ifBlock                       #IfStatement
+    | whileBlock                    #WhileStatement
+    | basicCall                     #BasicCallStatement
+    | assemblyCall                  #AssemblyCallStatement
+    | globalVariableDeclaration     #GlobalVariableStatement
+    | functionDeclaration           #FunctionDeclarationStatement
+    | structureDeclaration          #StructureDeclarationStatement
     ;
 internalVariableDeclaration 
     : type fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
@@ -69,6 +55,18 @@ basicCall
 assemblyCall
     : AssemblyCall assemblyText=String SemiColon
     ;
+globalVariableDeclaration
+    : Global declaration=internalVariableDeclaration
+    ;
+scopedVariableDeclaration
+    : Scoped declaration=internalVariableDeclaration
+    ;
+functionDeclaration
+    : Function returnType=type header=functionHeader body=scope
+    ;
+functionHeader
+	: name=fullName parameters=parameterList
+	;
  
 // Function
 functionCall
@@ -141,6 +139,7 @@ fullName
 Allocator: 'allocator';
 Function: 'function';
 Global: 'global';
+Scoped: 'scoped';
 Return: 'return';
 Structure: 'structure';
 Using: 'using';

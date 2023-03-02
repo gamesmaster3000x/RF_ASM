@@ -6,11 +6,12 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class FunctionCallCStatement : InternalStatement
+    public class FunctionCallCStatement : ICrimsonStatement
     {
         private FullNameCToken identifier;
         private FunctionCStatement? targetFunction;
         private IList<SimpleValueCToken> arguments;
+        private bool _linked = false;
 
         public static readonly string FUNCTION_RETURN_VARIABLE_NAME = "FUNC_RETURN";
 
@@ -31,7 +32,7 @@ namespace Crimson.CSharp.Grammar.Statements
         /// 
         /// </summary>
         /// <returns></returns>
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment f = new Fragment(0);
 
@@ -71,7 +72,7 @@ namespace Crimson.CSharp.Grammar.Statements
             return f;
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             if (IsLinked()) return;
 
@@ -82,7 +83,12 @@ namespace Crimson.CSharp.Grammar.Statements
                 a.Link(ctx);
             }
 
-            SetLinked(true);
+            _linked = true;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,7 +7,7 @@ using System;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class VariableAssignmentCStatement : InternalStatement
+    internal class VariableAssignmentCStatement : ICrimsonStatement
     {
 
         public FullNameCToken Identifier { get; set; }
@@ -26,14 +26,14 @@ namespace Crimson.CSharp.Grammar.Statements
             Complex = value;
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
             Simple?.Link(ctx);
             Complex?.Link(ctx);
         }
 
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment result = new Fragment(0);
 
@@ -52,6 +52,11 @@ namespace Crimson.CSharp.Grammar.Statements
             }
 
             return result;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

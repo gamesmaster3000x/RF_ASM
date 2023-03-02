@@ -8,12 +8,15 @@ using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
 namespace Crimson.CSharp.Core
 {
-    internal class CrimsonCompiliationUnitVisitor: CrimsonBaseVisitor<object>
+    internal class ScopeVisitor: CrimsonBaseVisitor<object>
     {
 
-        public override CompilationUnit VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context)
+        public static readonly Stack<Scope> scopeStack = new Stack<Scope>();
+
+        public override Scope VisitScope ([NotNull] CrimsonParser.ScopeContext context)
         {
-            CompilationUnit compilation = new CompilationUnit();
+            Scope compilation = new Scope(scopeStack.Peek());
+            scopeStack.Push(compilation);
 
             // Visit imports
             IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
@@ -38,16 +41,16 @@ namespace Crimson.CSharp.Core
             }
 
             // Visit Compilation-Unit statements
-            IList<CrimsonParser.GlobalStatementContext> unitStatementCtxs = context._statements;
-            foreach (CrimsonParser.GlobalStatementContext unitStatementCtx in unitStatementCtxs)
+            IList<CrimsonParser.StatementContext> unitStatementCtxs = context._statements;
+            foreach (CrimsonParser.StatementContext unitStatementCtx in unitStatementCtxs)
             {
-                GlobalCStatement unitStatement = ParseGlobalStatement(unitStatementCtx);
+                ICrimsonStatement unitStatement = ParseScopeStatement(unitStatementCtx);
                 compilation.AddStatement(unitStatement);
             }
 
             // Populate output fields
 
-            return compilation;
+            return scopeStack.Pop();
         }
 
         // ----------------------------------------------------
@@ -63,29 +66,6 @@ namespace Crimson.CSharp.Core
             OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, id);
 
             return ohsc;
-        }
-
-        private GlobalCStatement ParseGlobalStatement(CrimsonParser.GlobalStatementContext context)
-        {
-            if (context is CrimsonParser.GlobalVariableUnitStatementContext gvCtx)
-            {
-                CrimsonParser.GlobalVariableDeclarationContext declaration = gvCtx.globalVariableDeclaration();
-                return VisitGlobalVariableDeclaration(declaration);
-            }
-            else if (context is CrimsonParser.FunctionUnitStatementContext fnCtx)
-            {
-                CrimsonParser.FunctionDeclarationContext declaration = fnCtx.functionDeclaration();
-                return VisitFunctionDeclaration(declaration);
-            }
-            else if (context is CrimsonParser.StructureUnitStatementContext structureCtx)
-            {
-                CrimsonParser.StructureDeclarationContext declaration = structureCtx.structureDeclaration();
-                return VisitStructureDeclaration(declaration);
-            }
-            else
-            {
-                throw new StatementParseException("The given CrimsonParser.CompilationUnitStatementContext " + context + " is not of a permissable type");
-            }
         }
 
         public override GlobalVariableCStatement VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
@@ -104,7 +84,7 @@ namespace Crimson.CSharp.Core
         {
             CrimsonTypeCToken returnType = VisitType(context.returnType);
             FunctionCStatement.Header header = VisitFunctionHeader(context.header);
-            ScopeCToken statements = VisitScope(context.body);
+            Scope statements = VisitScope(context.body);
             return new FunctionCStatement(returnType, header, statements);
 
         }
@@ -119,14 +99,14 @@ namespace Crimson.CSharp.Core
         public override StructureCStatement VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
         {
             FullNameCToken identifier = VisitFullName(context.name);
-            IList<InternalStatement> body = VisitStructureBody(context.structureBody());
+            IList<ICrimsonStatement> body = VisitStructureBody(context.structureBody());
             StructureCStatement structure = new StructureCStatement(identifier, body);
             return structure;
         }
 
-        public override IList<InternalStatement> VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context)
+        public override IList<ICrimsonStatement> VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context)
         {
-            IList<InternalStatement> statements = new List<InternalStatement>();
+            IList<ICrimsonStatement> statements = new List<ICrimsonStatement>();
             foreach (CrimsonParser.InternalVariableDeclarationContext ivdCtx in context.internalVariableDeclaration())
             {
                 InternalVariableCStatement var = VisitInternalVariableDeclaration(ivdCtx);
@@ -171,65 +151,54 @@ namespace Crimson.CSharp.Core
             return parameters;
         }
 
-        public override ScopeCToken VisitScope([NotNull] CrimsonParser.ScopeContext context)
-        {
-            List<InternalStatement> statements = new List<InternalStatement>();
-            foreach (CrimsonParser.InternalStatementContext stCtx in context._statements)
-            {
-                InternalStatement statement = ParseInternalStatement(stCtx);
-                statements.Add(statement);
-            }
-            return new ScopeCToken(statements);
-        }
-
         // ----------------------------------------------------
         // -------------------------- INTERNAL STATEMENTS
         // ----------------------------------------------------
 
-        private InternalStatement ParseInternalStatement(CrimsonParser.InternalStatementContext stCtx)
+        private ICrimsonStatement ParseStatement(CrimsonParser.StatementContext stCtx)
         {
-            if(stCtx is CrimsonParser.FunctionVariableDeclarationStatementContext)
+            if(stCtx is CrimsonParser.VariableDeclarationStatementContext)
             {
-                CrimsonParser.FunctionVariableDeclarationStatementContext context = (CrimsonParser.FunctionVariableDeclarationStatementContext)stCtx;
+                CrimsonParser.VariableDeclarationStatementContext context = (CrimsonParser.VariableDeclarationStatementContext)stCtx;
                 CrimsonParser.InternalVariableDeclarationContext ivdCtx = context.internalVariableDeclaration();
                 return VisitInternalVariableDeclaration(ivdCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionReturnStatementContext)
+            else if (stCtx is CrimsonParser.ReturnStatementContext)
             {
-                CrimsonParser.FunctionReturnStatementContext context = (CrimsonParser.FunctionReturnStatementContext)stCtx;
+                CrimsonParser.ReturnStatementContext context = (CrimsonParser.ReturnStatementContext)stCtx;
                 CrimsonParser.FunctionReturnContext rtnCtx = context.functionReturn();
                 return VisitFunctionReturn(rtnCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionAssignVariableStatementContext)
+            else if (stCtx is CrimsonParser.AssignVariableStatementContext)
             {
-                CrimsonParser.FunctionAssignVariableStatementContext context = (CrimsonParser.FunctionAssignVariableStatementContext)stCtx;
+                CrimsonParser.AssignVariableStatementContext context = (CrimsonParser.AssignVariableStatementContext)stCtx;
                 CrimsonParser.AssignVariableContext asvCtx = context.assignVariable();
                 return ParseAssignVariable(asvCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionFunctionCallStatementContext)
+            else if (stCtx is CrimsonParser.FunctionCallStatementContext)
             {
-                CrimsonParser.FunctionFunctionCallStatementContext context = (CrimsonParser.FunctionFunctionCallStatementContext)stCtx;
+                CrimsonParser.FunctionCallStatementContext context = (CrimsonParser.FunctionCallStatementContext)stCtx;
                 CrimsonParser.FunctionCallContext fncCtx = context.functionCall();
                 return VisitFunctionCall(fncCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionIfStatementContext)
+            else if (stCtx is CrimsonParser.IfStatementContext)
             {
-                CrimsonParser.FunctionIfStatementContext context = (CrimsonParser.FunctionIfStatementContext)stCtx;
+                CrimsonParser.IfStatementContext context = (CrimsonParser.IfStatementContext)stCtx;
                 CrimsonParser.IfBlockContext ifCtx = context.ifBlock();
                 return VisitIfBlock(ifCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionWhileStatementContext)
+            else if (stCtx is CrimsonParser.WhileStatementContext)
             {
-                CrimsonParser.FunctionWhileStatementContext context = (CrimsonParser.FunctionWhileStatementContext)stCtx;
+                CrimsonParser.WhileStatementContext context = (CrimsonParser.WhileStatementContext)stCtx;
                 CrimsonParser.WhileBlockContext whileCtx = context.whileBlock();
                 return VisitWhileBlock(whileCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionBasicCallStatementContext fbcsc)
+            else if (stCtx is CrimsonParser.BasicCallStatementContext fbcsc)
             {
                 CrimsonParser.BasicCallContext bcCtx = fbcsc.basicCall();
                 return VisitBasicCall(bcCtx);
             }
-            else if (stCtx is CrimsonParser.FunctionAssemblyCallStatementContext facsc)
+            else if (stCtx is CrimsonParser.AssemblyCallStatementContext facsc)
             {
                 CrimsonParser.AssemblyCallContext acCtx = facsc.assemblyCall();
                 return VisitAssemblyCall(acCtx);
@@ -237,6 +206,31 @@ namespace Crimson.CSharp.Core
             else
             {
                 throw new StatementParseException("The given CrimsonParser.FunctionStatementContext " + stCtx + " is not of a permissable type");
+            }
+        }
+
+
+
+        private ICrimsonStatement ParseScopeStatement (CrimsonParser.StatementContext context)
+        {
+            if (context is CrimsonParser.GlobalVariableStatementContext gvCtx)
+            {
+                CrimsonParser.GlobalVariableDeclarationContext declaration = gvCtx.globalVariableDeclaration();
+                return VisitGlobalVariableDeclaration(declaration);
+            }
+            else if (context is CrimsonParser.FunctionDeclarationStatementContext fnCtx)
+            {
+                CrimsonParser.FunctionDeclarationContext declaration = fnCtx.functionDeclaration();
+                return VisitFunctionDeclaration(declaration);
+            }
+            else if (context is CrimsonParser.StructureDeclarationStatementContext structureCtx)
+            {
+                CrimsonParser.StructureDeclarationContext declaration = structureCtx.structureDeclaration();
+                return VisitStructureDeclaration(declaration);
+            }
+            else
+            {
+                throw new StatementParseException("The given CrimsonParser.CompilationUnitStatementContext " + context + " is not of a permissable type");
             }
         }
 
@@ -262,7 +256,7 @@ namespace Crimson.CSharp.Core
         public override IfBlockCStatement VisitIfBlock([NotNull] CrimsonParser.IfBlockContext context)
         {
             ConditionCToken condition = VisitCondition(context.condition());
-            ScopeCToken scope = VisitScope(context.scope());
+            Scope scope = VisitScope(context.scope());
             CrimsonParser.ElseIfBlockContext eibCtx = context.elseIfBlock();
             CrimsonParser.ElseBlockContext elbCtx = context.elseBlock();
             ElseIfBlockCToken? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
@@ -274,7 +268,7 @@ namespace Crimson.CSharp.Core
         public override WhileBlockCStatement VisitWhileBlock([NotNull] CrimsonParser.WhileBlockContext context)
         {
             ConditionCToken condition = VisitCondition(context.condition());
-            ScopeCToken body = VisitScope(context.scope());
+            Scope body = VisitScope(context.scope());
             WhileBlockCStatement ifBlock = new WhileBlockCStatement(condition, body);
             return ifBlock;
         }
@@ -384,7 +378,7 @@ namespace Crimson.CSharp.Core
 
         public override ElseBlockCToken VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context)
         {
-            ScopeCToken statements = VisitScope(context.scope());
+            Scope statements = VisitScope(context.scope());
             ElseBlockCToken elseBlock = new ElseBlockCToken(statements);
             return elseBlock;
         }

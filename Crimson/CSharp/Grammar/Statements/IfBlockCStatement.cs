@@ -6,13 +6,13 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class IfBlockCStatement : InternalStatement
+    internal class IfBlockCStatement : ICrimsonStatement
     {
         public IfBlockCStatement()
         {
         }
 
-        public IfBlockCStatement(ConditionCToken condition, ScopeCToken scope, ElseIfBlockCToken? elifBlock, ElseBlockCToken? elseBlock)
+        public IfBlockCStatement(ConditionCToken condition, Scope scope, ElseIfBlockCToken? elifBlock, ElseBlockCToken? elseBlock)
         {
             Condition = condition;
             Scope = scope;
@@ -21,11 +21,11 @@ namespace Crimson.CSharp.Grammar.Statements
         }
 
         public ConditionCToken Condition { get; }
-        public ScopeCToken Scope { get; }
+        public Scope Scope { get; }
         public ElseIfBlockCToken? ElifBlock { get; }
         public ElseBlockCToken? ElseBlock { get; }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             Condition.Link(ctx);
             Scope.Link(ctx);
@@ -58,7 +58,7 @@ namespace Crimson.CSharp.Grammar.Statements
          *  (3)
          * :END_IF
          */
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment wholeBlock = new Fragment(0);
 
@@ -92,6 +92,11 @@ namespace Crimson.CSharp.Grammar.Statements
             wholeBlock.Add(new CommentBStatement(""));
 
             return wholeBlock;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

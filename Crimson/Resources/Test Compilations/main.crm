@@ -1,54 +1,56 @@
-// Import packages:
-// - Package "utils" from the file "utils.crm", with the name "utils"
-// - Package "console" from the system library, with the name "stdout"
+{
+	// Import packages:
+	// - Package "utils" from the file "utils.crm", with the name "utils"
+	// - Package "console" from the system library, with the name "stdout"
 
-#using "utils/utils.crm" as utils;
-#using "${NATIVE}/console.crm" as stdout;
-#using "${NATIVE}/heap.crm" as heap;
+	#using "utils/utils.crm" as utils;
+	#using "${NATIVE}/console.crm" as stdout;
+	#using "${NATIVE}/heap.crm" as heap;
 
-// Declare ophandlers:
-//
-#ophandler (int * int) -> {utils.multiply};
+	// Declare ophandlers:
+	//
+	#ophandler (int * int) -> {utils.multiply};
 
-global int counter = 0;
+	global int counter = 0;
 
-function ptr main () {
+	function ptr main () {
 
-	B~ "example basic call";
-	A~ "example assemby call";
-	
-	int a = utils.multiply(8);
-	int b = utils.times();
-	if (true == true) {
-		counter = 5;
-	} else if (b == true) {
-		int c = utils.times(5, 3);
-		int d = heap.alloc();
-	} else {
-		return b;
+		B~ "example basic call";
+		A~ "example assemby call";
+		
+		int a = utils.multiply(8);
+		int b = utils.times();
+		if (true == true) {
+			counter = 5;
+		} else if (b == true) {
+			int c = utils.times(5, 3);
+			int d = heap.alloc();
+		} else {
+			return b;
+		}
+		
+		call(4, 7, 5);
+
+		// Allocate memory on the heap for 'i' and get a pointer to it
+		ptr i = heap.alloc(4);
+
+		// Set memory at pointer 'i'
+		i *= 4;
+			
+		// Note usage of functions from imported packages
+		stdout.write(i);
+		
+		ptr ret = heap.alloc(4);
+		ret *= utils.multiply(i, 5);
+		return ret;
 	}
-	
-	call(4, 7, 5);
 
-    // Allocate memory on the heap for 'i' and get a pointer to it
-    ptr i = heap.alloc(4);
+	function ptr call () {
+		ptr test = heap.alloc(69);
+		return test;
+	}
 
-    // Set memory at pointer 'i'
-    i *= 4;
-        
-    // Note usage of functions from imported packages
-    stdout.write(i);
-	
-	ptr ret = heap.alloc(4);
-	ret *= utils.multiply(i, 5);
-    return ret;
-}
-
-function ptr call () {
-	ptr test = heap.alloc(69);
-	return test;
-}
-
-structure Person {
-	ptr age = heap.alloc(5);
+	structure Person {
+		ptr age = heap.alloc(5);
+	}
 }

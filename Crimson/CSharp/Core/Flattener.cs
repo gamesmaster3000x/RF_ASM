@@ -40,7 +40,7 @@ namespace Crimson.CSharp.Core
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, Scope> pair in compilation.Library.Units)
             {
                 foreach (var f in pair.Value.Functions)
                 {
@@ -111,7 +111,7 @@ namespace Crimson.CSharp.Core
         private FunctionCStatement GetEntryFunction(Compilation compilation)
         {
             string baseName = Options.EntryFunctionName;
-            CompilationUnit rootUnit = compilation.GetRootUnit();
+            Scope rootUnit = compilation.GetRootUnit();
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 
@@ -135,16 +135,16 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: GlobalCStatement
+        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: INamedStatement
         {
             int i = 0;
             string prefix = GetFlattenedPrefix(gs.GetType());
-            while (map.ContainsKey(gs.Name + "_" + i))
+            while (map.ContainsKey(gs.GetName() + "_" + i))
             {
                 i++;
             }
-            gs.Name = new FullNameCToken($"{prefix}_{gs.Name}_{i}");
-            map.Add(gs.Name.ToString(), gs);
+            gs.SetName(new FullNameCToken($"{prefix}_{gs.GetName()}_{i}"));
+            map.Add(gs.GetName().ToString(), gs);
         }
 
         private string GetFlattenedPrefix(System.Type type)
