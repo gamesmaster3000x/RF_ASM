@@ -21,12 +21,12 @@ globalVariableDeclaration
     : Global declaration=internalVariableDeclaration // Need to add =value or =func()
     ;
 functionDeclaration
-    : Function returnType=type header=functionHeader body=functionBody
+    : Function returnType=type header=functionHeader body=scope
     ;
 functionHeader
 	: name=fullName parameters=parameterList
 	;
-functionBody
+scope
     : OpenBrace (statements+=internalStatement)* CloseBrace 
     ; 
 
@@ -49,10 +49,10 @@ assignVariable
     | name=fullName PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
-    : If condition functionBody (elseBlock | elseIfBlock)?
+    : If condition scope (elseBlock | elseIfBlock)?
     ;
 whileBlock
-    : While condition functionBody
+    : While condition scope
     ;
 condition
     : OpenBracket op=operation CloseBracket
@@ -61,7 +61,7 @@ elseIfBlock
     : Else ifBlock
     ;
 elseBlock
-    : Else functionBody
+    : Else scope
     ;
 basicCall
     : BasicCall basicText=String SemiColon

@@ -98,7 +98,7 @@ globalStatement
 globalVariableDeclaration
 functionDeclaration
 functionHeader
-functionBody
+scope
 internalStatement
 internalVariableDeclaration
 assignVariable

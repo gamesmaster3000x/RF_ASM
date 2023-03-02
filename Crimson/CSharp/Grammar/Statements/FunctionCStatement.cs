@@ -18,14 +18,14 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public CrimsonTypeCToken ReturnType { get; }
         public Header FunctionHeader { get; }
-        public IList<InternalStatement> Statements { get; }
+        public ScopeCToken Scope { get; }
         public override FullNameCToken Name { get => FunctionHeader.Identifier; set { FunctionHeader.Identifier = value; } }
 
-        public FunctionCStatement(CrimsonTypeCToken returnType, Header header, IList<InternalStatement> statements)
+        public FunctionCStatement(CrimsonTypeCToken returnType, Header header, ScopeCToken scope)
         {
             ReturnType = returnType;
             FunctionHeader = header;
-            Statements = statements;
+            Scope = scope;
         }
 
         public override void Link(LinkingContext ctx)
@@ -34,11 +34,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
             ReturnType.Link(ctx);
             ((ICrimsonToken)FunctionHeader).Link(ctx);
-
-            foreach (var s in Statements)
-            {
-                s.Link(ctx);
-            }
+            Scope.Link(ctx);
 
             SetLinked(true);
         }
@@ -52,10 +48,7 @@ namespace Crimson.CSharp.Grammar.Statements
             functionHead.Add(new PushSfBStatement());
 
             Fragment functionBody = new Fragment(1);
-            foreach (var s in Statements)
-            {
-                functionBody.Add(s.GetCrimsonBasic());
-            }
+            functionBody.Add(Scope.GetCrimsonBasic());
 
             Fragment functionFoot = new Fragment(0);
             functionFoot.Add(new PushSfBStatement());

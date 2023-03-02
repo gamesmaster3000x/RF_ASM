@@ -90,11 +90,11 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.scope"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
+	Result VisitScope([NotNull] CrimsonParser.ScopeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>FunctionVariableDeclarationStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.

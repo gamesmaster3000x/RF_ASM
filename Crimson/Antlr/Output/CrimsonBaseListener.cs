@@ -151,17 +151,17 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.scope"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context) { }
+	public virtual void EnterScope([NotNull] CrimsonParser.ScopeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.scope"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context) { }
+	public virtual void ExitScope([NotNull] CrimsonParser.ScopeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionVariableDeclarationStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.

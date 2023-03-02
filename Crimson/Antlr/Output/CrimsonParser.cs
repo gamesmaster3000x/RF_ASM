@@ -48,18 +48,17 @@ public partial class CrimsonParser : Parser {
 	public const int
 		RULE_translationUnit = 0, RULE_importUnit = 1, RULE_operationHandler = 2, 
 		RULE_globalStatement = 3, RULE_globalVariableDeclaration = 4, RULE_functionDeclaration = 5, 
-		RULE_functionHeader = 6, RULE_functionBody = 7, RULE_internalStatement = 8, 
-		RULE_internalVariableDeclaration = 9, RULE_assignVariable = 10, RULE_ifBlock = 11, 
-		RULE_whileBlock = 12, RULE_condition = 13, RULE_elseIfBlock = 14, RULE_elseBlock = 15, 
-		RULE_basicCall = 16, RULE_assemblyCall = 17, RULE_functionCall = 18, RULE_arguments = 19, 
-		RULE_functionReturn = 20, RULE_simpleValue = 21, RULE_complexValue = 22, 
-		RULE_rawValue = 23, RULE_operation = 24, RULE_parameterList = 25, RULE_parameter = 26, 
-		RULE_structureDeclaration = 27, RULE_structureBody = 28, RULE_type = 29, 
-		RULE_array = 30, RULE_fullName = 31;
+		RULE_functionHeader = 6, RULE_scope = 7, RULE_internalStatement = 8, RULE_internalVariableDeclaration = 9, 
+		RULE_assignVariable = 10, RULE_ifBlock = 11, RULE_whileBlock = 12, RULE_condition = 13, 
+		RULE_elseIfBlock = 14, RULE_elseBlock = 15, RULE_basicCall = 16, RULE_assemblyCall = 17, 
+		RULE_functionCall = 18, RULE_arguments = 19, RULE_functionReturn = 20, 
+		RULE_simpleValue = 21, RULE_complexValue = 22, RULE_rawValue = 23, RULE_operation = 24, 
+		RULE_parameterList = 25, RULE_parameter = 26, RULE_structureDeclaration = 27, 
+		RULE_structureBody = 28, RULE_type = 29, RULE_array = 30, RULE_fullName = 31;
 	public static readonly string[] ruleNames = {
 		"translationUnit", "importUnit", "operationHandler", "globalStatement", 
 		"globalVariableDeclaration", "functionDeclaration", "functionHeader", 
-		"functionBody", "internalStatement", "internalVariableDeclaration", "assignVariable", 
+		"scope", "internalStatement", "internalVariableDeclaration", "assignVariable", 
 		"ifBlock", "whileBlock", "condition", "elseIfBlock", "elseBlock", "basicCall", 
 		"assemblyCall", "functionCall", "arguments", "functionReturn", "simpleValue", 
 		"complexValue", "rawValue", "operation", "parameterList", "parameter", 
@@ -573,7 +572,7 @@ public partial class CrimsonParser : Parser {
 	public partial class FunctionDeclarationContext : ParserRuleContext {
 		public TypeContext returnType;
 		public FunctionHeaderContext header;
-		public FunctionBodyContext body;
+		public ScopeContext body;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Function() { return GetToken(CrimsonParser.Function, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
 			return GetRuleContext<TypeContext>(0);
@@ -581,8 +580,8 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
 			return GetRuleContext<FunctionHeaderContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		public FunctionDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -621,7 +620,7 @@ public partial class CrimsonParser : Parser {
 			State = 114;
 			_localctx.header = functionHeader();
 			State = 115;
-			_localctx.body = functionBody();
+			_localctx.body = scope();
 			}
 		}
 		catch (RecognitionException re) {
@@ -691,7 +690,7 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class FunctionBodyContext : ParserRuleContext {
+	public partial class ScopeContext : ParserRuleContext {
 		public InternalStatementContext _internalStatement;
 		public IList<InternalStatementContext> _statements = new List<InternalStatementContext>();
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBrace() { return GetToken(CrimsonParser.OpenBrace, 0); }
@@ -702,33 +701,33 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public InternalStatementContext internalStatement(int i) {
 			return GetRuleContext<InternalStatementContext>(i);
 		}
-		public FunctionBodyContext(ParserRuleContext parent, int invokingState)
+		public ScopeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_functionBody; } }
+		public override int RuleIndex { get { return RULE_scope; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionBody(this);
+			if (typedListener != null) typedListener.EnterScope(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionBody(this);
+			if (typedListener != null) typedListener.ExitScope(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionBody(this);
+			if (typedVisitor != null) return typedVisitor.VisitScope(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public FunctionBodyContext functionBody() {
-		FunctionBodyContext _localctx = new FunctionBodyContext(Context, State);
-		EnterRule(_localctx, 14, RULE_functionBody);
+	public ScopeContext scope() {
+		ScopeContext _localctx = new ScopeContext(Context, State);
+		EnterRule(_localctx, 14, RULE_scope);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
@@ -1287,8 +1286,8 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ConditionContext condition() {
 			return GetRuleContext<ConditionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ElseBlockContext elseBlock() {
 			return GetRuleContext<ElseBlockContext>(0);
@@ -1331,7 +1330,7 @@ public partial class CrimsonParser : Parser {
 			State = 169;
 			condition();
 			State = 170;
-			functionBody();
+			scope();
 			State = 173;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
@@ -1366,8 +1365,8 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ConditionContext condition() {
 			return GetRuleContext<ConditionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		public WhileBlockContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1404,7 +1403,7 @@ public partial class CrimsonParser : Parser {
 			State = 176;
 			condition();
 			State = 177;
-			functionBody();
+			scope();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1528,8 +1527,8 @@ public partial class CrimsonParser : Parser {
 
 	public partial class ElseBlockContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Else() { return GetToken(CrimsonParser.Else, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		public ElseBlockContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1564,7 +1563,7 @@ public partial class CrimsonParser : Parser {
 			State = 186;
 			Match(Else);
 			State = 187;
-			functionBody();
+			scope();
 			}
 		}
 		catch (RecognitionException re) {

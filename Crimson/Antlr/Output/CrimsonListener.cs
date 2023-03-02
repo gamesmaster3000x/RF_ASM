@@ -128,15 +128,15 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.scope"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
+	void EnterScope([NotNull] CrimsonParser.ScopeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.scope"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
+	void ExitScope([NotNull] CrimsonParser.ScopeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>FunctionVariableDeclarationStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.

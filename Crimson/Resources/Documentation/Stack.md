@@ -9,5 +9,6 @@ and will need to restore its previous state upon returning.
  | Size | Purpose |
  |--- | --- |
  | word | The size of the previous frame |
- | ? | Reserved for the return value of this subroutine/function |
- | ? | Value section
+ | ? | Scope inputs |
+ | ? | Scope outputs |
+ | ? | Stack variables |

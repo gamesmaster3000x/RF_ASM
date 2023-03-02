@@ -104,7 +104,7 @@ namespace Crimson.CSharp.Core
         {
             CrimsonTypeCToken returnType = VisitType(context.returnType);
             FunctionCStatement.Header header = VisitFunctionHeader(context.header);
-            IList<InternalStatement> statements = VisitFunctionBody(context.body);
+            ScopeCToken statements = VisitScope(context.body);
             return new FunctionCStatement(returnType, header, statements);
 
         }
@@ -171,7 +171,7 @@ namespace Crimson.CSharp.Core
             return parameters;
         }
 
-        public override IList<InternalStatement> VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context)
+        public override ScopeCToken VisitScope([NotNull] CrimsonParser.ScopeContext context)
         {
             List<InternalStatement> statements = new List<InternalStatement>();
             foreach (CrimsonParser.InternalStatementContext stCtx in context._statements)
@@ -179,7 +179,7 @@ namespace Crimson.CSharp.Core
                 InternalStatement statement = ParseInternalStatement(stCtx);
                 statements.Add(statement);
             }
-            return statements;
+            return new ScopeCToken(statements);
         }
 
         // ----------------------------------------------------
@@ -262,19 +262,19 @@ namespace Crimson.CSharp.Core
         public override IfBlockCStatement VisitIfBlock([NotNull] CrimsonParser.IfBlockContext context)
         {
             ConditionCToken condition = VisitCondition(context.condition());
-            IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
+            ScopeCToken scope = VisitScope(context.scope());
             CrimsonParser.ElseIfBlockContext eibCtx = context.elseIfBlock();
             CrimsonParser.ElseBlockContext elbCtx = context.elseBlock();
             ElseIfBlockCToken? elifBlock = eibCtx == null ? null : VisitElseIfBlock(eibCtx);
             ElseBlockCToken? elseBlock = elbCtx == null ? null : VisitElseBlock(elbCtx);
-            IfBlockCStatement ifBlock = new IfBlockCStatement(condition, body, elifBlock, elseBlock);
+            IfBlockCStatement ifBlock = new IfBlockCStatement(condition, scope, elifBlock, elseBlock);
             return ifBlock;
         }
 
         public override WhileBlockCStatement VisitWhileBlock([NotNull] CrimsonParser.WhileBlockContext context)
         {
             ConditionCToken condition = VisitCondition(context.condition());
-            IList<InternalStatement> body = VisitFunctionBody(context.functionBody());
+            ScopeCToken body = VisitScope(context.scope());
             WhileBlockCStatement ifBlock = new WhileBlockCStatement(condition, body);
             return ifBlock;
         }
@@ -384,7 +384,7 @@ namespace Crimson.CSharp.Core
 
         public override ElseBlockCToken VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context)
         {
-            IList<InternalStatement> statements = VisitFunctionBody(context.functionBody());
+            ScopeCToken statements = VisitScope(context.scope());
             ElseBlockCToken elseBlock = new ElseBlockCToken(statements);
             return elseBlock;
         }
