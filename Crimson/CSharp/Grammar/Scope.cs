@@ -76,29 +76,25 @@ namespace Crimson.CSharp.Grammar
         public Dictionary<string, StructureCStatement> Structures { get; private set; }
         public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get; private set; }
 
-        public void AddImport(ImportCStatement import)
-        {
-            Imports.Add(import.Alias.ToString(), import);
-        }
 
-        public void AddOpHandler(OperationHandlerCStatement handler)
-        {
-            OpHandlers.Add(handler);
-        }
+        public delegate ICrimsonStatement StatementDelegate ();
+        public List<StatementDelegate> Delegates { get; private set; }
 
         public void AddStatement(ICrimsonStatement statement)
         {
 
-            void CheckContentsAndNameElseAdd<GCS> (Dictionary<string, GCS> d, GCS gcs, string typeNameForError) where GCS : INamedStatement
+            void AddNamedIfNotDuplicate<GCS> (Dictionary<string, GCS> d, GCS gcs, string typeNameForError) where GCS : INamedStatement
             {
                 if (d.ContainsKey(gcs.GetName().ToString())) throw new StatementParseException($"Duplicate GlobalStatement name '{gcs.GetName()}' for statement '{statement}' in unit: {this}");
-                d.Add(gcs.GetName().ToString(), gcs);
+                string name = gcs.GetName().ToString();
+                d.Add(name, gcs);
+                Delegates.Add(() => d[name]);
             }
 
-            if (statement is FunctionCStatement f) CheckContentsAndNameElseAdd(Functions, f, "Function");
-            else if (statement is GlobalVariableCStatement g) CheckContentsAndNameElseAdd(GlobalVariables, g, "Global Variable");
-            else if (statement is StructureCStatement s) CheckContentsAndNameElseAdd(Structures, s, "Structure");
-            else throw new StatementParseException("The given statement " + statement + " may not be added to a CompilationUnit");       
+            if (statement is FunctionCStatement f) AddNamedIfNotDuplicate(Functions, f, "Function");
+            else if (statement is GlobalVariableCStatement g) AddNamedIfNotDuplicate(GlobalVariables, g, "Global Variable");
+            else if (statement is StructureCStatement s) AddNamedIfNotDuplicate(Structures, s, "Structure");
+            else Delegates.Add(() => statement);
         }
 
         // Linking

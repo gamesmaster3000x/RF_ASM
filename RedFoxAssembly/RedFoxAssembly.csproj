@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject></StartupObject>
+    <StartupObject>RedFoxAssembly.CSharp.Core.RedFoxAssembly</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

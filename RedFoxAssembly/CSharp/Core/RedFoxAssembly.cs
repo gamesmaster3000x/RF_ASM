@@ -6,9 +6,9 @@ using RedFoxAssembly.CSharp.Core;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.CSharp.Statements;
 
-namespace Crimson.CSharp.Core
+namespace RedFoxAssembly.CSharp.Core
 {
-    internal class RFASM
+    internal class RedFoxAssembly
     {
 
         private static Logger? LOGGER;
