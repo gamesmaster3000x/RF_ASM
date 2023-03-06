@@ -40,7 +40,7 @@ namespace Crimson.CSharp.Core
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, Scope> pair in compilation.Library.Units)
             {
                 foreach (var f in pair.Value.Functions)
                 {
@@ -111,27 +111,40 @@ namespace Crimson.CSharp.Core
         private FunctionCStatement GetEntryFunction(Compilation compilation)
         {
             string baseName = Options.EntryFunctionName;
-            CompilationUnit rootUnit = compilation.GetRootUnit();
+            Scope rootUnit = compilation.GetRootUnit();
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 
             IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
-            if (funcs.Count < 1) throw new FlatteningException($"Found {funcs.Count} (exactly 1 required) valid entry methods {funcs} for root unit {rootUnit} of compilation {compilation}");
-            if (funcs.Count > 1) throw new FlatteningException($"Multiple ({funcs.Count}) valid entry methods (maximum permissable 1) {funcs} for root unit {rootUnit} of compilation {compilation}");
-            FunctionCStatement entry = funcs.Single();
-            return entry;
+            if (funcs.Count == 0) 
+            {
+                throw new FlatteningException($"No valid entry function found. Invalid contenders were: [{String.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Options.EntryFunctionName}' using Regex: '{pattern}'."); 
+            }
+            else if (funcs.Count == 1)
+            {
+                FunctionCStatement entry = funcs.Single();
+                return entry;
+            }
+            else if (funcs.Count > 1) 
+            { 
+                throw new FlatteningException($"Cannot determine correct entry function. Found {funcs.Count} valid contenders: [{String.Join(',', funcs.Select(f => f.Name))}]."); 
+            } 
+            else
+            {
+                throw new FlatteningException($"Congratulations, you've managed to find a very strange number of entry functions: {funcs.Count}");
+            }
         }
 
-        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: GlobalCStatement
+        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: INamedStatement
         {
             int i = 0;
             string prefix = GetFlattenedPrefix(gs.GetType());
-            while (map.ContainsKey(gs.Name + "_" + i))
+            while (map.ContainsKey(gs.GetName() + "_" + i))
             {
                 i++;
             }
-            gs.Name = new FullNameCToken($"{prefix}_{gs.Name}_{i}");
-            map.Add(gs.Name.ToString(), gs);
+            gs.SetName(new FullNameCToken($"{prefix}_{gs.GetName()}_{i}"));
+            map.Add(gs.GetName().ToString(), gs);
         }
 
         private string GetFlattenedPrefix(System.Type type)

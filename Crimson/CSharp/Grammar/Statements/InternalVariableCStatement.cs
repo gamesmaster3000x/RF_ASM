@@ -8,7 +8,7 @@ using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class InternalVariableCStatement : InternalStatement
+    public class InternalVariableCStatement : ICrimsonStatement
     {
         private CrimsonTypeCToken type;
         public FullNameCToken Identifier { get; private set; }
@@ -42,7 +42,7 @@ namespace Crimson.CSharp.Grammar.Statements
             if (Complex == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             // Only run if not null
             Simple?.Link(ctx);
@@ -50,7 +50,7 @@ namespace Crimson.CSharp.Grammar.Statements
             return;
         }
 
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment statements = new Fragment(0);
 
@@ -59,14 +59,14 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Identifier.ToString(), type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Identifier.ToString(), valueStatements.ResultHolder!));
+                statements.Add(new IncSpBStatement(type.GetByteSize()));
+                statements.Add(new SetBStatement(Identifier.ToString(), -1, valueStatements.ResultHolder!));
 
             } 
             else if (Simple != null)
             {
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Identifier.ToString(), type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Identifier.ToString(), Simple.GetText()));
+                statements.Add(new IncSpBStatement(type.GetByteSize()));
+                statements.Add(new SetBStatement(Identifier.ToString(), -1, Simple.GetText()));
             } 
             else
             {
@@ -74,6 +74,11 @@ namespace Crimson.CSharp.Grammar.Statements
             }
 
             return statements;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

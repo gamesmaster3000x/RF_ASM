@@ -13,35 +13,30 @@ namespace Crimson.CSharp.Grammar.Statements
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
     /// </summary>
-    public class FunctionCStatement : GlobalCStatement
+    public class FunctionCStatement : INamedStatement
     {
-
-
         public CrimsonTypeCToken ReturnType { get; }
         public Header FunctionHeader { get; }
-        public IList<InternalStatement> Statements { get; }
-        public override FullNameCToken Name { get => FunctionHeader.Identifier; }
+        public Scope Scope { get; }
+        public FullNameCToken Name { get => FunctionHeader.Identifier; set { FunctionHeader.Identifier = value; } }
+        private bool _linked = false;
 
-        public FunctionCStatement(CrimsonTypeCToken returnType, Header header, IList<InternalStatement> statements)
+        public FunctionCStatement(CrimsonTypeCToken returnType, Header header, Scope scope)
         {
             ReturnType = returnType;
             FunctionHeader = header;
-            Statements = statements;
+            Scope = scope;
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             if (IsLinked()) return;
 
             ReturnType.Link(ctx);
             ((ICrimsonToken)FunctionHeader).Link(ctx);
+            Scope.Link(ctx);
 
-            foreach (var s in Statements)
-            {
-                s.Link(ctx);
-            }
-
-            SetLinked(true);
+            _linked = true;
         }
 
         public Fragment GetCrimsonBasic()
@@ -50,16 +45,11 @@ namespace Crimson.CSharp.Grammar.Statements
 
             Fragment functionHead = new Fragment(0);
             functionHead.Add(new LabelBStatement(Name.ToString()));
-            functionHead.Add(new StackBStatement(StackBStatement.StackOperation.PUSH_FRAME));
 
             Fragment functionBody = new Fragment(1);
-            foreach (var s in Statements)
-            {
-                functionBody.Add(s.GetCrimsonBasic());
-            }
+            functionBody.Add(Scope.GetCrimsonBasic());
 
             Fragment functionFoot = new Fragment(0);
-            functionFoot.Add(new StackBStatement(StackBStatement.StackOperation.POP_FRAME));
             functionFoot.Add(new ReturnBStatement());
             functionFoot.Add(new CommentBStatement(""));
 
@@ -68,6 +58,21 @@ namespace Crimson.CSharp.Grammar.Statements
             function.Add(functionFoot);
 
             return function;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public FullNameCToken GetName ()
+        {
+            return Name;
+        }
+
+        public void SetName (FullNameCToken name)
+        {
+            throw new NotImplementedException();
         }
 
         public class Parameter : ICrimsonToken
@@ -90,7 +95,7 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public class Header : ICrimsonToken
         {
-            public FullNameCToken Identifier { get; protected set; }
+            public FullNameCToken Identifier { get; set; }
             public List<Parameter> Parameters { get; protected set; }
 
             public Header(FullNameCToken identifier, List<Parameter> parameters)

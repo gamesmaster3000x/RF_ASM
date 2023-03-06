@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Statements
 {
-    public class LabelBStatement : BasicStatement
+    public class PushSfBStatement : BasicStatement
     {
-        private string _name;
 
-        public LabelBStatement(string label)
+        public PushSfBStatement()
         {
-            _name = label;
         }
 
         public override string ToString()
         {
-            return (_name.StartsWith(":") ? _name : ":" + _name) + (_name.EndsWith(":") ? "" : ":");
+            return $"push_sf;";
         }
     }
 }

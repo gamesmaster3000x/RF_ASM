@@ -33,11 +33,11 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.translationUnit"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.scope"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitTranslationUnit([NotNull] CrimsonParser.TranslationUnitContext context);
+	Result VisitScope([NotNull] CrimsonParser.ScopeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.importUnit"/>.
 	/// </summary>
@@ -51,99 +51,82 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitOperationHandler([NotNull] CrimsonParser.OperationHandlerContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>GlobalVariableUnitStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.globalStatement"/>.
+	/// Visit a parse tree produced by the <c>VariableDeclarationStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitGlobalVariableUnitStatement([NotNull] CrimsonParser.GlobalVariableUnitStatementContext context);
+	Result VisitVariableDeclarationStatement([NotNull] CrimsonParser.VariableDeclarationStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionUnitStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.globalStatement"/>.
+	/// Visit a parse tree produced by the <c>ReturnStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionUnitStatement([NotNull] CrimsonParser.FunctionUnitStatementContext context);
+	Result VisitReturnStatement([NotNull] CrimsonParser.ReturnStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>StructureUnitStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.globalStatement"/>.
+	/// Visit a parse tree produced by the <c>AssignVariableStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStructureUnitStatement([NotNull] CrimsonParser.StructureUnitStatementContext context);
+	Result VisitAssignVariableStatement([NotNull] CrimsonParser.AssignVariableStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
+	/// Visit a parse tree produced by the <c>FunctionCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context);
+	Result VisitFunctionCallStatement([NotNull] CrimsonParser.FunctionCallStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.functionDeclaration"/>.
+	/// Visit a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context);
+	Result VisitIfStatement([NotNull] CrimsonParser.IfStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.functionHeader"/>.
+	/// Visit a parse tree produced by the <c>WhileStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
+	Result VisitWhileStatement([NotNull] CrimsonParser.WhileStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.functionBody"/>.
+	/// Visit a parse tree produced by the <c>BasicCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionBody([NotNull] CrimsonParser.FunctionBodyContext context);
+	Result VisitBasicCallStatement([NotNull] CrimsonParser.BasicCallStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionVariableDeclarationStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// Visit a parse tree produced by the <c>AssemblyCallStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionVariableDeclarationStatement([NotNull] CrimsonParser.FunctionVariableDeclarationStatementContext context);
+	Result VisitAssemblyCallStatement([NotNull] CrimsonParser.AssemblyCallStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionReturnStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// Visit a parse tree produced by the <c>GlobalVariableStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionReturnStatement([NotNull] CrimsonParser.FunctionReturnStatementContext context);
+	Result VisitGlobalVariableStatement([NotNull] CrimsonParser.GlobalVariableStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionAssignVariableStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// Visit a parse tree produced by the <c>FunctionDeclarationStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionAssignVariableStatement([NotNull] CrimsonParser.FunctionAssignVariableStatementContext context);
+	Result VisitFunctionDeclarationStatement([NotNull] CrimsonParser.FunctionDeclarationStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionFunctionCallStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
+	/// Visit a parse tree produced by the <c>StructureDeclarationStatement</c>
+	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFunctionFunctionCallStatement([NotNull] CrimsonParser.FunctionFunctionCallStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionIfStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionIfStatement([NotNull] CrimsonParser.FunctionIfStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionWhileStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionWhileStatement([NotNull] CrimsonParser.FunctionWhileStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionAssemblyCallStatement</c>
-	/// labeled alternative in <see cref="CrimsonParser.internalStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionAssemblyCallStatement([NotNull] CrimsonParser.FunctionAssemblyCallStatementContext context);
+	Result VisitStructureDeclarationStatement([NotNull] CrimsonParser.StructureDeclarationStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
 	/// </summary>
@@ -195,11 +178,41 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitElseBlock([NotNull] CrimsonParser.ElseBlockContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.basicCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBasicCall([NotNull] CrimsonParser.BasicCallContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.assemblyCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAssemblyCall([NotNull] CrimsonParser.AssemblyCallContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.globalVariableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.scopedVariableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitScopedVariableDeclaration([NotNull] CrimsonParser.ScopedVariableDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.functionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionDeclaration([NotNull] CrimsonParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.functionHeader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionHeader([NotNull] CrimsonParser.FunctionHeaderContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.functionCall"/>.
 	/// </summary>

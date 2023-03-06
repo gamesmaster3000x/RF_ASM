@@ -1,9 +1,10 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Grammar.Tokens;
+using CrimsonBasic.CSharp.Core;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class OperationHandlerCStatement: GlobalCStatement
+    public class OperationHandlerCStatement: ICrimsonStatement
     {
         public CrimsonTypeCToken Type1 { get; protected set; }
         public OperationResolvableValueCToken.OperationType OpType { get; protected set; }
@@ -29,11 +30,21 @@ namespace Crimson.CSharp.Grammar.Statements
             return null;
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             Type1.Link(ctx);
             Type2.Link(ctx);
             TargetFunction = LinkerHelper.LinkFunctionCall(FunctionIdentifier, ctx);
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Fragment GetCrimsonBasic ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

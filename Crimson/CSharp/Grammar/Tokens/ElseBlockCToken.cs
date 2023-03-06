@@ -7,12 +7,12 @@ namespace Crimson.CSharp.Grammar.Tokens
 {
     internal class ElseBlockCToken : ICrimsonToken
     {
-        public ElseBlockCToken(IList<InternalStatement> statements)
+        public ElseBlockCToken(Scope statements)
         {
-            Statements = statements;
+            Scope = statements;
         }
 
-        public IList<InternalStatement> Statements { get; }
+        public Scope Scope { get; }
 
         public Fragment GetCrimsonBasic()
         {
@@ -23,10 +23,7 @@ namespace Crimson.CSharp.Grammar.Tokens
             elseHead.Add(new LabelBStatement("ELSE"));
 
             Fragment elseBody = new Fragment(1);
-            foreach (var s in Statements)
-            {
-                elseBody.Add(s.GetCrimsonBasic());
-            }
+            elseBody.Add(Scope.GetCrimsonBasic());
 
             fragment.Add(elseHead);
             fragment.Add(elseBody);
@@ -36,6 +33,7 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public void Link(LinkingContext ctx)
         {
+            Scope.Link(ctx);
             return;
         }
     }

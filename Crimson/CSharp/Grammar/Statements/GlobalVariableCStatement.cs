@@ -14,9 +14,11 @@ namespace Crimson.CSharp.Grammar.Statements
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.
     /// </summary>
-    public class GlobalVariableCStatement : GlobalCStatement
+    public class GlobalVariableCStatement : INamedStatement
     {
         private CrimsonTypeCToken type;
+        public FullNameCToken Name { get; protected set; }
+        private bool _linked = false;
 
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
@@ -35,12 +37,27 @@ namespace Crimson.CSharp.Grammar.Statements
             Simple = value;
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             return;
         }
 
-        public override Fragment GetCrimsonBasic()
+        public bool IsLinked ()
+        {
+            return _linked;
+        }
+
+        public FullNameCToken GetName ()
+        {
+            return Name;
+        }
+
+        public void SetName (FullNameCToken name)
+        {
+            Name = name;
+        }
+
+        public Fragment GetCrimsonBasic()
         {
             Fragment statements = new Fragment(0);
 
@@ -49,14 +66,14 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name.ToString(), type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Name.ToString(), valueStatements.ResultHolder!));
+                statements.Add(new IncSpBStatement(type.GetByteSize()));
+                statements.Add(new SetBStatement(Name.ToString(), -1, valueStatements.ResultHolder!));
 
             }
             else if (Simple != null)
             {
-                statements.Add(new StackBStatement(StackBStatement.StackOperation.ALLOCATE, Name.ToString(), type.GetByteSize().ToString()));
-                statements.Add(new SetBStatement(Name.ToString(), Simple.GetText()));
+                statements.Add(new IncSpBStatement(type.GetByteSize()));
+                statements.Add(new SetBStatement(Name.ToString(), -1, Simple.GetText()));
             }
             else
             {

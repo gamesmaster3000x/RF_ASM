@@ -9,18 +9,20 @@ namespace CrimsonBasic.CSharp.Statements
     public class SetBStatement : BasicStatement
     {
 
-        private string _value;
-        private string _name;
+        public string Value { get; protected set; }
+        public int Size { get; protected set; }
+        public string Name { get; protected set; }
 
-        public SetBStatement(string text, string value)
+        public SetBStatement(string name, int size, string value)
         {
-            _name = text;
-            _value = value;
+            Name = name;
+            Size = size;
+            Value = value;
         }
 
         public override string ToString()
         {
-            return $"set {_name} {_value};";
+            return $"var_set {Name}, {Size}, {Value};";
         }
     }
 }

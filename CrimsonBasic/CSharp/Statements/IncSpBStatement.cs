@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace CrimsonBasic.CSharp.Statements
 {
-    public class LabelBStatement : BasicStatement
+    public class IncSpBStatement : BasicStatement
     {
-        private string _name;
+        public int Amount { get; set; }
 
-        public LabelBStatement(string label)
+        public IncSpBStatement (int amount)
         {
-            _name = label;
+            Amount = amount;
         }
 
         public override string ToString()
         {
-            return (_name.StartsWith(":") ? _name : ":" + _name) + (_name.EndsWith(":") ? "" : ":");
+            return $"inc_sp {Amount};";
         }
     }
 }

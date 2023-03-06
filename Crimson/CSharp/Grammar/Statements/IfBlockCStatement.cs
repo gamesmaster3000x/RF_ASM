@@ -2,37 +2,33 @@
 using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Statements;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class IfBlockCStatement : InternalStatement
+    internal class IfBlockCStatement : ICrimsonStatement
     {
         public IfBlockCStatement()
         {
         }
 
-        public IfBlockCStatement(ConditionCToken condition, IList<InternalStatement> body, ElseIfBlockCToken? elifBlock, ElseBlockCToken? elseBlock)
+        public IfBlockCStatement(ConditionCToken condition, Scope scope, ElseIfBlockCToken? elifBlock, ElseBlockCToken? elseBlock)
         {
             Condition = condition;
-            Body = body;
+            Scope = scope;
             ElifBlock = elifBlock;
             ElseBlock = elseBlock;
         }
 
         public ConditionCToken Condition { get; }
-        public IList<InternalStatement> Body { get; }
+        public Scope Scope { get; }
         public ElseIfBlockCToken? ElifBlock { get; }
         public ElseBlockCToken? ElseBlock { get; }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             Condition.Link(ctx);
-
-            foreach (var s in Body)
-            {
-                s.Link(ctx);
-            }
-
+            Scope.Link(ctx);
             ElifBlock?.Link(ctx);
             ElseBlock?.Link(ctx);
         }
@@ -62,7 +58,7 @@ namespace Crimson.CSharp.Grammar.Statements
          *  (3)
          * :END_IF
          */
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment wholeBlock = new Fragment(0);
 
@@ -76,10 +72,7 @@ namespace Crimson.CSharp.Grammar.Statements
             string endLabelName = "END_" + uniqueBranchName;
             ifHead.Add(new JumpEqualBStatement(condition.ResultHolder!, "0", "NEXT_ELIF"));
             Fragment ifBody = new Fragment(1);
-            foreach (var s in Body)
-            {
-                ifBody.Add(s.GetCrimsonBasic());
-            }
+            ifBody.Add(Scope.GetCrimsonBasic());
             Fragment ifFoot = new Fragment(1);
             ifFoot.Add(new JumpBStatement(endLabelName));
 
@@ -99,6 +92,11 @@ namespace Crimson.CSharp.Grammar.Statements
             wholeBlock.Add(new CommentBStatement(""));
 
             return wholeBlock;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

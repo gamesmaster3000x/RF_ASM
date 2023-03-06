@@ -11,8 +11,12 @@ namespace Crimson.CSharp.Core
 
         private static Logger? LOGGER;
         internal static readonly string VERSION = "v0.0";
+        public static CrimsonOptions Options { get; private set; }
+        public static CrimsonCompiler Compiler { get; private set; }
 
-        static Task<int> Main(string[] args)
+        public const int ERROR_UNKNOWN = -100;
+
+        static int Main(string[] args)
         {
             bool useAutowiredArgs = true;
             if (useAutowiredArgs)
@@ -32,29 +36,31 @@ namespace Crimson.CSharp.Core
             ShowCredits();
 
             Console.WriteLine("Parsing Crimson options");
-            return CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).MapResult((options) =>
+            Options = CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).Value;
+
+            Console.WriteLine("  Option: CompilationSourcePath: " + Options.TranslationSourcePath);
+            Console.WriteLine("  Option: CompilationTargetPath: " + Options.TranslationTargetPath);
+            Console.WriteLine("  Option: NativeLibraryPath: " + Options.NativeLibraryPath);
+            Console.WriteLine("  Option: DumpIntermediates: " + Options.DumpIntermediates);
+            Console.WriteLine("  Option: (Platform) CrimsonBasic: " + Options.CrimsonBasic);
+            Console.WriteLine("  Option: (Platform) RFASM: " + Options.RFASM);
+
+            ConfigureNLog();
+
+            Library generator = new Library(Options);
+            Linker linker = new Linker(Options);
+            Flattener flattener = new Flattener(Options);
+            Compiler = new CrimsonCompiler(Options, generator, linker, flattener);
+
+            try
             {
-                Console.WriteLine("  Option: CompilationSourcePath: " + options.TranslationSourcePath);
-                Console.WriteLine("  Option: CompilationTargetPath: " + options.TranslationTargetPath);
-                Console.WriteLine("  Option: NativeLibraryPath: " + options.NativeLibraryPath);
-                Console.WriteLine("  Option: DumpIntermediates: " + options.DumpIntermediates);
-                Console.WriteLine("  Option: (Platform) CrimsonBasic: " + options.CrimsonBasic);
-                Console.WriteLine("  Option: (Platform) RFASM: " + options.RFASM);
-
-                ConfigureNLog();
-
-                Library generator = new Library(options);
-                Linker linker = new Linker(options);
-                Flattener flattener = new Flattener(options);
-                CrimsonCompiler compiler = new CrimsonCompiler(options, generator, linker, flattener);
-
-                return Task.FromResult(compiler.FullyCompileFromOptions());
-            },
-            (error) =>
+                return Compiler.FullyCompileFromOptions();
+            } catch (System.Exception e)
             {
-                Console.Error.WriteLine("An issue occurred while parsing the program arguments (invalid arguments)");
-                return Task.FromResult(-1);
-            });
+                Console.WriteLine(e);
+                LOGGER!.Error(e);
+                return ERROR_UNKNOWN;
+            }
         }
 
         private static void ShowSplash()

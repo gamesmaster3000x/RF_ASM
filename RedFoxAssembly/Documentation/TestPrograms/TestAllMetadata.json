@@ -1,6 +1,5 @@
 {
-	"Authors": ["Me, You"],
-	"Labels": ["Me, You"],
+	"Authors": ["Me", "You"],
 	"AddAuthors": true,
 	"AddDateTime": true,
 	"AddConstants": true,

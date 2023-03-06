@@ -37,49 +37,50 @@ public partial class CrimsonParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, Allocator=3, Function=4, Global=5, Return=6, Structure=7, 
-		Using=8, OpHandler=9, As=10, If=11, While=12, Else=13, Elif=14, Integer=15, 
-		Boolean=16, Null=17, BooleanValue=18, Operator=19, Asterisk=20, MathsOperator=21, 
-		Comparator=22, RightArrow=23, Tilda=24, DirectEquals=25, PointerEquals=26, 
-		OpenBracket=27, CloseBracket=28, OpenSquare=29, CloseSquare=30, OpenBrace=31, 
-		CloseBrace=32, Comma=33, Dot=34, SemiColon=35, Underscore=36, Hashtag=37, 
-		Quote=38, SkipTokens=39, LineComment=40, BlockComment=41, Number=42, String=43, 
-		ShortName=44;
+		Allocator=1, Function=2, Global=3, Scoped=4, Return=5, Structure=6, Using=7, 
+		OpHandler=8, As=9, If=10, While=11, Else=12, Elif=13, Integer=14, Boolean=15, 
+		Null=16, BooleanValue=17, Operator=18, Asterisk=19, MathsOperator=20, 
+		Comparator=21, RightArrow=22, BasicCall=23, AssemblyCall=24, DirectEquals=25, 
+		PointerEquals=26, OpenBracket=27, CloseBracket=28, OpenSquare=29, CloseSquare=30, 
+		OpenBrace=31, CloseBrace=32, Comma=33, Dot=34, SemiColon=35, Underscore=36, 
+		Hashtag=37, Quote=38, SkipTokens=39, LineComment=40, BlockComment=41, 
+		Number=42, String=43, ShortName=44;
 	public const int
-		RULE_translationUnit = 0, RULE_importUnit = 1, RULE_operationHandler = 2, 
-		RULE_globalStatement = 3, RULE_globalVariableDeclaration = 4, RULE_functionDeclaration = 5, 
-		RULE_functionHeader = 6, RULE_functionBody = 7, RULE_internalStatement = 8, 
-		RULE_internalVariableDeclaration = 9, RULE_assignVariable = 10, RULE_ifBlock = 11, 
-		RULE_whileBlock = 12, RULE_condition = 13, RULE_elseIfBlock = 14, RULE_elseBlock = 15, 
-		RULE_assemblyCall = 16, RULE_functionCall = 17, RULE_arguments = 18, RULE_functionReturn = 19, 
+		RULE_scope = 0, RULE_importUnit = 1, RULE_operationHandler = 2, RULE_statement = 3, 
+		RULE_internalVariableDeclaration = 4, RULE_assignVariable = 5, RULE_ifBlock = 6, 
+		RULE_whileBlock = 7, RULE_condition = 8, RULE_elseIfBlock = 9, RULE_elseBlock = 10, 
+		RULE_basicCall = 11, RULE_assemblyCall = 12, RULE_globalVariableDeclaration = 13, 
+		RULE_scopedVariableDeclaration = 14, RULE_functionDeclaration = 15, RULE_functionHeader = 16, 
+		RULE_functionCall = 17, RULE_arguments = 18, RULE_functionReturn = 19, 
 		RULE_simpleValue = 20, RULE_complexValue = 21, RULE_rawValue = 22, RULE_operation = 23, 
 		RULE_parameterList = 24, RULE_parameter = 25, RULE_structureDeclaration = 26, 
 		RULE_structureBody = 27, RULE_type = 28, RULE_array = 29, RULE_fullName = 30;
 	public static readonly string[] ruleNames = {
-		"translationUnit", "importUnit", "operationHandler", "globalStatement", 
-		"globalVariableDeclaration", "functionDeclaration", "functionHeader", 
-		"functionBody", "internalStatement", "internalVariableDeclaration", "assignVariable", 
-		"ifBlock", "whileBlock", "condition", "elseIfBlock", "elseBlock", "assemblyCall", 
+		"scope", "importUnit", "operationHandler", "statement", "internalVariableDeclaration", 
+		"assignVariable", "ifBlock", "whileBlock", "condition", "elseIfBlock", 
+		"elseBlock", "basicCall", "assemblyCall", "globalVariableDeclaration", 
+		"scopedVariableDeclaration", "functionDeclaration", "functionHeader", 
 		"functionCall", "arguments", "functionReturn", "simpleValue", "complexValue", 
 		"rawValue", "operation", "parameterList", "parameter", "structureDeclaration", 
 		"structureBody", "type", "array", "fullName"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'\\r'", "'\\n'", "'allocator'", "'function'", "'global'", "'return'", 
+		null, "'allocator'", "'function'", "'global'", "'scoped'", "'return'", 
 		"'structure'", "'using'", "'ophandler'", "'as'", "'if'", "'while'", "'else'", 
 		"'elif'", "'int'", "'bool'", "'null'", null, null, "'*'", null, null, 
-		"'->'", "'~'", "'='", "'*='", "'('", "')'", "'['", "']'", "'{'", "'}'", 
-		"','", "'.'", "';'", "'_'", "'#'", "'\"'"
+		"'->'", "'B~'", "'A~'", "'='", "'*='", "'('", "')'", "'['", "']'", "'{'", 
+		"'}'", "','", "'.'", "';'", "'_'", "'#'", "'\"'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, "Allocator", "Function", "Global", "Return", "Structure", 
+		null, "Allocator", "Function", "Global", "Scoped", "Return", "Structure", 
 		"Using", "OpHandler", "As", "If", "While", "Else", "Elif", "Integer", 
 		"Boolean", "Null", "BooleanValue", "Operator", "Asterisk", "MathsOperator", 
-		"Comparator", "RightArrow", "Tilda", "DirectEquals", "PointerEquals", 
-		"OpenBracket", "CloseBracket", "OpenSquare", "CloseSquare", "OpenBrace", 
-		"CloseBrace", "Comma", "Dot", "SemiColon", "Underscore", "Hashtag", "Quote", 
-		"SkipTokens", "LineComment", "BlockComment", "Number", "String", "ShortName"
+		"Comparator", "RightArrow", "BasicCall", "AssemblyCall", "DirectEquals", 
+		"PointerEquals", "OpenBracket", "CloseBracket", "OpenSquare", "CloseSquare", 
+		"OpenBrace", "CloseBrace", "Comma", "Dot", "SemiColon", "Underscore", 
+		"Hashtag", "Quote", "SkipTokens", "LineComment", "BlockComment", "Number", 
+		"String", "ShortName"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -113,15 +114,15 @@ public partial class CrimsonParser : Parser {
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
-	public partial class TranslationUnitContext : ParserRuleContext {
+	public partial class ScopeContext : ParserRuleContext {
 		public ImportUnitContext _importUnit;
 		public IList<ImportUnitContext> _imports = new List<ImportUnitContext>();
 		public OperationHandlerContext _operationHandler;
 		public IList<OperationHandlerContext> _opHandlers = new List<OperationHandlerContext>();
-		public GlobalStatementContext _globalStatement;
-		public IList<GlobalStatementContext> _statements = new List<GlobalStatementContext>();
-		public IToken eof;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(CrimsonParser.Eof, 0); }
+		public StatementContext _statement;
+		public IList<StatementContext> _statements = new List<StatementContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBrace() { return GetToken(CrimsonParser.OpenBrace, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBrace() { return GetToken(CrimsonParser.CloseBrace, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ImportUnitContext[] importUnit() {
 			return GetRuleContexts<ImportUnitContext>();
 		}
@@ -134,93 +135,95 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public OperationHandlerContext operationHandler(int i) {
 			return GetRuleContext<OperationHandlerContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public GlobalStatementContext[] globalStatement() {
-			return GetRuleContexts<GlobalStatementContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext[] statement() {
+			return GetRuleContexts<StatementContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public GlobalStatementContext globalStatement(int i) {
-			return GetRuleContext<GlobalStatementContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement(int i) {
+			return GetRuleContext<StatementContext>(i);
 		}
-		public TranslationUnitContext(ParserRuleContext parent, int invokingState)
+		public ScopeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_translationUnit; } }
+		public override int RuleIndex { get { return RULE_scope; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterTranslationUnit(this);
+			if (typedListener != null) typedListener.EnterScope(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitTranslationUnit(this);
+			if (typedListener != null) typedListener.ExitScope(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTranslationUnit(this);
+			if (typedVisitor != null) return typedVisitor.VisitScope(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public TranslationUnitContext translationUnit() {
-		TranslationUnitContext _localctx = new TranslationUnitContext(Context, State);
-		EnterRule(_localctx, 0, RULE_translationUnit);
+	public ScopeContext scope() {
+		ScopeContext _localctx = new ScopeContext(Context, State);
+		EnterRule(_localctx, 0, RULE_scope);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 65;
+			State = 62;
+			Match(OpenBrace);
+			State = 66;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,0,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 62;
+					State = 63;
 					_localctx._importUnit = importUnit();
 					_localctx._imports.Add(_localctx._importUnit);
 					}
 					} 
 				}
-				State = 67;
+				State = 68;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,0,Context);
 			}
-			State = 71;
+			State = 72;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==Hashtag) {
 				{
 				{
-				State = 68;
+				State = 69;
 				_localctx._operationHandler = operationHandler();
 				_localctx._opHandlers.Add(_localctx._operationHandler);
 				}
 				}
-				State = 73;
+				State = 74;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 77;
+			State = 78;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 176L) != 0) {
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 17592748199020L) != 0) {
 				{
 				{
-				State = 74;
-				_localctx._globalStatement = globalStatement();
-				_localctx._statements.Add(_localctx._globalStatement);
+				State = 75;
+				_localctx._statement = statement();
+				_localctx._statements.Add(_localctx._statement);
 				}
 				}
-				State = 79;
+				State = 80;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 80;
-			_localctx.eof = Match(Eof);
+			State = 81;
+			Match(CloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -240,6 +243,7 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Hashtag() { return GetToken(CrimsonParser.Hashtag, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Using() { return GetToken(CrimsonParser.Using, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode As() { return GetToken(CrimsonParser.As, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode String() { return GetToken(CrimsonParser.String, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext fullName() {
 			return GetRuleContext<FullNameContext>(0);
@@ -274,16 +278,18 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 82;
-			Match(Hashtag);
 			State = 83;
-			Match(Using);
+			Match(Hashtag);
 			State = 84;
-			_localctx.path = Match(String);
+			Match(Using);
 			State = 85;
-			Match(As);
+			_localctx.path = Match(String);
 			State = 86;
+			Match(As);
+			State = 87;
 			_localctx.identifier = fullName();
+			State = 88;
+			Match(SemiColon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -309,6 +315,7 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RightArrow() { return GetToken(CrimsonParser.RightArrow, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBrace() { return GetToken(CrimsonParser.OpenBrace, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBrace() { return GetToken(CrimsonParser.CloseBrace, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public TypeContext[] type() {
 			return GetRuleContexts<TypeContext>();
 		}
@@ -349,28 +356,30 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 88;
-			Match(Hashtag);
-			State = 89;
-			Match(OpHandler);
 			State = 90;
-			Match(OpenBracket);
+			Match(Hashtag);
 			State = 91;
-			_localctx.t1 = type();
+			Match(OpHandler);
 			State = 92;
-			_localctx.op = Match(Operator);
+			Match(OpenBracket);
 			State = 93;
-			_localctx.t2 = type();
+			_localctx.t1 = type();
 			State = 94;
-			Match(CloseBracket);
+			_localctx.op = Match(Operator);
 			State = 95;
-			Match(RightArrow);
+			_localctx.t2 = type();
 			State = 96;
-			Match(OpenBrace);
+			Match(CloseBracket);
 			State = 97;
-			_localctx.identifier = fullName();
+			Match(RightArrow);
 			State = 98;
+			Match(OpenBrace);
+			State = 99;
+			_localctx.identifier = fullName();
+			State = 100;
 			Match(CloseBrace);
+			State = 101;
+			Match(SemiColon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -384,612 +393,358 @@ public partial class CrimsonParser : Parser {
 		return _localctx;
 	}
 
-	public partial class GlobalStatementContext : ParserRuleContext {
-		public GlobalStatementContext(ParserRuleContext parent, int invokingState)
+	public partial class StatementContext : ParserRuleContext {
+		public StatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_globalStatement; } }
+		public override int RuleIndex { get { return RULE_statement; } }
 	 
-		public GlobalStatementContext() { }
-		public virtual void CopyFrom(GlobalStatementContext context) {
+		public StatementContext() { }
+		public virtual void CopyFrom(StatementContext context) {
 			base.CopyFrom(context);
 		}
 	}
-	public partial class GlobalVariableUnitStatementContext : GlobalStatementContext {
-		[System.Diagnostics.DebuggerNonUserCode] public GlobalVariableDeclarationContext globalVariableDeclaration() {
-			return GetRuleContext<GlobalVariableDeclarationContext>(0);
-		}
-		public GlobalVariableUnitStatementContext(GlobalStatementContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterGlobalVariableUnitStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitGlobalVariableUnitStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitGlobalVariableUnitStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class FunctionUnitStatementContext : GlobalStatementContext {
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionDeclarationContext functionDeclaration() {
-			return GetRuleContext<FunctionDeclarationContext>(0);
-		}
-		public FunctionUnitStatementContext(GlobalStatementContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionUnitStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionUnitStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionUnitStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class StructureUnitStatementContext : GlobalStatementContext {
+	public partial class StructureDeclarationStatementContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public StructureDeclarationContext structureDeclaration() {
 			return GetRuleContext<StructureDeclarationContext>(0);
 		}
-		public StructureUnitStatementContext(GlobalStatementContext context) { CopyFrom(context); }
+		public StructureDeclarationStatementContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterStructureUnitStatement(this);
+			if (typedListener != null) typedListener.EnterStructureDeclarationStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitStructureUnitStatement(this);
+			if (typedListener != null) typedListener.ExitStructureDeclarationStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitStructureUnitStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitStructureDeclarationStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-
-	[RuleVersion(0)]
-	public GlobalStatementContext globalStatement() {
-		GlobalStatementContext _localctx = new GlobalStatementContext(Context, State);
-		EnterRule(_localctx, 6, RULE_globalStatement);
-		try {
-			State = 103;
-			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case Global:
-				_localctx = new GlobalVariableUnitStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 1);
-				{
-				State = 100;
-				globalVariableDeclaration();
-				}
-				break;
-			case Function:
-				_localctx = new FunctionUnitStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 2);
-				{
-				State = 101;
-				functionDeclaration();
-				}
-				break;
-			case Structure:
-				_localctx = new StructureUnitStatementContext(_localctx);
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 102;
-				structureDeclaration();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
+	public partial class IfStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public IfBlockContext ifBlock() {
+			return GetRuleContext<IfBlockContext>(0);
 		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class GlobalVariableDeclarationContext : ParserRuleContext {
-		public InternalVariableDeclarationContext declaration;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Global() { return GetToken(CrimsonParser.Global, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public InternalVariableDeclarationContext internalVariableDeclaration() {
-			return GetRuleContext<InternalVariableDeclarationContext>(0);
-		}
-		public GlobalVariableDeclarationContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_globalVariableDeclaration; } }
+		public IfStatementContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterGlobalVariableDeclaration(this);
+			if (typedListener != null) typedListener.EnterIfStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitGlobalVariableDeclaration(this);
+			if (typedListener != null) typedListener.ExitIfStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitGlobalVariableDeclaration(this);
+			if (typedVisitor != null) return typedVisitor.VisitIfStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-
-	[RuleVersion(0)]
-	public GlobalVariableDeclarationContext globalVariableDeclaration() {
-		GlobalVariableDeclarationContext _localctx = new GlobalVariableDeclarationContext(Context, State);
-		EnterRule(_localctx, 8, RULE_globalVariableDeclaration);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 105;
-			Match(Global);
-			State = 106;
-			_localctx.declaration = internalVariableDeclaration();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class FunctionDeclarationContext : ParserRuleContext {
-		public TypeContext returnType;
-		public FunctionHeaderContext header;
-		public FunctionBodyContext body;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Function() { return GetToken(CrimsonParser.Function, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
-			return GetRuleContext<TypeContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
-			return GetRuleContext<FunctionHeaderContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
-		}
-		public FunctionDeclarationContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_functionDeclaration; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionDeclaration(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionDeclaration(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionDeclaration(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public FunctionDeclarationContext functionDeclaration() {
-		FunctionDeclarationContext _localctx = new FunctionDeclarationContext(Context, State);
-		EnterRule(_localctx, 10, RULE_functionDeclaration);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 108;
-			Match(Function);
-			State = 109;
-			_localctx.returnType = type();
-			State = 110;
-			_localctx.header = functionHeader();
-			State = 111;
-			_localctx.body = functionBody();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class FunctionHeaderContext : ParserRuleContext {
-		public FullNameContext name;
-		public ParameterListContext parameters;
-		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext fullName() {
-			return GetRuleContext<FullNameContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ParameterListContext parameterList() {
-			return GetRuleContext<ParameterListContext>(0);
-		}
-		public FunctionHeaderContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_functionHeader; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionHeader(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionHeader(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionHeader(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public FunctionHeaderContext functionHeader() {
-		FunctionHeaderContext _localctx = new FunctionHeaderContext(Context, State);
-		EnterRule(_localctx, 12, RULE_functionHeader);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 113;
-			_localctx.name = fullName();
-			State = 114;
-			_localctx.parameters = parameterList();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class FunctionBodyContext : ParserRuleContext {
-		public InternalStatementContext _internalStatement;
-		public IList<InternalStatementContext> _statements = new List<InternalStatementContext>();
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OpenBrace() { return GetToken(CrimsonParser.OpenBrace, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CloseBrace() { return GetToken(CrimsonParser.CloseBrace, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public InternalStatementContext[] internalStatement() {
-			return GetRuleContexts<InternalStatementContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public InternalStatementContext internalStatement(int i) {
-			return GetRuleContext<InternalStatementContext>(i);
-		}
-		public FunctionBodyContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_functionBody; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionBody(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionBody(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionBody(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public FunctionBodyContext functionBody() {
-		FunctionBodyContext _localctx = new FunctionBodyContext(Context, State);
-		EnterRule(_localctx, 14, RULE_functionBody);
-		int _la;
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 116;
-			Match(OpenBrace);
-			State = 120;
-			ErrorHandler.Sync(this);
-			_la = TokenStream.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 17592739928128L) != 0) {
-				{
-				{
-				State = 117;
-				_localctx._internalStatement = internalStatement();
-				_localctx._statements.Add(_localctx._internalStatement);
-				}
-				}
-				State = 122;
-				ErrorHandler.Sync(this);
-				_la = TokenStream.LA(1);
-			}
-			State = 123;
-			Match(CloseBrace);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class InternalStatementContext : ParserRuleContext {
-		public InternalStatementContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_internalStatement; } }
-	 
-		public InternalStatementContext() { }
-		public virtual void CopyFrom(InternalStatementContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class FunctionAssignVariableStatementContext : InternalStatementContext {
+	public partial class AssignVariableStatementContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public AssignVariableContext assignVariable() {
 			return GetRuleContext<AssignVariableContext>(0);
 		}
-		public FunctionAssignVariableStatementContext(InternalStatementContext context) { CopyFrom(context); }
+		public AssignVariableStatementContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionAssignVariableStatement(this);
+			if (typedListener != null) typedListener.EnterAssignVariableStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionAssignVariableStatement(this);
+			if (typedListener != null) typedListener.ExitAssignVariableStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionAssignVariableStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitAssignVariableStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionFunctionCallStatementContext : InternalStatementContext {
+	public partial class GlobalVariableStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public GlobalVariableDeclarationContext globalVariableDeclaration() {
+			return GetRuleContext<GlobalVariableDeclarationContext>(0);
+		}
+		public GlobalVariableStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterGlobalVariableStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitGlobalVariableStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitGlobalVariableStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class AssemblyCallStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public AssemblyCallContext assemblyCall() {
+			return GetRuleContext<AssemblyCallContext>(0);
+		}
+		public AssemblyCallStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterAssemblyCallStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitAssemblyCallStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitAssemblyCallStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ReturnStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public FunctionReturnContext functionReturn() {
+			return GetRuleContext<FunctionReturnContext>(0);
+		}
+		public ReturnStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterReturnStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitReturnStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitReturnStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class FunctionCallStatementContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionCallContext functionCall() {
 			return GetRuleContext<FunctionCallContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
-		public FunctionFunctionCallStatementContext(InternalStatementContext context) { CopyFrom(context); }
+		public FunctionCallStatementContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionFunctionCallStatement(this);
+			if (typedListener != null) typedListener.EnterFunctionCallStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionFunctionCallStatement(this);
+			if (typedListener != null) typedListener.ExitFunctionCallStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionFunctionCallStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitFunctionCallStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionReturnStatementContext : InternalStatementContext {
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionReturnContext functionReturn() {
-			return GetRuleContext<FunctionReturnContext>(0);
-		}
-		public FunctionReturnStatementContext(InternalStatementContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionReturnStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionReturnStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionReturnStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class FunctionVariableDeclarationStatementContext : InternalStatementContext {
+	public partial class VariableDeclarationStatementContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public InternalVariableDeclarationContext internalVariableDeclaration() {
 			return GetRuleContext<InternalVariableDeclarationContext>(0);
 		}
-		public FunctionVariableDeclarationStatementContext(InternalStatementContext context) { CopyFrom(context); }
+		public VariableDeclarationStatementContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionVariableDeclarationStatement(this);
+			if (typedListener != null) typedListener.EnterVariableDeclarationStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionVariableDeclarationStatement(this);
+			if (typedListener != null) typedListener.ExitVariableDeclarationStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionVariableDeclarationStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class FunctionAssemblyCallStatementContext : InternalStatementContext {
-		[System.Diagnostics.DebuggerNonUserCode] public AssemblyCallContext assemblyCall() {
-			return GetRuleContext<AssemblyCallContext>(0);
-		}
-		public FunctionAssemblyCallStatementContext(InternalStatementContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionAssemblyCallStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionAssemblyCallStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionAssemblyCallStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class FunctionIfStatementContext : InternalStatementContext {
-		[System.Diagnostics.DebuggerNonUserCode] public IfBlockContext ifBlock() {
-			return GetRuleContext<IfBlockContext>(0);
-		}
-		public FunctionIfStatementContext(InternalStatementContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionIfStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionIfStatement(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionIfStatement(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class FunctionWhileStatementContext : InternalStatementContext {
+	public partial class WhileStatementContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public WhileBlockContext whileBlock() {
 			return GetRuleContext<WhileBlockContext>(0);
 		}
-		public FunctionWhileStatementContext(InternalStatementContext context) { CopyFrom(context); }
+		public WhileStatementContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.EnterFunctionWhileStatement(this);
+			if (typedListener != null) typedListener.EnterWhileStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ICrimsonListener typedListener = listener as ICrimsonListener;
-			if (typedListener != null) typedListener.ExitFunctionWhileStatement(this);
+			if (typedListener != null) typedListener.ExitWhileStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFunctionWhileStatement(this);
+			if (typedVisitor != null) return typedVisitor.VisitWhileStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class BasicCallStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public BasicCallContext basicCall() {
+			return GetRuleContext<BasicCallContext>(0);
+		}
+		public BasicCallStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterBasicCallStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitBasicCallStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBasicCallStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class FunctionDeclarationStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public FunctionDeclarationContext functionDeclaration() {
+			return GetRuleContext<FunctionDeclarationContext>(0);
+		}
+		public FunctionDeclarationStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterFunctionDeclarationStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitFunctionDeclarationStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFunctionDeclarationStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public InternalStatementContext internalStatement() {
-		InternalStatementContext _localctx = new InternalStatementContext(Context, State);
-		EnterRule(_localctx, 16, RULE_internalStatement);
+	public StatementContext statement() {
+		StatementContext _localctx = new StatementContext(Context, State);
+		EnterRule(_localctx, 6, RULE_statement);
 		try {
-			State = 134;
+			State = 116;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,3,Context) ) {
 			case 1:
-				_localctx = new FunctionVariableDeclarationStatementContext(_localctx);
+				_localctx = new VariableDeclarationStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 125;
+				State = 103;
 				internalVariableDeclaration();
 				}
 				break;
 			case 2:
-				_localctx = new FunctionReturnStatementContext(_localctx);
+				_localctx = new ReturnStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 126;
+				State = 104;
 				functionReturn();
 				}
 				break;
 			case 3:
-				_localctx = new FunctionAssignVariableStatementContext(_localctx);
+				_localctx = new AssignVariableStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 127;
+				State = 105;
 				assignVariable();
 				}
 				break;
 			case 4:
-				_localctx = new FunctionFunctionCallStatementContext(_localctx);
+				_localctx = new FunctionCallStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 128;
+				State = 106;
 				functionCall();
-				State = 129;
+				State = 107;
 				Match(SemiColon);
 				}
 				break;
 			case 5:
-				_localctx = new FunctionIfStatementContext(_localctx);
+				_localctx = new IfStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 131;
+				State = 109;
 				ifBlock();
 				}
 				break;
 			case 6:
-				_localctx = new FunctionWhileStatementContext(_localctx);
+				_localctx = new WhileStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 132;
+				State = 110;
 				whileBlock();
 				}
 				break;
 			case 7:
-				_localctx = new FunctionAssemblyCallStatementContext(_localctx);
+				_localctx = new BasicCallStatementContext(_localctx);
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 133;
+				State = 111;
+				basicCall();
+				}
+				break;
+			case 8:
+				_localctx = new AssemblyCallStatementContext(_localctx);
+				EnterOuterAlt(_localctx, 8);
+				{
+				State = 112;
 				assemblyCall();
+				}
+				break;
+			case 9:
+				_localctx = new GlobalVariableStatementContext(_localctx);
+				EnterOuterAlt(_localctx, 9);
+				{
+				State = 113;
+				globalVariableDeclaration();
+				}
+				break;
+			case 10:
+				_localctx = new FunctionDeclarationStatementContext(_localctx);
+				EnterOuterAlt(_localctx, 10);
+				{
+				State = 114;
+				functionDeclaration();
+				}
+				break;
+			case 11:
+				_localctx = new StructureDeclarationStatementContext(_localctx);
+				EnterOuterAlt(_localctx, 11);
+				{
+				State = 115;
+				structureDeclaration();
 				}
 				break;
 			}
@@ -1048,33 +803,33 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public InternalVariableDeclarationContext internalVariableDeclaration() {
 		InternalVariableDeclarationContext _localctx = new InternalVariableDeclarationContext(Context, State);
-		EnterRule(_localctx, 18, RULE_internalVariableDeclaration);
+		EnterRule(_localctx, 8, RULE_internalVariableDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 136;
+			State = 118;
 			type();
-			State = 137;
+			State = 119;
 			fullName();
-			State = 138;
+			State = 120;
 			Match(DirectEquals);
-			State = 141;
+			State = 123;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,4,Context) ) {
 			case 1:
 				{
-				State = 139;
+				State = 121;
 				_localctx.complex = complexValue();
 				}
 				break;
 			case 2:
 				{
-				State = 140;
+				State = 122;
 				_localctx.simple = simpleValue();
 				}
 				break;
 			}
-			State = 143;
+			State = 125;
 			Match(SemiColon);
 			}
 		}
@@ -1171,36 +926,36 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public AssignVariableContext assignVariable() {
 		AssignVariableContext _localctx = new AssignVariableContext(Context, State);
-		EnterRule(_localctx, 20, RULE_assignVariable);
+		EnterRule(_localctx, 10, RULE_assignVariable);
 		try {
-			State = 161;
+			State = 143;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
 			case 1:
 				_localctx = new AssignVariableDirectContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 145;
+				State = 127;
 				((AssignVariableDirectContext)_localctx).name = fullName();
-				State = 146;
+				State = 128;
 				Match(DirectEquals);
-				State = 149;
+				State = 131;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
 				case 1:
 					{
-					State = 147;
+					State = 129;
 					((AssignVariableDirectContext)_localctx).complex = complexValue();
 					}
 					break;
 				case 2:
 					{
-					State = 148;
+					State = 130;
 					((AssignVariableDirectContext)_localctx).simple = simpleValue();
 					}
 					break;
 				}
-				State = 151;
+				State = 133;
 				Match(SemiColon);
 				}
 				break;
@@ -1208,27 +963,27 @@ public partial class CrimsonParser : Parser {
 				_localctx = new AssignVariableAtPointerContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 153;
+				State = 135;
 				((AssignVariableAtPointerContext)_localctx).name = fullName();
-				State = 154;
+				State = 136;
 				Match(PointerEquals);
-				State = 157;
+				State = 139;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
 				case 1:
 					{
-					State = 155;
+					State = 137;
 					((AssignVariableAtPointerContext)_localctx).complex = complexValue();
 					}
 					break;
 				case 2:
 					{
-					State = 156;
+					State = 138;
 					((AssignVariableAtPointerContext)_localctx).simple = simpleValue();
 					}
 					break;
 				}
-				State = 159;
+				State = 141;
 				Match(SemiColon);
 				}
 				break;
@@ -1250,8 +1005,8 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ConditionContext condition() {
 			return GetRuleContext<ConditionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ElseBlockContext elseBlock() {
 			return GetRuleContext<ElseBlockContext>(0);
@@ -1285,28 +1040,28 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public IfBlockContext ifBlock() {
 		IfBlockContext _localctx = new IfBlockContext(Context, State);
-		EnterRule(_localctx, 22, RULE_ifBlock);
+		EnterRule(_localctx, 12, RULE_ifBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 163;
+			State = 145;
 			Match(If);
-			State = 164;
+			State = 146;
 			condition();
-			State = 165;
-			functionBody();
-			State = 168;
+			State = 147;
+			scope();
+			State = 150;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
 			case 1:
 				{
-				State = 166;
+				State = 148;
 				elseBlock();
 				}
 				break;
 			case 2:
 				{
-				State = 167;
+				State = 149;
 				elseIfBlock();
 				}
 				break;
@@ -1329,8 +1084,8 @@ public partial class CrimsonParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ConditionContext condition() {
 			return GetRuleContext<ConditionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		public WhileBlockContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1358,16 +1113,16 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public WhileBlockContext whileBlock() {
 		WhileBlockContext _localctx = new WhileBlockContext(Context, State);
-		EnterRule(_localctx, 24, RULE_whileBlock);
+		EnterRule(_localctx, 14, RULE_whileBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 170;
+			State = 152;
 			Match(While);
-			State = 171;
+			State = 153;
 			condition();
-			State = 172;
-			functionBody();
+			State = 154;
+			scope();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1414,15 +1169,15 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ConditionContext condition() {
 		ConditionContext _localctx = new ConditionContext(Context, State);
-		EnterRule(_localctx, 26, RULE_condition);
+		EnterRule(_localctx, 16, RULE_condition);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 174;
+			State = 156;
 			Match(OpenBracket);
-			State = 175;
+			State = 157;
 			_localctx.op = operation();
-			State = 176;
+			State = 158;
 			Match(CloseBracket);
 			}
 		}
@@ -1468,13 +1223,13 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ElseIfBlockContext elseIfBlock() {
 		ElseIfBlockContext _localctx = new ElseIfBlockContext(Context, State);
-		EnterRule(_localctx, 28, RULE_elseIfBlock);
+		EnterRule(_localctx, 18, RULE_elseIfBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 178;
+			State = 160;
 			Match(Else);
-			State = 179;
+			State = 161;
 			ifBlock();
 			}
 		}
@@ -1491,8 +1246,8 @@ public partial class CrimsonParser : Parser {
 
 	public partial class ElseBlockContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Else() { return GetToken(CrimsonParser.Else, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public FunctionBodyContext functionBody() {
-			return GetRuleContext<FunctionBodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
 		}
 		public ElseBlockContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1520,14 +1275,68 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public ElseBlockContext elseBlock() {
 		ElseBlockContext _localctx = new ElseBlockContext(Context, State);
-		EnterRule(_localctx, 30, RULE_elseBlock);
+		EnterRule(_localctx, 20, RULE_elseBlock);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 181;
+			State = 163;
 			Match(Else);
-			State = 182;
-			functionBody();
+			State = 164;
+			scope();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class BasicCallContext : ParserRuleContext {
+		public IToken basicText;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BasicCall() { return GetToken(CrimsonParser.BasicCall, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode String() { return GetToken(CrimsonParser.String, 0); }
+		public BasicCallContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_basicCall; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterBasicCall(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitBasicCall(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBasicCall(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BasicCallContext basicCall() {
+		BasicCallContext _localctx = new BasicCallContext(Context, State);
+		EnterRule(_localctx, 22, RULE_basicCall);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 166;
+			Match(BasicCall);
+			State = 167;
+			_localctx.basicText = Match(String);
+			State = 168;
+			Match(SemiColon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1543,7 +1352,9 @@ public partial class CrimsonParser : Parser {
 
 	public partial class AssemblyCallContext : ParserRuleContext {
 		public IToken assemblyText;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Tilda() { return GetToken(CrimsonParser.Tilda, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AssemblyCall() { return GetToken(CrimsonParser.AssemblyCall, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SemiColon() { return GetToken(CrimsonParser.SemiColon, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode String() { return GetToken(CrimsonParser.String, 0); }
 		public AssemblyCallContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1570,38 +1381,243 @@ public partial class CrimsonParser : Parser {
 	[RuleVersion(0)]
 	public AssemblyCallContext assemblyCall() {
 		AssemblyCallContext _localctx = new AssemblyCallContext(Context, State);
-		EnterRule(_localctx, 32, RULE_assemblyCall);
-		int _la;
+		EnterRule(_localctx, 24, RULE_assemblyCall);
 		try {
-			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 184;
-			Match(Tilda);
-			State = 188;
-			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
-			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					State = 185;
-					_localctx.assemblyText = TokenStream.LT(1);
-					_la = TokenStream.LA(1);
-					if ( _la <= 0 || (_la==T__0 || _la==T__1) ) {
-						_localctx.assemblyText = ErrorHandler.RecoverInline(this);
-					}
-					else {
-						ErrorHandler.ReportMatch(this);
-					    Consume();
-					}
-					}
-					} 
-				}
-				State = 190;
-				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
+			State = 170;
+			Match(AssemblyCall);
+			State = 171;
+			_localctx.assemblyText = Match(String);
+			State = 172;
+			Match(SemiColon);
 			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class GlobalVariableDeclarationContext : ParserRuleContext {
+		public InternalVariableDeclarationContext declaration;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Global() { return GetToken(CrimsonParser.Global, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public InternalVariableDeclarationContext internalVariableDeclaration() {
+			return GetRuleContext<InternalVariableDeclarationContext>(0);
+		}
+		public GlobalVariableDeclarationContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_globalVariableDeclaration; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterGlobalVariableDeclaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitGlobalVariableDeclaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitGlobalVariableDeclaration(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public GlobalVariableDeclarationContext globalVariableDeclaration() {
+		GlobalVariableDeclarationContext _localctx = new GlobalVariableDeclarationContext(Context, State);
+		EnterRule(_localctx, 26, RULE_globalVariableDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 174;
+			Match(Global);
+			State = 175;
+			_localctx.declaration = internalVariableDeclaration();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ScopedVariableDeclarationContext : ParserRuleContext {
+		public InternalVariableDeclarationContext declaration;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Scoped() { return GetToken(CrimsonParser.Scoped, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public InternalVariableDeclarationContext internalVariableDeclaration() {
+			return GetRuleContext<InternalVariableDeclarationContext>(0);
+		}
+		public ScopedVariableDeclarationContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_scopedVariableDeclaration; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterScopedVariableDeclaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitScopedVariableDeclaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitScopedVariableDeclaration(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ScopedVariableDeclarationContext scopedVariableDeclaration() {
+		ScopedVariableDeclarationContext _localctx = new ScopedVariableDeclarationContext(Context, State);
+		EnterRule(_localctx, 28, RULE_scopedVariableDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 177;
+			Match(Scoped);
+			State = 178;
+			_localctx.declaration = internalVariableDeclaration();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class FunctionDeclarationContext : ParserRuleContext {
+		public TypeContext returnType;
+		public FunctionHeaderContext header;
+		public ScopeContext body;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Function() { return GetToken(CrimsonParser.Function, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
+			return GetRuleContext<TypeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
+			return GetRuleContext<FunctionHeaderContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ScopeContext scope() {
+			return GetRuleContext<ScopeContext>(0);
+		}
+		public FunctionDeclarationContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_functionDeclaration; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterFunctionDeclaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitFunctionDeclaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFunctionDeclaration(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public FunctionDeclarationContext functionDeclaration() {
+		FunctionDeclarationContext _localctx = new FunctionDeclarationContext(Context, State);
+		EnterRule(_localctx, 30, RULE_functionDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 180;
+			Match(Function);
+			State = 181;
+			_localctx.returnType = type();
+			State = 182;
+			_localctx.header = functionHeader();
+			State = 183;
+			_localctx.body = scope();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class FunctionHeaderContext : ParserRuleContext {
+		public FullNameContext name;
+		public ParameterListContext parameters;
+		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext fullName() {
+			return GetRuleContext<FullNameContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ParameterListContext parameterList() {
+			return GetRuleContext<ParameterListContext>(0);
+		}
+		public FunctionHeaderContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_functionHeader; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.EnterFunctionHeader(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ICrimsonListener typedListener = listener as ICrimsonListener;
+			if (typedListener != null) typedListener.ExitFunctionHeader(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICrimsonVisitor<TResult> typedVisitor = visitor as ICrimsonVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFunctionHeader(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public FunctionHeaderContext functionHeader() {
+		FunctionHeaderContext _localctx = new FunctionHeaderContext(Context, State);
+		EnterRule(_localctx, 32, RULE_functionHeader);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 185;
+			_localctx.name = fullName();
+			State = 186;
+			_localctx.parameters = parameterList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1654,9 +1670,9 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 191;
+			State = 188;
 			_localctx.name = fullName();
-			State = 192;
+			State = 189;
 			_localctx.args = arguments();
 			}
 		}
@@ -1715,37 +1731,37 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 194;
+			State = 191;
 			Match(OpenBracket);
-			State = 196;
+			State = 193;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (((_la) & ~0x3f) == 0 && ((1L << _la) & 21990232948736L) != 0) {
+			if (((_la) & ~0x3f) == 0 && ((1L << _la) & 21990232752128L) != 0) {
 				{
-				State = 195;
+				State = 192;
 				simpleValue();
 				}
 			}
 
-			State = 202;
+			State = 199;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==Comma) {
 				{
 				{
-				State = 198;
+				State = 195;
 				Match(Comma);
 				{
-				State = 199;
+				State = 196;
 				simpleValue();
 				}
 				}
 				}
-				State = 204;
+				State = 201;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 205;
+			State = 202;
 			Match(CloseBracket);
 			}
 		}
@@ -1794,26 +1810,26 @@ public partial class CrimsonParser : Parser {
 		FunctionReturnContext _localctx = new FunctionReturnContext(Context, State);
 		EnterRule(_localctx, 38, RULE_functionReturn);
 		try {
-			State = 213;
+			State = 210;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 207;
+				State = 204;
 				Match(Return);
-				State = 208;
+				State = 205;
 				simpleValue();
-				State = 209;
+				State = 206;
 				Match(SemiColon);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 211;
+				State = 208;
 				Match(Return);
-				State = 212;
+				State = 209;
 				Match(SemiColon);
 				}
 				break;
@@ -1870,20 +1886,20 @@ public partial class CrimsonParser : Parser {
 		EnterRule(_localctx, 40, RULE_simpleValue);
 		int _la;
 		try {
-			State = 220;
+			State = 217;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case ShortName:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 215;
+				State = 212;
 				_localctx.id = fullName();
-				State = 217;
+				State = 214;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==Asterisk) {
 					{
-					State = 216;
+					State = 213;
 					_localctx.pointer = Match(Asterisk);
 					}
 				}
@@ -1895,7 +1911,7 @@ public partial class CrimsonParser : Parser {
 			case Number:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 219;
+				State = 216;
 				_localctx.raw = rawValue();
 				}
 				break;
@@ -1951,20 +1967,20 @@ public partial class CrimsonParser : Parser {
 		ComplexValueContext _localctx = new ComplexValueContext(Context, State);
 		EnterRule(_localctx, 42, RULE_complexValue);
 		try {
-			State = 224;
+			State = 221;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,17,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 222;
+				State = 219;
 				_localctx.op = operation();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 223;
+				State = 220;
 				_localctx.func = functionCall();
 				}
 				break;
@@ -2016,9 +2032,9 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 226;
+			State = 223;
 			_la = TokenStream.LA(1);
-			if ( !(((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046904320L) != 0) ) {
+			if ( !(((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046707712L) != 0) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -2079,11 +2095,11 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 228;
+			State = 225;
 			_localctx.leftValue = simpleValue();
-			State = 229;
+			State = 226;
 			_localctx.@operator = Match(Operator);
-			State = 230;
+			State = 227;
 			_localctx.rightValue = simpleValue();
 			}
 		}
@@ -2140,42 +2156,42 @@ public partial class CrimsonParser : Parser {
 		EnterRule(_localctx, 48, RULE_parameterList);
 		int _la;
 		try {
-			State = 245;
+			State = 242;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,19,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,16,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 232;
+				State = 229;
 				Match(OpenBracket);
-				State = 233;
+				State = 230;
 				Match(CloseBracket);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 234;
+				State = 231;
 				Match(OpenBracket);
-				State = 235;
+				State = 232;
 				parameter();
-				State = 240;
+				State = 237;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==Comma) {
 					{
 					{
-					State = 236;
+					State = 233;
 					Match(Comma);
-					State = 237;
+					State = 234;
 					parameter();
 					}
 					}
-					State = 242;
+					State = 239;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 243;
+				State = 240;
 				Match(CloseBracket);
 				}
 				break;
@@ -2231,9 +2247,9 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 247;
+			State = 244;
 			_localctx.t = type();
-			State = 248;
+			State = 245;
 			_localctx.name = fullName();
 			}
 		}
@@ -2288,11 +2304,11 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 250;
+			State = 247;
 			Match(Structure);
-			State = 251;
+			State = 248;
 			_localctx.name = fullName();
-			State = 252;
+			State = 249;
 			_localctx.body = structureBody();
 			}
 		}
@@ -2347,23 +2363,23 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 254;
+			State = 251;
 			Match(OpenBrace);
-			State = 258;
+			State = 255;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 17592723144704L) != 0) {
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 17592723030016L) != 0) {
 				{
 				{
-				State = 255;
+				State = 252;
 				internalVariableDeclaration();
 				}
 				}
-				State = 260;
+				State = 257;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 261;
+			State = 258;
 			Match(CloseBrace);
 			}
 		}
@@ -2416,41 +2432,41 @@ public partial class CrimsonParser : Parser {
 		TypeContext _localctx = new TypeContext(Context, State);
 		EnterRule(_localctx, 56, RULE_type);
 		try {
-			State = 268;
+			State = 265;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case Integer:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 263;
+				State = 260;
 				Match(Integer);
 				}
 				break;
 			case Boolean:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 264;
+				State = 261;
 				Match(Boolean);
 				}
 				break;
 			case ShortName:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 265;
+				State = 262;
 				fullName();
 				}
 				break;
 			case OpenSquare:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 266;
+				State = 263;
 				array();
 				}
 				break;
 			case Null:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 267;
+				State = 264;
 				Match(Null);
 				}
 				break;
@@ -2505,11 +2521,11 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 270;
+			State = 267;
 			Match(OpenSquare);
-			State = 271;
+			State = 268;
 			type();
-			State = 272;
+			State = 269;
 			Match(CloseSquare);
 			}
 		}
@@ -2562,19 +2578,19 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 276;
+			State = 273;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,22,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,19,Context) ) {
 			case 1:
 				{
-				State = 274;
+				State = 271;
 				_localctx.libraryName = Match(ShortName);
-				State = 275;
+				State = 272;
 				Match(Dot);
 				}
 				break;
 			}
-			State = 278;
+			State = 275;
 			_localctx.memberName = Match(ShortName);
 			}
 		}
@@ -2590,94 +2606,92 @@ public partial class CrimsonParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,44,281,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,44,278,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
 		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
-		2,29,7,29,2,30,7,30,1,0,5,0,64,8,0,10,0,12,0,67,9,0,1,0,5,0,70,8,0,10,
-		0,12,0,73,9,0,1,0,5,0,76,8,0,10,0,12,0,79,9,0,1,0,1,0,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,3,
-		3,104,8,3,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,6,1,7,1,7,5,7,119,
-		8,7,10,7,12,7,122,9,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,
-		135,8,8,1,9,1,9,1,9,1,9,1,9,3,9,142,8,9,1,9,1,9,1,10,1,10,1,10,1,10,3,
-		10,150,8,10,1,10,1,10,1,10,1,10,1,10,1,10,3,10,158,8,10,1,10,1,10,3,10,
-		162,8,10,1,11,1,11,1,11,1,11,1,11,3,11,169,8,11,1,12,1,12,1,12,1,12,1,
-		13,1,13,1,13,1,13,1,14,1,14,1,14,1,15,1,15,1,15,1,16,1,16,5,16,187,8,16,
-		10,16,12,16,190,9,16,1,17,1,17,1,17,1,18,1,18,3,18,197,8,18,1,18,1,18,
-		5,18,201,8,18,10,18,12,18,204,9,18,1,18,1,18,1,19,1,19,1,19,1,19,1,19,
-		1,19,3,19,214,8,19,1,20,1,20,3,20,218,8,20,1,20,3,20,221,8,20,1,21,1,21,
-		3,21,225,8,21,1,22,1,22,1,23,1,23,1,23,1,23,1,24,1,24,1,24,1,24,1,24,1,
-		24,5,24,239,8,24,10,24,12,24,242,9,24,1,24,1,24,3,24,246,8,24,1,25,1,25,
-		1,25,1,26,1,26,1,26,1,26,1,27,1,27,5,27,257,8,27,10,27,12,27,260,9,27,
-		1,27,1,27,1,28,1,28,1,28,1,28,1,28,3,28,269,8,28,1,29,1,29,1,29,1,29,1,
-		30,1,30,3,30,277,8,30,1,30,1,30,1,30,0,0,31,0,2,4,6,8,10,12,14,16,18,20,
-		22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,0,2,1,0,1,
-		2,2,0,17,18,42,42,282,0,65,1,0,0,0,2,82,1,0,0,0,4,88,1,0,0,0,6,103,1,0,
-		0,0,8,105,1,0,0,0,10,108,1,0,0,0,12,113,1,0,0,0,14,116,1,0,0,0,16,134,
-		1,0,0,0,18,136,1,0,0,0,20,161,1,0,0,0,22,163,1,0,0,0,24,170,1,0,0,0,26,
-		174,1,0,0,0,28,178,1,0,0,0,30,181,1,0,0,0,32,184,1,0,0,0,34,191,1,0,0,
-		0,36,194,1,0,0,0,38,213,1,0,0,0,40,220,1,0,0,0,42,224,1,0,0,0,44,226,1,
-		0,0,0,46,228,1,0,0,0,48,245,1,0,0,0,50,247,1,0,0,0,52,250,1,0,0,0,54,254,
-		1,0,0,0,56,268,1,0,0,0,58,270,1,0,0,0,60,276,1,0,0,0,62,64,3,2,1,0,63,
-		62,1,0,0,0,64,67,1,0,0,0,65,63,1,0,0,0,65,66,1,0,0,0,66,71,1,0,0,0,67,
-		65,1,0,0,0,68,70,3,4,2,0,69,68,1,0,0,0,70,73,1,0,0,0,71,69,1,0,0,0,71,
-		72,1,0,0,0,72,77,1,0,0,0,73,71,1,0,0,0,74,76,3,6,3,0,75,74,1,0,0,0,76,
-		79,1,0,0,0,77,75,1,0,0,0,77,78,1,0,0,0,78,80,1,0,0,0,79,77,1,0,0,0,80,
-		81,5,0,0,1,81,1,1,0,0,0,82,83,5,37,0,0,83,84,5,8,0,0,84,85,5,43,0,0,85,
-		86,5,10,0,0,86,87,3,60,30,0,87,3,1,0,0,0,88,89,5,37,0,0,89,90,5,9,0,0,
-		90,91,5,27,0,0,91,92,3,56,28,0,92,93,5,19,0,0,93,94,3,56,28,0,94,95,5,
-		28,0,0,95,96,5,23,0,0,96,97,5,31,0,0,97,98,3,60,30,0,98,99,5,32,0,0,99,
-		5,1,0,0,0,100,104,3,8,4,0,101,104,3,10,5,0,102,104,3,52,26,0,103,100,1,
-		0,0,0,103,101,1,0,0,0,103,102,1,0,0,0,104,7,1,0,0,0,105,106,5,5,0,0,106,
-		107,3,18,9,0,107,9,1,0,0,0,108,109,5,4,0,0,109,110,3,56,28,0,110,111,3,
-		12,6,0,111,112,3,14,7,0,112,11,1,0,0,0,113,114,3,60,30,0,114,115,3,48,
-		24,0,115,13,1,0,0,0,116,120,5,31,0,0,117,119,3,16,8,0,118,117,1,0,0,0,
-		119,122,1,0,0,0,120,118,1,0,0,0,120,121,1,0,0,0,121,123,1,0,0,0,122,120,
-		1,0,0,0,123,124,5,32,0,0,124,15,1,0,0,0,125,135,3,18,9,0,126,135,3,38,
-		19,0,127,135,3,20,10,0,128,129,3,34,17,0,129,130,5,35,0,0,130,135,1,0,
-		0,0,131,135,3,22,11,0,132,135,3,24,12,0,133,135,3,32,16,0,134,125,1,0,
-		0,0,134,126,1,0,0,0,134,127,1,0,0,0,134,128,1,0,0,0,134,131,1,0,0,0,134,
-		132,1,0,0,0,134,133,1,0,0,0,135,17,1,0,0,0,136,137,3,56,28,0,137,138,3,
-		60,30,0,138,141,5,25,0,0,139,142,3,42,21,0,140,142,3,40,20,0,141,139,1,
-		0,0,0,141,140,1,0,0,0,142,143,1,0,0,0,143,144,5,35,0,0,144,19,1,0,0,0,
-		145,146,3,60,30,0,146,149,5,25,0,0,147,150,3,42,21,0,148,150,3,40,20,0,
-		149,147,1,0,0,0,149,148,1,0,0,0,150,151,1,0,0,0,151,152,5,35,0,0,152,162,
-		1,0,0,0,153,154,3,60,30,0,154,157,5,26,0,0,155,158,3,42,21,0,156,158,3,
-		40,20,0,157,155,1,0,0,0,157,156,1,0,0,0,158,159,1,0,0,0,159,160,5,35,0,
-		0,160,162,1,0,0,0,161,145,1,0,0,0,161,153,1,0,0,0,162,21,1,0,0,0,163,164,
-		5,11,0,0,164,165,3,26,13,0,165,168,3,14,7,0,166,169,3,30,15,0,167,169,
-		3,28,14,0,168,166,1,0,0,0,168,167,1,0,0,0,168,169,1,0,0,0,169,23,1,0,0,
-		0,170,171,5,12,0,0,171,172,3,26,13,0,172,173,3,14,7,0,173,25,1,0,0,0,174,
-		175,5,27,0,0,175,176,3,46,23,0,176,177,5,28,0,0,177,27,1,0,0,0,178,179,
-		5,13,0,0,179,180,3,22,11,0,180,29,1,0,0,0,181,182,5,13,0,0,182,183,3,14,
-		7,0,183,31,1,0,0,0,184,188,5,24,0,0,185,187,8,0,0,0,186,185,1,0,0,0,187,
-		190,1,0,0,0,188,186,1,0,0,0,188,189,1,0,0,0,189,33,1,0,0,0,190,188,1,0,
-		0,0,191,192,3,60,30,0,192,193,3,36,18,0,193,35,1,0,0,0,194,196,5,27,0,
-		0,195,197,3,40,20,0,196,195,1,0,0,0,196,197,1,0,0,0,197,202,1,0,0,0,198,
-		199,5,33,0,0,199,201,3,40,20,0,200,198,1,0,0,0,201,204,1,0,0,0,202,200,
-		1,0,0,0,202,203,1,0,0,0,203,205,1,0,0,0,204,202,1,0,0,0,205,206,5,28,0,
-		0,206,37,1,0,0,0,207,208,5,6,0,0,208,209,3,40,20,0,209,210,5,35,0,0,210,
-		214,1,0,0,0,211,212,5,6,0,0,212,214,5,35,0,0,213,207,1,0,0,0,213,211,1,
-		0,0,0,214,39,1,0,0,0,215,217,3,60,30,0,216,218,5,20,0,0,217,216,1,0,0,
-		0,217,218,1,0,0,0,218,221,1,0,0,0,219,221,3,44,22,0,220,215,1,0,0,0,220,
-		219,1,0,0,0,221,41,1,0,0,0,222,225,3,46,23,0,223,225,3,34,17,0,224,222,
-		1,0,0,0,224,223,1,0,0,0,225,43,1,0,0,0,226,227,7,1,0,0,227,45,1,0,0,0,
-		228,229,3,40,20,0,229,230,5,19,0,0,230,231,3,40,20,0,231,47,1,0,0,0,232,
-		233,5,27,0,0,233,246,5,28,0,0,234,235,5,27,0,0,235,240,3,50,25,0,236,237,
-		5,33,0,0,237,239,3,50,25,0,238,236,1,0,0,0,239,242,1,0,0,0,240,238,1,0,
-		0,0,240,241,1,0,0,0,241,243,1,0,0,0,242,240,1,0,0,0,243,244,5,28,0,0,244,
-		246,1,0,0,0,245,232,1,0,0,0,245,234,1,0,0,0,246,49,1,0,0,0,247,248,3,56,
-		28,0,248,249,3,60,30,0,249,51,1,0,0,0,250,251,5,7,0,0,251,252,3,60,30,
-		0,252,253,3,54,27,0,253,53,1,0,0,0,254,258,5,31,0,0,255,257,3,18,9,0,256,
-		255,1,0,0,0,257,260,1,0,0,0,258,256,1,0,0,0,258,259,1,0,0,0,259,261,1,
-		0,0,0,260,258,1,0,0,0,261,262,5,32,0,0,262,55,1,0,0,0,263,269,5,15,0,0,
-		264,269,5,16,0,0,265,269,3,60,30,0,266,269,3,58,29,0,267,269,5,17,0,0,
-		268,263,1,0,0,0,268,264,1,0,0,0,268,265,1,0,0,0,268,266,1,0,0,0,268,267,
-		1,0,0,0,269,57,1,0,0,0,270,271,5,29,0,0,271,272,3,56,28,0,272,273,5,30,
-		0,0,273,59,1,0,0,0,274,275,5,44,0,0,275,277,5,34,0,0,276,274,1,0,0,0,276,
-		277,1,0,0,0,277,278,1,0,0,0,278,279,5,44,0,0,279,61,1,0,0,0,23,65,71,77,
-		103,120,134,141,149,157,161,168,188,196,202,213,217,220,224,240,245,258,
-		268,276
+		2,29,7,29,2,30,7,30,1,0,1,0,5,0,65,8,0,10,0,12,0,68,9,0,1,0,5,0,71,8,0,
+		10,0,12,0,74,9,0,1,0,5,0,77,8,0,10,0,12,0,80,9,0,1,0,1,0,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,3,
+		1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,117,8,3,1,4,1,4,1,
+		4,1,4,1,4,3,4,124,8,4,1,4,1,4,1,5,1,5,1,5,1,5,3,5,132,8,5,1,5,1,5,1,5,
+		1,5,1,5,1,5,3,5,140,8,5,1,5,1,5,3,5,144,8,5,1,6,1,6,1,6,1,6,1,6,3,6,151,
+		8,6,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,10,1,10,1,10,1,11,1,
+		11,1,11,1,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,14,1,14,1,14,1,15,1,
+		15,1,15,1,15,1,15,1,16,1,16,1,16,1,17,1,17,1,17,1,18,1,18,3,18,194,8,18,
+		1,18,1,18,5,18,198,8,18,10,18,12,18,201,9,18,1,18,1,18,1,19,1,19,1,19,
+		1,19,1,19,1,19,3,19,211,8,19,1,20,1,20,3,20,215,8,20,1,20,3,20,218,8,20,
+		1,21,1,21,3,21,222,8,21,1,22,1,22,1,23,1,23,1,23,1,23,1,24,1,24,1,24,1,
+		24,1,24,1,24,5,24,236,8,24,10,24,12,24,239,9,24,1,24,1,24,3,24,243,8,24,
+		1,25,1,25,1,25,1,26,1,26,1,26,1,26,1,27,1,27,5,27,254,8,27,10,27,12,27,
+		257,9,27,1,27,1,27,1,28,1,28,1,28,1,28,1,28,3,28,266,8,28,1,29,1,29,1,
+		29,1,29,1,30,1,30,3,30,274,8,30,1,30,1,30,1,30,0,0,31,0,2,4,6,8,10,12,
+		14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,
+		0,1,2,0,16,17,42,42,279,0,62,1,0,0,0,2,83,1,0,0,0,4,90,1,0,0,0,6,116,1,
+		0,0,0,8,118,1,0,0,0,10,143,1,0,0,0,12,145,1,0,0,0,14,152,1,0,0,0,16,156,
+		1,0,0,0,18,160,1,0,0,0,20,163,1,0,0,0,22,166,1,0,0,0,24,170,1,0,0,0,26,
+		174,1,0,0,0,28,177,1,0,0,0,30,180,1,0,0,0,32,185,1,0,0,0,34,188,1,0,0,
+		0,36,191,1,0,0,0,38,210,1,0,0,0,40,217,1,0,0,0,42,221,1,0,0,0,44,223,1,
+		0,0,0,46,225,1,0,0,0,48,242,1,0,0,0,50,244,1,0,0,0,52,247,1,0,0,0,54,251,
+		1,0,0,0,56,265,1,0,0,0,58,267,1,0,0,0,60,273,1,0,0,0,62,66,5,31,0,0,63,
+		65,3,2,1,0,64,63,1,0,0,0,65,68,1,0,0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,
+		72,1,0,0,0,68,66,1,0,0,0,69,71,3,4,2,0,70,69,1,0,0,0,71,74,1,0,0,0,72,
+		70,1,0,0,0,72,73,1,0,0,0,73,78,1,0,0,0,74,72,1,0,0,0,75,77,3,6,3,0,76,
+		75,1,0,0,0,77,80,1,0,0,0,78,76,1,0,0,0,78,79,1,0,0,0,79,81,1,0,0,0,80,
+		78,1,0,0,0,81,82,5,32,0,0,82,1,1,0,0,0,83,84,5,37,0,0,84,85,5,7,0,0,85,
+		86,5,43,0,0,86,87,5,9,0,0,87,88,3,60,30,0,88,89,5,35,0,0,89,3,1,0,0,0,
+		90,91,5,37,0,0,91,92,5,8,0,0,92,93,5,27,0,0,93,94,3,56,28,0,94,95,5,18,
+		0,0,95,96,3,56,28,0,96,97,5,28,0,0,97,98,5,22,0,0,98,99,5,31,0,0,99,100,
+		3,60,30,0,100,101,5,32,0,0,101,102,5,35,0,0,102,5,1,0,0,0,103,117,3,8,
+		4,0,104,117,3,38,19,0,105,117,3,10,5,0,106,107,3,34,17,0,107,108,5,35,
+		0,0,108,117,1,0,0,0,109,117,3,12,6,0,110,117,3,14,7,0,111,117,3,22,11,
+		0,112,117,3,24,12,0,113,117,3,26,13,0,114,117,3,30,15,0,115,117,3,52,26,
+		0,116,103,1,0,0,0,116,104,1,0,0,0,116,105,1,0,0,0,116,106,1,0,0,0,116,
+		109,1,0,0,0,116,110,1,0,0,0,116,111,1,0,0,0,116,112,1,0,0,0,116,113,1,
+		0,0,0,116,114,1,0,0,0,116,115,1,0,0,0,117,7,1,0,0,0,118,119,3,56,28,0,
+		119,120,3,60,30,0,120,123,5,25,0,0,121,124,3,42,21,0,122,124,3,40,20,0,
+		123,121,1,0,0,0,123,122,1,0,0,0,124,125,1,0,0,0,125,126,5,35,0,0,126,9,
+		1,0,0,0,127,128,3,60,30,0,128,131,5,25,0,0,129,132,3,42,21,0,130,132,3,
+		40,20,0,131,129,1,0,0,0,131,130,1,0,0,0,132,133,1,0,0,0,133,134,5,35,0,
+		0,134,144,1,0,0,0,135,136,3,60,30,0,136,139,5,26,0,0,137,140,3,42,21,0,
+		138,140,3,40,20,0,139,137,1,0,0,0,139,138,1,0,0,0,140,141,1,0,0,0,141,
+		142,5,35,0,0,142,144,1,0,0,0,143,127,1,0,0,0,143,135,1,0,0,0,144,11,1,
+		0,0,0,145,146,5,10,0,0,146,147,3,16,8,0,147,150,3,0,0,0,148,151,3,20,10,
+		0,149,151,3,18,9,0,150,148,1,0,0,0,150,149,1,0,0,0,150,151,1,0,0,0,151,
+		13,1,0,0,0,152,153,5,11,0,0,153,154,3,16,8,0,154,155,3,0,0,0,155,15,1,
+		0,0,0,156,157,5,27,0,0,157,158,3,46,23,0,158,159,5,28,0,0,159,17,1,0,0,
+		0,160,161,5,12,0,0,161,162,3,12,6,0,162,19,1,0,0,0,163,164,5,12,0,0,164,
+		165,3,0,0,0,165,21,1,0,0,0,166,167,5,23,0,0,167,168,5,43,0,0,168,169,5,
+		35,0,0,169,23,1,0,0,0,170,171,5,24,0,0,171,172,5,43,0,0,172,173,5,35,0,
+		0,173,25,1,0,0,0,174,175,5,3,0,0,175,176,3,8,4,0,176,27,1,0,0,0,177,178,
+		5,4,0,0,178,179,3,8,4,0,179,29,1,0,0,0,180,181,5,2,0,0,181,182,3,56,28,
+		0,182,183,3,32,16,0,183,184,3,0,0,0,184,31,1,0,0,0,185,186,3,60,30,0,186,
+		187,3,48,24,0,187,33,1,0,0,0,188,189,3,60,30,0,189,190,3,36,18,0,190,35,
+		1,0,0,0,191,193,5,27,0,0,192,194,3,40,20,0,193,192,1,0,0,0,193,194,1,0,
+		0,0,194,199,1,0,0,0,195,196,5,33,0,0,196,198,3,40,20,0,197,195,1,0,0,0,
+		198,201,1,0,0,0,199,197,1,0,0,0,199,200,1,0,0,0,200,202,1,0,0,0,201,199,
+		1,0,0,0,202,203,5,28,0,0,203,37,1,0,0,0,204,205,5,5,0,0,205,206,3,40,20,
+		0,206,207,5,35,0,0,207,211,1,0,0,0,208,209,5,5,0,0,209,211,5,35,0,0,210,
+		204,1,0,0,0,210,208,1,0,0,0,211,39,1,0,0,0,212,214,3,60,30,0,213,215,5,
+		19,0,0,214,213,1,0,0,0,214,215,1,0,0,0,215,218,1,0,0,0,216,218,3,44,22,
+		0,217,212,1,0,0,0,217,216,1,0,0,0,218,41,1,0,0,0,219,222,3,46,23,0,220,
+		222,3,34,17,0,221,219,1,0,0,0,221,220,1,0,0,0,222,43,1,0,0,0,223,224,7,
+		0,0,0,224,45,1,0,0,0,225,226,3,40,20,0,226,227,5,18,0,0,227,228,3,40,20,
+		0,228,47,1,0,0,0,229,230,5,27,0,0,230,243,5,28,0,0,231,232,5,27,0,0,232,
+		237,3,50,25,0,233,234,5,33,0,0,234,236,3,50,25,0,235,233,1,0,0,0,236,239,
+		1,0,0,0,237,235,1,0,0,0,237,238,1,0,0,0,238,240,1,0,0,0,239,237,1,0,0,
+		0,240,241,5,28,0,0,241,243,1,0,0,0,242,229,1,0,0,0,242,231,1,0,0,0,243,
+		49,1,0,0,0,244,245,3,56,28,0,245,246,3,60,30,0,246,51,1,0,0,0,247,248,
+		5,6,0,0,248,249,3,60,30,0,249,250,3,54,27,0,250,53,1,0,0,0,251,255,5,31,
+		0,0,252,254,3,8,4,0,253,252,1,0,0,0,254,257,1,0,0,0,255,253,1,0,0,0,255,
+		256,1,0,0,0,256,258,1,0,0,0,257,255,1,0,0,0,258,259,5,32,0,0,259,55,1,
+		0,0,0,260,266,5,14,0,0,261,266,5,15,0,0,262,266,3,60,30,0,263,266,3,58,
+		29,0,264,266,5,16,0,0,265,260,1,0,0,0,265,261,1,0,0,0,265,262,1,0,0,0,
+		265,263,1,0,0,0,265,264,1,0,0,0,266,57,1,0,0,0,267,268,5,29,0,0,268,269,
+		3,56,28,0,269,270,5,30,0,0,270,59,1,0,0,0,271,272,5,44,0,0,272,274,5,34,
+		0,0,273,271,1,0,0,0,273,274,1,0,0,0,274,275,1,0,0,0,275,276,5,44,0,0,276,
+		61,1,0,0,0,20,66,72,78,116,123,131,139,143,150,193,199,210,214,217,221,
+		237,242,255,265,273
 	};
 
 	public static readonly ATN _ATN =

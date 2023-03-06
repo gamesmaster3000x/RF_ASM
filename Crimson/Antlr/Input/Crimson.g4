@@ -1,44 +1,31 @@
 grammar Crimson;
 
 // Parser rules
-translationUnit 
-    : (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=globalStatement)* eof=EOF
-    ;
-
-// Compilation-Unit statements
-importUnit
-    : Hashtag Using path=String As identifier=fullName
-    ;
-operationHandler
-    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace
-    ;
-globalStatement
-    : globalVariableDeclaration #GlobalVariableUnitStatement
-    | functionDeclaration       #FunctionUnitStatement
-    | structureDeclaration      #StructureUnitStatement
-    ;
-globalVariableDeclaration
-    : Global declaration=internalVariableDeclaration // Need to add =value or =func()
-    ;
-functionDeclaration
-    : Function returnType=type header=functionHeader body=functionBody
-    ;
-functionHeader
-	: name=fullName parameters=parameterList
-	;
-functionBody
-    : OpenBrace (statements+=internalStatement)* CloseBrace 
+scope
+    : OpenBrace (imports+=importUnit)* (opHandlers+=operationHandler)* (statements+=statement)* CloseBrace 
     ; 
 
+// Scope header things
+importUnit
+    : Hashtag Using path=String As identifier=fullName SemiColon
+    ;
+operationHandler
+    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace SemiColon
+    ;
+
 // Function-only statements
-internalStatement
-    : internalVariableDeclaration   #FunctionVariableDeclarationStatement
-    | functionReturn                #FunctionReturnStatement
-    | assignVariable                #FunctionAssignVariableStatement
-    | functionCall SemiColon        #FunctionFunctionCallStatement
-    | ifBlock                       #FunctionIfStatement
-    | whileBlock                    #FunctionWhileStatement
-    | assemblyCall                  #FunctionAssemblyCallStatement
+statement
+    : internalVariableDeclaration   #VariableDeclarationStatement
+    | functionReturn                #ReturnStatement
+    | assignVariable                #AssignVariableStatement
+    | functionCall SemiColon        #FunctionCallStatement
+    | ifBlock                       #IfStatement
+    | whileBlock                    #WhileStatement
+    | basicCall                     #BasicCallStatement
+    | assemblyCall                  #AssemblyCallStatement
+    | globalVariableDeclaration     #GlobalVariableStatement
+    | functionDeclaration           #FunctionDeclarationStatement
+    | structureDeclaration          #StructureDeclarationStatement
     ;
 internalVariableDeclaration 
     : type fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
@@ -48,10 +35,10 @@ assignVariable
     | name=fullName PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
-    : If condition functionBody (elseBlock | elseIfBlock)?
+    : If condition scope (elseBlock | elseIfBlock)?
     ;
 whileBlock
-    : While condition functionBody
+    : While condition scope
     ;
 condition
     : OpenBracket op=operation CloseBracket
@@ -60,11 +47,26 @@ elseIfBlock
     : Else ifBlock
     ;
 elseBlock
-    : Else functionBody
+    : Else scope
+    ;
+basicCall
+    : BasicCall basicText=String SemiColon
     ;
 assemblyCall
-    : Tilda assemblyText=~('\r' | '\n')*
+    : AssemblyCall assemblyText=String SemiColon
     ;
+globalVariableDeclaration
+    : Global declaration=internalVariableDeclaration
+    ;
+scopedVariableDeclaration
+    : Scoped declaration=internalVariableDeclaration
+    ;
+functionDeclaration
+    : Function returnType=type header=functionHeader body=scope
+    ;
+functionHeader
+	: name=fullName parameters=parameterList
+	;
  
 // Function
 functionCall
@@ -137,6 +139,7 @@ fullName
 Allocator: 'allocator';
 Function: 'function';
 Global: 'global';
+Scoped: 'scoped';
 Return: 'return';
 Structure: 'structure';
 Using: 'using';
@@ -171,7 +174,8 @@ fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
 
 RightArrow: '->';
-Tilda: '~';
+BasicCall: 'B~';
+AssemblyCall: 'A~';
 DirectEquals: '=';
 PointerEquals: '*=';
 OpenBracket: '(';
@@ -203,7 +207,7 @@ String
     : Quote ~('"')* Quote
     ;
 ShortName
-    : (Alphabetic) (Alphabetic | Number | Underscore)+?
+    : (Alphabetic) (Alphabetic | Number | Underscore)*
     ;
 fragment Alphabetic
     : [a-zA-Z]

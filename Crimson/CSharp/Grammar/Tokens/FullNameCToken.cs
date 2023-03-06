@@ -23,13 +23,15 @@ namespace Crimson.CSharp.Grammar.Tokens
                 LibraryName = null;
                 MemberName = strings[0];
             }
-            if (strings.Length == 2) 
+            else if (strings.Length == 2) 
             { 
                 LibraryName = strings[0]; 
                 MemberName = strings[1];
+            } 
+            else
+            {
+                throw new ArgumentException($"Cannot construct FullNameCToken from {strings.Length} parts (must have 1 or 2 parts)");
             }
-
-            throw new ArgumentException($"Cannot construct FullNameCToken from {strings.Length} parts (must be 1 < parts < 2)");
         }
 
         public bool HasMember ()

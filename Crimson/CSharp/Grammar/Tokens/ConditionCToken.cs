@@ -33,6 +33,7 @@ namespace Crimson.CSharp.Grammar.Tokens
             /*Fragment left = leftValue.GetBasicFragment();
             Fragment right = rightValue.GetBasicFragment();*/
             Fragment combined = new Fragment(0);
+            combined.ResultHolder = "c_r_h";
             /*combined.Add(left);
             combined.Add(right);
             string combinedName = FlattenerHelper.GetUniqueResolvableValueFieldName();

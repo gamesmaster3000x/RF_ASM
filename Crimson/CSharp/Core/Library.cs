@@ -30,15 +30,15 @@ namespace Crimson.CSharp.Core
         /// [ C:/utils.crm => UTILS_UNIT ]
         /// [ C:/main.crm  => MAIN_UNIT  ]
         /// </summary>
-        internal Dictionary<string, CompilationUnit> Units { get; }
+        internal Dictionary<string, Scope> Units { get; }
 
         public Library(CrimsonOptions options)
         {
             Options = options;
-            Units = new Dictionary<string, CompilationUnit>();
+            Units = new Dictionary<string, Scope>();
         }
 
-        public CompilationUnit LoadUnitFromPath(string pathIn)
+        public Scope LoadUnitFromPath(string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
@@ -49,7 +49,7 @@ namespace Crimson.CSharp.Core
                 throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet with reserved name '" + pathIn + "'");
             }
 
-            CompilationUnit? unit = LookupUnitByPath(path);
+            Scope? unit = LookupUnitByPath(path);
             if (unit != null)
             {
                 return unit;
@@ -58,7 +58,7 @@ namespace Crimson.CSharp.Core
             try
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-                CompilationUnit newUnit = LoadUnitFromText(path + " (" + pathIn + ")", programText);
+                Scope newUnit = LoadUnitFromText(path + " (" + pathIn + ")", programText);
                 Units[path] = newUnit;
                 return newUnit;
             } 
@@ -76,7 +76,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public CompilationUnit LoadUnitFromText(string sourceName, string textIn)
+        public Scope LoadUnitFromText(string sourceName, string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
@@ -87,9 +87,9 @@ namespace Crimson.CSharp.Core
             lexer.AddErrorListener(new LexerErrorListener(sourceName));
             parser.ErrorHandler = new ParserErrorStrategy(sourceName);
 
-            CrimsonParser.TranslationUnitContext cuCtx = parser.translationUnit();
-            CrimsonCompiliationUnitVisitor visitor = new CrimsonCompiliationUnitVisitor();
-            CompilationUnit compilationUnit = visitor.VisitTranslationUnit(cuCtx);
+            CrimsonParser.ScopeContext cuCtx = parser.scope();
+            ScopeVisitor visitor = new ScopeVisitor();
+            Scope compilationUnit = visitor.VisitScope(cuCtx);
 
             return compilationUnit;
         }
@@ -109,7 +109,7 @@ namespace Crimson.CSharp.Core
             return path;
         }
 
-        public CompilationUnit? LookupUnitByPath(string path)
+        public Scope? LookupUnitByPath(string path)
         {
             if (Units.ContainsKey(path))
             {

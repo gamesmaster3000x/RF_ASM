@@ -7,7 +7,7 @@ using System;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class VariableAssignmentCStatement : InternalStatement
+    internal class VariableAssignmentCStatement : ICrimsonStatement
     {
 
         public FullNameCToken Identifier { get; set; }
@@ -26,22 +26,37 @@ namespace Crimson.CSharp.Grammar.Statements
             Complex = value;
         }
 
-        public override void Link(LinkingContext ctx)
+        public void Link(LinkingContext ctx)
         {
             Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
             Simple?.Link(ctx);
             Complex?.Link(ctx);
         }
 
-        public override Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic()
         {
             Fragment result = new Fragment(0);
 
-            if (Complex == null) throw new FlatteningException("Illegal value assignment to " + Identifier + " (Proposed value is compiler-null)");
-            result.Add(Complex.GetBasicFragment());
-            result.Add(new SetBStatement(Identifier.ToString(), "VAR_ASSIGN_C_VAL"));
+            if (Simple != null)
+            {
+                result.Add(new CommentBStatement(Simple.GetText()));
+            } 
+            else if (Complex != null)
+            {
+                result.Add(Complex.GetBasicFragment());
+                result.Add(new SetBStatement(Identifier.ToString(), -1, "VAR_ASSIGN_C_VAL"));
+            } 
+            else
+            {
+                throw new FlatteningException($"No value to be assigned to variable {Identifier}");
+            }
 
             return result;
+        }
+
+        public bool IsLinked ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

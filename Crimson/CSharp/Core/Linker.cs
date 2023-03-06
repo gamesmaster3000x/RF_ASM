@@ -30,14 +30,14 @@ namespace Crimson.CSharp.Core
             LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
-            foreach (KeyValuePair<string, CompilationUnit> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, Scope> pair in compilation.Library.Units)
             {
                 LOGGER.Info("Linking " + pair);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, CompilationUnit>());
-                CompilationUnit unit = pair.Value;
+                LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, Scope>());
+                Scope unit = pair.Value;
                 ctx.Links.Add(pair.Key, pair.Value); //TODO This may cause issues
                 foreach (KeyValuePair<string, ImportCStatement> importPair in unit.Imports)
                 {
@@ -58,7 +58,7 @@ namespace Crimson.CSharp.Core
                     /*
                      * 
                      */
-                    CompilationUnit? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
+                    Scope? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
                     if (mappingUnit == null) throw new LinkingException("Could not add unloaded unit " + relativePath + " (alias=" + alias + ") to mapping context");
 
                     ctx.Links.Add(alias, mappingUnit);
@@ -79,7 +79,7 @@ namespace Crimson.CSharp.Core
             return;
         }
 
-        private static List<ICrimsonStatement> GetAllStatements(CompilationUnit unit)
+        private static List<ICrimsonStatement> GetAllStatements(Scope unit)
         {
             var statements = new List<ICrimsonStatement>();
             foreach (var s in unit.Functions.Values)

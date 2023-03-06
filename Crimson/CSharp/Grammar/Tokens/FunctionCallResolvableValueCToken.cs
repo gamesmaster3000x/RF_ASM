@@ -2,6 +2,7 @@
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Statements;
 using CrimsonBasic.CSharp.Core;
+using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Tokens
 {
@@ -21,7 +22,9 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public override Fragment GetBasicFragment()
         {
-            throw new NotImplementedException();
+            Fragment fragment = new Fragment(0);
+            fragment.Add(new CommentBStatement("Function Call"));
+            return fragment;
         }
     }
 }
