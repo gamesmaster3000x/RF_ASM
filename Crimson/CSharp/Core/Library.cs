@@ -32,13 +32,13 @@ namespace Crimson.CSharp.Core
         /// </summary>
         internal Dictionary<string, Scope> Units { get; }
 
-        public Library(CrimsonOptions options)
+        public Library (CrimsonOptions options)
         {
             Options = options;
             Units = new Dictionary<string, Scope>();
         }
 
-        public Scope LoadUnitFromPath(string pathIn)
+        public Scope LoadUnitFromPath (string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
@@ -61,8 +61,8 @@ namespace Crimson.CSharp.Core
                 Scope newUnit = LoadUnitFromText(path + " (" + pathIn + ")", programText);
                 Units[path] = newUnit;
                 return newUnit;
-            } 
-            catch (IOException io) 
+            }
+            catch (IOException io)
             {
                 throw new UnitGeneratorException("Unable to find source file for CompilationUnit " + path + " (" + pathIn + ")", io);
             }
@@ -70,13 +70,13 @@ namespace Crimson.CSharp.Core
             {
                 throw new UnitGeneratorException("Error while parsing '" + path + "' (" + pathIn + ")", spe);
             }
-            catch (System.Exception e) 
+            catch (System.Exception e)
             {
                 throw new UnitGeneratorException("Unexpected error while creating CompilationUnit from " + path + " (" + pathIn + ")", e);
             }
         }
 
-        public Scope LoadUnitFromText(string sourceName, string textIn)
+        public Scope LoadUnitFromText (string sourceName, string textIn)
         {
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
@@ -94,7 +94,7 @@ namespace Crimson.CSharp.Core
             return compilationUnit;
         }
 
-        public string StandardiseNativePath(string path)
+        public string StandardiseNativePath (string path)
         {
             if (path.StartsWith(SYSTEM_LIBRARY_PREFIX))
             {
@@ -109,12 +109,13 @@ namespace Crimson.CSharp.Core
             return path;
         }
 
-        public Scope? LookupUnitByPath(string path)
+        public Scope? LookupUnitByPath (string path)
         {
             if (Units.ContainsKey(path))
             {
                 return Units[path];
-            } else
+            }
+            else
             {
                 var nativePath = StandardiseNativePath(path);
                 if (Units.ContainsKey(nativePath))
@@ -125,9 +126,9 @@ namespace Crimson.CSharp.Core
             return null;
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
-            return $"Library(Units={Units})";
+            return $"Library(Units={String.Join(',', Units)})";
         }
     }
 }

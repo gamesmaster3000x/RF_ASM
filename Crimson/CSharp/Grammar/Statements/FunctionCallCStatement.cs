@@ -6,16 +6,15 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class FunctionCallCStatement : ICrimsonStatement
+    public class FunctionCallCStatement : AbstractCrimsonStatement
     {
         private FullNameCToken identifier;
         private FunctionCStatement? targetFunction;
         private IList<SimpleValueCToken> arguments;
-        private bool _linked = false;
 
         public static readonly string FUNCTION_RETURN_VARIABLE_NAME = "FUNC_RETURN";
 
-        public FunctionCallCStatement(FullNameCToken identifier, IList<SimpleValueCToken> arguments) : base()
+        public FunctionCallCStatement (FullNameCToken identifier, IList<SimpleValueCToken> arguments) : base()
         {
             if (!identifier.HasMember()) throw new CrimsonParserException($"Name {identifier} must contain a member name.");
 
@@ -32,7 +31,7 @@ namespace Crimson.CSharp.Grammar.Statements
         /// 
         /// </summary>
         /// <returns></returns>
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic ()
         {
             Fragment f = new Fragment(0);
 
@@ -72,9 +71,9 @@ namespace Crimson.CSharp.Grammar.Statements
             return f;
         }
 
-        public void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
-            if (IsLinked()) return;
+            if (Linked) return;
 
             targetFunction = LinkerHelper.LinkFunctionCall(identifier, ctx);
 
@@ -83,12 +82,7 @@ namespace Crimson.CSharp.Grammar.Statements
                 a.Link(ctx);
             }
 
-            _linked = true;
-        }
-
-        public bool IsLinked ()
-        {
-            throw new NotImplementedException();
+            Linked = true;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Crimson.CSharp.Core
             IList<CrimsonParser.StatementContext> unitStatementCtxs = context._statements;
             foreach (CrimsonParser.StatementContext unitStatementCtx in unitStatementCtxs)
             {
-                ICrimsonStatement unitStatement = ParseStatement(unitStatementCtx);
+                AbstractCrimsonStatement unitStatement = ParseStatement(unitStatementCtx);
                 compilation.AddStatement(unitStatement);
             }
 
@@ -53,7 +53,7 @@ namespace Crimson.CSharp.Core
             return scopeStack.Pop();
         }
 
-        private ICrimsonStatement ParseStatement (CrimsonParser.StatementContext stCtx)
+        private AbstractCrimsonStatement ParseStatement (CrimsonParser.StatementContext stCtx)
         {
 
             if (stCtx is CrimsonParser.GlobalVariableStatementContext globalContext)
@@ -163,14 +163,14 @@ namespace Crimson.CSharp.Core
         public override StructureCStatement VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context)
         {
             FullNameCToken identifier = VisitFullName(context.name);
-            IList<ICrimsonStatement> body = VisitStructureBody(context.structureBody());
+            IList<AbstractCrimsonStatement> body = VisitStructureBody(context.structureBody());
             StructureCStatement structure = new StructureCStatement(identifier, body);
             return structure;
         }
 
-        public override IList<ICrimsonStatement> VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context)
+        public override IList<AbstractCrimsonStatement> VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context)
         {
-            IList<ICrimsonStatement> statements = new List<ICrimsonStatement>();
+            IList<AbstractCrimsonStatement> statements = new List<AbstractCrimsonStatement>();
             foreach (CrimsonParser.InternalVariableDeclarationContext ivdCtx in context.internalVariableDeclaration())
             {
                 InternalVariableCStatement var = VisitInternalVariableDeclaration(ivdCtx);

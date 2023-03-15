@@ -5,30 +5,25 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class ReturnCStatement : ICrimsonStatement
+    internal class ReturnCStatement : AbstractCrimsonStatement
     {
-        public ReturnCStatement(SimpleValueCToken value)
+        public ReturnCStatement (SimpleValueCToken value)
         {
             Value = value;
         }
 
         public SimpleValueCToken Value { get; }
 
-        public void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
-            return;
+            Linked = true;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic ()
         {
             Fragment f = new Fragment(0);
             f.Add(new ReturnBStatement());
             return f;
-        }
-
-        public bool IsLinked ()
-        {
-            throw new NotImplementedException();
         }
     }
 }

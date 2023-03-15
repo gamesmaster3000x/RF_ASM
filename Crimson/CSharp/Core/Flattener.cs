@@ -135,7 +135,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: INamedStatement
+        private void FixNameAndAdd<GS>(Dictionary<string, GS> map, GS gs) where GS: INamed
         {
             int i = 0;
             string prefix = GetFlattenedPrefix(gs.GetType());

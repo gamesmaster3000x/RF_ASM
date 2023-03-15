@@ -8,7 +8,7 @@ using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class InternalVariableCStatement : ICrimsonStatement
+    public class InternalVariableCStatement : AbstractCrimsonStatement
     {
         private CrimsonTypeCToken type;
         public FullNameCToken Identifier { get; private set; }
@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Grammar.Statements
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken simple)
+        public InternalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken simple)
         {
             this.type = type;
             this.Identifier = identifier;
@@ -29,7 +29,7 @@ namespace Crimson.CSharp.Grammar.Statements
             if (Simple == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
-        public InternalVariableCStatement(CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken complex)
+        public InternalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken complex)
         {
             this.type = type;
             this.Identifier = identifier;
@@ -42,15 +42,15 @@ namespace Crimson.CSharp.Grammar.Statements
             if (Complex == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
-        public void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
             // Only run if not null
             Simple?.Link(ctx);
             Complex?.Link(ctx);
-            return;
+            Linked = true;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic ()
         {
             Fragment statements = new Fragment(0);
 
@@ -62,12 +62,12 @@ namespace Crimson.CSharp.Grammar.Statements
                 statements.Add(new IncSpBStatement(type.GetByteSize()));
                 statements.Add(new SetBStatement(Identifier.ToString(), -1, valueStatements.ResultHolder!));
 
-            } 
+            }
             else if (Simple != null)
             {
                 statements.Add(new IncSpBStatement(type.GetByteSize()));
                 statements.Add(new SetBStatement(Identifier.ToString(), -1, Simple.GetText()));
-            } 
+            }
             else
             {
                 throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");

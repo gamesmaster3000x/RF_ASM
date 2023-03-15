@@ -14,37 +14,31 @@ namespace Crimson.CSharp.Grammar.Statements
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.
     /// </summary>
-    public class GlobalVariableCStatement : INamedStatement
+    public class GlobalVariableCStatement : AbstractCrimsonStatement, INamed
     {
         private CrimsonTypeCToken type;
         public FullNameCToken Name { get; protected set; }
-        private bool _linked = false;
 
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken value)
+        public GlobalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken value)
         {
             this.type = type;
             Name = identifier;
             Complex = value;
         }
 
-        public GlobalVariableCStatement(CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken value)
+        public GlobalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken value)
         {
             this.type = type;
             Name = identifier;
             Simple = value;
         }
 
-        public void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
-            return;
-        }
-
-        public bool IsLinked ()
-        {
-            return _linked;
+            Linked = true;
         }
 
         public FullNameCToken GetName ()
@@ -57,7 +51,7 @@ namespace Crimson.CSharp.Grammar.Statements
             Name = name;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic ()
         {
             Fragment statements = new Fragment(0);
 

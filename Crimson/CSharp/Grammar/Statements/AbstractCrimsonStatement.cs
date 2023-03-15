@@ -7,12 +7,12 @@ namespace Crimson.CSharp.Grammar.Statements
     /// <summary>
     /// A collection of ICrimsonTokens which make a coherent "phrase".
     /// </summary>
-    public interface ICrimsonStatement
+    public abstract class AbstractCrimsonStatement
     {
-        public abstract void Link(LinkingContext ctx);
+        public bool Linked { get; set; }
 
-        public abstract bool IsLinked();
+        public abstract void Link (LinkingContext ctx);
 
-        public abstract Fragment GetCrimsonBasic();
+        public abstract Fragment GetCrimsonBasic ();
     }
 }

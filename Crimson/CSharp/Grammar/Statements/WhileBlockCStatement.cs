@@ -5,10 +5,10 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class WhileBlockCStatement : ICrimsonStatement
+    internal class WhileBlockCStatement : AbstractCrimsonStatement
     {
 
-        public WhileBlockCStatement(ConditionCToken condition, Scope scope)
+        public WhileBlockCStatement (ConditionCToken condition, Scope scope)
         {
             Condition = condition;
             Scope = scope;
@@ -17,10 +17,11 @@ namespace Crimson.CSharp.Grammar.Statements
         public ConditionCToken Condition { get; }
         public Scope Scope { get; }
 
-        public void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
             Condition.Link(ctx);
             Scope.Link(ctx);
+            Linked = true;
         }
 
         /*
@@ -48,7 +49,7 @@ namespace Crimson.CSharp.Grammar.Statements
          *  (3)
          * :END_IF
          */
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic ()
         {
             Fragment wholeBlock = new Fragment(0);
 

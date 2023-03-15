@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Core
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public CrimsonOptions Options { get; }
-        public Linker(CrimsonOptions options)
+        public Linker (CrimsonOptions options)
         {
             Options = options;
         }
@@ -25,43 +25,26 @@ namespace Crimson.CSharp.Core
         /// Links the FunctionCalls in a Compilation.
         /// </summary>
         /// <param name="compilation"></param>
-        public void Link(Compilation compilation)
+        public void Link (Compilation compilation)
         {
             LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
-            foreach (KeyValuePair<string, Scope> pair in compilation.Library.Units)
+            foreach (KeyValuePair<string, Scope> keyScopePair in compilation.Library.Units)
             {
-                LOGGER.Info("Linking " + pair);
+                LOGGER.Info("Linking " + keyScopePair);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                LinkingContext ctx = new LinkingContext(pair.Key, pair.Key, new Dictionary<string, Scope>());
-                Scope unit = pair.Value;
-                ctx.Links.Add(pair.Key, pair.Value); //TODO This may cause issues
-                foreach (KeyValuePair<string, ImportCStatement> importPair in unit.Imports)
+                LinkingContext ctx = new LinkingContext(keyScopePair.Key, keyScopePair.Key, new Dictionary<string, Scope>(), compilation);
+                Scope unit = keyScopePair.Value;
+                ctx.Links.Add(keyScopePair.Key, keyScopePair.Value); //TODO This may cause issues
+
+                // Add links from the current unit
+                Dictionary<string, Scope> NewLinks = keyScopePair.Value.GetLinks(compilation);
+                foreach (var l in NewLinks)
                 {
-                    /*
-                     * Get the alias of the dependency.
-                     * For example:
-                     *  The alias of '#using "utils.crm" as u' is 'u'
-                     */
-                    string alias = importPair.Key;
-
-                    /*
-                     * Get the relative path of the unit which the alias refers to.
-                     * For example:
-                     *  '#using "utils.crm" as u' may result in 'C:/utils.crm'
-                     */
-                    string relativePath = importPair.Value.Path;
-
-                    /*
-                     * 
-                     */
-                    Scope? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
-                    if (mappingUnit == null) throw new LinkingException("Could not add unloaded unit " + relativePath + " (alias=" + alias + ") to mapping context");
-
-                    ctx.Links.Add(alias, mappingUnit);
+                    ctx.Links.Add(l.Key, l.Value);
                 }
 
                 // Link each statement in the unit
@@ -79,9 +62,9 @@ namespace Crimson.CSharp.Core
             return;
         }
 
-        private static List<ICrimsonStatement> GetAllStatements(Scope unit)
+        private static List<AbstractCrimsonStatement> GetAllStatements (Scope unit)
         {
-            var statements = new List<ICrimsonStatement>();
+            var statements = new List<AbstractCrimsonStatement>();
             foreach (var s in unit.Functions.Values)
             {
                 statements.Add(s);

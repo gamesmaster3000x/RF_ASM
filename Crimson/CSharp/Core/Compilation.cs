@@ -11,7 +11,7 @@ namespace Crimson.CSharp.Core
     /// 
     /// For example: <"C:/main.crm", CompilationUnit>.
     /// </summary>
-    internal class Compilation
+    public class Compilation
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
@@ -21,7 +21,7 @@ namespace Crimson.CSharp.Core
         /// </summary>
         internal Library Library { get; }
 
-        public Compilation(Scope rootUnit, CrimsonOptions options)
+        public Compilation (Scope rootUnit, CrimsonOptions options)
         {
             Library = new Library(options);
 
@@ -33,7 +33,7 @@ namespace Crimson.CSharp.Core
         /// Loads dependencies for the given root CompilationUnit, as well as that unit's dependencies, recursively.
         /// </summary>
         /// <param name="root"></param>
-        private void LoadLibrary(Scope root)
+        private void LoadLibrary (Scope root)
         {
             // For each import
             foreach (var i in root.Imports)
@@ -46,12 +46,12 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public Scope GetRootUnit()
+        public Scope GetRootUnit ()
         {
             return Library.Units[Library.ROOT_FACET_NAME];
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return $"Compilation(RootUnit={GetRootUnit()}; Library={Library.ToString()})";
         }

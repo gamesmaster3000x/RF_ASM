@@ -7,7 +7,7 @@ namespace Crimson.CSharp.Grammar.Statements
     /// <summary>
     /// A collection of ICrimsonTokens which make a coherent "phrase".
     /// </summary>
-    public interface INamedStatement: ICrimsonStatement
+    public interface INamed
     {
         public abstract FullNameCToken GetName ();
         public abstract void SetName (FullNameCToken name);

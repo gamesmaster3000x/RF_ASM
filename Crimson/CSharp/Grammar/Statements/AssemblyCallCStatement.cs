@@ -4,30 +4,25 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class AssemblyCallCStatement : ICrimsonStatement
+    internal class AssemblyCallCStatement : AbstractCrimsonStatement
     {
         private string assemblyText;
 
-        public AssemblyCallCStatement(string assemblyText)
+        public AssemblyCallCStatement (string assemblyText)
         {
             this.assemblyText = assemblyText;
         }
 
-        public Fragment GetCrimsonBasic()
+        public override Fragment GetCrimsonBasic ()
         {
             Fragment f = new Fragment(0);
             f.Add(new AssemblyBStatement(assemblyText));
             return f;
         }
 
-        public bool IsLinked ()
+        public override void Link (LinkingContext ctx)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Link(LinkingContext ctx)
-        {
-
+            Linked = true;
         }
     }
 }

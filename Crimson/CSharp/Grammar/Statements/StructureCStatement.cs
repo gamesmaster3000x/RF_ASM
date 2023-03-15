@@ -4,31 +4,26 @@ using CrimsonBasic.CSharp.Core;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class StructureCStatement : INamedStatement
+    public class StructureCStatement : AbstractCrimsonStatement, INamed
     {
         public FullNameCToken Name { get; set; }
 
-        public StructureCStatement(FullNameCToken name, IList<ICrimsonStatement> body)
+        public StructureCStatement (FullNameCToken name, IList<AbstractCrimsonStatement> body)
         {
             Name = name;
             Body = body;
         }
 
-        public IList<ICrimsonStatement> Body { get; }
+        public IList<AbstractCrimsonStatement> Body { get; }
 
-        public Fragment GetCrimsonBasic ()
+        public override Fragment GetCrimsonBasic ()
         {
-            throw new NotImplementedException();
+            return new Fragment(0);
         }
 
-        public bool IsLinked ()
+        public override void Link (LinkingContext ctx)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Link(LinkingContext ctx)
-        {
-            return;
+            Linked = true;
         }
 
         public FullNameCToken GetName ()
