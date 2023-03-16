@@ -2,6 +2,7 @@
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Statements;
 using CrimsonBasic.CSharp.Core;
+using NLog;
 
 namespace Crimson.CSharp.Grammar
 {
@@ -10,20 +11,34 @@ namespace Crimson.CSharp.Grammar
     /// </summary>
     public class Scope : AbstractCrimsonStatement
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public Scope? Parent { get; set; }
-        private bool _linked;
         private string? _path;
 
-        public Scope (Scope? parent) : this(parent, null) { }
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                if (String.IsNullOrWhiteSpace(_name))
+                {
+                    return Parent == null ? "(root)" : "(anon)";
+                }
+                return _name;
+            }
+            set => _name = value;
+        }
 
-        public Scope (string? path) : this(null, path) { }
+        public Scope (string name, Scope? parent) : this(name, parent, null) { }
 
-        private Scope (Scope? parent, string? path)
+        public Scope (string name, string? path) : this(name, null, path) { }
+
+        private Scope (string name, Scope? parent, string? path)
         {
             Parent = null;
-            _linked = false;
             _path = path;
+            Name = name;
 
             Delegates = new List<StatementDelegate>();
 
@@ -34,15 +49,9 @@ namespace Crimson.CSharp.Grammar
             GlobalVariables = new Dictionary<string, GlobalVariableCStatement>();
         }
 
-        public bool HasParent ()
-        {
-            return Parent != null;
-        }
-
-        public Scope GetParent ()
-        {
-            return HasParent() ? Parent! : this;
-        }
+        public bool HasParent () => Parent != null;
+        public Scope GetParent () => HasParent() ? Parent! : this;
+        public string FamilyToString () => $"{(HasParent() ? GetParent().FamilyToString() : "(root)")} -> {this}";
 
         public Scope GetRoot ()
         {
@@ -69,9 +78,12 @@ namespace Crimson.CSharp.Grammar
             throw new NullReferenceException($"Scope tree has no associated path: {FamilyToString()}");
         }
 
-        public string FamilyToString ()
+        public FunctionCStatement? FindFunction (string funcName)
         {
-            return $"{(HasParent() ? GetParent().FamilyToString() : "")} -> {this}";
+            if (Functions.ContainsKey(funcName))
+                return Functions[funcName];
+            else
+                return HasParent() ? GetParent().FindFunction(funcName) : null;
         }
 
         // Statements
@@ -108,9 +120,29 @@ namespace Crimson.CSharp.Grammar
                 Delegates.Add(() => d[name]);
             }
 
-            if (statement is FunctionCStatement f) AddNamedIfNotDuplicate(Functions, f, "Function");
+            if (statement is IHasScope scopeStatement)
+            {
+                scopeStatement.GetScope().Parent = this;
+
+                if (statement is INamed namedStatement)
+                {
+                    scopeStatement.GetScope().Name = namedStatement.GetName().ToString();
+                }
+            }
+
+            // Special cases
+            if (statement is FunctionCStatement f)
+            {
+                AddNamedIfNotDuplicate(Functions, f, "Function");
+            }
             else if (statement is GlobalVariableCStatement g) AddNamedIfNotDuplicate(GlobalVariables, g, "Global Variable");
             else if (statement is StructureCStatement s) AddNamedIfNotDuplicate(Structures, s, "Structure");
+            else if (statement is Scope sc)
+            {
+                sc.Parent = this;
+                sc.Name = $"{Name}/{sc.Name}";
+                Delegates.Add(() => statement);
+            }
             else Delegates.Add(() => statement);
         }
 
@@ -138,7 +170,7 @@ namespace Crimson.CSharp.Grammar
                 /*
                  * 
                  */
-                Scope? mappingUnit = compilation.Library.LookupUnitByPath(relativePath);
+                Scope? mappingUnit = compilation.Library.LookupScopeByPath(relativePath);
                 if (mappingUnit == null) throw new LinkingException("Could not add unloadable unit " + relativePath + " (alias=" + alias + ") to mapping context");
                 Links.Add(alias, mappingUnit);
             }
@@ -151,19 +183,23 @@ namespace Crimson.CSharp.Grammar
         /// <param name="ctx"></param>
         public override void Link (LinkingContext ctx)
         {
+            LOGGER.Debug($"Linking {FamilyToString()}");
+
             // Partially shallow-copy the old context (links in a lower level should not get carried up to higher levels)
-            LinkingContext newContext = new LinkingContext(ctx);
+            LinkingContext newContext = new LinkingContext(this, ctx);
 
             Dictionary<string, Scope> dictionary = GetLinks(newContext.Compilation);
             foreach (var link in dictionary)
             {
-                ctx.Links.Add(link.Key, link.Value);
+                newContext.Links.Add(link.Key, link.Value);
             }
 
             foreach (var d in Delegates)
             {
-                d.Invoke().Link(ctx);
+                d.Invoke().Link(newContext);
             }
+
+            LOGGER.Info($"Linked {Delegates.Count} scope-level statements");
         }
 
         public override Fragment GetCrimsonBasic ()
@@ -180,7 +216,8 @@ namespace Crimson.CSharp.Grammar
 
         public override string ToString ()
         {
-            return $"Scope(Imports:{Imports.Count} Functions:{Functions.Count} Structures:{Structures.Count} GlobalVariables{GlobalVariables.Count})";
+
+            return $"Scope({Name}; I:{Imports.Count} F:{Functions.Count} S:{Structures.Count} G:{GlobalVariables.Count})";
         }
     }
 }

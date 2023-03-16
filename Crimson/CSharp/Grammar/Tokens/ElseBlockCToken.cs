@@ -5,16 +5,18 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Tokens
 {
-    internal class ElseBlockCToken : ICrimsonToken
+    internal class ElseBlockCToken : ICrimsonToken, IHasScope
     {
-        public ElseBlockCToken(Scope statements)
+        public ElseBlockCToken (Scope statements)
         {
             Scope = statements;
         }
 
         public Scope Scope { get; }
 
-        public Fragment GetCrimsonBasic()
+        public Scope GetScope () => Scope;
+
+        public Fragment GetCrimsonBasic ()
         {
             Fragment fragment = new Fragment(0);
             fragment.Add(new CommentBStatement(""));
@@ -31,7 +33,7 @@ namespace Crimson.CSharp.Grammar.Tokens
             return fragment;
         }
 
-        public void Link(LinkingContext ctx)
+        public void Link (LinkingContext ctx)
         {
             Scope.Link(ctx);
             return;

@@ -13,12 +13,12 @@ namespace Crimson.CSharp.Exception
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private string Path { get; set; }
-        public ParserErrorStrategy(string path)
+        public ParserErrorStrategy (string path)
         {
             Path = path;
         }
 
-        public override void ReportError(Parser recognizer, RecognitionException e)
+        public override void ReportError (Parser recognizer, RecognitionException e)
         {
             base.ReportError(recognizer, e);
             throw new CrimsonParserException("", e);

@@ -5,7 +5,7 @@ using CrimsonBasic.CSharp.Statements;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class WhileBlockCStatement : AbstractCrimsonStatement
+    internal class WhileBlockCStatement : AbstractCrimsonStatement, IHasScope
     {
 
         public WhileBlockCStatement (ConditionCToken condition, Scope scope)
@@ -16,6 +16,8 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public ConditionCToken Condition { get; }
         public Scope Scope { get; }
+
+        public Scope GetScope () => Scope;
 
         public override void Link (LinkingContext ctx)
         {

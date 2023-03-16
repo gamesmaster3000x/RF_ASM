@@ -15,7 +15,7 @@ namespace Crimson.CSharp.Core
         /// <param name="ctx"></param>
         /// <returns></returns>
         /// <exception cref="LinkingException"></exception>
-        internal static FunctionCStatement LinkFunctionCall(FullNameCToken identifier, LinkingContext ctx)
+        internal static FunctionCStatement LinkFunctionCall (FullNameCToken identifier, LinkingContext ctx)
         {
             if (identifier == null) throw new LinkingException("Cannot link a null identifer");
 
@@ -31,15 +31,11 @@ namespace Crimson.CSharp.Core
             {
                 string alias = identifier.LibraryName;
 
-                Scope unit = ctx.GetUnit(alias);
+                Scope scope = ctx.GetUnit(alias);
                 string funcName = identifier.MemberName;
 
-                if (!unit.Functions.TryGetValue(funcName, out FunctionCStatement? result))
-                {
-                    throw new LinkingException("Function '" + funcName + "' does not exist in CompilationUnit " + unit + " via LinkingContext " + ctx.ToString());
-                }
-
-                return result;
+                FunctionCStatement? func = scope.FindFunction(funcName);
+                return func ?? throw new LinkingException($"External Function '{identifier}' does not exist in external {alias}:{scope}; " + ctx.ToString());
             }
 
             /*
@@ -52,9 +48,9 @@ namespace Crimson.CSharp.Core
             if (identifier.HasMember())
             {
                 string funcName = identifier.MemberName;
-                if (!ctx.GetCurrentUnit().Functions.TryGetValue(funcName, out FunctionCStatement? result))
-                    throw new LinkingException("Function " + funcName + " does not exist in CompilationUnit " + ctx.GetCurrentUnit() + "; " + ctx.ToString());
-                return result;
+                FunctionCStatement? func = ctx.CurrentScope.FindFunction(funcName);
+
+                return func ?? throw new LinkingException($"Internal Function '{identifier}' does not exist in internal {ctx.CurrentScope} or its parents; " + ctx.ToString());
             }
 
             // Somehow only has a library name?

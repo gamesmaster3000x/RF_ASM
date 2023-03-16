@@ -1,20 +1,19 @@
 ﻿using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar;
+using Crimson.CSharp.Grammar.Statements;
 
 namespace Crimson.CSharp.Core
 {
     public class LinkingContext
     {
 
-        private string Name { get; }
-        private string CurrentUnitLookupPath { get; }
-        internal Dictionary<string, Scope> Links { get; }
-        public Compilation Compilation { get; }
+        public Scope CurrentScope { get; private set; }
+        internal Dictionary<string, Scope> Links { get; private set; }
+        public Compilation Compilation { get; private set; }
 
-        public LinkingContext (string friendlyName, string currentUnitLookupPath, Dictionary<string, Scope> links, Compilation compilation)
+        public LinkingContext (Scope currentScope, Dictionary<string, Scope> links, Compilation compilation)
         {
-            Name = friendlyName;
-            CurrentUnitLookupPath = currentUnitLookupPath;
+            CurrentScope = currentScope;
             Links = links;
             Compilation = compilation;
         }
@@ -30,13 +29,13 @@ namespace Crimson.CSharp.Core
         /// be affected by edits to the new context's links.
         /// </summary>
         /// <param name="ctx"></param>
-        public LinkingContext (LinkingContext ctx)
+        public LinkingContext (Scope currentScope, LinkingContext ctx)
         {
-            Name = ctx.Name;
-            CurrentUnitLookupPath = ctx.CurrentUnitLookupPath;
-            Links = new Dictionary<string, Scope>();
+            CurrentScope = currentScope;
+
             Compilation = ctx.Compilation;
 
+            Links = new Dictionary<string, Scope>();
             foreach (var link in ctx.Links)
             {
                 Links.Add(link.Key, link.Value);
@@ -53,14 +52,9 @@ namespace Crimson.CSharp.Core
             throw new LinkingException("No alias '" + alias + "' in " + ToString());
         }
 
-        internal Scope GetCurrentUnit ()
-        {
-            return GetUnit(CurrentUnitLookupPath);
-        }
-
         public override string ToString ()
         {
-            return $"LinkingContext (name:{Name}; path:{CurrentUnitLookupPath}; links:[{String.Join(",", Links)}])";
+            return $"LinkingContext (scope:{CurrentScope}; links:[{String.Join(",", Links)}])";
         }
     }
 }

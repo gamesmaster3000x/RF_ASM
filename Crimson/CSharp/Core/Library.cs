@@ -49,7 +49,7 @@ namespace Crimson.CSharp.Core
                 throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet with reserved name '" + pathIn + "'");
             }
 
-            Scope? unit = LookupUnitByPath(path);
+            Scope? unit = LookupScopeByPath(path);
             if (unit != null)
             {
                 return unit;
@@ -109,7 +109,7 @@ namespace Crimson.CSharp.Core
             return path;
         }
 
-        public Scope? LookupUnitByPath (string path)
+        public Scope? LookupScopeByPath (string path)
         {
             if (Units.ContainsKey(path))
             {
@@ -128,7 +128,7 @@ namespace Crimson.CSharp.Core
 
         public override string ToString ()
         {
-            return $"Library(Units={String.Join(',', Units)})";
+            return $"Library(Units:[{String.Join(',', Units.Select(u => Path.GetFileName(u.Key)))}])";
         }
     }
 }

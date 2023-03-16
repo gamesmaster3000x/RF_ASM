@@ -17,193 +17,158 @@ var_set gvar_counter_0, -1, 0;
 
 // (Structures shouldn't be a part of CB)
 // ============================== Structures ==============================
-// GlobalC:stru_Person_0
 
 // ============================== Entry Function ==============================
 :func_main_0:
-    push_sf;
-    example basic call
-    ~A "example assemby call"
-    // Function Call
-    inc_sp 666;
-    var_set a, -1, ;
-    // Function Call
-    inc_sp 666;
-    var_set b, -1, ;
-    
-    jeq c_r_h 0 NEXT_ELIF
-        push_sf;
-        // 5
-        pop_sf;
-        jump END_branch_0
-    
-    jeq c_r_h 0 NEXT_ELIF
-        push_sf;
+        example basic call
+        ~A "example assemby call"
         // Function Call
         inc_sp 666;
-        var_set c, -1, ;
+        var_set a, -1, ;
         // Function Call
         inc_sp 666;
-        var_set d, -1, ;
-        pop_sf;
-        jump END_branch_1
-    
-    :ELSE:
-        push_sf;
+        var_set b, -1, ;
+        
+        jeq c_r_h 0 NEXT_ELIF
+                // 5
+            jump END_branch_0
+        
+        jeq c_r_h 0 NEXT_ELIF
+                // Function Call
+                inc_sp 666;
+                var_set c, -1, ;
+                // Function Call
+                inc_sp 666;
+                var_set d, -1, ;
+            jump END_branch_1
+        
+        :ELSE:
+                return;
+        :END_branch_1:
+        
+        :END_branch_0:
+        
+        // arg0=4
+        // arg1=7
+        // arg2=5
+        jump func_call_0
+        reg_set REG_RETURN rval_0
+        var_set rval_0, -1, FUNC_RETURN;
+        // Function Call
+        inc_sp 666;
+        var_set i, -1, ;
+        // 4
+        // arg0=i
+        jump func_write_0
+        reg_set REG_RETURN rval_1
+        var_set rval_1, -1, FUNC_RETURN;
+        // Function Call
+        inc_sp 666;
+        var_set ret, -1, ;
+        // Function Call
+        var_set ret, -1, VAR_ASSIGN_C_VAL;
         return;
-        pop_sf;
-    :END_branch_1:
-    
-    :END_branch_0:
-    
-    // arg0=4
-    // arg1=7
-    // arg2=5
-    jump func_call_0
-    reg_set REG_RETURN rval_0
-    var_set rval_0, -1, FUNC_RETURN;
-    // Function Call
-    inc_sp 666;
-    var_set i, -1, ;
-    // 4
-    // arg0=i
-    jump func_write_0
-    reg_set REG_RETURN rval_1
-    var_set rval_1, -1, FUNC_RETURN;
-    // Function Call
-    inc_sp 666;
-    var_set ret, -1, ;
-    // Function Call
-    var_set ret, -1, VAR_ASSIGN_C_VAL;
-    return;
-    pop_sf;
 return;
 
 
 // ============================== Functions ==============================
 :func_multiply_0:
-    push_sf;
-    // arg0=6
-    jump func_write_0
-    reg_set REG_RETURN rval_2
-    var_set rval_2, -1, FUNC_RETURN;
-    return;
-    pop_sf;
+        // arg0=6
+        jump func_write_0
+        reg_set REG_RETURN rval_2
+        var_set rval_2, -1, FUNC_RETURN;
+        return;
 return;
 
 :func_times_0:
-    push_sf;
-    // Function Call
-    inc_sp 666;
-    var_set ret, -1, ;
-    return;
-    pop_sf;
+        // Function Call
+        inc_sp 666;
+        var_set ret, -1, ;
+        return;
 return;
 
 :func_write_0:
-    push_sf;
-    pop_sf;
 return;
 
 :func_alloc_0:
-    push_sf;
-    inc_sp 666;
-    var_set i, -1, 0;
-    
-    //  >> TODO IMPLEMENT WHILE (start) <<
-    //  >> TODO IMPLEMENT WHILE (end) <<
-    
-    return;
-    pop_sf;
-return;
-
-:func_get_region_ptr_0:
-    push_sf;
-    // Operation
-    inc_sp 666;
-    var_set RRMS, -1, ;
-    inc_sp 666;
-    var_set exponential_offset, -1, 4;
-    
-    jeq c_r_h 0 NEXT_ELIF
-        push_sf;
-        pop_sf;
-        jump END_branch_2
-    
-    jeq c_r_h 0 NEXT_ELIF
-        push_sf;
-        // 1
-        pop_sf;
-        jump END_branch_3
-    
-    jeq c_r_h 0 NEXT_ELIF
-        push_sf;
-        // 2
-        pop_sf;
-        jump END_branch_4
-    
-    :ELSE:
-        push_sf;
+        inc_sp 666;
+        var_set i, -1, 0;
         
         //  >> TODO IMPLEMENT WHILE (start) <<
         //  >> TODO IMPLEMENT WHILE (end) <<
         
-        pop_sf;
-    :END_branch_4:
-    
-    :END_branch_3:
-    
-    :END_branch_2:
-    
-    // Operation
-    inc_sp 666;
-    var_set HO_EXP, -1, ;
-    // Operation
-    inc_sp 666;
-    var_set HO_EXP_RRMS, -1, ;
-    return;
-    pop_sf;
+        return;
+return;
+
+:func_get_region_ptr_0:
+        // Operation
+        inc_sp 666;
+        var_set RRMS, -1, ;
+        inc_sp 666;
+        var_set exponential_offset, -1, 4;
+        
+        jeq c_r_h 0 NEXT_ELIF
+            jump END_branch_2
+        
+        jeq c_r_h 0 NEXT_ELIF
+                // 1
+            jump END_branch_3
+        
+        jeq c_r_h 0 NEXT_ELIF
+                // 2
+            jump END_branch_4
+        
+        :ELSE:
+                
+                //  >> TODO IMPLEMENT WHILE (start) <<
+                //  >> TODO IMPLEMENT WHILE (end) <<
+                
+        :END_branch_4:
+        
+        :END_branch_3:
+        
+        :END_branch_2:
+        
+        // Operation
+        inc_sp 666;
+        var_set HO_EXP, -1, ;
+        // Operation
+        inc_sp 666;
+        var_set HO_EXP_RRMS, -1, ;
+        return;
 return;
 
 :func_freeptr_0:
-    push_sf;
-    inc_sp 666;
-    var_set r, -1, 0;
-    // Function Call
-    inc_sp 666;
-    var_set region_ptr, -1, ;
-    
-    //  >> TODO IMPLEMENT WHILE (start) <<
-    //  >> TODO IMPLEMENT WHILE (end) <<
-    
-    // arg0=r
-    jump func_freeregion_0
-    reg_set REG_RETURN rval_3
-    var_set rval_3, -1, FUNC_RETURN;
-    pop_sf;
+        inc_sp 666;
+        var_set r, -1, 0;
+        // Function Call
+        inc_sp 666;
+        var_set region_ptr, -1, ;
+        
+        //  >> TODO IMPLEMENT WHILE (start) <<
+        //  >> TODO IMPLEMENT WHILE (end) <<
+        
+        // arg0=r
+        jump func_freeregion_0
+        reg_set REG_RETURN rval_3
+        var_set rval_3, -1, FUNC_RETURN;
 return;
 
 :func_freeregion_0:
-    push_sf;
-    // 0
-    pop_sf;
+        // 0
 return;
 
 :func_pwr_0:
-    push_sf;
-    
-    //  >> TODO IMPLEMENT WHILE (start) <<
-    //  >> TODO IMPLEMENT WHILE (end) <<
-    
-    pop_sf;
+        
+        //  >> TODO IMPLEMENT WHILE (start) <<
+        //  >> TODO IMPLEMENT WHILE (end) <<
+        
 return;
 
 :func_call_0:
-    push_sf;
-    // Function Call
-    inc_sp 666;
-    var_set test, -1, ;
-    return;
-    pop_sf;
+        // Function Call
+        inc_sp 666;
+        var_set test, -1, ;
+        return;
 return;
 

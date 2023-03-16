@@ -6,12 +6,8 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class IfBlockCStatement : AbstractCrimsonStatement
+    internal class IfBlockCStatement : AbstractCrimsonStatement, IHasScope
     {
-        public IfBlockCStatement ()
-        {
-        }
-
         public IfBlockCStatement (ConditionCToken condition, Scope scope, ElseIfBlockCToken? elifBlock, ElseBlockCToken? elseBlock)
         {
             Condition = condition;
@@ -24,6 +20,8 @@ namespace Crimson.CSharp.Grammar.Statements
         public Scope Scope { get; }
         public ElseIfBlockCToken? ElifBlock { get; }
         public ElseBlockCToken? ElseBlock { get; }
+
+        public Scope GetScope () => Scope;
 
         public override void Link (LinkingContext ctx)
         {

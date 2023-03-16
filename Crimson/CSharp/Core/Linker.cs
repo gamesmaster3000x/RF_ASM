@@ -36,24 +36,11 @@ namespace Crimson.CSharp.Core
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                LinkingContext ctx = new LinkingContext(keyScopePair.Key, keyScopePair.Key, new Dictionary<string, Scope>(), compilation);
-                Scope unit = keyScopePair.Value;
-                ctx.Links.Add(keyScopePair.Key, keyScopePair.Value); //TODO This may cause issues
+                Scope scope = keyScopePair.Value;
+                LinkingContext ctx = new LinkingContext(scope, new Dictionary<string, Scope>(), compilation);
 
                 // Add links from the current unit
-                Dictionary<string, Scope> NewLinks = keyScopePair.Value.GetLinks(compilation);
-                foreach (var l in NewLinks)
-                {
-                    ctx.Links.Add(l.Key, l.Value);
-                }
-
-                // Link each statement in the unit
-                var statements = GetAllStatements(unit);
-                foreach (var statement in statements)
-                {
-                    statement.Link(ctx);
-                }
-                LOGGER.Debug($"Linked {statements.Count} top-level statements");
+                scope.Link(ctx);
 
                 // Just so that I can put a breakpoint here
                 continue;

@@ -13,12 +13,12 @@ namespace Crimson.CSharp.Exception
         public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private string Path { get; set; }
-        public LexerErrorListener(string path)
+        public LexerErrorListener (string path)
         {
             Path = path;
         }
 
-        void IAntlrErrorListener<int>.SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        void IAntlrErrorListener<int>.SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             string message = $"Lexer error lexing {Path} @ line:{line} char:{charPositionInLine} msg:{msg}";
             LOGGER.Error(message);

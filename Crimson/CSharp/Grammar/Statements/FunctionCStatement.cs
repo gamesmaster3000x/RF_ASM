@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Grammar.Statements
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
     /// </summary>
-    public class FunctionCStatement : AbstractCrimsonStatement, INamed
+    public class FunctionCStatement : AbstractCrimsonStatement, INamed, IHasScope
     {
         public CrimsonTypeCToken ReturnType { get; }
         public Header FunctionHeader { get; }
@@ -25,6 +25,8 @@ namespace Crimson.CSharp.Grammar.Statements
             ReturnType = returnType;
             FunctionHeader = header;
             Scope = scope;
+
+            Scope.Name = Name.ToString();
         }
 
         public override void Link (LinkingContext ctx)
@@ -67,6 +69,11 @@ namespace Crimson.CSharp.Grammar.Statements
         public void SetName (FullNameCToken name)
         {
             Name = name;
+        }
+
+        public Scope GetScope ()
+        {
+            return Scope;
         }
 
         public class Parameter : ICrimsonToken
