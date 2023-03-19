@@ -24,7 +24,7 @@ var_set gvar_counter_0, -1, 0;
 // ============================== Entry Function ==============================
 :func_main_0:
         example basic call
-        ~A "example assemby call"
+        A~ "example assemby call"
         // Function Call
         inc_sp 4;
         var_set a, -1, ;

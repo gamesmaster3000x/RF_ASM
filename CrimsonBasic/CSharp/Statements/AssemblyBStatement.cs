@@ -4,14 +4,14 @@
     {
         public string Text { get; protected set; }
 
-        public AssemblyBStatement(string text)
+        public AssemblyBStatement (string text)
         {
             Text = text;
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
-            return $"~A \"{Text}\"";
+            return $"A~ \"{Text}\"";
         }
     }
 }
