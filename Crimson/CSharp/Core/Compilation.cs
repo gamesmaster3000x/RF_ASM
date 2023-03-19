@@ -25,24 +25,34 @@ namespace Crimson.CSharp.Core
         {
             Library = new Library(options);
 
-            LoadLibrary(rootUnit);
+            LoadScopeDependencies(rootUnit);
             Library.Units[Library.ROOT_FACET_NAME] = rootUnit; // This name is reserved and should be free
         }
 
         /// <summary>
         /// Loads dependencies for the given root CompilationUnit, as well as that unit's dependencies, recursively.
+        /// Also checks for nested scopes and loads them as well!
         /// </summary>
         /// <param name="root"></param>
-        private void LoadLibrary (Scope root)
+        private void LoadScopeDependencies (Scope root)
         {
             // For each import
             foreach (var i in root.Imports)
             {
                 // Get the unit it refers to 
-                Scope unit = Library.LoadUnitFromPath(i.Value.Path);
+                Scope unit = Library.LoadScopeFromFile(i.Value.Path);
 
                 // Get that units' dependencies (recursively)
-                LoadLibrary(unit);
+                LoadScopeDependencies(unit);
+            }
+
+            // Check for imports in nested scopes
+            foreach (var del in root.Delegates)
+            {
+                if (del.Invoke() is IHasScope hasScope)
+                {
+                    LoadScopeDependencies(hasScope.GetScope());
+                }
             }
         }
 

@@ -37,7 +37,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" P A R S I N G ");
-            Scope rootUnit = Library.LoadUnitFromPath(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
+            Scope rootUnit = Library.LoadScopeFromFile(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
             Compilation compilation = new Compilation(rootUnit, Options); // Generate dependency units (all resources are henceforth accessible)
 
 

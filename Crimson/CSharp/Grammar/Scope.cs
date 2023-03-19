@@ -183,7 +183,7 @@ namespace Crimson.CSharp.Grammar
         /// <param name="ctx"></param>
         public override void Link (LinkingContext ctx)
         {
-            LOGGER.Debug($"Linking {FamilyToString()}");
+            LOGGER.Debug($"Linking Scope: {FamilyToString()}");
 
             // Partially shallow-copy the old context (links in a lower level should not get carried up to higher levels)
             LinkingContext newContext = new LinkingContext(this, ctx);
@@ -198,8 +198,6 @@ namespace Crimson.CSharp.Grammar
             {
                 d.Invoke().Link(newContext);
             }
-
-            LOGGER.Info($"Linked {Delegates.Count} scope-level statements");
         }
 
         public override Fragment GetCrimsonBasic ()

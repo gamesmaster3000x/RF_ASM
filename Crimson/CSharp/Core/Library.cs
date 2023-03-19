@@ -2,13 +2,7 @@
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using NLog;
 
 namespace Crimson.CSharp.Core
 {
@@ -17,6 +11,7 @@ namespace Crimson.CSharp.Core
     /// </summary>
     internal class Library
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public static readonly string SYSTEM_LIBRARY_PREFIX = "${NATIVE}";
         public static readonly string ROOT_FACET_NAME = "${ROOT}";
@@ -38,7 +33,7 @@ namespace Crimson.CSharp.Core
             Units = new Dictionary<string, Scope>();
         }
 
-        public Scope LoadUnitFromPath (string pathIn)
+        public Scope LoadScopeFromFile (string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
@@ -46,7 +41,7 @@ namespace Crimson.CSharp.Core
 
             if (pathIn.Equals(ROOT_FACET_NAME) || pathIn.Equals(SYSTEM_LIBRARY_PREFIX))
             {
-                throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet with reserved name '" + pathIn + "'");
+                throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet/scope with reserved name '" + pathIn + "'");
             }
 
             Scope? unit = LookupScopeByPath(path);
@@ -55,10 +50,11 @@ namespace Crimson.CSharp.Core
                 return unit;
             }
 
+            LOGGER.Info($"Loading new root Scope from: {pathIn}");
             try
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
-                Scope newUnit = LoadUnitFromText(path + " (" + pathIn + ")", programText);
+                Scope newUnit = ParseScopeText(path + " (" + pathIn + ")", programText);
                 Units[path] = newUnit;
                 return newUnit;
             }
@@ -76,8 +72,9 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public Scope LoadUnitFromText (string sourceName, string textIn)
+        public Scope ParseScopeText (string sourceName, string textIn)
         {
+            LOGGER.Debug($"Parsing {textIn.Length} characters in {sourceName} with ANTLR...");
             // Get Antlr context
             AntlrInputStream a4is = new AntlrInputStream(textIn);
             CrimsonLexer lexer = new CrimsonLexer(a4is);
