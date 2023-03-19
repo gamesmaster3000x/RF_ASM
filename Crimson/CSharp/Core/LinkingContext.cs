@@ -42,9 +42,14 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        internal Scope GetUnit (string alias)
+        public bool HasScope (string alias)
         {
-            if (Links.ContainsKey(alias))
+            return Links.ContainsKey(alias);
+        }
+
+        internal Scope GetScope (string alias)
+        {
+            if (HasScope(alias))
             {
                 return Links[alias];
             }

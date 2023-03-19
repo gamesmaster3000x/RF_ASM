@@ -9,16 +9,16 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
         public string Content { get; }
 
-        public RawResolvableValueCToken(string s)
+        public RawResolvableValueCToken (string s) : base(CrimsonTypeCToken.Parse(new FullNameCToken(s)))
         {
             Content = s;
         }
 
-        public override void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
         }
 
-        public override string GetText()
+        public override string GetText ()
         {
             return Content;
         }

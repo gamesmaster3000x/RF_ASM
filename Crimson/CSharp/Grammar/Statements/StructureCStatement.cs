@@ -35,5 +35,10 @@ namespace Crimson.CSharp.Grammar.Statements
         {
             Name = name;
         }
+
+        public int GetSize ()
+        {
+            return -10000;
+        }
     }
 }

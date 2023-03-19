@@ -145,18 +145,18 @@ namespace Crimson.CSharp.Core
 
         public override FunctionCStatement VisitFunctionDeclaration ([NotNull] CrimsonParser.FunctionDeclarationContext context)
         {
-            CrimsonTypeCToken returnType = VisitType(context.returnType);
             FunctionCStatement.Header header = VisitFunctionHeader(context.header);
             Scope statements = VisitScope(context.body);
-            return new FunctionCStatement(returnType, header, statements);
+            return new FunctionCStatement(header, statements);
 
         }
 
         public override FunctionCStatement.Header VisitFunctionHeader ([NotNull] CrimsonParser.FunctionHeaderContext context)
         {
+            CrimsonTypeCToken returnType = VisitType(context.returnType);
             FullNameCToken identifier = VisitFullName(context.name);
             List<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters);
-            return new FunctionCStatement.Header(identifier, parameters);
+            return new FunctionCStatement.Header(returnType, identifier, parameters);
         }
 
         public override StructureCStatement VisitStructureDeclaration ([NotNull] CrimsonParser.StructureDeclarationContext context)
@@ -198,7 +198,7 @@ namespace Crimson.CSharp.Core
         public override CrimsonTypeCToken VisitType ([NotNull] CrimsonParser.TypeContext context)
         {
             FullNameCToken name = new FullNameCToken(context.GetText());
-            return new CrimsonTypeCToken(name);
+            return CrimsonTypeCToken.Parse(name);
         }
 
         public override List<FunctionCStatement.Parameter> VisitParameterList ([NotNull] CrimsonParser.ParameterListContext context)

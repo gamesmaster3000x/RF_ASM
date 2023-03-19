@@ -62,10 +62,10 @@ scopedVariableDeclaration
     : Scoped declaration=internalVariableDeclaration
     ;
 functionDeclaration
-    : Function returnType=type header=functionHeader body=scope
+    : Function header=functionHeader body=scope
     ;
 functionHeader
-	: name=fullName parameters=parameterList
+	: returnType=type name=fullName parameters=parameterList
 	;
  
 // Function

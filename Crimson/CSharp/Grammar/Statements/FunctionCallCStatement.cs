@@ -34,41 +34,34 @@ namespace Crimson.CSharp.Grammar.Statements
         public override Fragment GetCrimsonBasic ()
         {
             Fragment f = new Fragment(0);
+            f.Add(new CommentBStatement("FC start"));
 
-            // Add arguments
-            List<string> argumentHolders = new List<string>();
-            foreach (var argValue in arguments)
-            {
-                if (argValue is IdentifierSimpleValueCToken irvct)
-                {
-                    argumentHolders.Add(irvct.Identifier.ToString());
-                }
-                else if (argValue is RawResolvableValueCToken rrvct)
-                {
-                    argumentHolders.Add(rrvct.Content);
-                }
-                else
-                {
-                    throw new FlatteningException($"Illegal type {argValue.GetType()} for ResolvableValue " + argValue);
-                }
-            }
+            // Allocate space for input/output
+            int inputSize = CalculateInputBufferSize();
+            int outputSize = CalculateOutputBufferSize();
+            int total = inputSize + outputSize;
+            f.Add(new IncSpBStatement(total));
 
-            for (int i = 0; i < argumentHolders.Count; i++)
-            {
-                f.Add(new CommentBStatement($"arg{i}={argumentHolders[i]}"));
-            }
-
-            // Jump
-            f.Add(new JumpBStatement(targetFunction!.Name.ToString()));
-
-            // Store result
-            string returnName = FlattenerHelper.GetUniqueResolvableValueFieldName();
-            f.Add(new RegSetBStatement("REG_RETURN", returnName));
-            f.Add(new SetBStatement(returnName, -1, FUNCTION_RETURN_VARIABLE_NAME));
-
-            f.ResultHolder = returnName;
-
+            f.Add(new CommentBStatement("FC end"));
             return f;
+        }
+
+        private int CalculateInputBufferSize ()
+        {
+            int inputSize = 0;
+            FunctionCStatement.Header header = targetFunction!.FunctionHeader;
+            foreach (var param in header.Parameters)
+            {
+                inputSize += param.Type.GetSize();
+            }
+            return inputSize;
+        }
+
+        private int CalculateOutputBufferSize ()
+        {
+            FunctionCStatement.Header header = targetFunction!.FunctionHeader;
+            int outputSize = header.ReturnType.GetSize();
+            return outputSize;
         }
 
         public override void Link (LinkingContext ctx)

@@ -11,11 +11,13 @@ namespace Crimson.CSharp.Grammar.Tokens
     public abstract class SimpleValueCToken : ICrimsonToken
     {
 
-        public SimpleValueCToken()
-        {
-        }
+        public CrimsonTypeCToken Type { get; set; }
 
-        public abstract void Link(LinkingContext ctx);
-        public abstract string GetText();
+        public SimpleValueCToken (CrimsonTypeCToken type)
+        {
+            Type = type;
+        }
+        public abstract void Link (LinkingContext ctx);
+        public abstract string GetText ();
     }
 }

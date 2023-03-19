@@ -86,6 +86,14 @@ namespace Crimson.CSharp.Grammar
                 return HasParent() ? GetParent().FindFunction(funcName) : null;
         }
 
+        internal StructureCStatement? FindStructure (string structureName)
+        {
+            if (Structures.ContainsKey(structureName))
+                return Structures[structureName];
+            else
+                return HasParent() ? GetParent().FindStructure(structureName) : null;
+        }
+
         // Statements
         public Dictionary<string, ImportCStatement> Imports { get; private set; }
         public List<OperationHandlerCStatement> OpHandlers { get; private set; }

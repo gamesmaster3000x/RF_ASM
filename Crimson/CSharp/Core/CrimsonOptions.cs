@@ -54,6 +54,10 @@ namespace Crimson.CSharp.Core
         [Option(longName: "clean", shortName: 'c', Required = false, Default = true, HelpText = "Should the compiler clean up its temporary files?")]
         public bool DumpIntermediates { get; set; }
 
+        // DumpIntermediates
+        [Option(longName: "datawidth", shortName: 'w', Required = true, HelpText = "The width of an integer, in bytes.")]
+        public int DataWidth { get; set; }
+
         // Targeted language
         [Option(Group = "platform")] public bool CrimsonBasic { get; set; }
         [Option(Group = "platform")] public bool RFASM { get; set; }

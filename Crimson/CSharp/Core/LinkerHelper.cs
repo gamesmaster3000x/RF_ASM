@@ -31,7 +31,7 @@ namespace Crimson.CSharp.Core
             {
                 string alias = identifier.LibraryName;
 
-                Scope scope = ctx.GetUnit(alias);
+                Scope scope = ctx.GetScope(alias);
                 string funcName = identifier.MemberName;
 
                 FunctionCStatement? func = scope.FindFunction(funcName);
@@ -74,7 +74,7 @@ namespace Crimson.CSharp.Core
             {
                 string alias = identifier.LibraryName!;
 
-                Scope unit = ctx.GetUnit(alias);
+                Scope unit = ctx.GetScope(alias);
                 string call = identifier.MemberName;
 
                 FullNameCToken output = new FullNameCToken($"{{{unit}}}", call); // {{ is used to escape the {, creating ${path}.call in the end //TODO LinkerHelper casts Unit to string

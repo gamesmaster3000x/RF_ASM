@@ -1511,13 +1511,9 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class FunctionDeclarationContext : ParserRuleContext {
-		public TypeContext returnType;
 		public FunctionHeaderContext header;
 		public ScopeContext body;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Function() { return GetToken(CrimsonParser.Function, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
-			return GetRuleContext<TypeContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public FunctionHeaderContext functionHeader() {
 			return GetRuleContext<FunctionHeaderContext>(0);
 		}
@@ -1557,10 +1553,8 @@ public partial class CrimsonParser : Parser {
 			State = 180;
 			Match(Function);
 			State = 181;
-			_localctx.returnType = type();
-			State = 182;
 			_localctx.header = functionHeader();
-			State = 183;
+			State = 182;
 			_localctx.body = scope();
 			}
 		}
@@ -1576,8 +1570,12 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class FunctionHeaderContext : ParserRuleContext {
+		public TypeContext returnType;
 		public FullNameContext name;
 		public ParameterListContext parameters;
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
+			return GetRuleContext<TypeContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext fullName() {
 			return GetRuleContext<FullNameContext>(0);
 		}
@@ -1614,6 +1612,8 @@ public partial class CrimsonParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
+			State = 184;
+			_localctx.returnType = type();
 			State = 185;
 			_localctx.name = fullName();
 			State = 186;
@@ -2618,7 +2618,7 @@ public partial class CrimsonParser : Parser {
 		1,5,1,5,1,5,3,5,140,8,5,1,5,1,5,3,5,144,8,5,1,6,1,6,1,6,1,6,1,6,3,6,151,
 		8,6,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,10,1,10,1,10,1,11,1,
 		11,1,11,1,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,14,1,14,1,14,1,15,1,
-		15,1,15,1,15,1,15,1,16,1,16,1,16,1,17,1,17,1,17,1,18,1,18,3,18,194,8,18,
+		15,1,15,1,15,1,16,1,16,1,16,1,16,1,17,1,17,1,17,1,18,1,18,3,18,194,8,18,
 		1,18,1,18,5,18,198,8,18,10,18,12,18,201,9,18,1,18,1,18,1,19,1,19,1,19,
 		1,19,1,19,1,19,3,19,211,8,19,1,20,1,20,3,20,215,8,20,1,20,3,20,218,8,20,
 		1,21,1,21,3,21,222,8,21,1,22,1,22,1,23,1,23,1,23,1,23,1,24,1,24,1,24,1,
@@ -2630,7 +2630,7 @@ public partial class CrimsonParser : Parser {
 		0,1,2,0,16,17,42,42,279,0,62,1,0,0,0,2,83,1,0,0,0,4,90,1,0,0,0,6,116,1,
 		0,0,0,8,118,1,0,0,0,10,143,1,0,0,0,12,145,1,0,0,0,14,152,1,0,0,0,16,156,
 		1,0,0,0,18,160,1,0,0,0,20,163,1,0,0,0,22,166,1,0,0,0,24,170,1,0,0,0,26,
-		174,1,0,0,0,28,177,1,0,0,0,30,180,1,0,0,0,32,185,1,0,0,0,34,188,1,0,0,
+		174,1,0,0,0,28,177,1,0,0,0,30,180,1,0,0,0,32,184,1,0,0,0,34,188,1,0,0,
 		0,36,191,1,0,0,0,38,210,1,0,0,0,40,217,1,0,0,0,42,221,1,0,0,0,44,223,1,
 		0,0,0,46,225,1,0,0,0,48,242,1,0,0,0,50,244,1,0,0,0,52,247,1,0,0,0,54,251,
 		1,0,0,0,56,265,1,0,0,0,58,267,1,0,0,0,60,273,1,0,0,0,62,66,5,31,0,0,63,
@@ -2664,8 +2664,8 @@ public partial class CrimsonParser : Parser {
 		165,3,0,0,0,165,21,1,0,0,0,166,167,5,23,0,0,167,168,5,43,0,0,168,169,5,
 		35,0,0,169,23,1,0,0,0,170,171,5,24,0,0,171,172,5,43,0,0,172,173,5,35,0,
 		0,173,25,1,0,0,0,174,175,5,3,0,0,175,176,3,8,4,0,176,27,1,0,0,0,177,178,
-		5,4,0,0,178,179,3,8,4,0,179,29,1,0,0,0,180,181,5,2,0,0,181,182,3,56,28,
-		0,182,183,3,32,16,0,183,184,3,0,0,0,184,31,1,0,0,0,185,186,3,60,30,0,186,
+		5,4,0,0,178,179,3,8,4,0,179,29,1,0,0,0,180,181,5,2,0,0,181,182,3,32,16,
+		0,182,183,3,0,0,0,183,31,1,0,0,0,184,185,3,56,28,0,185,186,3,60,30,0,186,
 		187,3,48,24,0,187,33,1,0,0,0,188,189,3,60,30,0,189,190,3,36,18,0,190,35,
 		1,0,0,0,191,193,5,27,0,0,192,194,3,40,20,0,193,192,1,0,0,0,193,194,1,0,
 		0,0,194,199,1,0,0,0,195,196,5,33,0,0,196,198,3,40,20,0,197,195,1,0,0,0,

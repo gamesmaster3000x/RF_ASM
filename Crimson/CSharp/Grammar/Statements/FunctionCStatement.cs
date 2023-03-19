@@ -15,14 +15,12 @@ namespace Crimson.CSharp.Grammar.Statements
     /// </summary>
     public class FunctionCStatement : AbstractCrimsonStatement, INamed, IHasScope
     {
-        public CrimsonTypeCToken ReturnType { get; }
         public Header FunctionHeader { get; }
         public Scope Scope { get; }
         public FullNameCToken Name { get => FunctionHeader.Identifier; set { FunctionHeader.Identifier = value; } }
 
-        public FunctionCStatement (CrimsonTypeCToken returnType, Header header, Scope scope)
+        public FunctionCStatement (Header header, Scope scope)
         {
-            ReturnType = returnType;
             FunctionHeader = header;
             Scope = scope;
 
@@ -33,7 +31,6 @@ namespace Crimson.CSharp.Grammar.Statements
         {
             if (Linked) return;
 
-            ReturnType.Link(ctx);
             ((ICrimsonToken) FunctionHeader).Link(ctx);
             Scope.Link(ctx);
 
@@ -96,17 +93,20 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public class Header : ICrimsonToken
         {
+            public CrimsonTypeCToken ReturnType { get; set; }
             public FullNameCToken Identifier { get; set; }
             public List<Parameter> Parameters { get; protected set; }
 
-            public Header (FullNameCToken identifier, List<Parameter> parameters)
+            public Header (CrimsonTypeCToken returnType, FullNameCToken identifier, List<Parameter> parameters)
             {
+                ReturnType = returnType;
                 Identifier = identifier;
                 Parameters = parameters;
             }
 
             void ICrimsonToken.Link (LinkingContext ctx)
             {
+                ReturnType.Link(ctx);
                 Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
                 foreach (var p in Parameters)
                 {

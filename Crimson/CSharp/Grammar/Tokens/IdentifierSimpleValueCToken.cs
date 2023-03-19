@@ -9,17 +9,17 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
         public FullNameCToken Identifier { get; private set; }
 
-        public IdentifierSimpleValueCToken(FullNameCToken identifier)
+        public IdentifierSimpleValueCToken (FullNameCToken identifier) : base(null) // NOT Identifier... need to get type from somewhere else
         {
             Identifier = identifier;
         }
 
-        public override void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
             Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
         }
 
-        public override string GetText()
+        public override string GetText ()
         {
             return Identifier.ToString();
         }

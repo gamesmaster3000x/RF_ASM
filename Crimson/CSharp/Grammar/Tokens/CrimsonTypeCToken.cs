@@ -1,49 +1,49 @@
 ﻿using Crimson.CSharp.Core;
-using CrimsonBasic.CSharp.Core;
-using CrimsonBasic.CSharp.Statements;
+using Crimson.CSharp.Grammar.Statements;
+using Crimson.CSharp.Grammar.Types;
 using System.Text.RegularExpressions;
 
 namespace Crimson.CSharp.Grammar.Tokens
 {
-    public class CrimsonTypeCToken : ICrimsonToken
+    public abstract class CrimsonTypeCToken : ICrimsonToken
     {
-        private static readonly Regex WHITESPACE = new Regex(@"\s+");
 
-        public FullNameCToken Text { get; set; }
+        public FullNameCToken Name { get; private set; }
 
-        public CrimsonTypeCToken(FullNameCToken text)
+        public CrimsonTypeCToken (FullNameCToken name)
         {
-            Text = text;
+            Name = name;
         }
 
-        public void Link(LinkingContext ctx)
-        {
-            Text = LinkerHelper.LinkIdentifier(Text, ctx);
-        }
+        public abstract void Link (LinkingContext ctx);
+        public abstract int GetSize ();
 
-        public Fragment GetCrimsonBasic()
+        public static CrimsonTypeCToken Parse (FullNameCToken name)
         {
-            Fragment f = new Fragment(0);
-            f.Add(new CommentBStatement($"Type:{Text}"));
-            return f;
-        }
+            if (!name.HasMember()) throw new ArgumentNullException($"A name for a type must have a member name but was given {name}");
 
-        public override string ToString()
-        {
-            return Text.ToString();
-        }
-
-        internal int GetByteSize()
-        {
-            if (Text.Equals("int"))
+            if (name.MemberName.StartsWith('[') && name.MemberName.EndsWith(']'))
             {
-                return 4;
+                string inner = name.MemberName.Substring(1, name.MemberName.Length - 2);
+                CrimsonTypeCToken type = Parse(new FullNameCToken(inner));
+                return new ArrayCrimsonType(name, type);
             }
-            if (Text.Equals("byte"))
+
+            if (GetRawtypeSize(name.MemberName) >= 0) return new RawtypeCrimsonType(name.MemberName);
+
+            return new StructureCrimsonType(name);
+        }
+
+        internal static int GetRawtypeSize (string name)
+        {
+            return name.Trim() switch
             {
-                return 1;
-            }
-            return 666;
+                "int" => Crimson.CSharp.Core.Crimson.Options.DataWidth,
+                "byte" => 1,
+                "ptr" => Crimson.CSharp.Core.Crimson.Options.DataWidth,
+                "null" => 0,
+                _ => -1,
+            };
         }
     }
 }

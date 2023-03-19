@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Core
 
         public const int ERROR_UNKNOWN = -100;
 
-        static int Main(string[] args)
+        static int Main (string[] args)
         {
             bool useAutowiredArgs = true;
             if (useAutowiredArgs)
@@ -27,6 +27,7 @@ namespace Crimson.CSharp.Core
                     "-s", resourcesPath + "Test Compilations/main.crm",
                     "-t", resourcesPath + "Test Compilations/result/main",
                     "-n", resourcesPath + "Native Library/" ,
+                    "-w", "4",
                     "--rfasm"
                 };
             }
@@ -42,6 +43,7 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("  Option: CompilationTargetPath: " + Options.TranslationTargetPath);
             Console.WriteLine("  Option: NativeLibraryPath: " + Options.NativeLibraryPath);
             Console.WriteLine("  Option: DumpIntermediates: " + Options.DumpIntermediates);
+            Console.WriteLine("  Option: DataWidth: " + Options.DataWidth);
             Console.WriteLine("  Option: (Platform) CrimsonBasic: " + Options.CrimsonBasic);
             Console.WriteLine("  Option: (Platform) RFASM: " + Options.RFASM);
 
@@ -55,7 +57,8 @@ namespace Crimson.CSharp.Core
             try
             {
                 return Compiler.FullyCompileFromOptions();
-            } catch (System.Exception e)
+            }
+            catch (System.Exception e)
             {
                 Console.WriteLine(e);
                 LOGGER!.Error(e);
@@ -63,7 +66,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private static void ShowSplash()
+        private static void ShowSplash ()
         {
             Console.WriteLine("");
             Console.WriteLine("Crimson Language Compiler, by GenElectrovise, for GamesMaster3000X");
@@ -78,7 +81,7 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("");
         }
 
-        private static void ShowCredits()
+        private static void ShowCredits ()
         {
             Console.WriteLine("");
             Console.WriteLine("  -> C R E D I T S <-  ");
@@ -91,7 +94,7 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("");
         }
 
-        private static void ConfigureNLog()
+        private static void ConfigureNLog ()
         {
             Console.WriteLine("Configuring NLog...");
             NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
