@@ -1,6 +1,6 @@
 {
 	structure Fraction {
-		int numerator;
-		int denominator;
+		numerator(int_size);
+		denominator(int_size);
 	}
 }

@@ -2,13 +2,13 @@
 	#using "${NATIVE}/console.crm" as utils_stdout
 
 	// Utility package
-	function [int] multiply ( int num1, int num2 ) {
+	function multiply (num1(int_size), num2(int_size)) {
 		utils_stdout.write(6);
 		return num1;
 	}
 
-	function ptr times ( int num1, int num2 ) {
-	int ret = multiply(num1, num2);
+	function times (num1(int_size), num2(int_size) ) {
+		ret(4) = multiply(num1, num2);
 		return ret;
 	}
 }

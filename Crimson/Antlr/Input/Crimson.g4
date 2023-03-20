@@ -15,7 +15,7 @@ operationHandler
 
 // Function-only statements
 statement
-    : internalVariableDeclaration   #VariableDeclarationStatement
+    : variableDeclaration           #VariableDeclarationStatement
     | functionReturn                #ReturnStatement
     | assignVariable                #AssignVariableStatement
     | functionCall SemiColon        #FunctionCallStatement
@@ -27,7 +27,7 @@ statement
     | functionDeclaration           #FunctionDeclarationStatement
     | structureDeclaration          #StructureDeclarationStatement
     ;
-internalVariableDeclaration 
+variableDeclaration 
     : name=fullName OpenBracket size=simpleValue CloseBracket DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
     ;
 assignVariable
@@ -56,10 +56,7 @@ assemblyCall
     : AssemblyCall assemblyText=String SemiColon
     ;
 globalVariableDeclaration
-    : Global declaration=internalVariableDeclaration
-    ;
-scopedVariableDeclaration
-    : Scoped declaration=internalVariableDeclaration
+    : Global declaration=variableDeclaration
     ;
 functionDeclaration
     : Function header=functionHeader body=scope
@@ -110,7 +107,7 @@ structureDeclaration
     : Structure name=fullName body=structureBody
     ;
 structureBody
-    : OpenBrace internalVariableDeclaration* CloseBrace
+    : OpenBrace variableDeclaration* CloseBrace
     ;
 array
     : OpenSquare blockSize=Number CloseSquare
