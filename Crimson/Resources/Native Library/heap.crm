@@ -28,16 +28,14 @@
 	// It should be at a static location relative to the start of process memory.
 	// int[] regions = new int[256];
 
-	{
-
 	#using "${NATIVE}/maths.crm" as maths
 
 	// IMPORTANT!!
 	// regions_i and regions_region will be removed!!
 	// They should not be used and are purely for testing linking
-	global int regions_i = 0;
-	global int regions_length = 0;
-	global int regions_region = 0;
+	global regions_i(int_size) = 0;
+	global regions_length(int_size) = 0;
+	global regions_region(int_size) = 0;
 	
 	int_size(1) = 4;
 	ptr_size(1) = 4;

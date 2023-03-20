@@ -72,8 +72,8 @@ namespace Crimson.CSharp.Core
             }
             else if (stCtx is CrimsonParser.VariableDeclarationStatementContext variableContext)
             {
-                CrimsonParser.InternalVariableDeclarationContext ivdCtx = variableContext.internalVariableDeclaration();
-                return VisitInternalVariableDeclaration(ivdCtx);
+                CrimsonParser.VariableDeclarationContext ivdCtx = variableContext.variableDeclaration();
+                return VisitVariableDeclaration(ivdCtx);
             }
             else if (stCtx is CrimsonParser.ReturnStatementContext returnContext)
             {
@@ -131,7 +131,7 @@ namespace Crimson.CSharp.Core
 
         public override GlobalVariableCStatement VisitGlobalVariableDeclaration ([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
         {
-            CrimsonParser.InternalVariableDeclarationContext ivdc = context.internalVariableDeclaration();
+            CrimsonParser.VariableDeclarationContext ivdc = context.variableDeclaration();
             FullNameCToken identifier = VisitFullName(ivdc.fullName());
             SimpleValueCToken? simple;
             ComplexValueCToken? complex;
@@ -166,9 +166,9 @@ namespace Crimson.CSharp.Core
         public override IList<AbstractCrimsonStatement> VisitStructureBody ([NotNull] CrimsonParser.StructureBodyContext context)
         {
             IList<AbstractCrimsonStatement> statements = new List<AbstractCrimsonStatement>();
-            foreach (CrimsonParser.InternalVariableDeclarationContext ivdCtx in context.internalVariableDeclaration())
+            foreach (CrimsonParser.VariableDeclarationContext ivdCtx in context.variableDeclaration())
             {
-                InternalVariableCStatement var = VisitInternalVariableDeclaration(ivdCtx);
+                InternalVariableCStatement var = VisitVariableDeclaration(ivdCtx);
                 statements.Add(var);
             }
             return statements;
@@ -196,7 +196,7 @@ namespace Crimson.CSharp.Core
             List<FunctionCStatement.Parameter> parameters = new List<FunctionCStatement.Parameter>();
             foreach (CrimsonParser.ParameterContext paCtx in context.parameter())
             {
-                FullNameCToken identifier = VisitFullName(paCtx.fullName());
+                FullNameCToken identifier = new FullNameCToken(paCtx.name.Text);
                 SimpleValueCToken size = VisitSimpleValue(paCtx.size);
                 FunctionCStatement.Parameter parameter = new FunctionCStatement.Parameter(size, identifier);
                 parameters.Add(parameter);
@@ -208,7 +208,7 @@ namespace Crimson.CSharp.Core
         // ------------------------------------ STATEMENTS
         // ----------------------------------------------------
 
-        public override InternalVariableCStatement VisitInternalVariableDeclaration ([NotNull] CrimsonParser.InternalVariableDeclarationContext context)
+        public override InternalVariableCStatement VisitVariableDeclaration ([NotNull] CrimsonParser.VariableDeclarationContext context)
         {
             FullNameCToken identifier = VisitFullName(context.fullName());
             SimpleValueCToken size = VisitSimpleValue(context.size);

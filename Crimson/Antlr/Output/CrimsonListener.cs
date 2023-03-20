@@ -194,15 +194,15 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStructureDeclarationStatement([NotNull] CrimsonParser.StructureDeclarationStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
+	/// Enter a parse tree produced by <see cref="CrimsonParser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context);
+	void EnterVariableDeclaration([NotNull] CrimsonParser.VariableDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
+	/// Exit a parse tree produced by <see cref="CrimsonParser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context);
+	void ExitVariableDeclaration([NotNull] CrimsonParser.VariableDeclarationContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>AssignVariableDirect</c>
 	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
@@ -307,16 +307,6 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.scopedVariableDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterScopedVariableDeclaration([NotNull] CrimsonParser.ScopedVariableDeclarationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.scopedVariableDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitScopedVariableDeclaration([NotNull] CrimsonParser.ScopedVariableDeclarationContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.functionDeclaration"/>.
 	/// </summary>

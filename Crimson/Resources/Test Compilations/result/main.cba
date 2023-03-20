@@ -9,14 +9,12 @@
 
 
 // ============================== Global Variables ==============================
-inc_sp 4;
 var_set gvar_regions_i_0, -1, 0;
-inc_sp 4;
 var_set gvar_regions_length_0, -1, 0;
-inc_sp 4;
 var_set gvar_regions_region_0, -1, 0;
-inc_sp 4;
 var_set gvar_counter_0, -1, 0;
+var_set gvar_int_size_0, -1, 4;
+var_set gvar_ptr_size_0, -1, 4;
 
 // (Structures shouldn't be a part of CB)
 // ============================== Structures ==============================
@@ -26,10 +24,8 @@ var_set gvar_counter_0, -1, 0;
         example basic call
         A~ "example assemby call"
         // Function Call
-        inc_sp 4;
         var_set a, -1, ;
         // Function Call
-        inc_sp 4;
         var_set b, -1, ;
         
         jeq c_r_h 0 NEXT_ELIF
@@ -38,10 +34,8 @@ var_set gvar_counter_0, -1, 0;
         
         jeq c_r_h 0 NEXT_ELIF
                 // Function Call
-                inc_sp 4;
                 var_set c, -1, ;
                 // Function Call
-                inc_sp 4;
                 var_set d, -1, ;
             jump END_branch_1
         
@@ -52,17 +46,15 @@ var_set gvar_counter_0, -1, 0;
         :END_branch_0:
         
         // FC start
-        inc_sp 4;
+        jump func_call_0
         // FC end
         // Function Call
-        inc_sp 4;
         var_set i, -1, ;
         // 4
         // FC start
-        inc_sp 4;
+        jump func_write_0
         // FC end
         // Function Call
-        inc_sp 4;
         var_set ret, -1, ;
         // Function Call
         var_set ret, -1, VAR_ASSIGN_C_VAL;
@@ -73,14 +65,13 @@ return;
 // ============================== Functions ==============================
 :func_multiply_0:
         // FC start
-        inc_sp 4;
+        jump func_write_0
         // FC end
         return;
 return;
 
 :func_times_0:
         // Function Call
-        inc_sp 4;
         var_set ret, -1, ;
         return;
 return;
@@ -89,7 +80,6 @@ return;
 return;
 
 :func_alloc_0:
-        inc_sp 4;
         var_set i, -1, 0;
         
         //  >> TODO IMPLEMENT WHILE (start) <<
@@ -100,9 +90,7 @@ return;
 
 :func_get_region_ptr_0:
         // Operation
-        inc_sp 4;
         var_set RRMS, -1, ;
-        inc_sp 4;
         var_set exponential_offset, -1, 4;
         
         jeq c_r_h 0 NEXT_ELIF
@@ -128,26 +116,22 @@ return;
         :END_branch_2:
         
         // Operation
-        inc_sp 4;
         var_set HO_EXP, -1, ;
         // Operation
-        inc_sp 4;
         var_set HO_EXP_RRMS, -1, ;
         return;
 return;
 
 :func_freeptr_0:
-        inc_sp 4;
         var_set r, -1, 0;
         // Function Call
-        inc_sp 4;
         var_set region_ptr, -1, ;
         
         //  >> TODO IMPLEMENT WHILE (start) <<
         //  >> TODO IMPLEMENT WHILE (end) <<
         
         // FC start
-        inc_sp 4;
+        jump func_freeregion_0
         // FC end
 return;
 
@@ -164,7 +148,6 @@ return;
 
 :func_call_0:
         // Function Call
-        inc_sp 4;
         var_set test, -1, ;
         return;
 return;

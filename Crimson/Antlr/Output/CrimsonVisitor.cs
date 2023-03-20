@@ -128,11 +128,11 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStructureDeclarationStatement([NotNull] CrimsonParser.StructureDeclarationStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.internalVariableDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="CrimsonParser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitInternalVariableDeclaration([NotNull] CrimsonParser.InternalVariableDeclarationContext context);
+	Result VisitVariableDeclaration([NotNull] CrimsonParser.VariableDeclarationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>AssignVariableDirect</c>
 	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
@@ -195,12 +195,6 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitGlobalVariableDeclaration([NotNull] CrimsonParser.GlobalVariableDeclarationContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.scopedVariableDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitScopedVariableDeclaration([NotNull] CrimsonParser.ScopedVariableDeclarationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.functionDeclaration"/>.
 	/// </summary>

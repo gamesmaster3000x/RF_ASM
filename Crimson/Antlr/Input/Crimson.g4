@@ -95,7 +95,7 @@ operation
 
 // Parameters
 parameter
-    : size=simpleValue name=fullName
+    : size=simpleValue OpenBracket name=ShortName CloseBracket
     ;
 parameterList 
     : OpenBracket CloseBracket
