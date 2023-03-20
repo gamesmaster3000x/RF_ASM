@@ -39,8 +39,19 @@ namespace Crimson.CSharp.Grammar.Statements
             // Allocate space for input/output
             int inputSize = CalculateInputBufferSize();
             int outputSize = CalculateOutputBufferSize();
+
+            // Push inputs onto stack
+
+            // Don't need to store return address
+            // because JSR already does that on the
+            // CPU stack.
+
+            // Increment stack pointer
             int total = inputSize + outputSize;
             f.Add(new IncSpBStatement(total));
+
+            // Jump to subroutine
+            f.Add(new JumpSubBStatement(targetFunction!.Name.ToString()));
 
             f.Add(new CommentBStatement("FC end"));
             return f;
