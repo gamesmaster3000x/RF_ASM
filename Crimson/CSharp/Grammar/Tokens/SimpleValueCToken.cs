@@ -10,12 +10,8 @@ namespace Crimson.CSharp.Grammar.Tokens
 {
     public abstract class SimpleValueCToken : ICrimsonToken
     {
-
-        public CrimsonTypeCToken Type { get; set; }
-
-        public SimpleValueCToken (CrimsonTypeCToken type)
+        public SimpleValueCToken ()
         {
-            Type = type;
         }
         public abstract void Link (LinkingContext ctx);
         public abstract string GetText ();

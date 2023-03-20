@@ -9,7 +9,7 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
         public FullNameCToken Identifier { get; private set; }
 
-        public IdentifierSimpleValueCToken (FullNameCToken identifier) : base(null) // NOT Identifier... need to get type from somewhere else
+        public IdentifierSimpleValueCToken (FullNameCToken identifier)
         {
             Identifier = identifier;
         }

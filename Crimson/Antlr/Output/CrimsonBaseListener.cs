@@ -483,18 +483,6 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOperation([NotNull] CrimsonParser.OperationContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParameterList([NotNull] CrimsonParser.ParameterListContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParameterList([NotNull] CrimsonParser.ParameterListContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.parameter"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -506,6 +494,18 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParameter([NotNull] CrimsonParser.ParameterContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParameterList([NotNull] CrimsonParser.ParameterListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParameterList([NotNull] CrimsonParser.ParameterListContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.structureDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -530,18 +530,6 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStructureBody([NotNull] CrimsonParser.StructureBodyContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterType([NotNull] CrimsonParser.TypeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitType([NotNull] CrimsonParser.TypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// <para>The default implementation does nothing.</para>

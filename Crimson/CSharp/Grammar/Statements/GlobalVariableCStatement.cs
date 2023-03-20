@@ -16,22 +16,19 @@ namespace Crimson.CSharp.Grammar.Statements
     /// </summary>
     public class GlobalVariableCStatement : AbstractCrimsonStatement, INamed
     {
-        private CrimsonTypeCToken type;
         public FullNameCToken Name { get; protected set; }
 
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
 
-        public GlobalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken value)
+        public GlobalVariableCStatement (FullNameCToken identifier, ComplexValueCToken value)
         {
-            this.type = type;
             Name = identifier;
             Complex = value;
         }
 
-        public GlobalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken value)
+        public GlobalVariableCStatement (FullNameCToken identifier, SimpleValueCToken value)
         {
-            this.type = type;
             Name = identifier;
             Simple = value;
         }
@@ -60,13 +57,11 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new IncSpBStatement(type.GetSize()));
                 statements.Add(new SetBStatement(Name.ToString(), -1, valueStatements.ResultHolder!));
 
             }
             else if (Simple != null)
             {
-                statements.Add(new IncSpBStatement(type.GetSize()));
                 statements.Add(new SetBStatement(Name.ToString(), -1, Simple.GetText()));
             }
             else

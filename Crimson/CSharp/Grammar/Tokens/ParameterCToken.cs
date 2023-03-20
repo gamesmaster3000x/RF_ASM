@@ -2,13 +2,11 @@
 {
     internal class ParameterCToken
     {
-        public ParameterCToken(CrimsonTypeCToken type, string identifier)
+        public ParameterCToken (string identifier)
         {
-            Type1 = type;
             Identifier = identifier;
         }
 
-        public CrimsonTypeCToken Type1 { get; }
         public string Identifier { get; }
         TypeCToken Type { get; set; }
         string Name { get; set; }

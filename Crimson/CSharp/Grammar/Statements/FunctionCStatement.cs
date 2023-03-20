@@ -75,38 +75,35 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public class Parameter : ICrimsonToken
         {
-            public CrimsonTypeCToken Type { get; }
+            public SimpleValueCToken Size { get; set; }
             public FullNameCToken Identifier { get; set; }
 
-            public Parameter (CrimsonTypeCToken type, FullNameCToken identifier)
+            public Parameter (SimpleValueCToken size, FullNameCToken identifier)
             {
-                Type = type;
+                Size = size;
                 Identifier = identifier;
             }
 
             void ICrimsonToken.Link (LinkingContext ctx)
             {
-                Type.Link(ctx);
+                Size.Link(ctx);
                 Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
             }
         }
 
         public class Header : ICrimsonToken
         {
-            public CrimsonTypeCToken ReturnType { get; set; }
             public FullNameCToken Identifier { get; set; }
             public List<Parameter> Parameters { get; protected set; }
 
-            public Header (CrimsonTypeCToken returnType, FullNameCToken identifier, List<Parameter> parameters)
+            public Header (FullNameCToken identifier, List<Parameter> parameters)
             {
-                ReturnType = returnType;
                 Identifier = identifier;
                 Parameters = parameters;
             }
 
             void ICrimsonToken.Link (LinkingContext ctx)
             {
-                ReturnType.Link(ctx);
                 Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
                 foreach (var p in Parameters)
                 {

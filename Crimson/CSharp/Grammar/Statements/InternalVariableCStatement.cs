@@ -3,6 +3,7 @@ using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Tokens;
 using CrimsonBasic.CSharp.Core;
 using CrimsonBasic.CSharp.Statements;
+using System.Drawing;
 using System.Xml.Linq;
 using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
@@ -10,35 +11,31 @@ namespace Crimson.CSharp.Grammar.Statements
 {
     public class InternalVariableCStatement : AbstractCrimsonStatement
     {
-        private CrimsonTypeCToken type;
+        public SimpleValueCToken Size { get; set; }
         public FullNameCToken Identifier { get; private set; }
 
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
 
-        public InternalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, SimpleValueCToken simple)
+        private InternalVariableCStatement (SimpleValueCToken size, FullNameCToken identifier)
         {
-            this.type = type;
-            this.Identifier = identifier;
-            Simple = simple;
+            Size = size;
+            Identifier = identifier;
 
             if (identifier == null) throw new CrimsonParserException("Null identifier");
             if (identifier.HasLibrary()) throw new CrimsonParserException($"Identifier {identifier} for internal variable may not contain a library name.");
             if (!identifier.HasMember()) throw new CrimsonParserException($"Identifier {identifier} for internal variable must have a member name.");
-            if (type == null) throw new CrimsonParserException($"Null type for variable {identifier}");
+        }
+
+        public InternalVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, SimpleValueCToken simple) : this(size, identifier)
+        {
+            Simple = simple;
             if (Simple == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
-        public InternalVariableCStatement (CrimsonTypeCToken type, FullNameCToken identifier, ComplexValueCToken complex)
+        public InternalVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, ComplexValueCToken complex) : this(size, identifier)
         {
-            this.type = type;
-            this.Identifier = identifier;
             Complex = complex;
-
-            if (identifier == null) throw new CrimsonParserException("Null identifier");
-            if (identifier.HasLibrary()) throw new CrimsonParserException($"Identifier {identifier} for internal variable may not contain a library name.");
-            if (!identifier.HasMember()) throw new CrimsonParserException($"Identifier {identifier} for internal variable must have a member name.");
-            if (type == null) throw new CrimsonParserException($"Null type for variable {identifier}");
             if (Complex == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
@@ -59,13 +56,11 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Fragment valueStatements = Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new IncSpBStatement(type.GetSize()));
                 statements.Add(new SetBStatement(Identifier.ToString(), -1, valueStatements.ResultHolder!));
 
             }
             else if (Simple != null)
             {
-                statements.Add(new IncSpBStatement(type.GetSize()));
                 statements.Add(new SetBStatement(Identifier.ToString(), -1, Simple.GetText()));
             }
             else

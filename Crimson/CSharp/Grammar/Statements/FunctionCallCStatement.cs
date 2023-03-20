@@ -37,8 +37,8 @@ namespace Crimson.CSharp.Grammar.Statements
             f.Add(new CommentBStatement("FC start"));
 
             // Allocate space for input/output
-            int inputSize = CalculateInputBufferSize();
-            int outputSize = CalculateOutputBufferSize();
+            //int inputSize = CalculateInputBufferSize();
+            //int outputSize = CalculateOutputBufferSize();
 
             // Push inputs onto stack
 
@@ -47,32 +47,14 @@ namespace Crimson.CSharp.Grammar.Statements
             // CPU stack.
 
             // Increment stack pointer
-            int total = inputSize + outputSize;
-            f.Add(new IncSpBStatement(total));
+            //int total = inputSize + outputSize;
+            //f.Add(new IncSpBStatement(total));
 
             // Jump to subroutine
             f.Add(new JumpSubBStatement(targetFunction!.Name.ToString()));
 
             f.Add(new CommentBStatement("FC end"));
             return f;
-        }
-
-        private int CalculateInputBufferSize ()
-        {
-            int inputSize = 0;
-            FunctionCStatement.Header header = targetFunction!.FunctionHeader;
-            foreach (var param in header.Parameters)
-            {
-                inputSize += param.Type.GetSize();
-            }
-            return inputSize;
-        }
-
-        private int CalculateOutputBufferSize ()
-        {
-            FunctionCStatement.Header header = targetFunction!.FunctionHeader;
-            int outputSize = header.ReturnType.GetSize();
-            return outputSize;
         }
 
         public override void Link (LinkingContext ctx)

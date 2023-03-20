@@ -408,16 +408,6 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitOperation([NotNull] CrimsonParser.OperationContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterParameterList([NotNull] CrimsonParser.ParameterListContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitParameterList([NotNull] CrimsonParser.ParameterListContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.parameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -427,6 +417,16 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParameter([NotNull] CrimsonParser.ParameterContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParameterList([NotNull] CrimsonParser.ParameterListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParameterList([NotNull] CrimsonParser.ParameterListContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.structureDeclaration"/>.
 	/// </summary>
@@ -447,16 +447,6 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStructureBody([NotNull] CrimsonParser.StructureBodyContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterType([NotNull] CrimsonParser.TypeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitType([NotNull] CrimsonParser.TypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// </summary>

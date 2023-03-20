@@ -9,7 +9,7 @@ namespace Crimson.CSharp.Grammar.Tokens
     {
         public string Content { get; }
 
-        public RawResolvableValueCToken (string s) : base(CrimsonTypeCToken.Parse(new FullNameCToken(s)))
+        public RawResolvableValueCToken (string s)
         {
             Content = s;
         }

@@ -122,11 +122,9 @@ namespace Crimson.CSharp.Core
 
         public override OperationHandlerCStatement VisitOperationHandler ([NotNull] CrimsonParser.OperationHandlerContext context)
         {
-            CrimsonTypeCToken type1 = VisitType(context.t1);
             OperationResolvableValueCToken.OperationType opType = OperationResolvableValueCToken.ParseOpType(context.op.Text);
-            CrimsonTypeCToken type2 = VisitType(context.t2);
             FullNameCToken id = VisitFullName(context.identifier);
-            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(type1, opType, type2, id);
+            OperationHandlerCStatement ohsc = new OperationHandlerCStatement(opType, id);
 
             return ohsc;
         }
@@ -134,12 +132,11 @@ namespace Crimson.CSharp.Core
         public override GlobalVariableCStatement VisitGlobalVariableDeclaration ([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
         {
             CrimsonParser.InternalVariableDeclarationContext ivdc = context.internalVariableDeclaration();
-            CrimsonTypeCToken type = VisitType(ivdc.type());
             FullNameCToken identifier = VisitFullName(ivdc.fullName());
             SimpleValueCToken? simple;
             ComplexValueCToken? complex;
-            if (ivdc.simple != null) return new GlobalVariableCStatement(type, identifier, VisitSimpleValue(ivdc.simple));
-            else if (ivdc.complex != null) return new GlobalVariableCStatement(type, identifier, VisitComplexValue(ivdc.complex));
+            if (ivdc.simple != null) return new GlobalVariableCStatement(identifier, VisitSimpleValue(ivdc.simple));
+            else if (ivdc.complex != null) return new GlobalVariableCStatement(identifier, VisitComplexValue(ivdc.complex));
             else throw new CrimsonParserException("Cannot parse GlobalVariableDeclarationContext with value " + ivdc.GetText());
         }
 
@@ -153,10 +150,9 @@ namespace Crimson.CSharp.Core
 
         public override FunctionCStatement.Header VisitFunctionHeader ([NotNull] CrimsonParser.FunctionHeaderContext context)
         {
-            CrimsonTypeCToken returnType = VisitType(context.returnType);
             FullNameCToken identifier = VisitFullName(context.name);
             List<FunctionCStatement.Parameter> parameters = VisitParameterList(context.parameters);
-            return new FunctionCStatement.Header(returnType, identifier, parameters);
+            return new FunctionCStatement.Header(identifier, parameters);
         }
 
         public override StructureCStatement VisitStructureDeclaration ([NotNull] CrimsonParser.StructureDeclarationContext context)
@@ -195,20 +191,14 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        public override CrimsonTypeCToken VisitType ([NotNull] CrimsonParser.TypeContext context)
-        {
-            FullNameCToken name = new FullNameCToken(context.GetText());
-            return CrimsonTypeCToken.Parse(name);
-        }
-
         public override List<FunctionCStatement.Parameter> VisitParameterList ([NotNull] CrimsonParser.ParameterListContext context)
         {
             List<FunctionCStatement.Parameter> parameters = new List<FunctionCStatement.Parameter>();
-            foreach (CrimsonParser.ParameterContext paCxt in context.parameter())
+            foreach (CrimsonParser.ParameterContext paCtx in context.parameter())
             {
-                CrimsonTypeCToken type = VisitType(paCxt.type());
-                FullNameCToken identifier = VisitFullName(paCxt.name);
-                FunctionCStatement.Parameter parameter = new FunctionCStatement.Parameter(type, identifier);
+                FullNameCToken identifier = VisitFullName(paCtx.fullName());
+                SimpleValueCToken size = VisitSimpleValue(paCtx.size);
+                FunctionCStatement.Parameter parameter = new FunctionCStatement.Parameter(size, identifier);
                 parameters.Add(parameter);
             }
             return parameters;
@@ -220,12 +210,12 @@ namespace Crimson.CSharp.Core
 
         public override InternalVariableCStatement VisitInternalVariableDeclaration ([NotNull] CrimsonParser.InternalVariableDeclarationContext context)
         {
-            CrimsonTypeCToken type = VisitType(context.type());
             FullNameCToken identifier = VisitFullName(context.fullName());
+            SimpleValueCToken size = VisitSimpleValue(context.size);
             SimpleValueCToken? simple;
             ComplexValueCToken? complex;
-            if (context.simple != null) return new InternalVariableCStatement(type, identifier, VisitSimpleValue(context.simple));
-            else if (context.complex != null) return new InternalVariableCStatement(type, identifier, VisitComplexValue(context.complex));
+            if (context.simple != null) return new InternalVariableCStatement(size, identifier, VisitSimpleValue(context.simple));
+            else if (context.complex != null) return new InternalVariableCStatement(size, identifier, VisitComplexValue(context.complex));
             else throw new CrimsonParserException("Cannot parse InternalVariableDeclarationContext with value " + context.GetText());
         }
 

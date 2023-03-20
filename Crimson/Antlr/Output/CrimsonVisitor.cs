@@ -256,17 +256,17 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitOperation([NotNull] CrimsonParser.OperationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitParameterList([NotNull] CrimsonParser.ParameterListContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.parameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParameter([NotNull] CrimsonParser.ParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameterList([NotNull] CrimsonParser.ParameterListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.structureDeclaration"/>.
 	/// </summary>
@@ -279,12 +279,6 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitType([NotNull] CrimsonParser.TypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// </summary>

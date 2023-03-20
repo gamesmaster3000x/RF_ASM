@@ -10,7 +10,7 @@ importUnit
     : Hashtag Using path=String As identifier=fullName SemiColon
     ;
 operationHandler
-    : Hashtag OpHandler OpenBracket t1=type op=Operator t2=type CloseBracket RightArrow OpenBrace identifier=fullName CloseBrace SemiColon
+    : Hashtag OpHandler op=Operator RightArrow identifier=fullName SemiColon
     ;
 
 // Function-only statements
@@ -28,7 +28,7 @@ statement
     | structureDeclaration          #StructureDeclarationStatement
     ;
 internalVariableDeclaration 
-    : type fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
+    : name=fullName OpenBracket size=simpleValue CloseBracket DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
     ;
 assignVariable
     : name=fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon     #AssignVariableDirect
@@ -65,7 +65,7 @@ functionDeclaration
     : Function header=functionHeader body=scope
     ;
 functionHeader
-	: returnType=type name=fullName parameters=parameterList
+	: name=fullName parameters=parameterList
 	;
  
 // Function
@@ -96,13 +96,13 @@ operation
 	: leftValue=simpleValue operator=Operator rightValue=simpleValue
 	;
 
-// Parameters 
+// Parameters
+parameter
+    : size=simpleValue name=fullName
+    ;
 parameterList 
     : OpenBracket CloseBracket
     | OpenBracket parameter (Comma parameter)* CloseBracket 
-    ;
-parameter
-    : t=type name=fullName
     ;
 
 // Structures
@@ -112,17 +112,8 @@ structureDeclaration
 structureBody
     : OpenBrace internalVariableDeclaration* CloseBrace
     ;
-
-// Types 
-type
-    : Integer
-    | Boolean
-    | fullName
-    | array
-    | Null
-	;
 array
-    : OpenSquare type CloseSquare
+    : OpenSquare blockSize=Number CloseSquare
     ;
 
 // Misc
