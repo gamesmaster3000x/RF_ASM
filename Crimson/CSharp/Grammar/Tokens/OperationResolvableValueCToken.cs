@@ -45,6 +45,10 @@ namespace Crimson.CSharp.Grammar.Tokens
                 "%" => OperationType.PER,
                 "^" => OperationType.HAT,
                 "&" => OperationType.AMP,
+
+
+                "<<>" => OperationType.LES_TEMP,
+                "<>>" => OperationType.GTR_TEMP,
                 _ => throw new CrimsonParserException("Illegal operator type '" + s + "'"),
             };
         }
@@ -65,7 +69,10 @@ namespace Crimson.CSharp.Grammar.Tokens
             EQU, LEQ, LES, GEQ, GTR,
 
             // Misc
-            POU, DOL, PER, HAT, AMP
+            POU, DOL, PER, HAT, AMP,
+
+            // Temp
+            LES_TEMP, GTR_TEMP
         }
     }
 }

@@ -46,7 +46,7 @@
 	function alloc (size<int_size>)
 	{
 		i = 0<int_size>;
-		while (i <? regions_length)
+		while (i <<> regions_length)
 		{
 			// Replace with regions[i]
 			if ( regions_i == 0 ) // Region i is empty
@@ -56,7 +56,7 @@
 				region_ptr = get_region_ptr(r)<ptr_size>;
 				return region_ptr;
 			}
-			i = i + 1;
+			i = i + 1 <4>;
 		}
 		return 0;
 	}
@@ -69,46 +69,46 @@
 	function get_region_ptr (r<int_size>)
 	{
 		// Need to calculate this before r changes later on
-		RRMS<int_size> = r * RegionMetaSize;
+		RRMS = r * RegionMetaSize <int_size>;
 		
-		exponential_offset<int_size> = 4;
+		exponential_offset = 4<int_size>;
 		
 		// R:0 is not permitted
-		if (r : 0) {
+		if (r <<> 0) {
 			// HELP!!!!
 			// HOW DO I CRASH!?
 		}
 		
 		// R=0 and R=1 would need 4*0.25 or 4*0.5 so we just handle them manually
 		else if (r == 0) {
-			exponential_offset = 1;
+			exponential_offset = 1<int_size>;
 		}
 		else if (r == 1) {
-			exponential_offset = 2;
+			exponential_offset = 2<int_size>;
 		}
 		
 		// R:=2 is calculated automatically
 		else {
-			while ( r : 0 ) {
-				exponential_offset = exponential_offset * 2;
-				r = r - 1;
+			while ( r <<> 0 ) {
+				exponential_offset = exponential_offset * 2<int_size>;
+				r = r - 1<int_size>;
 			}
 		}
 		
 		// Calculate final pointer value as in described equation
-		HO_EXP<int_size> = HeapOffset + exponential_offset;
-		HO_EXP_RRMS<ptr_size> = HO_EXP + RRMS;
+		HO_EXP = HeapOffset + exponential_offset<int_size>;
+		HO_EXP_RRMS = HO_EXP + RRMS<ptr_size>;
 		return HO_EXP_RRMS;
 	}
 
 	function freeptr (pointer<ptr_size>)
 	{
-		r<int_size> = 0;
-		region_ptr<ptr_size> = get_region_ptr(r);
-		while ( pointer :  region_ptr )
+		r = 0<int_size>;
+		region_ptr = get_region_ptr(r)<ptr_size>;
+		while ( pointer <<> region_ptr )
 		{
-			r = r + 1;
-			region_ptr = get_region_ptr(r);
+			r = r + 1<ptr_size>;
+			region_ptr = get_region_ptr(r)<ptr_size>;
 		}
 		freeregion(r);
 	}
@@ -116,6 +116,6 @@
 	function freeregion (region<int_size>)
 	{
 		// Replace with regions[region]
-		regions_region = 0;
+		regions_region = 0<ptr_size>;
 	}
 }
