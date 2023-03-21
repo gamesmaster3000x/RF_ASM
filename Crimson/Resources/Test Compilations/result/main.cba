@@ -12,9 +12,11 @@
 var_set gvar_regions_i_0, -1, 0;
 var_set gvar_regions_length_0, -1, 0;
 var_set gvar_regions_region_0, -1, 0;
-var_set gvar_counter_0, -1, 0;
 var_set gvar_int_size_0, -1, 4;
 var_set gvar_ptr_size_0, -1, 4;
+var_set gvar_counter_0, -1, 0;
+var_set gvar_int_0, -1, 4;
+var_set gvar_ptr_0, -1, 4;
 
 // (Structures shouldn't be a part of CB)
 // ============================== Structures ==============================
@@ -23,10 +25,14 @@ var_set gvar_ptr_size_0, -1, 4;
 :func_main_0:
         example basic call
         A~ "example assemby call"
+        // Declare a
+        // IncSp a
+        // Declare a
+        // IncSp a
         // Function Call
-        var_set a, -1, ;
+        var_set a, -1, VAR_ASSIGN_C_VAL;
         // Function Call
-        var_set b, -1, ;
+        var_set b, -1, VAR_ASSIGN_C_VAL;
         
         jeq c_r_h 0 NEXT_ELIF
                 // 5
@@ -34,9 +40,9 @@ var_set gvar_ptr_size_0, -1, 4;
         
         jeq c_r_h 0 NEXT_ELIF
                 // Function Call
-                var_set c, -1, ;
+                var_set c, -1, VAR_ASSIGN_C_VAL;
                 // Function Call
-                var_set d, -1, ;
+                var_set d, -1, VAR_ASSIGN_C_VAL;
             jump END_branch_1
         
         :ELSE:
@@ -48,14 +54,18 @@ var_set gvar_ptr_size_0, -1, 4;
         // FC start
         jump func_call_0
         // FC end
+        // Declare i
+        // IncSp i
         // Function Call
-        var_set i, -1, ;
+        var_set i, -1, VAR_ASSIGN_C_VAL;
         // 4
         // FC start
         jump func_write_0
         // FC end
+        // Declare ret
+        // IncSp ret
         // Function Call
-        var_set ret, -1, ;
+        var_set ret, -1, VAR_ASSIGN_C_VAL;
         // Function Call
         var_set ret, -1, VAR_ASSIGN_C_VAL;
         return;
@@ -72,7 +82,7 @@ return;
 
 :func_times_0:
         // Function Call
-        var_set ret, -1, ;
+        var_set ret, -1, VAR_ASSIGN_C_VAL;
         return;
 return;
 
@@ -80,18 +90,18 @@ return;
 return;
 
 :func_alloc_0:
-        var_set i, -1, 0;
+        // 0
         
-        //  :: TODO IMPLEMENT WHILE (start) ::
-        //  :: TODO IMPLEMENT WHILE (end) ::
+        //  >> TODO IMPLEMENT WHILE (start) <<
+        //  >> TODO IMPLEMENT WHILE (end) <<
         
         return;
 return;
 
 :func_get_region_ptr_0:
         // Operation
-        var_set RRMS, -1, ;
-        var_set exponential_offset, -1, 4;
+        var_set RRMS, -1, VAR_ASSIGN_C_VAL;
+        // 4
         
         jeq c_r_h 0 NEXT_ELIF
             jump END_branch_2
@@ -106,8 +116,8 @@ return;
         
         :ELSE:
                 
-                //  :: TODO IMPLEMENT WHILE (start) ::
-                //  :: TODO IMPLEMENT WHILE (end) ::
+                //  >> TODO IMPLEMENT WHILE (start) <<
+                //  >> TODO IMPLEMENT WHILE (end) <<
                 
         :END_branch_4:
         
@@ -116,19 +126,19 @@ return;
         :END_branch_2:
         
         // Operation
-        var_set HO_EXP, -1, ;
+        var_set HO_EXP, -1, VAR_ASSIGN_C_VAL;
         // Operation
-        var_set HO_EXP_RRMS, -1, ;
+        var_set HO_EXP_RRMS, -1, VAR_ASSIGN_C_VAL;
         return;
 return;
 
 :func_freeptr_0:
-        var_set r, -1, 0;
+        // 0
         // Function Call
-        var_set region_ptr, -1, ;
+        var_set region_ptr, -1, VAR_ASSIGN_C_VAL;
         
-        //  :: TODO IMPLEMENT WHILE (start) ::
-        //  :: TODO IMPLEMENT WHILE (end) ::
+        //  >> TODO IMPLEMENT WHILE (start) <<
+        //  >> TODO IMPLEMENT WHILE (end) <<
         
         // FC start
         jump func_freeregion_0
@@ -141,14 +151,16 @@ return;
 
 :func_pwr_0:
         
-        //  :: TODO IMPLEMENT WHILE (start) ::
-        //  :: TODO IMPLEMENT WHILE (end) ::
+        //  >> TODO IMPLEMENT WHILE (start) <<
+        //  >> TODO IMPLEMENT WHILE (end) <<
         
 return;
 
 :func_call_0:
+        // Declare test
+        // IncSp test
         // Function Call
-        var_set test, -1, ;
+        var_set test, -1, VAR_ASSIGN_C_VAL;
         return;
 return;
 

@@ -119,9 +119,14 @@ namespace Crimson.CSharp.Grammar
 
         public void AddStatement (AbstractCrimsonStatement statement)
         {
+            if (statement == null) throw new ArgumentNullException($"Cannot add null statement to scope {this}.");
 
             void AddNamedIfNotDuplicate<GCS> (Dictionary<string, GCS> d, GCS gcs, string typeNameForError) where GCS : AbstractCrimsonStatement, INamed
             {
+                if (d == null) throw new ArgumentNullException($"Cannot pass null {typeof(Dictionary<string, GCS>)} for statement adding.");
+                if (gcs == null) throw new ArgumentNullException($"Cannot pass null {typeof(GCS)} for statement adding.");
+                if (String.IsNullOrWhiteSpace(typeNameForError)) throw new ArgumentNullException("Cannot pass null or whitespace type name for statement adding.");
+
                 if (d.ContainsKey(gcs.GetName().ToString())) throw new StatementParseException($"Duplicate GlobalStatement name '{gcs.GetName()}' for statement '{statement}' in unit: {this}");
                 string name = gcs.GetName().ToString();
                 d.Add(name, gcs);
@@ -204,7 +209,14 @@ namespace Crimson.CSharp.Grammar
 
             foreach (var d in Delegates)
             {
-                d.Invoke().Link(newContext);
+                AbstractCrimsonStatement s = d.Invoke();
+                if (s == null)
+                {
+                    _ = d.Invoke();
+                    throw new NullReferenceException($"Delegate {d} returned a null statement during linking of {ctx}.");
+                }
+
+                s.Link(newContext);
             }
         }
 

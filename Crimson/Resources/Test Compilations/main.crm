@@ -58,9 +58,4 @@
 		test = heap.alloc(69)<int>;
 		return test;
 	}
-
-	structure Person {
-		scope age<ptr>;
-		age = heap.alloc(5)<int>;
-	}
 }

@@ -143,12 +143,15 @@ namespace Crimson.CSharp.Core
 
         public override ScopeVariableCStatement VisitScopeVariableDeclaration ([NotNull] CrimsonParser.ScopeVariableDeclarationContext context)
         {
-            return null;
+            FullNameCToken name = new FullNameCToken(context.name.Text);
+            SimpleValueCToken size = VisitDatasize(context.size);
+
+            return new ScopeVariableCStatement(name, size);
         }
 
         public override object VisitScopeVariableStatement ([NotNull] CrimsonParser.ScopeVariableStatementContext context)
         {
-            return null;
+            return VisitScopeVariableDeclaration(context.scopeVariableDeclaration());
         }
 
         public override FunctionCStatement VisitFunctionDeclaration ([NotNull] CrimsonParser.FunctionDeclarationContext context)

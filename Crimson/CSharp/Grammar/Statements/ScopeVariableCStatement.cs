@@ -14,10 +14,7 @@ namespace Crimson.CSharp.Grammar.Statements
         public SimpleValueCToken Size { get; set; }
         public FullNameCToken Identifier { get; private set; }
 
-        public ComplexValueCToken? Complex { get; }
-        public SimpleValueCToken? Simple { get; }
-
-        private ScopeVariableCStatement (SimpleValueCToken size, FullNameCToken identifier)
+        public ScopeVariableCStatement (FullNameCToken identifier, SimpleValueCToken size)
         {
             Size = size;
             Identifier = identifier;
@@ -27,23 +24,10 @@ namespace Crimson.CSharp.Grammar.Statements
             if (!identifier.HasMember()) throw new CrimsonParserException($"Identifier {identifier} for internal variable must have a member name.");
         }
 
-        public ScopeVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, SimpleValueCToken simple) : this(size, identifier)
-        {
-            Simple = simple;
-            if (Simple == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
-        }
-
-        public ScopeVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, ComplexValueCToken complex) : this(size, identifier)
-        {
-            Complex = complex;
-            if (Complex == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
-        }
-
         public override void Link (LinkingContext ctx)
         {
-            // Only run if not null
-            Simple?.Link(ctx);
-            Complex?.Link(ctx);
+            Size.Link(ctx);
+            Identifier.Link(ctx);
             Linked = true;
         }
 
@@ -51,22 +35,8 @@ namespace Crimson.CSharp.Grammar.Statements
         {
             Fragment statements = new Fragment(0);
 
-            // int i = (6 + 5);
-            if (Complex != null)
-            {
-                Fragment valueStatements = Complex.GetBasicFragment();
-                statements.Add(valueStatements);
-                statements.Add(new SetBStatement(Identifier.ToString(), -1, valueStatements.ResultHolder!));
-
-            }
-            else if (Simple != null)
-            {
-                statements.Add(new SetBStatement(Identifier.ToString(), -1, Simple.GetText()));
-            }
-            else
-            {
-                throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");
-            }
+            statements.Add(new CommentBStatement($"Declare {Identifier}"));
+            statements.Add(new CommentBStatement($"IncSp {Identifier}"));
 
             return statements;
         }
