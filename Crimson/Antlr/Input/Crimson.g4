@@ -148,9 +148,9 @@ Asterisk: '*';
 fragment Slash: '/';
 MathsOperator: Plus | Minus | Asterisk | Slash;
 
-fragment Less: '?<';
+fragment Less: '<?';
 fragment LessEqual: '<=';
-fragment Greater: '?>';
+fragment Greater: '>?';
 fragment GreaterEqual: '>=';
 fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;

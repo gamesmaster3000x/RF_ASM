@@ -28,8 +28,8 @@
 		if (true == true) {
 			counter = 5<int>;
 		} else if (b == true) {
-			c<int> = utils.times(5, 3)<int>;
-			d<ptr> = heap.alloc()<int>;
+			c = utils.times(5, 3)<int>;
+			d = heap.alloc()<int>;
 		} else {
 			return b;
 		}
@@ -45,7 +45,7 @@
 		i *= 4<int>;
 			
 		// Note usage of functions from imported packages
-		stdout.write(i)<int>;
+		stdout.write(i);
 		
 		scope ret<ptr>;
 		ret = heap.alloc(4)<int>;
