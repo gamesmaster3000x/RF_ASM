@@ -33,26 +33,26 @@
 	// IMPORTANT!!
 	// regions_i and regions_region will be removed!!
 	// They should not be used and are purely for testing linking
-	global regions_i(int_size) = 0;
-	global regions_length(int_size) = 0;
-	global regions_region(int_size) = 0;
+	global regions_i = 0:int_size:;
+	global regions_length = 0:int_size:;
+	global regions_region = 0:int_size:;
 	
-	int_size(1) = 4;
-	ptr_size(1) = 4;
+	scope int_size = 4:1:;
+	scope ptr_size = 4:1:;
 
 	//
 	// Return a pointer to a block of memory which is at least of the given size.
 	//
-	function alloc (size(int_size))
+	function alloc (size:int_size:)
 	{
-		i(int_size) = 0;
-		while (i < regions_length)
+		i:int_size: = 0;
+		while (i : regions_length)
 		{
 			// Replace with regions[i]
 			if ( regions_i == 0 ) // Region i is empty
 			{
 				regions_i = 1;
-				region_ptr(ptr_size) = 0;
+				region_ptr:ptr_size: = 0;
 				region_ptr = get_region_ptr(r);
 				return region_ptr;
 			}
@@ -66,15 +66,15 @@
 	// This is given by the result of the calculation:
 	//     HeapOffset + exponential_offset + r*RegionMetaSize;
 	//
-	function get_region_ptr (r(int_size))
+	function get_region_ptr (r:int_size:)
 	{
 		// Need to calculate this before r changes later on
-		RRMS(int_size) = r * RegionMetaSize;
+		RRMS:int_size: = r * RegionMetaSize;
 		
-		exponential_offset(int_size) = 4;
+		exponential_offset:int_size: = 4;
 		
-		// R<0 is not permitted
-		if (r < 0) {
+		// R:0 is not permitted
+		if (r : 0) {
 			// HELP!!!!
 			// HOW DO I CRASH!?
 		}
@@ -87,25 +87,25 @@
 			exponential_offset = 2;
 		}
 		
-		// R>=2 is calculated automatically
+		// R:=2 is calculated automatically
 		else {
-			while ( r > 0 ) {
+			while ( r : 0 ) {
 				exponential_offset = exponential_offset * 2;
 				r = r - 1;
 			}
 		}
 		
 		// Calculate final pointer value as in described equation
-		HO_EXP(int_size) = HeapOffset + exponential_offset;
-		HO_EXP_RRMS(ptr_size) = HO_EXP + RRMS;
+		HO_EXP:int_size: = HeapOffset + exponential_offset;
+		HO_EXP_RRMS:ptr_size: = HO_EXP + RRMS;
 		return HO_EXP_RRMS;
 	}
 
-	function freeptr (pointer(ptr_size))
+	function freeptr (pointer:ptr_size:)
 	{
-		r(int_size) = 0;
-		region_ptr(ptr_size) = get_region_ptr(r);
-		while ( pointer <  region_ptr )
+		r:int_size: = 0;
+		region_ptr:ptr_size: = get_region_ptr(r);
+		while ( pointer :  region_ptr )
 		{
 			r = r + 1;
 			region_ptr = get_region_ptr(r);
@@ -113,7 +113,7 @@
 		freeregion(r);
 	}
 
-	function freeregion (region(int_size))
+	function freeregion (region:int_size:)
 	{
 		// Replace with regions[region]
 		regions_region = 0;

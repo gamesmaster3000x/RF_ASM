@@ -1,5 +1,5 @@
 {
-	function write (i(int_size)) {
+	function write (i:int_size:) {
 		
 	}
 }

@@ -1,4 +1,6 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using Antlr4.Runtime.Atn;
+using Antlr4.Runtime.Misc;
+using Crimson.AntlrBuild;
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar;
 using Crimson.CSharp.Grammar.Statements;
@@ -74,7 +76,7 @@ namespace Crimson.CSharp.Core
             {
                 Fragment bs = pair.Value.GetCrimsonBasic();
                 program.Add(bs);
-                LOGGER.Debug($"Added GlobalVariable {pair.Value.Name}");
+                LOGGER.Debug($"Added GlobalVariable {pair.Value.Assignment.Name}");
             }
 
             // Add structures
@@ -164,7 +166,7 @@ namespace Crimson.CSharp.Core
             {
                 return "gvar";
             }
-            if (type == typeof(InternalVariableCStatement))
+            if (type == typeof(ScopeVariableCStatement))
             {
                 return "ivar";
             }

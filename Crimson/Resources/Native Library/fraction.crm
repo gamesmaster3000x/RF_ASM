@@ -1,6 +1,6 @@
 {
 	structure Fraction {
-		numerator(int_size);
-		denominator(int_size);
+		numerator:int_size:;
+		denominator:int_size:;
 	}
 }

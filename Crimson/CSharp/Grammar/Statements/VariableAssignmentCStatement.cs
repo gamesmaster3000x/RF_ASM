@@ -7,28 +7,28 @@ using System;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    internal class VariableAssignmentCStatement : AbstractCrimsonStatement
+    public class VariableAssignmentCStatement : AbstractCrimsonStatement
     {
 
-        public FullNameCToken Identifier { get; set; }
+        public FullNameCToken Name { get; set; }
         public SimpleValueCToken? Simple { get; }
         public ComplexValueCToken? Complex { get; }
 
         public VariableAssignmentCStatement (FullNameCToken identifier, SimpleValueCToken value)
         {
-            Identifier = identifier;
+            Name = identifier;
             Simple = value;
         }
 
         public VariableAssignmentCStatement (FullNameCToken identifier, ComplexValueCToken value)
         {
-            Identifier = identifier;
+            Name = identifier;
             Complex = value;
         }
 
         public override void Link (LinkingContext ctx)
         {
-            Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
+            Name = LinkerHelper.LinkIdentifier(Name, ctx);
             Simple?.Link(ctx);
             Complex?.Link(ctx);
             Linked = true;
@@ -45,11 +45,11 @@ namespace Crimson.CSharp.Grammar.Statements
             else if (Complex != null)
             {
                 result.Add(Complex.GetBasicFragment());
-                result.Add(new SetBStatement(Identifier.ToString(), -1, "VAR_ASSIGN_C_VAL"));
+                result.Add(new SetBStatement(Name.ToString(), -1, "VAR_ASSIGN_C_VAL"));
             }
             else
             {
-                throw new FlatteningException($"No value to be assigned to variable {Identifier}");
+                throw new FlatteningException($"No value to be assigned to variable {Name}");
             }
 
             return result;

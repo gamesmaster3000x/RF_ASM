@@ -16,22 +16,9 @@ namespace Crimson.CSharp.Grammar.Statements
     /// </summary>
     public class GlobalVariableCStatement : AbstractCrimsonStatement, INamed
     {
-        public FullNameCToken Name { get; protected set; }
+        public VariableAssignmentCStatement Assignment { get; }
 
-        public ComplexValueCToken? Complex { get; }
-        public SimpleValueCToken? Simple { get; }
-
-        public GlobalVariableCStatement (FullNameCToken identifier, ComplexValueCToken value)
-        {
-            Name = identifier;
-            Complex = value;
-        }
-
-        public GlobalVariableCStatement (FullNameCToken identifier, SimpleValueCToken value)
-        {
-            Name = identifier;
-            Simple = value;
-        }
+        public GlobalVariableCStatement (VariableAssignmentCStatement assignment) => Assignment = assignment;
 
         public override void Link (LinkingContext ctx)
         {
@@ -40,12 +27,12 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public FullNameCToken GetName ()
         {
-            return Name;
+            return Assignment.Name;
         }
 
         public void SetName (FullNameCToken name)
         {
-            Name = name;
+            Assignment.Name = name;
         }
 
         public override Fragment GetCrimsonBasic ()
@@ -53,16 +40,16 @@ namespace Crimson.CSharp.Grammar.Statements
             Fragment statements = new Fragment(0);
 
             // int i = (6 + 5);
-            if (Complex != null)
+            if (Assignment.Complex != null)
             {
-                Fragment valueStatements = Complex.GetBasicFragment();
+                Fragment valueStatements = Assignment.Complex.GetBasicFragment();
                 statements.Add(valueStatements);
-                statements.Add(new SetBStatement(Name.ToString(), -1, valueStatements.ResultHolder!));
+                statements.Add(new SetBStatement(Assignment.Name.ToString(), -1, valueStatements.ResultHolder!));
 
             }
-            else if (Simple != null)
+            else if (Assignment.Simple != null)
             {
-                statements.Add(new SetBStatement(Name.ToString(), -1, Simple.GetText()));
+                statements.Add(new SetBStatement(Assignment.Name.ToString(), -1, Assignment.Simple.GetText()));
             }
             else
             {

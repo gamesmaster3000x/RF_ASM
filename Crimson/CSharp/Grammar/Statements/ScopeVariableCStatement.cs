@@ -9,7 +9,7 @@ using static Crimson.CSharp.Grammar.Tokens.Comparator;
 
 namespace Crimson.CSharp.Grammar.Statements
 {
-    public class InternalVariableCStatement : AbstractCrimsonStatement
+    public class ScopeVariableCStatement : AbstractCrimsonStatement
     {
         public SimpleValueCToken Size { get; set; }
         public FullNameCToken Identifier { get; private set; }
@@ -17,7 +17,7 @@ namespace Crimson.CSharp.Grammar.Statements
         public ComplexValueCToken? Complex { get; }
         public SimpleValueCToken? Simple { get; }
 
-        private InternalVariableCStatement (SimpleValueCToken size, FullNameCToken identifier)
+        private ScopeVariableCStatement (SimpleValueCToken size, FullNameCToken identifier)
         {
             Size = size;
             Identifier = identifier;
@@ -27,13 +27,13 @@ namespace Crimson.CSharp.Grammar.Statements
             if (!identifier.HasMember()) throw new CrimsonParserException($"Identifier {identifier} for internal variable must have a member name.");
         }
 
-        public InternalVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, SimpleValueCToken simple) : this(size, identifier)
+        public ScopeVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, SimpleValueCToken simple) : this(size, identifier)
         {
             Simple = simple;
             if (Simple == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");
         }
 
-        public InternalVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, ComplexValueCToken complex) : this(size, identifier)
+        public ScopeVariableCStatement (SimpleValueCToken size, FullNameCToken identifier, ComplexValueCToken complex) : this(size, identifier)
         {
             Complex = complex;
             if (Complex == null) throw new CrimsonParserException($"Must assign initial (declaration) value to variable {identifier}");

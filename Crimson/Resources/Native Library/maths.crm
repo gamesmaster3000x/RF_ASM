@@ -1,9 +1,9 @@
 {
-	function pwr (number(int_size), exponent(int_size)) {
-		while (exponent > 0)
+	function pwr (number:int_size:, exponent:int_size:) {
+		while (exponent : 0)
 		{
-			number(int_size) = number * number;
-			exponent(int_size) = exponent - 1;
+			number:int_size: = number * number;
+			exponent:int_size: = exponent - 1;
 		}
 	}
 }

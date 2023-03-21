@@ -60,6 +60,11 @@ namespace Crimson.CSharp.Core
                 CrimsonParser.GlobalVariableDeclarationContext declaration = globalContext.globalVariableDeclaration();
                 return VisitGlobalVariableDeclaration(declaration);
             }
+            else if (stCtx is CrimsonParser.ScopeVariableStatementContext scopeVarContext)
+            {
+                CrimsonParser.ScopeVariableDeclarationContext declaration = scopeVarContext.scopeVariableDeclaration();
+                return VisitScopeVariableDeclaration(declaration);
+            }
             else if (stCtx is CrimsonParser.FunctionDeclarationStatementContext functionContext)
             {
                 CrimsonParser.FunctionDeclarationContext declaration = functionContext.functionDeclaration();
@@ -69,11 +74,6 @@ namespace Crimson.CSharp.Core
             {
                 CrimsonParser.StructureDeclarationContext declaration = structureContext.structureDeclaration();
                 return VisitStructureDeclaration(declaration);
-            }
-            else if (stCtx is CrimsonParser.VariableDeclarationStatementContext variableContext)
-            {
-                CrimsonParser.VariableDeclarationContext ivdCtx = variableContext.variableDeclaration();
-                return VisitVariableDeclaration(ivdCtx);
             }
             else if (stCtx is CrimsonParser.ReturnStatementContext returnContext)
             {
@@ -131,13 +131,24 @@ namespace Crimson.CSharp.Core
 
         public override GlobalVariableCStatement VisitGlobalVariableDeclaration ([NotNull] CrimsonParser.GlobalVariableDeclarationContext context)
         {
-            CrimsonParser.VariableDeclarationContext ivdc = context.variableDeclaration();
-            FullNameCToken identifier = VisitFullName(ivdc.fullName());
-            SimpleValueCToken? simple;
-            ComplexValueCToken? complex;
-            if (ivdc.simple != null) return new GlobalVariableCStatement(identifier, VisitSimpleValue(ivdc.simple));
-            else if (ivdc.complex != null) return new GlobalVariableCStatement(identifier, VisitComplexValue(ivdc.complex));
-            else throw new CrimsonParserException("Cannot parse GlobalVariableDeclarationContext with value " + ivdc.GetText());
+            CrimsonParser.AssignVariableContext ivdc = context.assignVariable();
+            VariableAssignmentCStatement assignment;
+
+            if (ivdc is CrimsonParser.AssignVariableDirectContext direct) assignment = VisitAssignVariableDirect(direct);
+            else if (ivdc is CrimsonParser.AssignVariableAtPointerContext pointer) assignment = VisitAssignVariableAtPointer(pointer);
+            else throw new CrimsonParserException("Cannot parse GlobalVariableDeclarationContext with unknown assignment type " + ivdc.GetType());
+
+            return new GlobalVariableCStatement(assignment);
+        }
+
+        public override ScopeVariableCStatement VisitScopeVariableDeclaration ([NotNull] CrimsonParser.ScopeVariableDeclarationContext context)
+        {
+            return null;
+        }
+
+        public override object VisitScopeVariableStatement ([NotNull] CrimsonParser.ScopeVariableStatementContext context)
+        {
+            return null;
         }
 
         public override FunctionCStatement VisitFunctionDeclaration ([NotNull] CrimsonParser.FunctionDeclarationContext context)
@@ -166,12 +177,22 @@ namespace Crimson.CSharp.Core
         public override IList<AbstractCrimsonStatement> VisitStructureBody ([NotNull] CrimsonParser.StructureBodyContext context)
         {
             IList<AbstractCrimsonStatement> statements = new List<AbstractCrimsonStatement>();
-            foreach (CrimsonParser.VariableDeclarationContext ivdCtx in context.variableDeclaration())
+            foreach (CrimsonParser.ScopeVariableDeclarationContext ivdCtx in context.scopeVariableDeclaration())
             {
-                InternalVariableCStatement var = VisitVariableDeclaration(ivdCtx);
+                ScopeVariableCStatement var = VisitScopeVariableDeclaration(ivdCtx);
                 statements.Add(var);
             }
             return statements;
+        }
+
+        public override object VisitArray ([NotNull] CrimsonParser.ArrayContext context)
+        {
+            return base.VisitArray(context);
+        }
+
+        public override SimpleValueCToken VisitDatasize ([NotNull] CrimsonParser.DatasizeContext context)
+        {
+            return VisitSimpleValue(context.sizeVal);
         }
 
         public VariableAssignmentCStatement ParseAssignVariable ([NotNull] CrimsonParser.AssignVariableContext context)
@@ -197,7 +218,7 @@ namespace Crimson.CSharp.Core
             foreach (CrimsonParser.ParameterContext paCtx in context.parameter())
             {
                 FullNameCToken identifier = new FullNameCToken(paCtx.name.Text);
-                SimpleValueCToken size = VisitSimpleValue(paCtx.size);
+                SimpleValueCToken size = VisitDatasize(paCtx.size);
                 FunctionCStatement.Parameter parameter = new FunctionCStatement.Parameter(size, identifier);
                 parameters.Add(parameter);
             }
@@ -207,17 +228,6 @@ namespace Crimson.CSharp.Core
         // ----------------------------------------------------
         // ------------------------------------ STATEMENTS
         // ----------------------------------------------------
-
-        public override InternalVariableCStatement VisitVariableDeclaration ([NotNull] CrimsonParser.VariableDeclarationContext context)
-        {
-            FullNameCToken identifier = VisitFullName(context.fullName());
-            SimpleValueCToken size = VisitSimpleValue(context.size);
-            SimpleValueCToken? simple;
-            ComplexValueCToken? complex;
-            if (context.simple != null) return new InternalVariableCStatement(size, identifier, VisitSimpleValue(context.simple));
-            else if (context.complex != null) return new InternalVariableCStatement(size, identifier, VisitComplexValue(context.complex));
-            else throw new CrimsonParserException("Cannot parse InternalVariableDeclarationContext with value " + context.GetText());
-        }
 
         public override FunctionCallCStatement VisitFunctionCall ([NotNull] CrimsonParser.FunctionCallContext context)
         {
@@ -249,7 +259,7 @@ namespace Crimson.CSharp.Core
 
         public override VariableAssignmentCStatement VisitAssignVariableDirect ([NotNull] CrimsonParser.AssignVariableDirectContext context)
         {
-            FullNameCToken identifier = VisitFullName(context.name);
+            FullNameCToken identifier = new FullNameCToken(context.name.Text);
             if (context.simple != null) return new VariableAssignmentCStatement(identifier, VisitSimpleValue(context.simple));
             else if (context.complex != null) return new VariableAssignmentCStatement(identifier, VisitComplexValue(context.complex));
             else throw new CrimsonParserException($"Cannot assign no value to variable {identifier}");
@@ -258,7 +268,7 @@ namespace Crimson.CSharp.Core
         public override VariableAssignmentCStatement VisitAssignVariableAtPointer ([NotNull] CrimsonParser.AssignVariableAtPointerContext context)
         {
             //TODO AssignVariableAtPointer just adds an asterisk to the variable name
-            FullNameCToken identifier = VisitFullName(context.fullName());
+            FullNameCToken identifier = new FullNameCToken(context.name.Text);
             if (context.simple != null) return new VariableAssignmentCStatement(identifier, VisitSimpleValue(context.simple));
             else if (context.complex != null) return new VariableAssignmentCStatement(identifier, VisitComplexValue(context.complex));
             else throw new CrimsonParserException($"Cannot assign no value to variable {identifier}");

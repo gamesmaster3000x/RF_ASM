@@ -82,8 +82,8 @@ return;
 :func_alloc_0:
         var_set i, -1, 0;
         
-        //  >> TODO IMPLEMENT WHILE (start) <<
-        //  >> TODO IMPLEMENT WHILE (end) <<
+        //  :: TODO IMPLEMENT WHILE (start) ::
+        //  :: TODO IMPLEMENT WHILE (end) ::
         
         return;
 return;
@@ -106,8 +106,8 @@ return;
         
         :ELSE:
                 
-                //  >> TODO IMPLEMENT WHILE (start) <<
-                //  >> TODO IMPLEMENT WHILE (end) <<
+                //  :: TODO IMPLEMENT WHILE (start) ::
+                //  :: TODO IMPLEMENT WHILE (end) ::
                 
         :END_branch_4:
         
@@ -127,8 +127,8 @@ return;
         // Function Call
         var_set region_ptr, -1, ;
         
-        //  >> TODO IMPLEMENT WHILE (start) <<
-        //  >> TODO IMPLEMENT WHILE (end) <<
+        //  :: TODO IMPLEMENT WHILE (start) ::
+        //  :: TODO IMPLEMENT WHILE (end) ::
         
         // FC start
         jump func_freeregion_0
@@ -141,8 +141,8 @@ return;
 
 :func_pwr_0:
         
-        //  >> TODO IMPLEMENT WHILE (start) <<
-        //  >> TODO IMPLEMENT WHILE (end) <<
+        //  :: TODO IMPLEMENT WHILE (start) ::
+        //  :: TODO IMPLEMENT WHILE (end) ::
         
 return;
 

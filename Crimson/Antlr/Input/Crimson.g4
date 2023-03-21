@@ -15,8 +15,7 @@ operationHandler
 
 // Function-only statements
 statement
-    : variableDeclaration           #VariableDeclarationStatement
-    | functionReturn                #ReturnStatement
+    : functionReturn                #ReturnStatement
     | assignVariable                #AssignVariableStatement
     | functionCall SemiColon        #FunctionCallStatement
     | ifBlock                       #IfStatement
@@ -24,15 +23,13 @@ statement
     | basicCall                     #BasicCallStatement
     | assemblyCall                  #AssemblyCallStatement
     | globalVariableDeclaration     #GlobalVariableStatement
+    | scopeVariableDeclaration      #ScopeVariableStatement
     | functionDeclaration           #FunctionDeclarationStatement
     | structureDeclaration          #StructureDeclarationStatement
     ;
-variableDeclaration 
-    : name=fullName OpenBracket size=simpleValue CloseBracket DirectEquals (complex=complexValue | simple=simpleValue) SemiColon
-    ;
 assignVariable
-    : name=fullName DirectEquals (complex=complexValue | simple=simpleValue) SemiColon     #AssignVariableDirect
-    | name=fullName PointerEquals (complex=complexValue | simple=simpleValue) SemiColon    #AssignVariableAtPointer
+    : name=ShortName DirectEquals (complex=complexValue | simple=simpleValue) size=datasize SemiColon     #AssignVariableDirect
+    | name=ShortName PointerEquals (complex=complexValue | simple=simpleValue) size=datasize SemiColon    #AssignVariableAtPointer
     ;
 ifBlock
     : If condition scope (elseBlock | elseIfBlock)?
@@ -56,7 +53,10 @@ assemblyCall
     : AssemblyCall assemblyText=String SemiColon
     ;
 globalVariableDeclaration
-    : Global declaration=variableDeclaration
+	: Global assignment=assignVariable
+    ;
+scopeVariableDeclaration
+    : Scope name=ShortName size=datasize SemiColon
     ;
 functionDeclaration
     : Function header=functionHeader body=scope
@@ -85,9 +85,8 @@ complexValue
 	| func=functionCall
 	;
 rawValue
-    : Null
-    | Number
-    | BooleanValue
+    : Number
+	| String
 	;
 operation
 	: leftValue=simpleValue operator=Operator rightValue=simpleValue
@@ -95,7 +94,7 @@ operation
 
 // Parameters
 parameter
-    : size=simpleValue OpenBracket name=ShortName CloseBracket
+    : name=ShortName size=datasize
     ;
 parameterList 
     : OpenBracket CloseBracket
@@ -107,16 +106,19 @@ structureDeclaration
     : Structure name=fullName body=structureBody
     ;
 structureBody
-    : OpenBrace variableDeclaration* CloseBrace
+    : OpenBrace scopeVariableDeclaration* CloseBrace
     ;
 array
-    : OpenSquare blockSize=Number CloseSquare
+    : OpenSquare blockSize=datasize CloseSquare
     ;
+datasize
+	: OpenTriangle sizeVal=simpleValue CloseTriangle
+	;
 
 // Misc
 fullName
 	: (libraryName=ShortName Dot)? memberName=ShortName
-	; 
+	;
 
 /*
  * =
@@ -127,7 +129,7 @@ fullName
 Allocator: 'allocator';
 Function: 'function';
 Global: 'global';
-Scoped: 'scoped';
+Scope: 'scope';
 Return: 'return';
 Structure: 'structure';
 Using: 'using';
@@ -138,14 +140,6 @@ While: 'while';
 Else: 'else';
 Elif: 'elif';
 
-Integer: 'int';
-Boolean: 'bool';
-Null: 'null';
-
-fragment True: 'true';
-fragment False: 'false';
-BooleanValue: True | False;
-
 Operator: Comparator | MathsOperator;
 
 fragment Plus: '+'; 
@@ -154,9 +148,9 @@ Asterisk: '*';
 fragment Slash: '/';
 MathsOperator: Plus | Minus | Asterisk | Slash;
 
-fragment Less: '<';
+fragment Less: '?<';
 fragment LessEqual: '<=';
-fragment Greater: '>';
+fragment Greater: '?>';
 fragment GreaterEqual: '>=';
 fragment EqualTo: '==';
 Comparator: Less | LessEqual | Greater | GreaterEqual | EqualTo;
@@ -170,8 +164,11 @@ OpenBracket: '(';
 CloseBracket: ')';
 OpenSquare: '[';
 CloseSquare: ']';
+Colon: ':';
 OpenBrace: '{'; 
 CloseBrace: '}';
+OpenTriangle: '<'; 
+CloseTriangle: '>'; 
 Comma: ','; 
 Dot: '.'; 
 SemiColon: ';'; 
