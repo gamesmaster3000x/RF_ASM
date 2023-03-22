@@ -1,36 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	<StartupObject>Crimson.CSharp.Core.Crimson</StartupObject>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <StartupObject>Crimson.CSharp.Core.Crimson</StartupObject>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Resources\Antlr\**" />
-    <EmbeddedResource Remove="Resources\Antlr\**" />
-    <None Remove="Resources\Antlr\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Resources\Antlr\**" />
+        <EmbeddedResource Remove="Resources\Antlr\**" />
+        <None Remove="Resources\Antlr\**" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Antlr4 Include="Antlr\Input\Crimson.g4">
-      <Package>Crimson.AntlrBuild</Package>
-    </Antlr4>
-  </ItemGroup>
+    <ItemGroup>
+        <Antlr4 Include="Antlr\Input\Crimson.g4">
+            <Package>Crimson.AntlrBuild</Package>
+        </Antlr4>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.11.1" />
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="NLog" Version="5.1.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.11.1" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+        <PackageReference Include="NLog" Version="5.1.1" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Antlr4 Update="CSharp\Antlr4Grammar\Crimson.g4">
-      <CustomToolNamespace>Crimson.ANTLR.Crimson</CustomToolNamespace>
-      <Package>Crimson.Antlr</Package>
-    </Antlr4>
-  </ItemGroup>
+    <ItemGroup>
+        <Antlr4 Update="CSharp\Antlr4Grammar\Crimson.g4">
+            <CustomToolNamespace>Crimson.ANTLR.Crimson</CustomToolNamespace>
+            <Package>Crimson.Antlr</Package>
+        </Antlr4>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="CSharp\Assembly\" />
+    </ItemGroup>
 
 </Project>
