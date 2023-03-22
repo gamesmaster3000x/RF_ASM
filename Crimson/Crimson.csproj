@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CrimsonBasic\CrimsonBasic.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Antlr4 Update="CSharp\Antlr4Grammar\Crimson.g4">
       <CustomToolNamespace>Crimson.ANTLR.Crimson</CustomToolNamespace>
       <Package>Crimson.Antlr</Package>
