@@ -56,7 +56,7 @@ namespace Crimson.CSharp.Assembly.RFASM
             program.Add(new RFASMComment("============================== Global Variables =============================="));
             foreach (var pair in variables)
             {
-                Fragment<RFASMStatement> bs = pair.Value.GetCrimsonBasic();
+                Fragment bs = pair.Value.GetCrimsonBasic();
                 program.Add(bs);
                 LOGGER.Debug($"Added GlobalVariable {pair.Value.Assignment.Name}");
             }
@@ -67,7 +67,7 @@ namespace Crimson.CSharp.Assembly.RFASM
             program.Add(new RFASMComment("============================== Structures =============================="));
             foreach (var pair in structures)
             {
-                Fragment<RFASMStatement> bs = pair.Value.GetCrimsonBasic();
+                Fragment bs = pair.Value.GetCrimsonBasic();
                 program.Add(bs);
                 LOGGER.Debug($"Added Structure {pair.Value.Name}");
             }
@@ -77,7 +77,7 @@ namespace Crimson.CSharp.Assembly.RFASM
             program.Add(new RFASMComment("============================== Entry Function =============================="));
             FunctionCStatement entry = GetEntryFunction(compilation);
             LOGGER.Info($"Found entry Function {entry.Name}");
-            Fragment<RFASMStatement> entryBs = entry.GetCrimsonBasic();
+            Fragment entryBs = entry.GetCrimsonBasic();
             program.Add(entryBs);
             LOGGER.Debug($"Added entry Function {entry.Name}");
 
@@ -87,7 +87,7 @@ namespace Crimson.CSharp.Assembly.RFASM
             foreach (var pair in functions)
             {
                 if (pair.Value == entry) continue;
-                Fragment<RFASMStatement> bs = pair.Value.GetCrimsonBasic();
+                Fragment bs = pair.Value.GetCrimsonBasic();
                 program.Add(bs);
                 LOGGER.Debug($"Added Function {pair.Value.Name}");
             }

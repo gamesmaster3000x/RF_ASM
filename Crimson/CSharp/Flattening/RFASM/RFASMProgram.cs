@@ -3,30 +3,35 @@
     internal class RFASMProgram : AbstractAssemblyProgram
     {
 
-        public List<Fragment<RFASMStatement>> Fragments { get; }
+        public List<Fragment> Fragments { get; }
 
         public RFASMProgram ()
         {
-            Fragments = new List<Fragment<RFASMStatement>>();
+            Fragments = new List<Fragment>();
         }
 
-        public void Add (Fragment<RFASMStatement> f)
+        public void Add (Fragment f)
         {
             Fragments.Add(f);
         }
 
         public void Add (params RFASMStatement[] statements)
         {
-            Fragment<RFASMStatement> f = new Fragment<RFASMStatement>(0);
+            Fragment f = new Fragment(0);
             f.Add(statements);
             Add(f);
         }
 
         public void Add (RFASMStatement statement)
         {
-            Fragment<RFASMStatement> f = new Fragment<RFASMStatement>(0);
+            Fragment f = new Fragment(0);
             f.Add(statement);
             Fragments.Add(f);
+        }
+
+        internal override IEnumerable<Fragment> GetFragments ()
+        {
+            return Fragments;
         }
     }
 }

@@ -4,6 +4,7 @@ using Antlr4.Runtime;
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Assembly.RFASM;
 using Crimson.CSharp.Assembly;
+using Crimson.CSharp.Linking;
 
 namespace Crimson.CSharp.Core
 {

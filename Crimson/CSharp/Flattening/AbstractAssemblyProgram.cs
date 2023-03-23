@@ -9,6 +9,6 @@ namespace Crimson.CSharp.Assembly
 {
     public abstract class AbstractAssemblyProgram
     {
-
+        internal abstract IEnumerable<Fragment> GetFragments ();
     }
 }

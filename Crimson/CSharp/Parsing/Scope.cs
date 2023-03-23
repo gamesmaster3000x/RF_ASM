@@ -2,6 +2,7 @@
 using Crimson.CSharp.Core;
 using Crimson.CSharp.Exception;
 using Crimson.CSharp.Grammar.Statements;
+using Crimson.CSharp.Linking;
 using NLog;
 
 namespace Crimson.CSharp.Grammar

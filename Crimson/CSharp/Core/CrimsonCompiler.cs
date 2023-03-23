@@ -2,6 +2,7 @@
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Assembly;
 using Crimson.CSharp.Grammar;
+using Crimson.CSharp.Linking;
 using NLog;
 
 namespace Crimson.CSharp.Core
