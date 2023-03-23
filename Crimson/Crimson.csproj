@@ -33,8 +33,4 @@
         </Antlr4>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="CSharp\Assembly\" />
-    </ItemGroup>
-
 </Project>

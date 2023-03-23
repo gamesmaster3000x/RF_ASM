@@ -1,7 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Crimson.AntlrBuild;
+using Crimson.CSharp.Assembly;
 using Crimson.CSharp.Grammar;
-using CrimsonBasic.CSharp.Core;
 using NLog;
 
 namespace Crimson.CSharp.Core
@@ -15,9 +15,9 @@ namespace Crimson.CSharp.Core
         public CrimsonOptions Options { get; }
         public Library Library { get; }
         public Linker Linker { get; }
-        public Flattener Flattener { get; }
+        public IFlattener Flattener { get; }
 
-        public CrimsonCompiler(CrimsonOptions options, Library unitGenerator, Linker linker, Flattener flattener)
+        public CrimsonCompiler (CrimsonOptions options, Library unitGenerator, Linker linker, IFlattener flattener)
         {
             Options = options;
             Library = unitGenerator;
@@ -25,7 +25,7 @@ namespace Crimson.CSharp.Core
             Flattener = flattener;
         }
 
-        public int FullyCompileFromOptions()
+        public int FullyCompileFromOptions ()
         {
             /*
              * == PARSING STAGE == 
@@ -85,7 +85,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" F L A T T E N I N G ");
-            BasicProgram basicProgram = Flattener.Flatten(compilation);
+            AbstractAssemblyProgram basicProgram = Flattener.Flatten(compilation);
 
             /*
              * == FURTHER COMPILATION STAGES == 
@@ -95,14 +95,14 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" D E L E G A T I N G");
-            DumpBasicProgram(basicProgram);
+            DumpAssemblyProgram(basicProgram);
 
             LOGGER.Info("\n\n");
             LOGGER.Info("Done!");
             return 1;
         }
 
-        private void DumpBasicProgram(BasicProgram basicProgram)
+        private void DumpAssemblyProgram (AbstractAssemblyProgram basicProgram)
         {
             if (Options.DumpIntermediates)
             {
@@ -110,7 +110,7 @@ namespace Crimson.CSharp.Core
                 LOGGER.Info("Dumping CrimsonBasic program to " + basicTarget);
 
                 List<string> lines = new List<string>();
-                foreach (var f in basicProgram.Fragments)
+                foreach (var f in basicProgram.GetFragments())
                 {
                     lines.AddRange(f.GetLines());
                 }
@@ -118,7 +118,8 @@ namespace Crimson.CSharp.Core
                 Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));
                 File.WriteAllLines(basicTarget, lines.ToArray());
                 LOGGER.Info("Finished CrimsonBasic dump!");
-            } else
+            }
+            else
             {
                 LOGGER.Info("Skipping dumping of CrimsonBasic program");
             }

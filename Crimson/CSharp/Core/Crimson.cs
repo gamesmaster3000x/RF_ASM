@@ -2,6 +2,8 @@
 using NLog;
 using Antlr4.Runtime;
 using Crimson.AntlrBuild;
+using Crimson.CSharp.Assembly.RFASM;
+using Crimson.CSharp.Assembly;
 
 namespace Crimson.CSharp.Core
 {
@@ -50,7 +52,7 @@ namespace Crimson.CSharp.Core
 
             Library generator = new Library(Options);
             Linker linker = new Linker(Options);
-            Flattener flattener = new Flattener(Options);
+            IFlattener flattener = new RFASMFlattener(); //TODO Don't default to RFASM Flattener
             Compiler = new CrimsonCompiler(Options, generator, linker, flattener);
 
             try

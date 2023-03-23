@@ -1,5 +1,4 @@
 ﻿using Crimson.CSharp.Grammar;
-using CrimsonBasic.CSharp.Core;
 using NLog;
 
 namespace Crimson.CSharp.Core
