@@ -11,15 +11,15 @@ namespace RedFoxAssembly.CSharp.Statements
 {
     internal interface IData
     {
-        public byte[] GetBytes(RFASMCompiler compiler);
+        public byte[] GetBytes (RFASMCompiler compiler);
 
-        int GetWidth(RFASMCompiler compiler);
+        int GetWidth (RFASMCompiler compiler);
 
-        public bool IsTargetingRegister();
+        public bool IsTargetingRegister ();
 
-        public string ToString();
+        public string ToString ();
 
-        public static RegisterTarget ParseRegisterTarget(char c)
+        public static RegisterTarget ParseRegisterTarget (char c)
         {
             char u = Char.ToUpper(c);
             switch (u)
@@ -33,19 +33,17 @@ namespace RedFoxAssembly.CSharp.Statements
             throw new ParsingException("Cannot parse register prefix " + u);
         }
 
-        public static int GetRegisterOffset(RegisterTarget t)
+        public static int GetRegisterOffset (RegisterTarget t)
         {
-            //TODO Get proper register offsets (IData)
-            switch (t)
+            return t switch
             {
-                case RegisterTarget.NONE: return 0;
-                case RegisterTarget.REGISTER: return 0;
-                case RegisterTarget.SPECIALISED_REGISTER: return 0;
-                case RegisterTarget.GENERAL_REGISTER: return 128;
-                case RegisterTarget.COMPONENT_REGISTER: return 64;
-            }
-
-            throw new ParsingException("Cannot get offset for register target " + t);
+                RegisterTarget.NONE => 0,
+                RegisterTarget.REGISTER => 0,
+                RegisterTarget.SPECIALISED_REGISTER => 0,
+                RegisterTarget.GENERAL_REGISTER => 128,
+                RegisterTarget.COMPONENT_REGISTER => 64,
+                _ => throw new ParsingException("Cannot get offset for register target " + t),
+            };
         }
 
         public enum RegisterTarget
