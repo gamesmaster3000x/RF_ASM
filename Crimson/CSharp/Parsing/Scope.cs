@@ -212,10 +212,12 @@ namespace Crimson.CSharp.Parsing
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
             ScopeAssemblyStructure structure = new ScopeAssemblyStructure();
+            context.EnterScope();
 
             foreach (var d in Delegates)
                 structure.AddSubStructure(d.Invoke().Generalise(context));
 
+            context.LeaveScope();
             return structure;
         }
 

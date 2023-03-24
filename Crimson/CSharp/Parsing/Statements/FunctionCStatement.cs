@@ -36,7 +36,11 @@ namespace Crimson.CSharp.Parsing.Statements
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
             SubroutineAssemblyStructure subroutine = new SubroutineAssemblyStructure(context, Name.ToString());
+            context.EnterScope();
+
             subroutine.AddSubStructure(Scope.Generalise(context));
+
+            context.LeaveScope();
             return subroutine;
         }
 
