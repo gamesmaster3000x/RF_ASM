@@ -32,6 +32,8 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
+            // TODO Global variable C statement GeneralisationContext.AllocGlobal()
+
             //ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
 
             // int i = (6 + 5);
