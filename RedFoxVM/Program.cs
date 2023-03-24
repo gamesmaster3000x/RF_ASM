@@ -20,7 +20,10 @@ namespace RedFoxVM
             Computer.Initialise(dw, bytes.ToArray());
             Console.WriteLine("Created VM with " + Computer.memory.Capacity + " bytes of memory.");
             Console.WriteLine("Starting VM...");
-            Computer.Run();
+            DateTime start = DateTime.Now;
+            int cycles = Computer.Run();
+            TimeSpan runtime = DateTime.Now - start;
+            Console.WriteLine("The VM completed " + cycles + " cycles in " + runtime + " resulting in an average of " + (runtime / cycles).TotalMilliseconds + "ms per cycle.");
         }
 
         public static void DumpInfo()

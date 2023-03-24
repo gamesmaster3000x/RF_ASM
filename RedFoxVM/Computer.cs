@@ -9,6 +9,7 @@ namespace RedFoxVM
         public static int DataWidth { get { return dataWidth; } }
         public static Processor processor = new Processor();
         public static RAM memory;
+        public static Terminal terminal = new Terminal(0);
 
         public static void Initialise(int dataWidth, byte[] data)
         {
@@ -17,15 +18,19 @@ namespace RedFoxVM
             memory = new RAM(data);
             Console.WriteLine("Successfully created VM with " + memory.Capacity + " bytes of memory.");
         }
-
-        public static void Run()
+        
+        public static int Run()
         {
+            int cycles = 0;
             while (!halted)
             {
                 processor.Clock();
-                Program.DumpInfo();
+                terminal.Clock();
+                cycles++;
             }
+            Program.DumpInfo();
             Console.WriteLine("Computer halted.");
+            return cycles;
         }
 
         public static void Halt()
