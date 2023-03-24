@@ -1,6 +1,6 @@
 ﻿using Crimson.CSharp.Linking;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public class IdentifierSimpleValueCToken : SimpleValueCToken
     {
@@ -19,6 +19,16 @@ namespace Crimson.CSharp.Grammar.Tokens
         public override string GetText ()
         {
             return Identifier.ToString();
+        }
+
+        public override bool CanEvaluate ()
+        {
+            return false;
+        }
+
+        public override object Evaluate ()
+        {
+            return Identifier;
         }
     }
 }

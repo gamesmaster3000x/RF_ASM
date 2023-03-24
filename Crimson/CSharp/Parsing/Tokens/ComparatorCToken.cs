@@ -1,6 +1,6 @@
-﻿using static Crimson.CSharp.Grammar.Tokens.Comparator;
+﻿using static Crimson.CSharp.Parsing.Tokens.Comparator;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public class Comparator
     {
@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Grammar.Tokens
             EQUAL_TO
         }
 
-        public static Values Get(string value)
+        public static Values Get (string value)
         {
             switch (value)
             {
@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Grammar.Tokens
             throw new ArgumentException($"{value} cannot be parsed to a Comparator");
         }
 
-        public static string ToString(Values comparator)
+        public static string ToString (Values comparator)
         {
             switch (comparator)
             {

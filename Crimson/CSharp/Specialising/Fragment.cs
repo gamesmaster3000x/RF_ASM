@@ -1,28 +1,28 @@
-﻿namespace Crimson.CSharp.Assembly
+﻿namespace Crimson.CSharp.Specialising
 {
     public class Fragment
     {
-        private List<AbstractAssemblyStatement> _statements;
+        private List<AbstractSpecificAssemblyStatement> _statements;
         private List<int> _indents;
         private int _indentation;
         public string? ResultHolder { get; set; }
 
         public Fragment (int indentation)
         {
-            _statements = new List<AbstractAssemblyStatement>();
+            _statements = new List<AbstractSpecificAssemblyStatement>();
             _indents = new List<int>();
             _indentation = indentation;
         }
 
 
-        public void Add (AbstractAssemblyStatement statement)
+        public void Add (AbstractSpecificAssemblyStatement statement)
         {
             if (statement == null) throw new ArgumentNullException("Cannot add a null BasicStatement to a Fragment");
             _statements.Add(statement);
             _indents.Add(_indentation);
         }
 
-        public void Add (IList<AbstractAssemblyStatement> statements)
+        public void Add (IList<AbstractSpecificAssemblyStatement> statements)
         {
             foreach (var s in statements)
                 Add(s);

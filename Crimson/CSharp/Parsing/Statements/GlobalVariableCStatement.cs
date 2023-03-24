@@ -1,9 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.
@@ -29,28 +30,22 @@ namespace Crimson.CSharp.Grammar.Statements
             Assignment.Name = name;
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment statements = new Fragment(0);
+            ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
 
             // int i = (6 + 5);
             if (Assignment.Complex != null)
             {
-                Fragment valueStatements = Assignment.Complex.GetBasicFragment();
-                statements.Add(valueStatements);
-                statements.Add(new SetBStatement(Assignment.Name.ToString(), -1, valueStatements.ResultHolder!));
-
+                // Fragment valueStatements = Assignment.Complex.GetBasicFragment();
+                scope.AddSubStructure(new CommentAssemblyStructure($"Set {Assignment.Name.ToString()}=RESULT"));
             }
             else if (Assignment.Simple != null)
-            {
-                statements.Add(new SetBStatement(Assignment.Name.ToString(), -1, Assignment.Simple.GetText()));
-            }
+                scope.AddSubStructure(new CommentAssemblyStructure($"Assign {Assignment.Name.ToString()}={Assignment.Simple.GetText()}"));
             else
-            {
                 throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");
-            }
 
-            return statements;
+            return scope;
         }
     }
 }

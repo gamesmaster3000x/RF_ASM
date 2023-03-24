@@ -1,27 +1,32 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 using System;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     public class VariableAssignmentCStatement : AbstractCrimsonStatement
     {
 
         public FullNameCToken Name { get; set; }
+        public SimpleValueCToken Size { get; set; }
         public SimpleValueCToken? Simple { get; }
         public ComplexValueCToken? Complex { get; }
 
-        public VariableAssignmentCStatement (FullNameCToken identifier, SimpleValueCToken value)
+        public VariableAssignmentCStatement (FullNameCToken identifier, SimpleValueCToken size, SimpleValueCToken value)
         {
             Name = identifier;
+            Size = size;
             Simple = value;
         }
 
-        public VariableAssignmentCStatement (FullNameCToken identifier, ComplexValueCToken value)
+        public VariableAssignmentCStatement (FullNameCToken identifier, SimpleValueCToken size, ComplexValueCToken value)
         {
             Name = identifier;
+            Size = size;
             Complex = value;
         }
 
@@ -33,25 +38,28 @@ namespace Crimson.CSharp.Grammar.Statements
             Linked = true;
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment result = new Fragment(0);
+            ScopeAssemblyStructure result = new ScopeAssemblyStructure();
 
-            if (Simple != null)
-            {
-                result.Add(new CommentBStatement(Simple.GetText()));
-            }
-            else if (Complex != null)
-            {
-                result.Add(Complex.GetBasicFragment());
-                result.Add(new SetBStatement(Name.ToString(), -1, "VAR_ASSIGN_C_VAL"));
-            }
-            else
-            {
-                throw new FlatteningException($"No value to be assigned to variable {Name}");
-            }
+            result.AddSubStructure(new CommentAssemblyStructure(ToString()!));
 
-            return result;
+            /* if (Simple != null)
+                 result.AddSubStructure(new CommentAssemblyStructure(Simple.GetText()));
+             else if (Complex != null)
+             {
+                 result.AddSubStructure(new CommentAssemblyStructure("Complex Fragment"));
+                 result.AddSubStructure(new CommentAssemblyStructure($"Variable Assign {Name.ToString()}=VAR_ASSIGN_C_VAL"));
+             }
+             else
+                 throw new FlatteningException($"No value to be assigned to variable {Name}");*/
+
+            return null;
+        }
+
+        internal bool IsKnownAtCompileTime ()
+        {
+            throw new NotImplementedException();
         }
     }
 }

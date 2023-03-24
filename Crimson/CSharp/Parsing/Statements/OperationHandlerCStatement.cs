@@ -1,8 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     public class OperationHandlerCStatement : AbstractCrimsonStatement
     {
@@ -26,9 +28,9 @@ namespace Crimson.CSharp.Grammar.Statements
             TargetFunction = LinkerHelper.LinkFunctionCall(FunctionIdentifier, ctx);
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            return new Fragment(0);
+            return new EmptyAssemblyStructure();
         }
     }
 }

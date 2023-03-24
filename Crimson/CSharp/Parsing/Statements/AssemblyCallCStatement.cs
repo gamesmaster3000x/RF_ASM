@@ -1,7 +1,9 @@
-﻿using Crimson.CSharp.Assembly;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     internal class AssemblyCallCStatement : AbstractCrimsonStatement
     {
@@ -12,11 +14,10 @@ namespace Crimson.CSharp.Grammar.Statements
             this.assemblyText = assemblyText;
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment f = new Fragment(0);
-            f.Add(new AssemblyBStatement(assemblyText));
-            return f;
+            ArbitraryAssemblyStructure structure = new ArbitraryAssemblyStructure(assemblyText);
+            return structure;
         }
 
         public override void Link (LinkingContext ctx)

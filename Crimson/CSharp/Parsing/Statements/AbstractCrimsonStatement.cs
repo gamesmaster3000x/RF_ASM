@@ -1,8 +1,7 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Linking;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     /// <summary>
     /// A collection of ICrimsonTokens which make a coherent "phrase".
@@ -11,8 +10,8 @@ namespace Crimson.CSharp.Grammar.Statements
     {
         public bool Linked { get; set; }
 
-        public abstract void Link (LinkingContext ctx);
+        public abstract void Link (LinkingContext context);
 
-        public abstract Fragment GetCrimsonBasic ();
+        public abstract IGeneralAssemblyStructure Generalise (GeneralisationContext context);
     }
 }

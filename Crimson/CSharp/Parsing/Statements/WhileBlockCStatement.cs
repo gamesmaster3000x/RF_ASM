@@ -1,8 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     internal class WhileBlockCStatement : AbstractCrimsonStatement, IHasScope
     {
@@ -50,16 +52,14 @@ namespace Crimson.CSharp.Grammar.Statements
          *  (3)
          * :END_IF
          */
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment wholeBlock = new Fragment(0);
+            ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
 
-            wholeBlock.Add(new CommentBStatement(""));
-            wholeBlock.Add(new CommentBStatement(" >> TODO IMPLEMENT WHILE (start) <<"));
-            wholeBlock.Add(new CommentBStatement(" >> TODO IMPLEMENT WHILE (end) <<"));
-            wholeBlock.Add(new CommentBStatement(""));
+            scope.AddSubStructure(new CommentAssemblyStructure(" >> TODO IMPLEMENT WHILE (start) <<"));
+            scope.AddSubStructure(new CommentAssemblyStructure(" >> TODO IMPLEMENT WHILE (end) <<"));
 
-            return wholeBlock;
+            return scope;
         }
 
         public bool IsLinked ()

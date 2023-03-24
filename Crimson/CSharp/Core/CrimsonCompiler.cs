@@ -1,8 +1,7 @@
-﻿using Antlr4.Runtime;
-using Crimson.AntlrBuild;
-using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar;
+﻿using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing;
+using Crimson.CSharp.Specialising;
 using NLog;
 
 namespace Crimson.CSharp.Core
@@ -16,14 +15,16 @@ namespace Crimson.CSharp.Core
         public CrimsonOptions Options { get; }
         public Library Library { get; }
         public Linker Linker { get; }
-        public IFlattener Flattener { get; }
+        public Generaliser Generaliser { get; }
+        public ISpecialiser Specialiser { get; }
 
-        public CrimsonCompiler (CrimsonOptions options, Library unitGenerator, Linker linker, IFlattener flattener)
+        public CrimsonCompiler (CrimsonOptions options, Library unitGenerator, Linker linker, Generaliser generaliser, ISpecialiser flattener)
         {
             Options = options;
             Library = unitGenerator;
             Linker = linker;
-            Flattener = flattener;
+            Generaliser = generaliser;
+            Specialiser = flattener;
         }
 
         public int FullyCompileFromOptions ()
@@ -54,56 +55,38 @@ namespace Crimson.CSharp.Core
 
 
             /*
-             * == FLATTENING STAGE == 
+             * == GENERALISING STAGE == 
              * 
-             * Now we need to break this list into simple statements - a strange kind of Crimson/RFASM mash-up.
-             * This strange intermediate language will have some high-level features from Crimson, but will use a flattened control flow.
-             * This basically means that conditions will be replaced with jumps.
-             * 
-             * >> main.crm
-             *  function main () {
-             *      int i = 5;
-             *      
-             *      if (i == 4) {
-             *          i = 6;
-             *      } else {
-             *          return false;
-             *      }
-             *  }
-             * 
-             * >> main.crmrfp
-             *  ::func_main
-             *  int i = 5
-             *  
-             *  bool b = (i == 4)               // Condition has been extracted
-             *  JNE b, true, "not_equal"        // Jump if condition false (ie. i != 4)
-             *      i = 6
-             *      JMP "end_condition"
-             *  ::not_equal                     // This is the else block
-             *      return false;
-             *  ::end_condition
-             *  ::endfunc_main
+             * Converts the program into a list of general assembly statements covering the concepts of the program 
+             * without tying it to one assembly language.
              */
             LOGGER.Info("\n\n");
-            LOGGER.Info(" F L A T T E N I N G ");
-            AbstractAssemblyProgram basicProgram = Flattener.Flatten(compilation);
+            LOGGER.Info(" G E N E R A L I S I N G ");
+            GeneralAssemblyProgram generalProgram = Generaliser.Generalise(compilation);
 
             /*
-             * == FURTHER COMPILATION STAGES == 
+             * == SPECIALISING STAGE == 
              * 
-             * Depending on specified options, the CrimsonBasic or RFASM compilers may now be invoked.
-             * 
+             * Convert the generic program into one targetting the desired assembly language.
+             * For each language, you'll need a different ISpecialiser.
              */
             LOGGER.Info("\n\n");
-            LOGGER.Info(" D E L E G A T I N G");
-            DumpAssemblyProgram(basicProgram);
+            LOGGER.Info(" S P E C I A L I S I N G ");
+            AbstractSpecificAssemblyProgram specialisedProgram = Specialiser.Specialise(generalProgram);
+
+            /*
+             * == CLEANUP == 
+             */
+            LOGGER.Info("\n\n");
+            LOGGER.Info("Writing to disk...");
+            DumpSpecialisedProgram(specialisedProgram);
 
             LOGGER.Info("\n\n");
             LOGGER.Info("Done!");
             return 1;
         }
 
-        private void DumpAssemblyProgram (AbstractAssemblyProgram basicProgram)
+        private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram basicProgram)
         {
             if (Options.DumpIntermediates)
             {

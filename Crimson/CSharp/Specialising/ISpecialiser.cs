@@ -1,13 +1,12 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Assembly.RFASM;
-using NLog;
+﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Generalising;
 
-namespace Crimson.CSharp.Core
+namespace Crimson.CSharp.Specialising
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IFlattener
+    public interface ISpecialiser
     {
 
         /// <summary>
@@ -21,6 +20,6 @@ namespace Crimson.CSharp.Core
         /// </summary>
         /// <param name="compilation"></param>
         /// <returns></returns>
-        public AbstractAssemblyProgram Flatten (Compilation compilation);
+        public AbstractSpecificAssemblyProgram Specialise (GeneralAssemblyProgram general);
     }
 }

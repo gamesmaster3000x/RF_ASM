@@ -1,8 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     public class StructureCStatement : AbstractCrimsonStatement, INamed
     {
@@ -16,9 +18,9 @@ namespace Crimson.CSharp.Grammar.Statements
 
         public IList<AbstractCrimsonStatement> Body { get; }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            return new Fragment(0);
+            return new EmptyAssemblyStructure();
         }
 
         public override void Link (LinkingContext ctx)

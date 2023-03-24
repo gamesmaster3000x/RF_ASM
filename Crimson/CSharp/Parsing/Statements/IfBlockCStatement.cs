@@ -1,9 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Flattening;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     internal class IfBlockCStatement : AbstractCrimsonStatement, IHasScope
     {
@@ -56,40 +57,30 @@ namespace Crimson.CSharp.Grammar.Statements
          *  (3)
          * :END_IF
          */
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment wholeBlock = new Fragment(0);
-
-            wholeBlock.Add(new CommentBStatement(""));
+            ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
+            scope.AddSubStructure(new CommentAssemblyStructure(""));
 
             // If
             // Condition
-            Fragment condition = Condition.GetCrimsonBasic();
-            Fragment ifHead = new Fragment(0);
-            string uniqueBranchName = FlattenerHelper.GetUniqueBranchName();
+            string uniqueBranchName = "IF_BLOCK_UNIQUE_BRANCH_NAME";
             string endLabelName = "END_" + uniqueBranchName;
-            ifHead.Add(new JumpEqualBStatement(condition.ResultHolder!, "0", "NEXT_ELIF"));
-            Fragment ifBody = new Fragment(1);
-            ifBody.Add(Scope.GetCrimsonBasic());
-            Fragment ifFoot = new Fragment(1);
-            ifFoot.Add(new JumpBStatement(endLabelName));
-
-            wholeBlock.Add(condition);
-            wholeBlock.Add(ifHead);
-            wholeBlock.Add(ifBody);
-            wholeBlock.Add(ifFoot);
+            scope.AddSubStructure(new JumpAssemblyStructure("NEXT_ELIF"));
+            scope.AddSubStructure(Scope.Generalise(context));
+            scope.AddSubStructure(new JumpAssemblyStructure(endLabelName));
 
             // Elif and/or Else
-            if (ElifBlock != null)
-                wholeBlock.Add(ElifBlock.GetCrimsonBasic());
+            /*if (ElifBlock != null)
+                scope.AddSubStructure(ElifBlock.G());
             else if (ElseBlock != null)
-                wholeBlock.Add(ElseBlock.GetCrimsonBasic());
+                scope.AddSubStructure(ElseBlock.GetCrimsonBasic());*/
 
             // End of if
-            wholeBlock.Add(new LabelBStatement(endLabelName));
-            wholeBlock.Add(new CommentBStatement(""));
+            scope.AddSubStructure(new LabelAssemblyStructure(endLabelName));
+            scope.AddSubStructure(new CommentAssemblyStructure(""));
 
-            return wholeBlock;
+            return scope;
         }
     }
 }

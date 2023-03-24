@@ -1,11 +1,10 @@
 ﻿using Antlr4.Runtime.Misc;
 using Crimson.AntlrBuild;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar;
-using Crimson.CSharp.Grammar.Statements;
-using Crimson.CSharp.Grammar.Tokens;
+using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Parsing.Statements;
+using Crimson.CSharp.Parsing.Tokens;
 using NLog;
-using static Crimson.CSharp.Grammar.Tokens.Comparator;
+using static Crimson.CSharp.Parsing.Tokens.Comparator;
 
 namespace Crimson.CSharp.Parsing
 {
@@ -263,8 +262,9 @@ namespace Crimson.CSharp.Parsing
         public override VariableAssignmentCStatement VisitAssignVariableDirect ([NotNull] CrimsonParser.AssignVariableDirectContext context)
         {
             FullNameCToken identifier = new FullNameCToken(context.name.Text);
-            if (context.simple != null) return new VariableAssignmentCStatement(identifier, VisitSimpleValue(context.simple));
-            else if (context.complex != null) return new VariableAssignmentCStatement(identifier, VisitComplexValue(context.complex));
+            SimpleValueCToken size = VisitDatasize(context.size);
+            if (context.simple != null) return new VariableAssignmentCStatement(identifier, size, VisitSimpleValue(context.simple));
+            else if (context.complex != null) return new VariableAssignmentCStatement(identifier, size, VisitComplexValue(context.complex));
             else throw new CrimsonParserException($"Cannot assign no value to variable {identifier}");
         }
 
@@ -272,8 +272,9 @@ namespace Crimson.CSharp.Parsing
         {
             //TODO AssignVariableAtPointer just adds an asterisk to the variable name
             FullNameCToken identifier = new FullNameCToken(context.name.Text);
-            if (context.simple != null) return new VariableAssignmentCStatement(identifier, VisitSimpleValue(context.simple));
-            else if (context.complex != null) return new VariableAssignmentCStatement(identifier, VisitComplexValue(context.complex));
+            SimpleValueCToken size = VisitDatasize(context.size);
+            if (context.simple != null) return new VariableAssignmentCStatement(identifier, size, VisitSimpleValue(context.simple));
+            else if (context.complex != null) return new VariableAssignmentCStatement(identifier, size, VisitComplexValue(context.complex));
             else throw new CrimsonParserException($"Cannot assign no value to variable {identifier}");
         }
 

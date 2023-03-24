@@ -1,9 +1,11 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     public class ScopeVariableCStatement : AbstractCrimsonStatement
     {
@@ -27,19 +29,9 @@ namespace Crimson.CSharp.Grammar.Statements
             Linked = true;
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment statements = new Fragment(0);
-
-            statements.Add(new CommentBStatement($"Declare {Identifier}"));
-            statements.Add(new CommentBStatement($"IncSp {Identifier}"));
-
-            return statements;
-        }
-
-        public bool IsLinked ()
-        {
-            throw new NotImplementedException();
+            return new ArbitraryAssemblyStructure(ToString()!);
         }
     }
 }

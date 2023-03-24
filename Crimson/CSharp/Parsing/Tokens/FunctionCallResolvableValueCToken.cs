@@ -1,9 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Statements;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Statements;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public class FunctionCallResolvableValueCToken : ComplexValueCToken
     {
@@ -17,13 +18,6 @@ namespace Crimson.CSharp.Grammar.Tokens
         public override void Link (LinkingContext ctx)
         {
             FunctionCall.Link(ctx);
-        }
-
-        public override Fragment GetBasicFragment ()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.Add(new CommentBStatement("Function Call"));
-            return fragment;
         }
     }
 }

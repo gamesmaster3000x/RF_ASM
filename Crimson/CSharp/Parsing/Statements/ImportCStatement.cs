@@ -1,7 +1,7 @@
-﻿using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Parsing.Tokens;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     public class ImportCStatement
     {

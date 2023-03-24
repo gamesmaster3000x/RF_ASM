@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     internal class TypeCToken
     {

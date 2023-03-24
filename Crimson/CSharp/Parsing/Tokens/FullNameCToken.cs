@@ -1,8 +1,8 @@
 ﻿using Antlr4.Runtime;
-using Crimson.CSharp.Exception;
+using Crimson.CSharp.Exceptions;
 using Crimson.CSharp.Linking;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public class FullNameCToken : ICrimsonToken
     {
@@ -17,31 +17,29 @@ namespace Crimson.CSharp.Grammar.Tokens
 
         public FullNameCToken (string fullName)
         {
-            string[] strings = fullName.Split ('.');
+            string[] strings = fullName.Split('.');
             if (strings.Length == 1)
             {
                 LibraryName = null;
                 MemberName = strings[0];
             }
-            else if (strings.Length == 2) 
-            { 
-                LibraryName = strings[0]; 
-                MemberName = strings[1];
-            } 
-            else
+            else if (strings.Length == 2)
             {
-                throw new ArgumentException($"Cannot construct FullNameCToken from {strings.Length} parts (must have 1 or 2 parts)");
+                LibraryName = strings[0];
+                MemberName = strings[1];
             }
+            else
+                throw new ArgumentException($"Cannot construct FullNameCToken from {strings.Length} parts (must have 1 or 2 parts)");
         }
 
         public bool HasMember ()
         {
-            return !String.IsNullOrWhiteSpace(MemberName);
+            return !string.IsNullOrWhiteSpace(MemberName);
         }
 
         public bool HasLibrary ()
         {
-            return !String.IsNullOrWhiteSpace(LibraryName);
+            return !string.IsNullOrWhiteSpace(LibraryName);
         }
 
         public void Link (LinkingContext ctx)

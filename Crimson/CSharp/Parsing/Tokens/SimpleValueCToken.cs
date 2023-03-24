@@ -1,10 +1,6 @@
-﻿using Crimson.AntlrBuild;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Statements;
-using Crimson.CSharp.Linking;
-using System.Net.Http;
+﻿using Crimson.CSharp.Linking;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public abstract class SimpleValueCToken : ICrimsonToken
     {
@@ -13,5 +9,7 @@ namespace Crimson.CSharp.Grammar.Tokens
         }
         public abstract void Link (LinkingContext ctx);
         public abstract string GetText ();
+        public abstract bool CanEvaluate ();
+        public abstract object Evaluate ();
     }
 }

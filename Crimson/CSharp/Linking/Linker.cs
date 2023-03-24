@@ -1,10 +1,7 @@
-﻿using Antlr4.Runtime.Misc;
-using Crimson.CSharp.Core;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar;
-using Crimson.CSharp.Grammar.Statements;
+﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Parsing;
+using Crimson.CSharp.Parsing.Statements;
 using NLog;
-using System.Linq;
 
 namespace Crimson.CSharp.Linking
 {
@@ -16,7 +13,7 @@ namespace Crimson.CSharp.Linking
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public CrimsonOptions Options { get; }
-        public Linker(CrimsonOptions options)
+        public Linker (CrimsonOptions options)
         {
             Options = options;
         }
@@ -25,7 +22,7 @@ namespace Crimson.CSharp.Linking
         /// Links the FunctionCalls in a Compilation.
         /// </summary>
         /// <param name="compilation"></param>
-        public void Link(Compilation compilation)
+        public void Link (Compilation compilation)
         {
             LOGGER.Info("Linking compilation " + compilation);
 
@@ -49,7 +46,7 @@ namespace Crimson.CSharp.Linking
             return;
         }
 
-        private static List<AbstractCrimsonStatement> GetAllStatements(Scope unit)
+        private static List<AbstractCrimsonStatement> GetAllStatements (Scope unit)
         {
             var statements = new List<AbstractCrimsonStatement>();
             foreach (var s in unit.Functions.Values)

@@ -1,8 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.
@@ -31,25 +33,21 @@ namespace Crimson.CSharp.Grammar.Statements
             Linked = true;
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment function = new Fragment(0);
+            string uniqueName = context.CheckUniqueSubroutine(Name.ToString());
+            string uniqueNameEnd = context.CheckUniqueSubroutine(Name.ToString());
 
-            Fragment functionHead = new Fragment(0);
-            functionHead.Add(new LabelBStatement(Name.ToString()));
+            SubroutineAssemblyStructure subroutine = new SubroutineAssemblyStructure(context, uniqueName);
 
-            Fragment functionBody = new Fragment(1);
-            functionBody.Add(Scope.GetCrimsonBasic());
+            subroutine.AddSubStructure(new CommentAssemblyStructure(uniqueName));
+            subroutine.AddSubStructure(new JumpAssemblyStructure(uniqueNameEnd));
+            subroutine.AddSubStructure(new LabelAssemblyStructure(uniqueName));
+            subroutine.AddSubStructure(Scope.Generalise(context));
+            subroutine.AddSubStructure(new LabelAssemblyStructure(uniqueNameEnd));
+            subroutine.AddSubStructure(new CommentAssemblyStructure(""));
 
-            Fragment functionFoot = new Fragment(0);
-            functionFoot.Add(new ReturnBStatement());
-            functionFoot.Add(new CommentBStatement(""));
-
-            function.Add(functionHead);
-            function.Add(functionBody);
-            function.Add(functionFoot);
-
-            return function;
+            return subroutine;
         }
 
         public FullNameCToken GetName ()
@@ -100,9 +98,7 @@ namespace Crimson.CSharp.Grammar.Statements
             {
                 Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
                 foreach (var p in Parameters)
-                {
                     ((ICrimsonToken) p).Link(ctx);
-                }
             }
         }
     }

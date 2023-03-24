@@ -1,7 +1,7 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Linking;
+﻿using Crimson.CSharp.Linking;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     internal class ConditionCToken : ICrimsonToken
     {

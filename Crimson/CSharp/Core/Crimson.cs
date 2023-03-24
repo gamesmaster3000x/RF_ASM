@@ -1,10 +1,8 @@
-﻿using CommandLine;
-using NLog;
-using Antlr4.Runtime;
-using Crimson.AntlrBuild;
-using Crimson.CSharp.Assembly.RFASM;
-using Crimson.CSharp.Assembly;
+﻿using NLog;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Specialising;
+using Crimson.CSharp.Specialising.RFASM;
+using Crimson.CSharp.Generalising;
 
 namespace Crimson.CSharp.Core
 {
@@ -53,8 +51,9 @@ namespace Crimson.CSharp.Core
 
             Library generator = new Library(Options);
             Linker linker = new Linker(Options);
-            IFlattener flattener = new RFASMFlattener(); //TODO Don't default to RFASM Flattener
-            Compiler = new CrimsonCompiler(Options, generator, linker, flattener);
+            Generaliser generaliser = new Generaliser();
+            ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default to RFASM
+            Compiler = new CrimsonCompiler(Options, generator, linker, generaliser, specialiser);
 
             try
             {

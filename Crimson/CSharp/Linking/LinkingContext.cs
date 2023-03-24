@@ -1,7 +1,6 @@
 ﻿using Crimson.CSharp.Core;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar;
-using Crimson.CSharp.Grammar.Statements;
+using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Parsing;
 
 namespace Crimson.CSharp.Linking
 {
@@ -12,7 +11,7 @@ namespace Crimson.CSharp.Linking
         internal Dictionary<string, Scope> Links { get; private set; }
         public Compilation Compilation { get; private set; }
 
-        public LinkingContext(Scope currentScope, Dictionary<string, Scope> links, Compilation compilation)
+        public LinkingContext (Scope currentScope, Dictionary<string, Scope> links, Compilation compilation)
         {
             CurrentScope = currentScope;
             Links = links;
@@ -30,7 +29,7 @@ namespace Crimson.CSharp.Linking
         /// be affected by edits to the new context's links.
         /// </summary>
         /// <param name="ctx"></param>
-        public LinkingContext(Scope currentScope, LinkingContext ctx)
+        public LinkingContext (Scope currentScope, LinkingContext ctx)
         {
             CurrentScope = currentScope;
 
@@ -43,12 +42,12 @@ namespace Crimson.CSharp.Linking
             }
         }
 
-        public bool HasScope(string alias)
+        public bool HasScope (string alias)
         {
             return Links.ContainsKey(alias);
         }
 
-        internal Scope GetScope(string alias)
+        internal Scope GetScope (string alias)
         {
             if (HasScope(alias))
             {
@@ -58,7 +57,7 @@ namespace Crimson.CSharp.Linking
             throw new LinkingException("No alias '" + alias + "' in " + ToString());
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return $"LinkingContext (scope:{CurrentScope}; links:[{string.Join(",", Links)}])";
         }

@@ -1,9 +1,9 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Exception;
+﻿using Crimson.CSharp.Exceptions;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Specialising;
 using System.Net.Http;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public class OperationResolvableValueCToken : ComplexValueCToken
     {
@@ -50,13 +50,6 @@ namespace Crimson.CSharp.Grammar.Tokens
                 "<>>" => OperationType.GTR_TEMP,
                 _ => throw new CrimsonParserException("Illegal operator type '" + s + "'"),
             };
-        }
-
-        public override Fragment GetBasicFragment ()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.Add(new CommentBStatement("Operation"));
-            return fragment;
         }
 
         public enum OperationType

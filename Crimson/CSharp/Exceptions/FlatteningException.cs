@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CSharp.Exception
+namespace Crimson.CSharp.Exceptions
 {
     internal class FlatteningException : ArgumentException
     {
-        public FlatteningException(string message) : base (message)
+        public FlatteningException (string message) : base(message)
         {
 
         }
 
-        public FlatteningException(string message, System.Exception cause) : base(message, cause)
+        public FlatteningException (string message, Exception cause) : base(message, cause)
         {
 
         }

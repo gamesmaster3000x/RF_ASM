@@ -1,4 +1,4 @@
-﻿namespace Crimson.CSharp.Grammar.Tokens
+﻿namespace Crimson.CSharp.Parsing.Tokens
 {
     public class FunctionArgumentCToken
     {

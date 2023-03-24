@@ -1,7 +1,7 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Linking;
+﻿using Crimson.CSharp.Linking;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     public abstract class ComplexValueCToken : ICrimsonToken
     {
@@ -11,6 +11,5 @@ namespace Crimson.CSharp.Grammar.Tokens
         }
 
         public abstract void Link (LinkingContext ctx);
-        public abstract Fragment GetBasicFragment ();
     }
 }

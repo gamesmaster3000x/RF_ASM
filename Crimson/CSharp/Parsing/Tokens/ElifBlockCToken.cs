@@ -1,8 +1,8 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Statements;
-using Crimson.CSharp.Linking;
+﻿using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Statements;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     internal class ElseIfBlockCToken : ICrimsonToken
     {
@@ -16,11 +16,6 @@ namespace Crimson.CSharp.Grammar.Tokens
         }
 
         public IfBlockCStatement IfBlock { get; }
-
-        public Fragment GetCrimsonBasic ()
-        {
-            return IfBlock.GetCrimsonBasic();
-        }
 
         public void Link (LinkingContext ctx)
         {

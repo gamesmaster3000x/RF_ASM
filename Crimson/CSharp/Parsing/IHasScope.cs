@@ -1,6 +1,4 @@
-﻿using Crimson.CSharp.Grammar.Statements;
-
-namespace Crimson.CSharp.Grammar
+﻿namespace Crimson.CSharp.Parsing
 {
     internal interface IHasScope
     {

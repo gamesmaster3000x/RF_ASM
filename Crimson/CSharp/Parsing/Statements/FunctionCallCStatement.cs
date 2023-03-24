@@ -1,9 +1,10 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Tokens;
 
-namespace Crimson.CSharp.Grammar.Statements
+namespace Crimson.CSharp.Parsing.Statements
 {
     public class FunctionCallCStatement : AbstractCrimsonStatement
     {
@@ -30,10 +31,10 @@ namespace Crimson.CSharp.Grammar.Statements
         /// 
         /// </summary>
         /// <returns></returns>
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment f = new Fragment(0);
-            f.Add(new CommentBStatement("FC start"));
+            ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
+            scope.AddSubStructure(new CommentAssemblyStructure("FC start"));
 
             // Allocate space for input/output
             //int inputSize = CalculateInputBufferSize();
@@ -50,10 +51,10 @@ namespace Crimson.CSharp.Grammar.Statements
             //f.Add(new IncSpBStatement(total));
 
             // Jump to subroutine
-            f.Add(new JumpSubBStatement(targetFunction!.Name.ToString()));
+            scope.AddSubStructure(new JumpAssemblyStructure(targetFunction!.Name.ToString()));
 
-            f.Add(new CommentBStatement("FC end"));
-            return f;
+            scope.AddSubStructure(new CommentAssemblyStructure("FC end"));
+            return scope;
         }
 
         public override void Link (LinkingContext ctx)
@@ -63,9 +64,7 @@ namespace Crimson.CSharp.Grammar.Statements
             targetFunction = LinkerHelper.LinkFunctionCall(identifier, ctx);
 
             foreach (var a in arguments)
-            {
                 a.Link(ctx);
-            }
 
             Linked = true;
         }

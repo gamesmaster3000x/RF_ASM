@@ -1,8 +1,7 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Grammar.Statements;
-using Crimson.CSharp.Linking;
+﻿using Crimson.CSharp.Linking;
+using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Grammar.Tokens
+namespace Crimson.CSharp.Parsing.Tokens
 {
     internal class ElseBlockCToken : ICrimsonToken, IHasScope
     {
@@ -14,23 +13,6 @@ namespace Crimson.CSharp.Grammar.Tokens
         public Scope Scope { get; }
 
         public Scope GetScope () => Scope;
-
-        public Fragment GetCrimsonBasic ()
-        {
-            Fragment fragment = new Fragment(0);
-            fragment.Add(new CommentBStatement(""));
-
-            Fragment elseHead = new Fragment(0);
-            elseHead.Add(new LabelBStatement("ELSE"));
-
-            Fragment elseBody = new Fragment(1);
-            elseBody.Add(Scope.GetCrimsonBasic());
-
-            fragment.Add(elseHead);
-            fragment.Add(elseBody);
-
-            return fragment;
-        }
 
         public void Link (LinkingContext ctx)
         {

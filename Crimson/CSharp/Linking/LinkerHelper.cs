@@ -1,7 +1,7 @@
-﻿using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar;
-using Crimson.CSharp.Grammar.Statements;
-using Crimson.CSharp.Grammar.Tokens;
+﻿using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Parsing;
+using Crimson.CSharp.Parsing.Statements;
+using Crimson.CSharp.Parsing.Tokens;
 
 namespace Crimson.CSharp.Linking
 {

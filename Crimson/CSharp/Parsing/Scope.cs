@@ -1,11 +1,12 @@
-﻿using Crimson.CSharp.Assembly;
-using Crimson.CSharp.Core;
-using Crimson.CSharp.Exception;
-using Crimson.CSharp.Grammar.Statements;
+﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Exceptions;
+using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
+using Crimson.CSharp.Parsing.Statements;
 using NLog;
 
-namespace Crimson.CSharp.Grammar
+namespace Crimson.CSharp.Parsing
 {
     /// <summary>
     /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.
@@ -22,10 +23,8 @@ namespace Crimson.CSharp.Grammar
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(_name))
-                {
+                if (string.IsNullOrWhiteSpace(_name))
                     return Parent == null ? "(root)" : "(anon)";
-                }
                 return _name;
             }
             set => _name = value;
@@ -58,23 +57,18 @@ namespace Crimson.CSharp.Grammar
         {
             Scope parent = GetParent();
             do
-            {
                 parent = parent.GetParent();
-            } while (parent.HasParent());
+            while (parent.HasParent());
             return parent;
         }
 
         public string GetPath ()
         {
-            if (!String.IsNullOrWhiteSpace(_path))
-            {
+            if (!string.IsNullOrWhiteSpace(_path))
                 return _path;
-            }
 
             if (HasParent())
-            {
                 return GetParent().GetPath();
-            }
 
             throw new NullReferenceException($"Scope tree has no associated path: {FamilyToString()}");
         }
@@ -126,7 +120,7 @@ namespace Crimson.CSharp.Grammar
             {
                 if (d == null) throw new ArgumentNullException($"Cannot pass null {typeof(Dictionary<string, GCS>)} for statement adding.");
                 if (gcs == null) throw new ArgumentNullException($"Cannot pass null {typeof(GCS)} for statement adding.");
-                if (String.IsNullOrWhiteSpace(typeNameForError)) throw new ArgumentNullException("Cannot pass null or whitespace type name for statement adding.");
+                if (string.IsNullOrWhiteSpace(typeNameForError)) throw new ArgumentNullException("Cannot pass null or whitespace type name for statement adding.");
 
                 if (d.ContainsKey(gcs.GetName().ToString())) throw new StatementParseException($"Duplicate GlobalStatement name '{gcs.GetName()}' for statement '{statement}' in unit: {this}");
                 string name = gcs.GetName().ToString();
@@ -139,16 +133,12 @@ namespace Crimson.CSharp.Grammar
                 scopeStatement.GetScope().Parent = this;
 
                 if (statement is INamed namedStatement)
-                {
                     scopeStatement.GetScope().Name = namedStatement.GetName().ToString();
-                }
             }
 
             // Special cases
             if (statement is FunctionCStatement f)
-            {
                 AddNamedIfNotDuplicate(Functions, f, "Function");
-            }
             else if (statement is GlobalVariableCStatement g) AddNamedIfNotDuplicate(GlobalVariables, g, "Global Variable");
             else if (statement is StructureCStatement s) AddNamedIfNotDuplicate(Structures, s, "Structure");
             else if (statement is Scope sc)
@@ -204,9 +194,7 @@ namespace Crimson.CSharp.Grammar
 
             Dictionary<string, Scope> dictionary = GetLinks(newContext.Compilation);
             foreach (var link in dictionary)
-            {
                 newContext.Links.Add(link.Key, link.Value);
-            }
 
             foreach (var d in Delegates)
             {
@@ -221,16 +209,14 @@ namespace Crimson.CSharp.Grammar
             }
         }
 
-        public override Fragment GetCrimsonBasic ()
+        public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            Fragment scopeFrag = new Fragment(1);
+            ScopeAssemblyStructure structure = new ScopeAssemblyStructure();
 
             foreach (var d in Delegates)
-            {
-                scopeFrag.Add(d.Invoke().GetCrimsonBasic());
-            }
+                structure.AddSubStructure(d.Invoke().Generalise(context));
 
-            return scopeFrag;
+            return structure;
         }
 
         public override string ToString ()
