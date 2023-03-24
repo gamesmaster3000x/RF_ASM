@@ -35,18 +35,8 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            string uniqueName = context.CheckUniqueSubroutine(Name.ToString());
-            string uniqueNameEnd = context.CheckUniqueSubroutine(Name.ToString());
-
-            SubroutineAssemblyStructure subroutine = new SubroutineAssemblyStructure(context, uniqueName);
-
-            subroutine.AddSubStructure(new CommentAssemblyStructure(uniqueName));
-            subroutine.AddSubStructure(new JumpAssemblyStructure(uniqueNameEnd));
-            subroutine.AddSubStructure(new LabelAssemblyStructure(uniqueName));
+            SubroutineAssemblyStructure subroutine = new SubroutineAssemblyStructure(context, Name.ToString());
             subroutine.AddSubStructure(Scope.Generalise(context));
-            subroutine.AddSubStructure(new LabelAssemblyStructure(uniqueNameEnd));
-            subroutine.AddSubStructure(new CommentAssemblyStructure(""));
-
             return subroutine;
         }
 

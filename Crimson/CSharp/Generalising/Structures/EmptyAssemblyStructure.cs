@@ -10,5 +10,10 @@
         {
             return Enumerable.Empty<IGeneralAssemblyStructure>();
         }
+
+        public override string ToString ()
+        {
+            return "";
+        }
     }
 }

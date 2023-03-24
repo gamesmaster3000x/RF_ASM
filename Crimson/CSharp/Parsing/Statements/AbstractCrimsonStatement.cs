@@ -13,5 +13,10 @@ namespace Crimson.CSharp.Parsing.Statements
         public abstract void Link (LinkingContext context);
 
         public abstract IGeneralAssemblyStructure Generalise (GeneralisationContext context);
+
+        public override string ToString ()
+        {
+            return GetType().Name;
+        }
     }
 }

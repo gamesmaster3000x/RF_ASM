@@ -26,5 +26,10 @@ namespace Crimson.CSharp.Generalising.Structures
         {
             return Enumerable.Empty<IGeneralAssemblyStructure>();
         }
+
+        public override string ToString ()
+        {
+            return $"{Name}={Value}";
+        }
     }
 }

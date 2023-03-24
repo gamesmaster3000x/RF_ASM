@@ -24,5 +24,10 @@ namespace Crimson.CSharp.Parsing.Statements
         {
             Linked = true;
         }
+
+        public override string ToString ()
+        {
+            return assemblyText;
+        }
     }
 }

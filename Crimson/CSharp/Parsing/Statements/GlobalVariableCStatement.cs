@@ -32,20 +32,20 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
+            //ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
 
             // int i = (6 + 5);
             if (Assignment.Complex != null)
             {
                 // Fragment valueStatements = Assignment.Complex.GetBasicFragment();
-                scope.AddSubStructure(new CommentAssemblyStructure($"Set {Assignment.Name.ToString()}=RESULT"));
+                return new CommentAssemblyStructure($"Set {Assignment.Name.ToString()}=RESULT");
             }
             else if (Assignment.Simple != null)
-                scope.AddSubStructure(new CommentAssemblyStructure($"Assign {Assignment.Name.ToString()}={Assignment.Simple.GetText()}"));
+                return new CommentAssemblyStructure($"Assign {Assignment.Name.ToString()}={Assignment.Simple.GetText()}");
             else
                 throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");
 
-            return scope;
+            // return scope;
         }
     }
 }

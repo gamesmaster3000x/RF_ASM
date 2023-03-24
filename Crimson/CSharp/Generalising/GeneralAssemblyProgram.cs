@@ -8,7 +8,13 @@ namespace Crimson.CSharp.Generalising
 {
     public class GeneralAssemblyProgram
     {
-        private List<IGeneralAssemblyStructure> Structures { get; set; }
+        public List<IGeneralAssemblyStructure> Structures { get; private set; }
+
+        public GeneralAssemblyProgram ()
+        {
+            Structures = new List<IGeneralAssemblyStructure>();
+        }
+
 
         public void AddStructure (IGeneralAssemblyStructure structure)
         {

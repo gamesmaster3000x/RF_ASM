@@ -19,5 +19,10 @@ namespace Crimson.CSharp.Parsing.Tokens
         {
             FunctionCall.Link(ctx);
         }
+
+        public override string ToString ()
+        {
+            return "Call: " + FunctionCall.Identifier.ToString() + "()";
+        }
     }
 }

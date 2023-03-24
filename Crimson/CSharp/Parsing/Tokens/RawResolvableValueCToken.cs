@@ -15,6 +15,11 @@ namespace Crimson.CSharp.Parsing.Tokens
         {
         }
 
+        public override string ToString ()
+        {
+            return GetText();
+        }
+
         public override string GetText ()
         {
             return Content;

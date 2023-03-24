@@ -4,7 +4,7 @@
     {
         private HashSet<string> Subroutines { get; set; } = new HashSet<string>();
 
-        public string CheckUniqueSubroutine (string sub)
+        public string ReserveSubroutineName (string sub)
         {
             if (!Subroutines.Add(sub)) throw new DuplicateNameException($"Cannot add second subroutine with name {sub} to GeneralisationContext.");
             return sub;

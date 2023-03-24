@@ -64,6 +64,9 @@ namespace Crimson.CSharp.Core
             LOGGER.Info(" G E N E R A L I S I N G ");
             GeneralAssemblyProgram generalProgram = Generaliser.Generalise(compilation);
 
+            LOGGER.Info("\n\n");
+            DumpGeneralisedProgram(generalProgram);
+
             /*
              * == SPECIALISING STAGE == 
              * 
@@ -78,7 +81,6 @@ namespace Crimson.CSharp.Core
              * == CLEANUP == 
              */
             LOGGER.Info("\n\n");
-            LOGGER.Info("Writing to disk...");
             DumpSpecialisedProgram(specialisedProgram);
 
             LOGGER.Info("\n\n");
@@ -86,26 +88,49 @@ namespace Crimson.CSharp.Core
             return 1;
         }
 
-        private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram basicProgram)
+        private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specificProgram)
         {
             if (Options.DumpIntermediates)
             {
                 string basicTarget = Path.ChangeExtension(Options.TranslationTargetPath, ".cba");
-                LOGGER.Info("Dumping CrimsonBasic program to " + basicTarget);
+                LOGGER.Info("Dumping specialised program to " + basicTarget);
 
                 List<string> lines = new List<string>();
-                foreach (var f in basicProgram.GetFragments())
+                foreach (var f in specificProgram.GetFragments())
                 {
                     lines.AddRange(f.GetLines());
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));
                 File.WriteAllLines(basicTarget, lines.ToArray());
-                LOGGER.Info("Finished CrimsonBasic dump!");
+                LOGGER.Info("Written!");
             }
             else
             {
-                LOGGER.Info("Skipping dumping of CrimsonBasic program");
+                LOGGER.Info("Skipping specialised program dump...");
+            }
+        }
+
+        private void DumpGeneralisedProgram (GeneralAssemblyProgram generalProgram)
+        {
+            if (Options.DumpIntermediates)
+            {
+                string basicTarget = Path.ChangeExtension(Options.TranslationTargetPath, ".gen");
+                LOGGER.Info("Dumping generalised program to " + basicTarget);
+
+                List<string> lines = new List<string>();
+                foreach (var s in generalProgram.Structures)
+                {
+                    lines.Add(s.ToString() ?? "(null)");
+                }
+
+                Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));
+                File.WriteAllLines(basicTarget, lines.ToArray());
+                LOGGER.Info("Written!");
+            }
+            else
+            {
+                LOGGER.Info("Skipping generalised program dump...");
             }
         }
     }

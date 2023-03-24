@@ -6,6 +6,7 @@
 
         public ScopeAssemblyStructure ()
         {
+            Structures = new List<IGeneralAssemblyStructure>();
         }
 
         internal void AddSubStructure (IGeneralAssemblyStructure labelAssemblyStructure)
@@ -16,6 +17,11 @@
         IEnumerable<IGeneralAssemblyStructure> IGeneralAssemblyStructure.GetSubStructures ()
         {
             return Structures;
+        }
+
+        public override string ToString ()
+        {
+            return $"{{\n {String.Join("\n\t", Structures)} \n}}";
         }
     }
 }

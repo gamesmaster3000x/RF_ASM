@@ -16,14 +16,20 @@ namespace Crimson.CSharp.Generalising.Structures
 
         public SubroutineAssemblyStructure (GeneralisationContext context, string name)
         {
-            Name = context.CheckUniqueSubroutine(name);
-            _ = context.CheckUniqueSubroutine(EndName);
+            Name = name;
+            _ = context.ReserveSubroutineName(Name);
+            _ = context.ReserveSubroutineName(EndName);
             Structures = new List<IGeneralAssemblyStructure>();
         }
 
         public void AddSubStructure (IGeneralAssemblyStructure labelAssemblyStructure)
         {
             Structures.Add(labelAssemblyStructure);
+        }
+
+        public override string ToString ()
+        {
+            return $"{Name}: {{\n{String.Join("\n    ", Structures)}\n}}";
         }
 
         IEnumerable<IGeneralAssemblyStructure> IGeneralAssemblyStructure.GetSubStructures ()

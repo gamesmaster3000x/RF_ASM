@@ -16,6 +16,11 @@ namespace Crimson.CSharp.Parsing.Tokens
             Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
         }
 
+        public override string ToString ()
+        {
+            return GetText();
+        }
+
         public override string GetText ()
         {
             return Identifier.ToString();

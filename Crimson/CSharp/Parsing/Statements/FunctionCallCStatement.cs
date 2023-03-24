@@ -8,7 +8,7 @@ namespace Crimson.CSharp.Parsing.Statements
 {
     public class FunctionCallCStatement : AbstractCrimsonStatement
     {
-        private FullNameCToken identifier;
+        public FullNameCToken Identifier { get; private set; }
         private FunctionCStatement? targetFunction;
         private IList<SimpleValueCToken> arguments;
 
@@ -18,7 +18,7 @@ namespace Crimson.CSharp.Parsing.Statements
         {
             if (!identifier.HasMember()) throw new CrimsonParserException($"Name {identifier} must contain a member name.");
 
-            this.identifier = identifier;
+            this.Identifier = identifier;
             this.arguments = arguments;
         }
 
@@ -61,7 +61,7 @@ namespace Crimson.CSharp.Parsing.Statements
         {
             if (Linked) return;
 
-            targetFunction = LinkerHelper.LinkFunctionCall(identifier, ctx);
+            targetFunction = LinkerHelper.LinkFunctionCall(Identifier, ctx);
 
             foreach (var a in arguments)
                 a.Link(ctx);

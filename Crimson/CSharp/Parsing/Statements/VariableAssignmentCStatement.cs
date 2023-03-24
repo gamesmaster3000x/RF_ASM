@@ -42,7 +42,7 @@ namespace Crimson.CSharp.Parsing.Statements
         {
             ScopeAssemblyStructure result = new ScopeAssemblyStructure();
 
-            result.AddSubStructure(new CommentAssemblyStructure(ToString()!));
+            result.AddSubStructure(new CommentAssemblyStructure($"{Name}<{Size}>={Simple}/{Complex}"));
 
             /* if (Simple != null)
                  result.AddSubStructure(new CommentAssemblyStructure(Simple.GetText()));
@@ -54,7 +54,7 @@ namespace Crimson.CSharp.Parsing.Statements
              else
                  throw new FlatteningException($"No value to be assigned to variable {Name}");*/
 
-            return null;
+            return result;
         }
 
         internal bool IsKnownAtCompileTime ()
