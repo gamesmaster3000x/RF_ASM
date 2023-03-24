@@ -8,6 +8,9 @@ namespace Crimson.CSharp.Specialising
 {
     public abstract class AbstractSpecificAssemblyProgram
     {
-        internal abstract IEnumerable<Fragment> GetFragments ();
+
+        public abstract IEnumerable<Fragment> GetFragments ();
+        public abstract string GetExtension ();
+        public abstract void Write (string path);
     }
 }

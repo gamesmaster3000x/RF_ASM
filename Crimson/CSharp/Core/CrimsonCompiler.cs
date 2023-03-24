@@ -88,22 +88,12 @@ namespace Crimson.CSharp.Core
             return 1;
         }
 
-        private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specificProgram)
+        private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specialisedProgram)
         {
             if (Options.DumpIntermediates)
             {
-                string basicTarget = Path.ChangeExtension(Options.TranslationTargetPath, ".cba");
-                LOGGER.Info("Dumping specialised program to " + basicTarget);
-
-                List<string> lines = new List<string>();
-                foreach (var f in specificProgram.GetFragments())
-                {
-                    lines.AddRange(f.GetLines());
-                }
-
-                Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));
-                File.WriteAllLines(basicTarget, lines.ToArray());
-                LOGGER.Info("Written!");
+                string basicTarget = Path.ChangeExtension(Options.TranslationTargetPath, specialisedProgram.GetExtension());
+                specialisedProgram.Write(basicTarget);
             }
             else
             {
@@ -124,7 +114,7 @@ namespace Crimson.CSharp.Core
                     lines.Add(s.ToString() ?? "(null)");
                 }
 
-                Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath));
+                _ = Directory.CreateDirectory(Path.GetDirectoryName(Options.TranslationTargetPath)!);
                 File.WriteAllLines(basicTarget, lines.ToArray());
                 LOGGER.Info("Written!");
             }

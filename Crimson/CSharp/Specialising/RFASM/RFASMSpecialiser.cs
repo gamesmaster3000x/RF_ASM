@@ -9,7 +9,14 @@ namespace Crimson.CSharp.Specialising.RFASM
 
         public AbstractSpecificAssemblyProgram Specialise (GeneralAssemblyProgram general)
         {
-            throw new NotImplementedException();
+            RFASMProgram program = new RFASMProgram();
+
+            foreach (var s in general.Structures)
+            {
+                program.Add(new RFASMComment(s.ToString()));
+            }
+
+            return program;
         }
     }
 }
