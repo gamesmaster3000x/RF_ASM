@@ -17,6 +17,7 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override void Link (LinkingContext ctx)
         {
+            Assignment.Name = ctx.GetUniqueGlobalVariableName(Assignment.Name);
             Linked = true;
         }
 
@@ -32,22 +33,31 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
         {
-            // TODO Global variable C statement GeneralisationContext.AllocGlobal()
-
-            //ScopeAssemblyStructure scope = new ScopeAssemblyStructure();
-
-            // int i = (6 + 5);
-            if (Assignment.Complex != null)
+            // Can evaluate size at compile time
+            if (Assignment.Size.CanEvaluate())
             {
-                // Fragment valueStatements = Assignment.Complex.GetBasicFragment();
-                return new CommentAssemblyStructure($"Set {Assignment.Name.ToString()}=RESULT");
-            }
-            else if (Assignment.Simple != null)
-                return new CommentAssemblyStructure($"Assign {Assignment.Name.ToString()}={Assignment.Simple.GetText()}");
-            else
-                throw new FlatteningException("Unable to flatten internal variable with no simple or complex value");
 
-            // return scope;
+                // Desperately try to parse to an integer
+                object? eval = Assignment.Size.Evaluate(context);
+                if (eval == null)
+                    throw new NullReferenceException($"Compile-time evaluation of a the global variable {GetName()}'s size may not return null.");
+                if (eval is not int size)
+                {
+                    if (!Int32.TryParse(eval.ToString(), out size))
+                    {
+                        throw new InvalidCastException($"The size '{eval}' of a of the global variable {GetName()} could not be parsed to an integer: found type {eval.GetType()}.");
+                    }
+                }
+
+                int addrOffset = context.AllocGlobal(size);
+                return new CommentAssemblyStructure($"GVAR: {GetName()}, addrOffset={addrOffset}");
+            }
+
+            // Cannot evaluate size at compile time
+            else
+            {
+                return new CommentAssemblyStructure($"GVAR: {GetName()}=?");
+            }
         }
     }
 }

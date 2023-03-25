@@ -3,6 +3,7 @@ using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
 using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Parsing.Tokens.Values;
 using Crimson.CSharp.Specialising;
 
 namespace Crimson.CSharp.Parsing.Statements
@@ -24,6 +25,7 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override void Link (LinkingContext ctx)
         {
+            Identifier = ctx.GetUniqueScopeVariableName(Identifier);
             Size.Link(ctx);
             Identifier.Link(ctx);
             Linked = true;

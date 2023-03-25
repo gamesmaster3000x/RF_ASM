@@ -17,8 +17,6 @@ namespace Crimson.CSharp.Generalising.Structures
         public SubroutineAssemblyStructure (GeneralisationContext context, string name)
         {
             Name = name;
-            _ = context.ReserveSubroutineName(Name);
-            _ = context.ReserveSubroutineName(EndName);
             Structures = new List<IGeneralAssemblyStructure>();
         }
 
@@ -29,7 +27,8 @@ namespace Crimson.CSharp.Generalising.Structures
 
         public override string ToString ()
         {
-            return $"{Name}: {{\n{String.Join("\n    ", Structures)}\n}}";
+            return $"SUB:\n" +
+                $"{String.Join("\n    ", Structures)}";
         }
 
         IEnumerable<IGeneralAssemblyStructure> IGeneralAssemblyStructure.GetSubStructures ()

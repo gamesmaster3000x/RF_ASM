@@ -57,7 +57,6 @@ namespace Crimson.CSharp.Linking
             throw new LinkingException($"The idenifier {identifier} with no member name somehow got through the parsing process?");
         }
 
-        [Obsolete]
         internal static FullNameCToken LinkIdentifier (FullNameCToken identifier, LinkingContext ctx)
         {
             if (identifier == null) throw new LinkingException("Cannot link a null identifer");

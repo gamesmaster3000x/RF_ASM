@@ -8,171 +8,45 @@
 
 
 // ============================== Global Variables ==============================
-// Assign gvar_regions_i_0=0
-// Assign gvar_regions_length_0=0
-// Assign gvar_regions_region_0=0
-// Assign gvar_int_size_0=4
-// Assign gvar_ptr_size_0=4
-// Assign gvar_counter_0=0
-// Assign gvar_int_0=4
-// Assign gvar_ptr_0=4
 
 // ============================== Entry Function ==============================
-// func_main_0: {
-{
- example basic call
-	example assemby call
-	ScopeVariableCStatement
-	ScopeVariableCStatement
-	{
- // a<int>=/Call: utils.multiply() 
-}
-	{
- // b<int>=/Call: utils.times() 
-}
-	{
+// SUB:
+SCP: 
+ ARB: example basic call
+    ARB: example assemby call
+    ARB: ScopeVariableCStatement
+    ARB: ScopeVariableCStatement
+    SCP: 
+ // a<int>=/Call: utils.multiply()
+    SCP: 
+ // b<int>=/Call: utils.times()
+    SCP: 
  
-	Jump: NEXT_ELIF
-	{
- {
- // counter<int>=5/ 
-} 
-}
-	Jump: END_IF_BLOCK_UNIQUE_BRANCH_NAME
-	Label: END_IF_BLOCK_UNIQUE_BRANCH_NAME
-	 
-}
-	{
+    JMP: NEXT_ELIF
+    SCP: 
+ SCP: 
+ // counter<int>=5/
+    JMP: END_IF_BLOCK_UNIQUE_BRANCH_NAME
+    LAB: END_IF_BLOCK_UNIQUE_BRANCH_NAME
+    
+    SCP: 
  // FC start
-	Jump: func_call_0
-	// FC end 
-}
-	ScopeVariableCStatement
-	{
- // i<int>=/Call: heap.alloc() 
-}
-	{
- // i<int>=4/ 
-}
-	{
+    JMP: func_call_0
+    // FC end
+    ARB: ScopeVariableCStatement
+    SCP: 
+ // i<int>=/Call: heap.alloc()
+    SCP: 
+ // i<int>=4/
+    SCP: 
  // FC start
-	Jump: func_write_0
-	// FC end 
-}
-	ScopeVariableCStatement
-	{
- // ret<int>=/Call: heap.alloc() 
-}
-	{
- // ret<int>=/Call: utils.multiply() 
-}
-	Return 
-}
-}
+    JMP: func_write_0
+    // FC end
+    ARB: ScopeVariableCStatement
+    SCP: 
+ // ret<int>=/Call: heap.alloc()
+    SCP: 
+ // ret<int>=/Call: utils.multiply()
+    RET
 
 // ============================== Functions ==============================
-// func_multiply_0: {
-{
- {
- // FC start
-	Jump: func_write_0
-	// FC end 
-}
-	Return 
-}
-}
-// func_times_0: {
-{
- {
- // ret<4>=/Call: multiply() 
-}
-	Return 
-}
-}
-// func_write_0: {
-{
-  
-}
-}
-// func_alloc_0: {
-{
- {
- // i<int_size>=0/ 
-}
-	{
- //  >> TODO IMPLEMENT WHILE (start) <<
-	//  >> TODO IMPLEMENT WHILE (end) << 
-}
-	Return 
-}
-}
-// func_get_region_ptr_0: {
-{
- {
- // RRMS<int_size>=/Crimson.CSharp.Parsing.Tokens.OperationResolvableValueCToken 
-}
-	{
- // exponential_offset<int_size>=4/ 
-}
-	{
- 
-	Jump: NEXT_ELIF
-	{
-  
-}
-	Jump: END_IF_BLOCK_UNIQUE_BRANCH_NAME
-	Label: END_IF_BLOCK_UNIQUE_BRANCH_NAME
-	 
-}
-	{
- // HO_EXP<int_size>=/Crimson.CSharp.Parsing.Tokens.OperationResolvableValueCToken 
-}
-	{
- // HO_EXP_RRMS<ptr_size>=/Crimson.CSharp.Parsing.Tokens.OperationResolvableValueCToken 
-}
-	Return 
-}
-}
-// func_freeptr_0: {
-{
- {
- // r<int_size>=0/ 
-}
-	{
- // region_ptr<ptr_size>=/Call: get_region_ptr() 
-}
-	{
- //  >> TODO IMPLEMENT WHILE (start) <<
-	//  >> TODO IMPLEMENT WHILE (end) << 
-}
-	{
- // FC start
-	Jump: func_freeregion_0
-	// FC end 
-} 
-}
-}
-// func_freeregion_0: {
-{
- {
- // regions_region<ptr_size>=0/ 
-} 
-}
-}
-// func_pwr_0: {
-{
- {
- //  >> TODO IMPLEMENT WHILE (start) <<
-	//  >> TODO IMPLEMENT WHILE (end) << 
-} 
-}
-}
-// func_call_0: {
-{
- ScopeVariableCStatement
-	{
- // test<int>=/Call: heap.alloc() 
-}
-	Return 
-}
-}

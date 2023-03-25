@@ -3,6 +3,7 @@ using Crimson.AntlrBuild;
 using Crimson.CSharp.Exceptions;
 using Crimson.CSharp.Parsing.Statements;
 using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Parsing.Tokens.Values;
 using NLog;
 using static Crimson.CSharp.Parsing.Tokens.Comparator;
 

@@ -1,29 +1,19 @@
-﻿namespace Crimson.CSharp.Generalising
+﻿using Crimson.CSharp.Parsing.Statements;
+
+namespace Crimson.CSharp.Generalising
 {
     public class GeneralisationContext
     {
-        private HashSet<string> Subroutines { get; set; }
+        public Dictionary<string, GlobalVariableCStatement> Globals { get; }
+        public Dictionary<string, FunctionCStatement> Functions { get; }
+        public Dictionary<string, StructureCStatement> Structures { get; }
 
-        public GeneralisationContext ()
+        public GeneralisationContext (Dictionary<string, FunctionCStatement> functions, Dictionary<string, StructureCStatement> structures, Dictionary<string, GlobalVariableCStatement> globals)
         {
-            Subroutines = new HashSet<string>();
             StackPointerStack = new Stack<int>();
-        }
-
-        /// <summary>
-        /// Adds the given name to a set of names of the subroutines contained within this context.
-        /// Fails if the given name already exists in the set.
-        /// There should be no duplicates at this stage because it would cause errors during linking,
-        /// but it's better to be safe than sorry because I really don't trust this process to not goof
-        /// sometimes.
-        /// </summary>
-        /// <param name="sub">The name to check.</param>
-        /// <returns>The input name.</returns>
-        /// <exception cref="DuplicateNameException">If the given name has been reserved before.</exception>
-        public string ReserveSubroutineName (string sub)
-        {
-            if (!Subroutines.Add(sub)) throw new DuplicateNameException($"Cannot add second subroutine with name {sub} to GeneralisationContext.");
-            return sub;
+            Functions = functions;
+            Structures = structures;
+            Globals = globals;
         }
 
 

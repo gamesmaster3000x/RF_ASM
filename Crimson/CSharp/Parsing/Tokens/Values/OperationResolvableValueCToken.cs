@@ -3,7 +3,7 @@ using Crimson.CSharp.Linking;
 using Crimson.CSharp.Specialising;
 using System.Net.Http;
 
-namespace Crimson.CSharp.Parsing.Tokens
+namespace Crimson.CSharp.Parsing.Tokens.Values
 {
     public class OperationResolvableValueCToken : ComplexValueCToken
     {
@@ -12,20 +12,20 @@ namespace Crimson.CSharp.Parsing.Tokens
         public SimpleValueCToken LeftToken { get; }
         public SimpleValueCToken RightToken { get; }
 
-        public OperationResolvableValueCToken (SimpleValueCToken leftToken, OperationType opType, SimpleValueCToken rightToken)
+        public OperationResolvableValueCToken(SimpleValueCToken leftToken, OperationType opType, SimpleValueCToken rightToken)
         {
             LeftToken = leftToken;
             OpType = opType;
             RightToken = rightToken;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link(LinkingContext ctx)
         {
             LeftToken.Link(ctx);
             RightToken.Link(ctx);
         }
 
-        public static OperationType ParseOpType (string s)
+        public static OperationType ParseOpType(string s)
         {
             s = s.Trim();
             return s switch

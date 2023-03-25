@@ -11,7 +11,7 @@
 
         public override string ToString ()
         {
-            return "Label: " + Text;
+            return "LAB: " + Text;
         }
 
         public IEnumerable<IGeneralAssemblyStructure> GetSubStructures ()

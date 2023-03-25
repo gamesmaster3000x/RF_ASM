@@ -11,7 +11,7 @@
 
         public override string ToString ()
         {
-            return "Jump: " + Target;
+            return "JMP: " + Target;
         }
 
         public IEnumerable<IGeneralAssemblyStructure> GetSubStructures ()

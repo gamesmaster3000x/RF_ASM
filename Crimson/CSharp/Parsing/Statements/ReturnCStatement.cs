@@ -1,7 +1,7 @@
 ﻿using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Generalising.Structures;
 using Crimson.CSharp.Linking;
-using Crimson.CSharp.Parsing.Tokens;
+using Crimson.CSharp.Parsing.Tokens.Values;
 
 namespace Crimson.CSharp.Parsing.Statements
 {

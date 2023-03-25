@@ -1,6 +1,7 @@
-﻿using Crimson.CSharp.Linking;
+﻿using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Linking;
 
-namespace Crimson.CSharp.Parsing.Tokens
+namespace Crimson.CSharp.Parsing.Tokens.Values
 {
     public class RawResolvableValueCToken : SimpleValueCToken
     {
@@ -25,7 +26,7 @@ namespace Crimson.CSharp.Parsing.Tokens
             return Content;
         }
 
-        public override object Evaluate ()
+        public override object Evaluate (GeneralisationContext context)
         {
             return Content;
         }

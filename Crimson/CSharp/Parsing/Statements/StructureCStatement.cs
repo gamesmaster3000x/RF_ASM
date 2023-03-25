@@ -25,6 +25,7 @@ namespace Crimson.CSharp.Parsing.Statements
 
         public override void Link (LinkingContext ctx)
         {
+            Name = ctx.GetUniqueFunctionName(Name);
             Linked = true;
         }
 

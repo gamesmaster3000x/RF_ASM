@@ -1,7 +1,7 @@
 ﻿using Crimson.CSharp.Linking;
 using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Parsing.Tokens
+namespace Crimson.CSharp.Parsing.Tokens.Values
 {
     public abstract class ComplexValueCToken : ICrimsonToken
     {

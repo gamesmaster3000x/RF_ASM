@@ -29,7 +29,7 @@ namespace Crimson.CSharp.Generalising.Structures
 
         public override string ToString ()
         {
-            return $"{Name}={Value}";
+            return $"CON: {Name}={Value}";
         }
     }
 }

@@ -21,7 +21,8 @@
 
         public override string ToString ()
         {
-            return $"{{\n {String.Join("\n\t", Structures)} \n}}";
+            return $"SCP: " +
+                $"\n {String.Join("\n    ", Structures)}";
         }
     }
 }

@@ -18,6 +18,8 @@ namespace Crimson.CSharp.Linking
             Options = options;
         }
 
+        // TODO Linking must include renaming functions/variables and reach down to identifiers simple values etc.
+
         /// <summary>
         /// Links the FunctionCalls in a Compilation.
         /// </summary>
@@ -44,24 +46,6 @@ namespace Crimson.CSharp.Linking
             }
 
             return;
-        }
-
-        private static List<AbstractCrimsonStatement> GetAllStatements (Scope unit)
-        {
-            var statements = new List<AbstractCrimsonStatement>();
-            foreach (var s in unit.Functions.Values)
-            {
-                statements.Add(s);
-            }
-            foreach (var s in unit.Structures.Values)
-            {
-                statements.Add(s);
-            }
-            foreach (var s in unit.GlobalVariables.Values)
-            {
-                statements.Add(s);
-            }
-            return statements;
         }
     }
 }

@@ -4,23 +4,23 @@ using Crimson.CSharp.Linking;
 using Crimson.CSharp.Parsing.Statements;
 using Crimson.CSharp.Specialising;
 
-namespace Crimson.CSharp.Parsing.Tokens
+namespace Crimson.CSharp.Parsing.Tokens.Values
 {
     public class FunctionCallResolvableValueCToken : ComplexValueCToken
     {
         public FunctionCallCStatement FunctionCall { get; }
 
-        public FunctionCallResolvableValueCToken (FunctionCallCStatement functionCall)
+        public FunctionCallResolvableValueCToken(FunctionCallCStatement functionCall)
         {
             FunctionCall = functionCall;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link(LinkingContext ctx)
         {
             FunctionCall.Link(ctx);
         }
 
-        public override string ToString ()
+        public override string ToString()
         {
             return "Call: " + FunctionCall.Identifier.ToString() + "()";
         }

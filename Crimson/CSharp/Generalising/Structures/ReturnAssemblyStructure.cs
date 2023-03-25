@@ -13,7 +13,7 @@
 
         public override string ToString ()
         {
-            return "Return";
+            return "RET";
         }
     }
 }
