@@ -1,6 +1,7 @@
 ﻿using Crimson.CSharp.Core;
 using Crimson.CSharp.Exceptions;
 using Crimson.CSharp.Parsing;
+using Crimson.CSharp.Parsing.Statements;
 using Crimson.CSharp.Parsing.Tokens;
 
 namespace Crimson.CSharp.Linking
@@ -105,6 +106,13 @@ namespace Crimson.CSharp.Linking
         public override string ToString ()
         {
             return $"LinkingContext (scope:{CurrentScope}; links:[{string.Join(",", Links)}])";
+        }
+
+        internal GlobalVariableCStatement? GetGlobalVariable(string memberName)
+        {
+            // TODO Check LinkingContext.GetGlobalVariable() works
+            
+            throw new NotImplementedException();
         }
     }
 }

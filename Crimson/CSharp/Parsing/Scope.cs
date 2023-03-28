@@ -93,6 +93,7 @@ namespace Crimson.CSharp.Parsing
         public Dictionary<string, ImportCStatement> Imports { get; private set; }
         public List<OperationHandlerCStatement> OpHandlers { get; private set; }
         public Dictionary<string, FunctionCStatement> Functions { get; private set; }
+        public Dictionary<string, ScopeVariableCStatement> Variables { get; private set; }
         public Dictionary<string, StructureCStatement> Structures { get; private set; }
         public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get; private set; }
 
@@ -225,6 +226,18 @@ namespace Crimson.CSharp.Parsing
         {
 
             return $"Scope({Name}; I:{Imports.Count} F:{Functions.Count} S:{Structures.Count} G:{GlobalVariables.Count})";
+        }
+
+        internal ScopeVariableCStatement? FindScopeVariable(string name)
+        {
+            // TODO Check Scope.FindScopeVariable works
+            Scope parent = this;
+            ScopeVariableCStatement var = null;
+            if(!Variables.TryGetValue(name, out var) && HasParent())
+            {
+                return GetParent().FindScopeVariable(name);
+            }
+            return var;
         }
     }
 }
