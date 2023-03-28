@@ -8,7 +8,7 @@ using Crimson.CSharp.Specialising;
 
 namespace Crimson.CSharp.Parsing.Statements
 {
-    public class ScopeVariableCStatement : AbstractCrimsonStatement
+    public class ScopeVariableCStatement : AbstractCrimsonStatement, INamed
     {
         public SimpleValueCToken Size { get; set; }
         public FullNameCToken Identifier { get; private set; }
@@ -35,6 +35,16 @@ namespace Crimson.CSharp.Parsing.Statements
         {
             // TODO Scope variable C statement GeneralisationContext.AllocStack()
             return new ArbitraryAssemblyStructure(ToString()!);
+        }
+
+        public FullNameCToken GetName()
+        {
+            return Identifier;
+        }
+
+        public void SetName(FullNameCToken name)
+        {
+            Identifier = name;
         }
     }
 }

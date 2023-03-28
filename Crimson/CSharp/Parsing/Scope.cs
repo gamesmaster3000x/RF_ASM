@@ -45,6 +45,7 @@ namespace Crimson.CSharp.Parsing
             Imports = new Dictionary<string, ImportCStatement>();
             OpHandlers = new List<OperationHandlerCStatement>();
             Functions = new Dictionary<string, FunctionCStatement>();
+            ScopeVariables = new Dictionary<string, ScopeVariableCStatement>();
             Structures = new Dictionary<string, StructureCStatement>();
             GlobalVariables = new Dictionary<string, GlobalVariableCStatement>();
         }
@@ -93,7 +94,7 @@ namespace Crimson.CSharp.Parsing
         public Dictionary<string, ImportCStatement> Imports { get; private set; }
         public List<OperationHandlerCStatement> OpHandlers { get; private set; }
         public Dictionary<string, FunctionCStatement> Functions { get; private set; }
-        public Dictionary<string, ScopeVariableCStatement> Variables { get; private set; }
+        public Dictionary<string, ScopeVariableCStatement> ScopeVariables { get; private set; }
         public Dictionary<string, StructureCStatement> Structures { get; private set; }
         public Dictionary<string, GlobalVariableCStatement> GlobalVariables { get; private set; }
 
@@ -138,8 +139,8 @@ namespace Crimson.CSharp.Parsing
             }
 
             // Special cases
-            if (statement is FunctionCStatement f)
-                AddNamedIfNotDuplicate(Functions, f, "Function");
+            if (statement is FunctionCStatement f) AddNamedIfNotDuplicate(Functions, f, "Function");
+            else if (statement is ScopeVariableCStatement v) AddNamedIfNotDuplicate(ScopeVariables, v, "Scope Variables");
             else if (statement is GlobalVariableCStatement g) AddNamedIfNotDuplicate(GlobalVariables, g, "Global Variable");
             else if (statement is StructureCStatement s) AddNamedIfNotDuplicate(Structures, s, "Structure");
             else if (statement is Scope sc)
@@ -230,10 +231,10 @@ namespace Crimson.CSharp.Parsing
 
         internal ScopeVariableCStatement? FindScopeVariable(string name)
         {
-            // TODO Check Scope.FindScopeVariable works
+            // TODO Check Scope.FindScopeVariable works 
             Scope parent = this;
-            ScopeVariableCStatement var = null;
-            if(!Variables.TryGetValue(name, out var) && HasParent())
+            ScopeVariableCStatement? var = null;
+            if(!ScopeVariables.TryGetValue(name, out var) && HasParent())
             {
                 return GetParent().FindScopeVariable(name);
             }
