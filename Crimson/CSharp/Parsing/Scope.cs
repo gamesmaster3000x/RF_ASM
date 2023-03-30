@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Parsing
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public Scope? Parent { get; set; }
-        private string? _path;
+        public string? Path { get; set; }
 
         private string _name;
         public string Name
@@ -37,7 +37,7 @@ namespace Crimson.CSharp.Parsing
         private Scope (string name, Scope? parent, string? path)
         {
             Parent = null;
-            _path = path;
+            Path = path;
             Name = name;
 
             Delegates = new List<StatementDelegate>();
@@ -65,8 +65,8 @@ namespace Crimson.CSharp.Parsing
 
         public string GetPath ()
         {
-            if (!string.IsNullOrWhiteSpace(_path))
-                return _path;
+            if (!string.IsNullOrWhiteSpace(Path))
+                return Path;
 
             if (HasParent())
                 return GetParent().GetPath();
@@ -176,7 +176,7 @@ namespace Crimson.CSharp.Parsing
                 /*
                  * 
                  */
-                Scope? mappingUnit = compilation.Library.LookupScopeByPath(relativePath);
+                Scope? mappingUnit = compilation.Library.GetScope(relativePath);
                 if (mappingUnit == null) throw new LinkingException("Could not add unloadable unit " + relativePath + " (alias=" + alias + ") to mapping context");
                 Links.Add(alias, mappingUnit);
             }

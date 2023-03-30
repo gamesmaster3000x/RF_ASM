@@ -21,46 +21,16 @@ namespace Crimson.CSharp.Core
         /// <summary>
         /// A library of all of the CompilationUnits used in this Compilation
         /// </summary>
-        internal Library Library { get; }
+        internal ILibrary Library { get; }
 
         public Compilation (Scope rootUnit, CrimsonOptions options)
         {
-            Library = new Library(options);
-
-            LoadScopeDependencies(rootUnit);
-            Library.Units[Library.ROOT_FACET_NAME] = rootUnit; // This name is reserved and should be free
-        }
-
-        /// <summary>
-        /// Loads dependencies for the given root CompilationUnit, as well as that unit's dependencies, recursively.
-        /// Also checks for nested scopes and loads them as well!
-        /// </summary>
-        /// <param name="root"></param>
-        private void LoadScopeDependencies (Scope root)
-        {
-            // For each import
-            foreach (var i in root.Imports)
-            {
-                // Get the unit it refers to 
-                Scope unit = Library.LoadScopeFromFile(i.Value.Path);
-
-                // Get that units' dependencies (recursively)
-                LoadScopeDependencies(unit);
-            }
-
-            // Check for imports in nested scopes
-            foreach (var del in root.Delegates)
-            {
-                if (del.Invoke() is IHasScope hasScope)
-                {
-                    LoadScopeDependencies(hasScope.GetScope());
-                }
-            }
+            Library = new FileOnlyLibrary();
         }
 
         public Scope GetRootUnit ()
         {
-            return Library.Units[Library.ROOT_FACET_NAME];
+            return Library.GetScope(FileOnlyLibrary.ROOT_FACET_NAME)!;
         }
 
         public override string ToString ()

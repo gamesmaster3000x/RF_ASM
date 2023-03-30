@@ -29,13 +29,12 @@ namespace Crimson.CSharp.Linking
             LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
-            foreach (KeyValuePair<string, Scope> keyScopePair in compilation.Library.Units)
+            foreach (Scope scope in compilation.Library.GetUnits())
             {
-                LOGGER.Info("Linking " + keyScopePair);
+                LOGGER.Info("Linking " + scope);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                Scope scope = keyScopePair.Value;
                 LinkingContext ctx = new LinkingContext(scope, new Dictionary<string, Scope>(), compilation);
 
                 // Add links from the current unit

@@ -13,12 +13,12 @@ namespace Crimson.CSharp.Core
     {
         private static Logger LOGGER = LogManager.GetCurrentClassLogger();
         public CrimsonOptions Options { get; }
-        public Library Library { get; }
+        public FileOnlyLibrary Library { get; }
         public Linker Linker { get; }
         public Generaliser Generaliser { get; }
         public ISpecialiser Specialiser { get; }
 
-        public CrimsonCompiler (CrimsonOptions options, Library unitGenerator, Linker linker, Generaliser generaliser, ISpecialiser flattener)
+        public CrimsonCompiler (CrimsonOptions options, FileOnlyLibrary unitGenerator, Linker linker, Generaliser generaliser, ISpecialiser flattener)
         {
             Options = options;
             Library = unitGenerator;
@@ -39,8 +39,10 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" P A R S I N G ");
-            Scope rootUnit = Library.LoadScopeFromFile(Options.TranslationSourcePath); // Get the root unit (ie. main.crm)
-            Compilation compilation = new Compilation(rootUnit, Options); // Generate dependency units (all resources are henceforth accessible)
+            Task<Scope> rootScopeTask = Library.LoadScopeAsync(Options.TranslationSourcePath, true); // Get the root unit (ie. main.crm)
+            rootScopeTask.Wait(); // Block until finished
+            Scope rootScope = rootScopeTask.Result;
+            Compilation compilation = new Compilation(rootScope, Options); // Generate dependency units (all resources are henceforth accessible)
 
 
             /*

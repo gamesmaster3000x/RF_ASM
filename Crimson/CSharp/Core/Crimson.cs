@@ -49,7 +49,7 @@ namespace Crimson.CSharp.Core
 
             ConfigureNLog();
 
-            Library generator = new Library(Options);
+            FileOnlyLibrary generator = new FileOnlyLibrary();
             Linker linker = new Linker(Options);
             Generaliser generaliser = new Generaliser();
             ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default to RFASM

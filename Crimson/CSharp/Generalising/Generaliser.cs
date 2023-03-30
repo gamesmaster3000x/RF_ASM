@@ -27,17 +27,17 @@ namespace Crimson.CSharp.Generalising
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (KeyValuePair<string, Scope> pair in compilation.Library.Units)
+            foreach (Scope scope in compilation.Library.GetUnits())
             {
-                foreach (var f in pair.Value.Functions)
+                foreach (var f in scope.Functions)
                 {
                     functions.Add(f.Value.Name.ToString(), f.Value);
                 }
-                foreach (var s in pair.Value.Structures)
+                foreach (var s in scope.Structures)
                 {
                     structures.Add(s.Value.Name.ToString(), s.Value);
                 }
-                foreach (var g in pair.Value.GlobalVariables)
+                foreach (var g in scope.GlobalVariables)
                 {
                     globals.Add(g.Value.GetName().ToString(), g.Value);
                 }
