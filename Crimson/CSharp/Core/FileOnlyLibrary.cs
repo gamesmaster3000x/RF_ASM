@@ -53,7 +53,9 @@ namespace Crimson.CSharp.Core
             // Safety check to prevent double loading
             // Immediately insert the key to reserve it
             if(Units.ContainsKey(path)) return Units[path];
-            Units[path] = null!;
+            Units[path] = Task.FromResult<Scope>(null!);
+
+            LOGGER.Info($"Async loading{(root ? $" root" : "")}: {path}");
 
             // Generate task
             Task<Scope> task = new Task<Scope>(() => {
@@ -121,7 +123,7 @@ namespace Crimson.CSharp.Core
                 throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet/scope with reserved name '" + pathIn + "'");
             }
 
-            Scope? unit = await GetScope(path) ?? null;
+            Scope? unit = await GetScope(path);
             if (unit != null)
             {
                 return unit;

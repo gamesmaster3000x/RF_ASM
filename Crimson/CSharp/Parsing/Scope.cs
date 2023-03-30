@@ -118,16 +118,17 @@ namespace Crimson.CSharp.Parsing
         {
             if (statement == null) throw new ArgumentNullException($"Cannot add null statement to scope {this}.");
 
-            void AddNamedIfNotDuplicate<GCS> (Dictionary<string, GCS> d, GCS gcs, string typeNameForError) where GCS : AbstractCrimsonStatement, INamed
+            void AddNamedIfNotDuplicate<AbsCrimSt> (Dictionary<string, AbsCrimSt> dict, AbsCrimSt acs, string typeNameForError) where AbsCrimSt : AbstractCrimsonStatement, INamed
             {
-                if (d == null) throw new ArgumentNullException($"Cannot pass null {typeof(Dictionary<string, GCS>)} for statement adding.");
-                if (gcs == null) throw new ArgumentNullException($"Cannot pass null {typeof(GCS)} for statement adding.");
+                if (dict == null) throw new ArgumentNullException($"Cannot pass null {typeof(Dictionary<string, AbsCrimSt>)} for statement adding.");
+                if (acs == null) throw new ArgumentNullException($"Cannot pass null {typeof(AbsCrimSt)} for statement adding.");
                 if (string.IsNullOrWhiteSpace(typeNameForError)) throw new ArgumentNullException("Cannot pass null or whitespace type name for statement adding.");
 
-                if (d.ContainsKey(gcs.GetName().ToString())) throw new StatementParseException($"Duplicate GlobalStatement name '{gcs.GetName()}' for statement '{statement}' in unit: {this}");
-                string name = gcs.GetName().ToString();
-                d.Add(name, gcs);
-                Delegates.Add(() => d[name]);
+                if (dict.ContainsKey(acs.GetName().ToString())) throw new StatementParseException($"Duplicate {typeNameForError} '{acs.GetName()}' in statement '{statement}' in scope: {this}");
+                string name = acs.GetName().ToString();
+                dict.Add(name, acs);
+                Delegates.Add(() => dict[name]);
+                LOGGER.Debug($"Adding {acs.GetName()}");
             }
 
             if (statement is IHasScope scopeStatement)
