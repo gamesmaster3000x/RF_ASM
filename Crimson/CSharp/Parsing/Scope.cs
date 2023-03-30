@@ -154,7 +154,7 @@ namespace Crimson.CSharp.Parsing
 
         // Linking
 
-        public Dictionary<string, Scope> GetLinks (Compilation compilation)
+        public async Task<Dictionary<string, Scope>> GetLinks (Compilation compilation)
         {
             Dictionary<string, Scope> Links = new Dictionary<string, Scope>();
             foreach (KeyValuePair<string, ImportCStatement> importPair in Imports)
@@ -176,7 +176,7 @@ namespace Crimson.CSharp.Parsing
                 /*
                  * 
                  */
-                Scope? mappingUnit = compilation.Library.GetScope(relativePath);
+                Scope? mappingUnit = await compilation.Library.GetScope(relativePath);
                 if (mappingUnit == null) throw new LinkingException("Could not add unloadable unit " + relativePath + " (alias=" + alias + ") to mapping context");
                 Links.Add(alias, mappingUnit);
             }
@@ -187,14 +187,14 @@ namespace Crimson.CSharp.Parsing
         /// For Scope, this is being called when the Scope is within another Scope. This means that it will need to add its own links.
         /// </summary>
         /// <param name="ctx"></param>
-        public override void Link (LinkingContext ctx)
+        public async override void Link (LinkingContext ctx)
         {
             LOGGER.Debug($"Linking Scope: {FamilyToString()}");
 
             // Partially shallow-copy the old context (links in a lower level should not get carried up to higher levels)
             LinkingContext newContext = new LinkingContext(this, ctx);
 
-            Dictionary<string, Scope> dictionary = GetLinks(newContext.Compilation);
+            Dictionary<string, Scope> dictionary = await GetLinks(newContext.Compilation);
             foreach (var link in dictionary)
                 newContext.Links.Add(link.Key, link.Value);
 

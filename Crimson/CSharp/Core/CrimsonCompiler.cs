@@ -64,7 +64,10 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" G E N E R A L I S I N G ");
-            GeneralAssemblyProgram generalProgram = Generaliser.Generalise(compilation);
+            Task<GeneralAssemblyProgram> generalProgramTask = Generaliser.Generalise(compilation);
+            generalProgramTask.Wait();
+            GeneralAssemblyProgram generalProgram = generalProgramTask.Result;
+
 
             LOGGER.Info("\n\n");
             DumpGeneralisedProgram(generalProgram);

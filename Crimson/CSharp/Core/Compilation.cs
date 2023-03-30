@@ -28,9 +28,9 @@ namespace Crimson.CSharp.Core
             Library = new FileOnlyLibrary();
         }
 
-        public Scope GetRootUnit ()
+        public Task<Scope> GetRootUnit ()
         {
-            return Library.GetScope(FileOnlyLibrary.ROOT_FACET_NAME)!;
+            return Library.GetScope(FileOnlyLibrary.ROOT_FACET_NAME);
         }
 
         public override string ToString ()
@@ -38,10 +38,10 @@ namespace Crimson.CSharp.Core
             return $"Compilation(RootUnit={GetRootUnit()}; Library={Library.ToString()})";
         }
 
-        public FunctionCStatement GetEntryFunction ()
+        public async Task<FunctionCStatement> GetEntryFunction ()
         {
             string baseName = Core.Crimson.Options.EntryFunctionName;
-            Scope rootUnit = GetRootUnit();
+            Scope rootUnit = await GetRootUnit();
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 

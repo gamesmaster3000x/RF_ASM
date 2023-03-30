@@ -45,7 +45,7 @@ namespace Crimson.CSharp.Core
                     return Units[nativePath]; 
                 }
             }
-            return null;
+            return Task.FromResult<Scope>(null!);
         }
 
         public Task<Scope> LoadScopeAsync(string path, bool root)
@@ -57,7 +57,7 @@ namespace Crimson.CSharp.Core
 
             // Generate task
             Task<Scope> task = new Task<Scope>(() => {
-                Scope scope = LoadScopeFromFile(path);
+                Scope scope = LoadScopeFromFile(path).Result;
                 LoadScopeDependencies(scope);
                 return scope;
             });
@@ -65,14 +65,14 @@ namespace Crimson.CSharp.Core
             // Handle if root
             if (root)
             {
-                if (Units[ROOT_FACET_NAME] != null)
+                if (Units.ContainsKey(ROOT_FACET_NAME))
                 {
                     throw new NullReferenceException("There cannot be multiple root scopes in a FileOnlyLibrary.");
                 }
                 Units[ROOT_FACET_NAME] = task; // This name is reserved and should be free 
             }
 
-            // Start loading
+            // Start loading (asynchronously)
             task.Start();
             return task;
         }
@@ -110,7 +110,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private async Scope LoadScopeFromFile(string pathIn)
+        private async Task<Scope> LoadScopeFromFile(string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
@@ -121,7 +121,7 @@ namespace Crimson.CSharp.Core
                 throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet/scope with reserved name '" + pathIn + "'");
             }
 
-            Scope? unit = await GetScope(path);
+            Scope? unit = await GetScope(path) ?? null;
             if (unit != null)
             {
                 return unit;
@@ -132,7 +132,10 @@ namespace Crimson.CSharp.Core
             {
                 string programText = string.Join(Environment.NewLine, File.ReadLines(path));
                 Scope newUnit = ParseScopeText(path + " (" + pathIn + ")", programText);
-                Units[path] = newUnit;
+
+                Task<Scope> scope = Task.FromResult(newUnit);
+                Units[path] = scope;
+
                 return newUnit;
             }
             catch (IOException io)

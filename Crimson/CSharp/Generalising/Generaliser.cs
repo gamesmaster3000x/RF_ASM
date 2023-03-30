@@ -14,7 +14,7 @@ namespace Crimson.CSharp.Generalising
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public GeneralAssemblyProgram Generalise (Compilation compilation)
+        public async Task<GeneralAssemblyProgram> Generalise (Compilation compilation)
         {
             GeneralAssemblyProgram program = new GeneralAssemblyProgram();
 
@@ -27,17 +27,17 @@ namespace Crimson.CSharp.Generalising
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (Scope scope in compilation.Library.GetUnits())
+            foreach (Task<Scope> scope in compilation.Library.GetUnits())
             {
-                foreach (var f in scope.Functions)
+                foreach (var f in (await scope).Functions)
                 {
                     functions.Add(f.Value.Name.ToString(), f.Value);
                 }
-                foreach (var s in scope.Structures)
+                foreach (var s in (await scope).Structures)
                 {
                     structures.Add(s.Value.Name.ToString(), s.Value);
                 }
-                foreach (var g in scope.GlobalVariables)
+                foreach (var g in (await scope).GlobalVariables)
                 {
                     globals.Add(g.Value.GetName().ToString(), g.Value);
                 }
@@ -69,7 +69,7 @@ namespace Crimson.CSharp.Generalising
             // Add main (entry) function
             program.AddStructure(new CommentAssemblyStructure(""));
             program.AddStructure(new CommentAssemblyStructure("============================== Entry Function =============================="));
-            FunctionCStatement entryFunction = compilation.GetEntryFunction();
+            FunctionCStatement entryFunction = await compilation.GetEntryFunction();
             LOGGER.Info($"Found entry Function {entryFunction.Name}");
             IGeneralAssemblyStructure entryBs = entryFunction.Generalise(context);
             program.AddStructure(entryBs);

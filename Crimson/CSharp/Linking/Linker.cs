@@ -24,13 +24,14 @@ namespace Crimson.CSharp.Linking
         /// Links the FunctionCalls in a Compilation.
         /// </summary>
         /// <param name="compilation"></param>
-        public void Link (Compilation compilation)
+        public async void Link (Compilation compilation)
         {
             LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
-            foreach (Scope scope in compilation.Library.GetUnits())
+            foreach (Task<Scope> scopeTask in compilation.Library.GetUnits())
             {
+                Scope scope = await scopeTask;
                 LOGGER.Info("Linking " + scope);
 
                 // Generate linking context for the current unit (based on the aliases of imports)
