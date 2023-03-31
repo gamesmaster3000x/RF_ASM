@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using Antlr4.Runtime;
 using Crimson.AntlrBuild;
 using Crimson.CSharp.Exceptions;
@@ -14,8 +15,8 @@ namespace Crimson.CSharp.Core
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public static readonly string SYSTEM_LIBRARY_PREFIX = "${NATIVE}";
-        public static readonly string ROOT_FACET_NAME = "${ROOT}";
+        public static readonly string NATIVE_HOST = "crimson.native";
+        public static readonly string ROOT_HOST = "crimson.root";
 
         /// <summary>
         /// The "master" list of units. Stored so that each unique unit is only created once.
@@ -24,42 +25,51 @@ namespace Crimson.CSharp.Core
         /// [ C:/utils.crm => UTILS_UNIT ]
         /// [ C:/main.crm  => MAIN_UNIT  ]
         /// </summary>
-        public ConcurrentDictionary<string, Task<Scope>> Units { get; }
+        public ConcurrentDictionary<Uri, Scope> Units { get; }
 
-        public FileOnlyLibrary()
+        public FileOnlyLibrary ()
         {
-            Units = new ConcurrentDictionary<string, Task<Scope>>();
+            Units = new ConcurrentDictionary<Uri, Scope>();
         }
 
-        public Task<Scope> GetScope(string path)
+        public Scope GetScope (Uri uri)
         {
-            if (Units.ContainsKey(path))
+            if (Units.ContainsKey(uri))
             {
-                return Units[path];
+                return Units[uri];
             }
             else
             {
-                var nativePath = StandardiseNativePath(path);
+                Uri nativePath = SquashUri(uri);
                 if (Units.ContainsKey(nativePath))
                 {
-                    return Units[nativePath]; 
+                    return Units[nativePath];
                 }
             }
-            return Task.FromResult<Scope>(null!);
+            return null;
         }
 
-        public Task<Scope> LoadScopeAsync(string path, bool root)
+        public Scope LoadScope (Uri uri, bool root)
         {
             // Safety check to prevent double loading
             // Immediately insert the key to reserve it
-            if(Units.ContainsKey(path)) return Units[path];
-            Units[path] = Task.FromResult<Scope>(null!);
+            Scope scope = GetScope(uri);
+            if (scope != null) return scope;
 
-            LOGGER.Info($"Async loading{(root ? $" root" : "")}: {path}");
+            Units[uri] = null;
+
+            LOGGER.Info($"Loading{(root ? $" root" : "")}: {uri}");
+
+            Stream source = GetStreamOf(uri);
+            StreamReader reader = new StreamReader(source);
+            string text = reader.ReadToEnd();
+
+            scope = ParseScopeText(uri.ToString(), text);
 
             // Generate task
-            Task<Scope> task = new Task<Scope>(() => {
-                Scope scope = LoadScopeFromFile(path).Result;
+            Task<Scope> task = new Task<Scope>(() =>
+            {
+                Scope scope = LoadScopeFromFile(name).Result;
                 LoadScopeDependencies(scope);
                 return scope;
             });
@@ -67,11 +77,11 @@ namespace Crimson.CSharp.Core
             // Handle if root
             if (root)
             {
-                if (Units.ContainsKey(ROOT_FACET_NAME))
+                if (Units.ContainsKey(ROOT_HOST))
                 {
                     throw new NullReferenceException("There cannot be multiple root scopes in a FileOnlyLibrary.");
                 }
-                Units[ROOT_FACET_NAME] = task; // This name is reserved and should be free 
+                Units[ROOT_HOST] = task; // This name is reserved and should be free 
             }
 
             // Start loading (asynchronously)
@@ -79,7 +89,7 @@ namespace Crimson.CSharp.Core
             return task;
         }
 
-        public IEnumerable<Task<Scope>> GetUnits()
+        public IEnumerable<Task<Scope>> GetUnits ()
         {
             return Units.Values;
         }
@@ -89,17 +99,20 @@ namespace Crimson.CSharp.Core
         /// Also checks for nested scopes and loads them as well!
         /// </summary>
         /// <param name="root"></param>
-        private void LoadScopeDependencies (Scope root)
+        private async void LoadScopeDependencies (Scope root)
         {
             // For each import
             foreach (var i in root.Imports)
             {
                 // Get the unit it refers to 
-                Task<Scope> task = LoadScopeAsync(i.Value.Path, false);
-                task.Wait();
+                Scope scope = await LoadScopeAsync(i.Value.Path, false);
+
+                //TODO remove LoadScopeDep. continue
+                if (scope == null)
+                    continue;
 
                 // Get that units' dependencies (recursively)
-                LoadScopeDependencies(task.Result);
+                LoadScopeDependencies(scope);
             }
 
             // Check for imports in nested scopes
@@ -112,13 +125,14 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private async Task<Scope> LoadScopeFromFile(string pathIn)
+        [Obsolete]
+        private async Task<Scope> LoadScopeFromFile (string pathIn)
         {
             IEnumerable<string> lines = Enumerable.Empty<string>();
 
             string path = StandardiseNativePath(pathIn);
 
-            if (pathIn.Equals(ROOT_FACET_NAME) || pathIn.Equals(SYSTEM_LIBRARY_PREFIX))
+            if (pathIn.Equals(ROOT_HOST) || pathIn.Equals(NATIVE_HOST))
             {
                 throw new UnitGeneratorException("Illegal unit path: Cannot import unit/facet/scope with reserved name '" + pathIn + "'");
             }
@@ -154,7 +168,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private Scope ParseScopeText(string sourcePath, string textIn)
+        private Scope ParseScopeText (string sourcePath, string textIn)
         {
             LOGGER.Debug($"Parsing {textIn.Length} characters in {sourcePath} with ANTLR...");
             // Get Antlr context
@@ -175,22 +189,40 @@ namespace Crimson.CSharp.Core
             return scope;
         }
 
-        private string StandardiseNativePath(string path)
+        private Stream GetStreamOf (Uri uri)
         {
-            if (path.StartsWith(SYSTEM_LIBRARY_PREFIX))
-            {
-                string result = Path.GetFullPath(path.Replace(SYSTEM_LIBRARY_PREFIX, Crimson.Options.NativeLibraryPath));
-                return result;
-            }
-            if (!Path.IsPathRooted(path))
-            {
-                string? parentDirectory = Path.GetDirectoryName(Crimson.Options.TranslationSourcePath);
-                path = Path.Combine(parentDirectory, path);
-            }
-            return path;
+            uri = SquashUri(uri);
+            FileStream stream = new FileStream(uri.AbsolutePath, FileMode.Open);
+            return stream;
         }
 
-        public override string ToString()
+        private Uri SquashUri (Uri uri)
+        {
+            UriBuilder builder = new UriBuilder(uri);
+
+            if (uri.Scheme != Uri.UriSchemeFile)
+                throw new UriFormatException($"Crimson only accepts URIs of the file:/// scheme at this time. Found: {uri.Scheme}");
+
+            // file:///crimson.native/heap.crm
+            if (uri.Host.Equals(NATIVE_HOST))
+            {
+                string localPath = Path.Combine(Crimson.Options.NativeLibraryPath, uri.AbsolutePath);
+                builder.Host = "";
+                builder.Path = localPath;
+            }
+
+            // file:///heap.crm
+            if (!Path.IsPathRooted(uri.AbsolutePath))
+            {
+                string? parentDirectory = Path.GetDirectoryName(Crimson.Options.TranslationSourcePath);
+                string localPath = Path.Combine(parentDirectory, uri.AbsolutePath);
+                builder.Path = localPath;
+            }
+
+            return builder.Uri;
+        }
+
+        public override string ToString ()
         {
             return $"Library(Units:[{String.Join(',', Units.Select(u => Path.GetFileName(u.Key)))}])";
         }

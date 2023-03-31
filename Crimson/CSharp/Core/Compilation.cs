@@ -28,9 +28,9 @@ namespace Crimson.CSharp.Core
             Library = new FileOnlyLibrary();
         }
 
-        public Task<Scope> GetRootUnit ()
+        public async Task<Scope> GetRootUnit ()
         {
-            return Library.GetScope(FileOnlyLibrary.ROOT_FACET_NAME);
+            return await Library.GetScope(FileOnlyLibrary.ROOT_HOST);
         }
 
         public override string ToString ()

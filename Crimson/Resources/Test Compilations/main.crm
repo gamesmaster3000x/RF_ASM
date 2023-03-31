@@ -22,7 +22,7 @@
 		A~ "example assemby call";
 		
 		scope a<int>;
-		scope a<int>;
+		scope b<int>;
 		a *= utils.multiply(8)<int>;
 		b *= utils.times()<int>;
 		if (true == true) {

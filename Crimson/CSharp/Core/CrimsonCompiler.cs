@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Core
             Specialiser = flattener;
         }
 
-        public int FullyCompileFromOptions ()
+        public async void FullyCompileFromOptions ()
         {
             /*
              * == PARSING STAGE == 
@@ -39,9 +39,7 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" P A R S I N G ");
-            Task<Scope> rootScopeTask = Library.LoadScopeAsync(Options.TranslationSourcePath, true); // Get the root unit (ie. main.crm)
-            rootScopeTask.Wait(); // Block until finished
-            Scope rootScope = rootScopeTask.Result;
+            Scope rootScope = await Library.LoadScopeAsync(Options.TranslationSourcePath, true); // Get the root unit (ie. main.crm)
             Compilation compilation = new Compilation(rootScope, Options); // Generate dependency units (all resources are henceforth accessible)
 
 
@@ -90,7 +88,6 @@ namespace Crimson.CSharp.Core
 
             LOGGER.Info("\n\n");
             LOGGER.Info("Done!");
-            return 1;
         }
 
         private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specialisedProgram)
