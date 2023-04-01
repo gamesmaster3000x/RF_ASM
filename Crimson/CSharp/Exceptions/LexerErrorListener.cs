@@ -7,15 +7,15 @@ namespace Crimson.CSharp.Exceptions
     {
         public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        private string Path { get; set; }
-        public LexerErrorListener (string path)
+        private string Name { get; set; }
+        public LexerErrorListener (string name)
         {
-            Path = path;
+            Name = name;
         }
 
         void IAntlrErrorListener<int>.SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            string message = $"Lexer error lexing {Path} @ line:{line} char:{charPositionInLine} msg:{msg}";
+            string message = $"Lexer error lexing {Name} @ line:{line} char:{charPositionInLine} msg:{msg}";
             LOGGER.Error(message);
             throw new LexerException(message, e);
         }

@@ -7,7 +7,7 @@ scope
 
 // Scope header things
 importUnit
-    : Hashtag Using path=String As identifier=fullName SemiColon
+    : Hashtag Using uri=String As identifier=fullName SemiColon
     ;
 operationHandler
     : Hashtag OpHandler op=Operator RightArrow identifier=fullName SemiColon

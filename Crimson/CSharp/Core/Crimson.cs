@@ -16,40 +16,48 @@ namespace Crimson.CSharp.Core
 
         public const int ERROR_UNKNOWN = -100;
 
-        static int Main (string[] args)
+        public static int Main (string[] args)
         {
-            bool useAutowiredArgs = true;
-            if (useAutowiredArgs)
-            {
-                Console.WriteLine("Using autowired (debug) program arguments");
-                string resourcesPath = "../../../Resources/"; // Escape bin, Debug, and net6.0
-                args = new string[] {
-                    "-s", resourcesPath + "Test Compilations/main.crm",
-                    "-t", resourcesPath + "Test Compilations/result/main",
-                    "-n", resourcesPath + "Native Library/" ,
-                    "-w", "4",
-                    "--rfasm"
-                };
-            }
-
             // Start
             ShowSplash();
             ShowCredits();
 
+            // Setup arguments
+            string CombineAndFormatPath (string a, string b) => Path.GetFullPath(Path.Combine(a, b));
+            bool useAutowiredArgs = true;
+            if (useAutowiredArgs)
+            {
+                Console.WriteLine("Using autowired (debug) program arguments");
+                string resourcesPath = "Resources/"; // Escape bin, Debug, and net6.0
+
+                args = new string[] {
+                    $"-s {CombineAndFormatPath(resourcesPath, "Test Compilations/main.crm")}",
+                    $"-t {CombineAndFormatPath(resourcesPath, "Test Compilations/result/main")}",
+                    $"-n {CombineAndFormatPath(resourcesPath, "Native Library")}",
+                    "-w", "4",
+                    "--rfasm"
+                };
+
+                Console.WriteLine(String.Join(' ', args));
+            }
+
             Console.WriteLine("Parsing Crimson options");
             Options = CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).Value;
+            if (Options == null) throw new NullReferenceException($"Unable to parse arguments {args}");
 
-            Console.WriteLine("  Option: CompilationSourcePath: " + Options.TranslationSourcePath);
-            Console.WriteLine("  Option: CompilationTargetPath: " + Options.TranslationTargetPath);
-            Console.WriteLine("  Option: NativeLibraryPath: " + Options.NativeLibraryPath);
+            Console.WriteLine("  Option: SourceUri: " + Options.SourceUri);
+            Console.WriteLine("  Option: TargetUri: " + Options.TargetUri);
+            Console.WriteLine("  Option: NativeUri: " + Options.NativeUri);
             Console.WriteLine("  Option: DumpIntermediates: " + Options.DumpIntermediates);
             Console.WriteLine("  Option: DataWidth: " + Options.DataWidth);
             Console.WriteLine("  Option: (Platform) CrimsonBasic: " + Options.CrimsonBasic);
             Console.WriteLine("  Option: (Platform) RFASM: " + Options.RFASM);
 
+            //
             ConfigureNLog();
 
-            FileOnlyLibrary generator = new FileOnlyLibrary();
+            // 
+            Library generator = new Library();
             Linker linker = new Linker(Options);
             Generaliser generaliser = new Generaliser();
             ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default to RFASM
@@ -57,7 +65,7 @@ namespace Crimson.CSharp.Core
 
             try
             {
-                return Compiler.FullyCompileFromOptions();
+                Compiler.FullyCompileFromOptions();
             }
             catch (System.Exception e)
             {
@@ -65,6 +73,7 @@ namespace Crimson.CSharp.Core
                 LOGGER!.Error(e);
                 return ERROR_UNKNOWN;
             }
+            return 0;
         }
 
         private static void ShowSplash ()
@@ -107,10 +116,11 @@ namespace Crimson.CSharp.Core
             };
             var consoleTarget = new NLog.Targets.ConsoleTarget("CrimsonConsoleLogTarget")
             {
-                Layout = "${level} | ${time} | ${logger} > ${message:withexception=true}"
+                Layout = "${level:uppercase=true:padding=-5} | ${time} | ${threadname:whenEmpty=${threadid}:padding=-5} | ${logger} > ${message:withexception=true}"
             };
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
+
             LogManager.Configuration = config;
             Console.WriteLine("NLog configured!");
 

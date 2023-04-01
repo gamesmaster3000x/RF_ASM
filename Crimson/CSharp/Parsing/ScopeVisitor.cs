@@ -21,13 +21,9 @@ namespace Crimson.CSharp.Parsing
             IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
             foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
             {
-                string path = importCtx.path.Text;
-                if (path.StartsWith("\"") && path.EndsWith("\""))
-                {
-                    path = path.Substring(1, path.Length - 2);
-                }
+                Uri uri = new Uri(importCtx.uri.Text);
                 FullNameCToken id = VisitFullName(importCtx.fullName());
-                ImportCStatement import = new ImportCStatement(path, id);
+                ImportCStatement import = new ImportCStatement(uri, id);
                 scope.Imports.Add(id.ToString(), import);
             }
 

@@ -21,27 +21,22 @@ namespace Crimson.CSharp.Core
         /// <summary>
         /// A library of all of the CompilationUnits used in this Compilation
         /// </summary>
-        internal ILibrary Library { get; }
+        internal Library Library { get; }
 
         public Compilation (Scope rootUnit, CrimsonOptions options)
         {
-            Library = new FileOnlyLibrary();
-        }
-
-        public async Task<Scope> GetRootUnit ()
-        {
-            return await Library.GetScope(FileOnlyLibrary.ROOT_HOST);
+            Library = new Library();
         }
 
         public override string ToString ()
         {
-            return $"Compilation(RootUnit={GetRootUnit()}; Library={Library.ToString()})";
+            return $"Compilation(RootUnit={Library.Root}; Library={Library})";
         }
 
-        public async Task<FunctionCStatement> GetEntryFunction ()
+        public FunctionCStatement GetEntryFunction ()
         {
             string baseName = Core.Crimson.Options.EntryFunctionName;
-            Scope rootUnit = await GetRootUnit();
+            Scope rootUnit = Library.Root!;
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 

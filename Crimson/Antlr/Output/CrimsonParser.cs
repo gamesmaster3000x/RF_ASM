@@ -238,7 +238,7 @@ public partial class CrimsonParser : Parser {
 	}
 
 	public partial class ImportUnitContext : ParserRuleContext {
-		public IToken path;
+		public IToken uri;
 		public FullNameContext identifier;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Hashtag() { return GetToken(CrimsonParser.Hashtag, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Using() { return GetToken(CrimsonParser.Using, 0); }
@@ -283,7 +283,7 @@ public partial class CrimsonParser : Parser {
 			State = 82;
 			Match(Using);
 			State = 83;
-			_localctx.path = Match(String);
+			_localctx.uri = Match(String);
 			State = 84;
 			Match(As);
 			State = 85;

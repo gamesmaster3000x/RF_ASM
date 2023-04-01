@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Crimson": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\GenElectrovise\\OneDrive\\Desktop\\Programming\\RF_ASM\\Crimson"
     }
   }
 }

@@ -16,7 +16,7 @@ namespace Crimson.CSharp.Parsing
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public Scope? Parent { get; set; }
-        public string? Path { get; set; }
+        public Uri? Uri { get; set; }
 
         private string _name;
         public string Name
@@ -32,12 +32,12 @@ namespace Crimson.CSharp.Parsing
 
         public Scope (string name, Scope? parent) : this(name, parent, null) { }
 
-        public Scope (string name, string? path) : this(name, null, path) { }
+        public Scope (string name, Uri? path) : this(name, null, path) { }
 
-        private Scope (string name, Scope? parent, string? path)
+        private Scope (string name, Scope? parent, Uri? path)
         {
             Parent = null;
-            Path = path;
+            Uri = path;
             Name = name;
 
             Delegates = new List<StatementDelegate>();
@@ -63,10 +63,10 @@ namespace Crimson.CSharp.Parsing
             return parent;
         }
 
-        public string GetPath ()
+        public Uri GetPath ()
         {
-            if (!string.IsNullOrWhiteSpace(Path))
-                return Path;
+            if (Uri.IsWellFormedUriString(Uri.ToString(), UriKind.Absolute))
+                return Uri;
 
             if (HasParent())
                 return GetParent().GetPath();
@@ -172,12 +172,12 @@ namespace Crimson.CSharp.Parsing
                  * For example:
                  *  '#using "utils.crm" as u' may result in 'C:/utils.crm'
                  */
-                string relativePath = importPair.Value.Path;
+                Uri relativePath = importPair.Value.URI;
 
                 /*
                  * 
                  */
-                Scope? mappingUnit = await compilation.Library.GetScope(relativePath);
+                Scope? mappingUnit = compilation.Library.GetScope(relativePath);
                 if (mappingUnit == null) throw new LinkingException("Could not add unloadable unit " + relativePath + " (alias=" + alias + ") to mapping context");
                 Links.Add(alias, mappingUnit);
             }
@@ -230,12 +230,12 @@ namespace Crimson.CSharp.Parsing
             return $"Scope({Name}; I:{Imports.Count} F:{Functions.Count} S:{Structures.Count} G:{GlobalVariables.Count})";
         }
 
-        internal ScopeVariableCStatement? FindScopeVariable(string name)
+        internal ScopeVariableCStatement? FindScopeVariable (string name)
         {
             // TODO Check Scope.FindScopeVariable works 
             Scope parent = this;
             ScopeVariableCStatement? var = null;
-            if(!ScopeVariables.TryGetValue(name, out var) && HasParent())
+            if (!ScopeVariables.TryGetValue(name, out var) && HasParent())
             {
                 return GetParent().FindScopeVariable(name);
             }

@@ -5,15 +5,15 @@ namespace Crimson.CSharp.Parsing.Statements
 {
     public class ImportCStatement
     {
-        public string Path { get; set; }
+        public Uri URI { get; set; }
         public FullNameCToken Alias { get; set; }
 
-        public ImportCStatement (string path, FullNameCToken alias)
+        public ImportCStatement (Uri uri, FullNameCToken alias)
         {
-            if (alias.HasLibrary()) throw new CrimsonParserException($"The alias {alias} cannot be given to the import '{path}' because it must only contain a member name.");
-            if (!alias.HasMember()) throw new CrimsonParserException($"The alias {alias} cannot be given to the import '{path}' because it does not contain a member name.");
+            if (alias.HasLibrary()) throw new CrimsonParserException($"The alias {alias} cannot be given to the import '{uri}' because it must only contain a member name.");
+            if (!alias.HasMember()) throw new CrimsonParserException($"The alias {alias} cannot be given to the import '{uri}' because it does not contain a member name.");
 
-            Path = path;
+            URI = uri;
             Alias = alias;
         }
     }
