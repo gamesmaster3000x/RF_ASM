@@ -147,7 +147,11 @@ namespace Crimson.CSharp.Core
 
         public enum PanicCode
         {
-            PARSE = -10
+            OK = 0,
+            PARSE = -100,
+            LINK = -200,
+            GENERALISE = -300,
+            SPECIALISE = -400,
         }
     }
 }

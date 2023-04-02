@@ -29,76 +29,74 @@ namespace Crimson.CSharp.Core
 
         public async void FullyCompileFromOptions ()
         {
-            /*
-             * == PARSING STAGE == 
-             * 
-             * The syntax of the source files must be parsed from text to an abstract syntax tree.
-             * In this case, the work is done by ANTLR, using the Crimson.g4 grammar file.
-             * This stage results in a collection of individual units which contain ComplexStatements exactly describing the input.
-             * 
-             */
-            LOGGER.Info("\n\n");
-            LOGGER.Info(" P A R S I N G ");
-
-            Task<Scope> scopeTask = Library.StartLoadingScope(Options.SourceUri);
             try
             {
-                scopeTask.Wait();
+                /*
+                 * == PARSING STAGE == 
+                 * 
+                 * The syntax of the source files must be parsed from text to an abstract syntax tree.
+                 * In this case, the work is done by ANTLR, using the Crimson.g4 grammar file.
+                 * This stage results in a collection of individual units which contain ComplexStatements exactly describing the input.
+                 * 
+                 */
+                LOGGER.Info("\n\n");
+                LOGGER.Info(" P A R S I N G ");
+                Scope rootScope = Library.LoadScope(Options.SourceUri); // Get the root unit (ie. main.crm)
+                Compilation compilation = new Compilation(rootScope, Options); // Generate dependency units (all resources are henceforth accessible)
+
+
+                /*
+                 * == LINKING STAGE == 
+                 * 
+                 * Now that all of the statements have been flattened into one list, we can iterate through and link the FunctionCalls.
+                 * 
+                 */
+                LOGGER.Info("\n\n");
+                LOGGER.Info(" L I N K I N G ");
+                Linker.Link(compilation);
+
+
+                /*
+                 * == GENERALISING STAGE == 
+                 * 
+                 * Converts the program into a list of general assembly statements covering the concepts of the program 
+                 * without tying it to one assembly language.
+                 */
+                LOGGER.Info("\n\n");
+                LOGGER.Info(" G E N E R A L I S I N G ");
+                Task<GeneralAssemblyProgram> generalProgramTask = Generaliser.Generalise(compilation);
+                generalProgramTask.Wait();
+                GeneralAssemblyProgram generalProgram = generalProgramTask.Result;
+
+
+                LOGGER.Info("\n\n");
+                DumpGeneralisedProgram(generalProgram);
+
+                /*
+                 * == SPECIALISING STAGE == 
+                 * 
+                 * Convert the generic program into one targetting the desired assembly language.
+                 * For each language, you'll need a different ISpecialiser.
+                 */
+                LOGGER.Info("\n\n");
+                LOGGER.Info(" S P E C I A L I S I N G ");
+                AbstractSpecificAssemblyProgram specialisedProgram = Specialiser.Specialise(generalProgram);
+
+                /*
+                 * == CLEANUP == 
+                 */
+                LOGGER.Info("\n\n");
+                DumpSpecialisedProgram(specialisedProgram);
+
+                LOGGER.Info("\n\n");
+                LOGGER.Info("Done!");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LOGGER.Error(ex);
+                LOGGER.Error("A critical error occurred during compilation.");
+                LOGGER.Error(e);
                 Crimson.Panic(Crimson.PanicCode.PARSE);
             }
-            Scope rootScope = scopeTask.Result; // Get the root unit (ie. main.crm)
-            Compilation compilation = new Compilation(rootScope, Options); // Generate dependency units (all resources are henceforth accessible)
-
-
-            /*
-             * == LINKING STAGE == 
-             * 
-             * Now that all of the statements have been flattened into one list, we can iterate through and link the FunctionCalls.
-             * 
-             */
-            LOGGER.Info("\n\n");
-            LOGGER.Info(" L I N K I N G ");
-            Linker.Link(compilation);
-
-
-            /*
-             * == GENERALISING STAGE == 
-             * 
-             * Converts the program into a list of general assembly statements covering the concepts of the program 
-             * without tying it to one assembly language.
-             */
-            LOGGER.Info("\n\n");
-            LOGGER.Info(" G E N E R A L I S I N G ");
-            Task<GeneralAssemblyProgram> generalProgramTask = Generaliser.Generalise(compilation);
-            generalProgramTask.Wait();
-            GeneralAssemblyProgram generalProgram = generalProgramTask.Result;
-
-
-            LOGGER.Info("\n\n");
-            DumpGeneralisedProgram(generalProgram);
-
-            /*
-             * == SPECIALISING STAGE == 
-             * 
-             * Convert the generic program into one targetting the desired assembly language.
-             * For each language, you'll need a different ISpecialiser.
-             */
-            LOGGER.Info("\n\n");
-            LOGGER.Info(" S P E C I A L I S I N G ");
-            AbstractSpecificAssemblyProgram specialisedProgram = Specialiser.Specialise(generalProgram);
-
-            /*
-             * == CLEANUP == 
-             */
-            LOGGER.Info("\n\n");
-            DumpSpecialisedProgram(specialisedProgram);
-
-            LOGGER.Info("\n\n");
-            LOGGER.Info("Done!");
         }
 
         private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specialisedProgram)

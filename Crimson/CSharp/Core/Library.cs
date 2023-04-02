@@ -86,7 +86,22 @@ namespace Crimson.CSharp.Core
             Root = scope;
         }
 
-        public Task<Scope> StartLoadingScope (Uri uri)
+        public Scope LoadScope (Uri uri)
+        {
+            try
+            {
+                Task<Scope> task = GetScopeLoadingTask(uri);
+                task.Start();
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private Task<Scope> GetScopeLoadingTask (Uri uri)
         {
             // Safety check to prevent double loading
             // Immediately insert the key to reserve it
@@ -103,7 +118,6 @@ namespace Crimson.CSharp.Core
                 Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_c";
                 return LoadScopeSync(uri);
             });
-            task.Start();
             return task;
         }
 
@@ -159,7 +173,7 @@ namespace Crimson.CSharp.Core
             // Queue loading of its dependencies (once it's loaded)
             foreach (var i in root.Imports)
             {
-                Task<Scope> scope = StartLoadingScope(i.Value.URI);
+                Task<Scope> scope = GetScopeLoadingTask(i.Value.URI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
 
                 ongoingLoadingTasks.Add(dependencyTask);
