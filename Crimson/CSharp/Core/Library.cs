@@ -92,12 +92,8 @@ namespace Crimson.CSharp.Core
 
         public Scope LoadScope (Uri uri)
         {
-            if (Scopes.ContainsKey(uri))
-            {
-                LOGGER.Debug($"{uri} is already loading, won't load twice, so waiting for that to finish...");
-                Scopes[uri].Wait();
-                return Scopes[uri].Result;
-            }
+            LOGGER.Info($"Loading scope from {uri}");
+
             Stream source = GetStreamOf(uri);
             StreamReader reader = new StreamReader(source);
             string text = reader.ReadToEnd();
@@ -114,23 +110,20 @@ namespace Crimson.CSharp.Core
             return scope;
         }
 
-        private Task<Scope> GetScopeLoadingTask (Uri uri)
+        private Task<Scope> LoadScopeAsync (Uri uri)
         {
-            // Safety check to prevent double loading
-            // Immediately insert the key to reserve it
-            Scope? existingScope = GetScope(uri);
-            if (existingScope != null) return Task.FromResult(existingScope);
-
-            LOGGER.Info($"Loading scope from {uri}");
+            // Check if already loading/loaded and reserve key if not
+            if (Scopes.ContainsKey(uri)) return Scopes[uri];
+            Scopes[uri] = null!;
 
             // Generate task
-            //return Task.Factory.StartNew(() => LoadScopeSync(uri));
-            Task<Scope> task = new Task<Scope>(() =>
+            Task<Scope> task = Task.Factory.StartNew(() =>
             {
                 Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_{uri.ToString()}";
                 return LoadScope(uri);
             });
 
+            // Assign correct non-null task to key
             Scopes[uri] = task;
             return task;
         }
@@ -169,9 +162,8 @@ namespace Crimson.CSharp.Core
             // Queue loading of its dependencies (once it's loaded)
             foreach (var i in root.Imports)
             {
-                Task<Scope> scope = GetScopeLoadingTask(i.Value.URI);
+                Task<Scope> scope = LoadScopeAsync(i.Value.URI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
-                scope.Start();
 
                 ongoingLoadingTasks.Add(dependencyTask);
             }
@@ -187,7 +179,16 @@ namespace Crimson.CSharp.Core
 
             // Wait for multithreading to finish before returning.
             foreach (var task in ongoingLoadingTasks)
-                await task;
+            {
+                try
+                {
+                    task.Wait();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
             LOGGER.Debug($"Finished loading dependencies of {root}");
         }
 
