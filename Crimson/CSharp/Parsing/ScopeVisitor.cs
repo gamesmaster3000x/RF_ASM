@@ -16,12 +16,9 @@ namespace Crimson.CSharp.Parsing
         public static readonly Stack<Scope> scopeStack = new Stack<Scope>();
         public override Scope VisitScope ([NotNull] CrimsonParser.ScopeContext context)
         {
-            // TODO TESTTING
-            // return new Scope("TEST", (Scope) null!);
-
             try
             {
-                Scope scope = new Scope(null, scopeStack.TryPeek(out Scope? result) ? result : null);
+                Scope scope = new Scope(null!, scopeStack.TryPeek(out Scope? result) ? result : null);
                 scopeStack.Push(scope);
 
                 // Visit imports
@@ -56,9 +53,7 @@ namespace Crimson.CSharp.Parsing
             }
             catch (Exception ex)
             {
-                LOGGER.Error("VisitScope encountered an error!");
-                Console.WriteLine("VisitScope encountered an error!");
-                throw new StatementParseException("Unable to parse scope :(", ex);
+                throw new StatementParseException($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", ex);
             }
         }
 

@@ -88,17 +88,20 @@ namespace Crimson.CSharp.Core
 
         public Scope LoadScope (Uri uri)
         {
-            try
+            Stream source = GetStreamOf(uri);
+            StreamReader reader = new StreamReader(source);
+            string text = reader.ReadToEnd();
+
+            Scope scope = ParseScopeText(uri, text);
+
+            LoadScopeDependencies(scope);
+
+            if (Root == null)
             {
-                Task<Scope> task = GetScopeLoadingTask(uri);
-                task.Start();
-                task.Wait();
-                return task.Result;
+                SetRootScope(scope);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            return scope;
         }
 
         private Task<Scope> GetScopeLoadingTask (Uri uri)
@@ -116,7 +119,7 @@ namespace Crimson.CSharp.Core
             Task<Scope> task = new Task<Scope>(() =>
             {
                 Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_c";
-                return LoadScopeSync(uri);
+                return LoadScope(uri);
             });
             return task;
         }
@@ -139,24 +142,6 @@ namespace Crimson.CSharp.Core
                 task.Wait();
             }
             return task.Result;
-        }
-
-        private Scope LoadScopeSync (Uri uri)
-        {
-            Stream source = GetStreamOf(uri);
-            StreamReader reader = new StreamReader(source);
-            string text = reader.ReadToEnd();
-
-            Scope scope = ParseScopeText(uri, text);
-
-            LoadScopeDependencies(scope);
-
-            if (Root == null)
-            {
-                SetRootScope(scope);
-            }
-
-            return scope;
         }
 
         /// <summary>
@@ -220,9 +205,7 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception ex)
             {
-                LOGGER.Error("An error ocurred while parsing a scope");
-                Console.WriteLine("An error ocurred while parsing a scope");
-                throw new StatementParseException("A parser error occurred :( ", ex);
+                throw new StatementParseException($"An error ocurred while parsing a scope originating from {source}", ex);
             }
         }
 

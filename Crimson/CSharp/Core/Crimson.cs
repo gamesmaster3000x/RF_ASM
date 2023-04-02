@@ -133,11 +133,19 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
         }
 
-        public static void Panic (PanicCode code)
+        public static void Panic (PanicCode code, Exception e)
         {
-            LOGGER!.Error("");
+            LOGGER.Error("");
             LOGGER.Error(" ### COMPILER PANIC!! ###");
-            LOGGER.Error("An error during compilation has caused the compiler to halt!");
+
+            if (e != null)
+            {
+                LOGGER.Error(e);
+            }
+            else
+            {
+                LOGGER.Error("An error during compilation has caused the compiler to halt!");
+            }
 
             int codeNum = (int) code;
             LOGGER.Error($"Panic code: {codeNum}");

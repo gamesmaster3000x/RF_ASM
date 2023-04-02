@@ -93,9 +93,7 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception e)
             {
-                LOGGER.Error("A critical error occurred during compilation.");
-                LOGGER.Error(e);
-                Crimson.Panic(Crimson.PanicCode.PARSE);
+                Crimson.Panic(Crimson.PanicCode.PARSE, e);
             }
         }
 
