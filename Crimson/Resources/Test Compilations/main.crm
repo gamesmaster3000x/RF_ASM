@@ -3,9 +3,9 @@
 	// - Package "utils" from the file "utils.crm", with the name "utils"
 	// - Package "console" from the system library, with the name "stdout"
 
-	#using "utils/utils.crm" as utils;
-	#using "${NATIVE}/console.crm" as stdout;
-	#using "${NATIVE}/heap.crm" as heap;
+	#using "file://root.crimson/utils/utils.crm" as utils;
+	#using "file://native.crimson/console.crm" as stdout;
+	#using "file://native.crimson/heap.crm" as heap;
 
 	// Declare ophandlers:
 	//

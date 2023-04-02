@@ -17,8 +17,8 @@ namespace Crimson.CSharp.Core
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public static readonly string NATIVE_HOST = "crimson.native";
-        public static readonly string ROOT_HOST = "crimson.root";
+        public static readonly string NATIVE_HOST = "native.crimson";
+        public static readonly string ROOT_HOST = "root.crimson";
 
         /// <summary>
         /// The "master" list of units. Stored so that each unique unit is only created once.

@@ -28,7 +28,7 @@
 	// It should be at a static location relative to the start of process memory.
 	// int[] regions = new int[256];
 
-	#using "${NATIVE}/maths.crm" as maths;
+	#using "file://native.crimson/maths.crm" as maths;
 
 	// IMPORTANT!!
 	// regions_i and regions_region will be removed!!

@@ -13,7 +13,10 @@ namespace Crimson.CSharp.Parsing
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
+        // ==================== VISITOR ====================
+
         public static readonly Stack<Scope> scopeStack = new Stack<Scope>();
+
         public override Scope VisitScope ([NotNull] CrimsonParser.ScopeContext context)
         {
             try
@@ -25,7 +28,14 @@ namespace Crimson.CSharp.Parsing
                 IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
                 foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
                 {
-                    Uri uri = new Uri(importCtx.uri.Text);
+                    string originalUriText = importCtx.uri.Text;
+                    string trimmedUriText = originalUriText.Trim(' ', '\t', '\n', '\v', '\f', '\r', '"');
+                    if (!originalUriText.Equals(trimmedUriText, StringComparison.OrdinalIgnoreCase))
+                        LOGGER.Debug($"Trimmed URI {originalUriText} to {trimmedUriText}");
+                    Uri? uri;
+                    if (!Uri.TryCreate(trimmedUriText, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out uri))
+                        throw new StatementParseException($"Unable to parse illegal URI '{importCtx.uri.Text}'");
+
                     FullNameCToken id = VisitFullName(importCtx.fullName());
                     ImportCStatement import = new ImportCStatement(uri, id);
                     scope.Imports.Add(id.ToString(), import);

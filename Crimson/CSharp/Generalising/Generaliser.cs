@@ -14,7 +14,7 @@ namespace Crimson.CSharp.Generalising
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public async Task<GeneralAssemblyProgram> Generalise (Compilation compilation)
+        public GeneralAssemblyProgram Generalise (Compilation compilation)
         {
             GeneralAssemblyProgram program = new GeneralAssemblyProgram();
 

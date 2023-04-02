@@ -1,5 +1,5 @@
 {
-	#using "${NATIVE}/console.crm" as utils_stdout
+	#using "file://native.crimson/console.crm" as utils_stdout
 
 	// Utility package
 	function multiply (num1<int_size>, num2<int_size>) {
