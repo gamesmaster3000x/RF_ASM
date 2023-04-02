@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Generalising
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (Scope scope in compilation.Library.Units.Values)
+            foreach (Scope scope in compilation.Library.GetScopes())
             {
                 foreach (var f in scope.Functions)
                 {

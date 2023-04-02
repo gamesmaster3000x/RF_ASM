@@ -11,41 +11,55 @@ namespace Crimson.CSharp.Parsing
 {
     internal class ScopeVisitor : CrimsonBaseVisitor<object>
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+
         public static readonly Stack<Scope> scopeStack = new Stack<Scope>();
         public override Scope VisitScope ([NotNull] CrimsonParser.ScopeContext context)
         {
-            Scope scope = new Scope(null, scopeStack.TryPeek(out Scope? result) ? result : null);
-            scopeStack.Push(scope);
+            // TODO TESTTING
+            // return new Scope("TEST", (Scope) null!);
 
-            // Visit imports
-            IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
-            foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
+            try
             {
-                Uri uri = new Uri(importCtx.uri.Text);
-                FullNameCToken id = VisitFullName(importCtx.fullName());
-                ImportCStatement import = new ImportCStatement(uri, id);
-                scope.Imports.Add(id.ToString(), import);
-            }
+                Scope scope = new Scope(null, scopeStack.TryPeek(out Scope? result) ? result : null);
+                scopeStack.Push(scope);
 
-            // Add operation handlers
-            IList<CrimsonParser.OperationHandlerContext> operationHandlersCtxs = context._opHandlers;
-            foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs)
+                // Visit imports
+                IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
+                foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
+                {
+                    Uri uri = new Uri(importCtx.uri.Text);
+                    FullNameCToken id = VisitFullName(importCtx.fullName());
+                    ImportCStatement import = new ImportCStatement(uri, id);
+                    scope.Imports.Add(id.ToString(), import);
+                }
+
+                // Add operation handlers
+                IList<CrimsonParser.OperationHandlerContext> operationHandlersCtxs = context._opHandlers;
+                foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs)
+                {
+                    OperationHandlerCStatement unitStatement = VisitOperationHandler(unitStatementCtx);
+                    //TODO compilation.AddOpHandler(unitStatement);
+                }
+
+                // Visit Compilation-Unit statements
+                IList<CrimsonParser.StatementContext> unitStatementCtxs = context._statements;
+                foreach (CrimsonParser.StatementContext unitStatementCtx in unitStatementCtxs)
+                {
+                    AbstractCrimsonStatement unitStatement = ParseStatement(unitStatementCtx);
+                    scope.AddStatement(unitStatement);
+                }
+
+                // Populate output fields
+
+                return scopeStack.Pop();
+            }
+            catch (Exception ex)
             {
-                OperationHandlerCStatement unitStatement = VisitOperationHandler(unitStatementCtx);
-                //TODO compilation.AddOpHandler(unitStatement);
+                LOGGER.Error("VisitScope encountered an error!");
+                Console.WriteLine("VisitScope encountered an error!");
+                throw new StatementParseException("Unable to parse scope :(", ex);
             }
-
-            // Visit Compilation-Unit statements
-            IList<CrimsonParser.StatementContext> unitStatementCtxs = context._statements;
-            foreach (CrimsonParser.StatementContext unitStatementCtx in unitStatementCtxs)
-            {
-                AbstractCrimsonStatement unitStatement = ParseStatement(unitStatementCtx);
-                scope.AddStatement(unitStatement);
-            }
-
-            // Populate output fields
-
-            return scopeStack.Pop();
         }
 
         private AbstractCrimsonStatement ParseStatement (CrimsonParser.StatementContext stCtx)

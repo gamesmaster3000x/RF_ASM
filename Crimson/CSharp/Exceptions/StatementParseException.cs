@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Exceptions
 
         }
 
-        public StatementParseException (string message, SystemException cause) : base(message, cause)
+        public StatementParseException (string message, Exception cause) : base(message, cause)
         {
 
         }

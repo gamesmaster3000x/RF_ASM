@@ -18,6 +18,8 @@ namespace Crimson.CSharp.Core
 
         public static int Main (string[] args)
         {
+            Thread.CurrentThread.Name = "main";
+
             // Start
             ShowSplash();
             ShowCredits();
@@ -116,7 +118,7 @@ namespace Crimson.CSharp.Core
             };
             var consoleTarget = new NLog.Targets.ConsoleTarget("CrimsonConsoleLogTarget")
             {
-                Layout = "${level:uppercase=true:padding=-5} | ${time} | ${threadname:whenEmpty=${threadid}:padding=-5} | ${logger} > ${message:withexception=true}"
+                Layout = "${level:uppercase=true:padding=-10} | ${time} | ${threadname:whenEmpty=${threadid}:padding=-5} | ${logger} > ${message:withexception=true}"
             };
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
@@ -129,6 +131,23 @@ namespace Crimson.CSharp.Core
             LOGGER.Trace("Testing trace level logging...");
             LOGGER.Fatal("Testing fatal level logging...");
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
+        }
+
+        public static void Panic (PanicCode code)
+        {
+            LOGGER!.Error("");
+            LOGGER.Error(" ### COMPILER PANIC!! ###");
+            LOGGER.Error("An error during compilation has caused the compiler to halt!");
+
+            int codeNum = (int) code;
+            LOGGER.Error($"Panic code: {codeNum}");
+
+            Environment.Exit((int) code);
+        }
+
+        public enum PanicCode
+        {
+            PARSE = -10
         }
     }
 }

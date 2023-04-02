@@ -39,7 +39,18 @@ namespace Crimson.CSharp.Core
              */
             LOGGER.Info("\n\n");
             LOGGER.Info(" P A R S I N G ");
-            Scope rootScope = await Library.LoadScopeAsync(Options.SourceUri); // Get the root unit (ie. main.crm)
+
+            Task<Scope> scopeTask = Library.StartLoadingScope(Options.SourceUri);
+            try
+            {
+                scopeTask.Wait();
+            }
+            catch (Exception ex)
+            {
+                LOGGER.Error(ex);
+                Crimson.Panic(Crimson.PanicCode.PARSE);
+            }
+            Scope rootScope = scopeTask.Result; // Get the root unit (ie. main.crm)
             Compilation compilation = new Compilation(rootScope, Options); // Generate dependency units (all resources are henceforth accessible)
 
 

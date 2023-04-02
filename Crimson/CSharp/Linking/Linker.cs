@@ -29,7 +29,7 @@ namespace Crimson.CSharp.Linking
             LOGGER.Info("Linking compilation " + compilation);
 
             // Iterate through each relevant unit
-            foreach (Scope scope in compilation.Library.Units.Values)
+            foreach (Scope scope in compilation.Library.GetScopes())
             {
                 LOGGER.Info("Linking " + scope);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
@@ -26,30 +27,53 @@ namespace Crimson.CSharp.Core
         /// [ C:/utils.crm => UTILS_UNIT ]
         /// [ C:/main.crm  => MAIN_UNIT  ]
         /// </summary>
-        public ConcurrentDictionary<Uri, Scope> Units { get; }
+        private ConcurrentDictionary<Uri, Task<Scope>> Scopes { get; }
 
         public Scope Root { get; set; }
 
         public Library ()
         {
-            Units = new ConcurrentDictionary<Uri, Scope>();
+            Scopes = new ConcurrentDictionary<Uri, Task<Scope>>();
         }
 
-        public Scope GetScope (Uri uri)
+
+        // ========== API ==========
+
+        public Scope? GetScope (Uri uri)
         {
-            if (Units.ContainsKey(uri))
+            if (Scopes.ContainsKey(uri))
             {
-                return Units[uri];
+                return GetScopeUnsafe(uri);
             }
             else
             {
                 Uri nativePath = SquashUri(uri);
-                if (Units.ContainsKey(nativePath))
+                if (Scopes.ContainsKey(nativePath))
                 {
-                    return Units[nativePath];
+                    return GetScopeUnsafe(nativePath);
                 }
             }
             return null;
+        }
+
+        public List<Scope> GetScopes ()
+        {
+            List<Scope> scopes = new List<Scope>();
+
+            foreach (var pair in Scopes)
+            {
+                Task<Scope> task = pair.Value;
+
+                if (!task.IsCompleted)
+                {
+                    LOGGER.Debug("Waiting for async loading to finish before returning scope list...");
+                    task.Wait();
+                }
+
+                scopes.Add(pair.Value.Result!);
+            }
+
+            return scopes;
         }
 
         public void SetRootScope (Scope scope)
@@ -62,34 +86,63 @@ namespace Crimson.CSharp.Core
             Root = scope;
         }
 
-        public Task<Scope> LoadScopeAsync (Uri uri)
+        public Task<Scope> StartLoadingScope (Uri uri)
         {
             // Safety check to prevent double loading
             // Immediately insert the key to reserve it
-            Scope existingScope = GetScope(uri);
+            Scope? existingScope = GetScope(uri);
             if (existingScope != null) return Task.FromResult(existingScope);
-            Units[uri] = null;
+            Scopes[uri] = null!;
 
             LOGGER.Info($"Loading scope from {uri}");
 
             // Generate task
-            return Task.Factory.StartNew(() =>
+            //return Task.Factory.StartNew(() => LoadScopeSync(uri));
+            Task<Scope> task = new Task<Scope>(() =>
             {
-                Stream source = GetStreamOf(uri);
-                StreamReader reader = new StreamReader(source);
-                string text = reader.ReadToEnd();
-
-                Scope scope = ParseScopeText(uri, text);
-
-                LoadScopeDependencies(scope);
-
-                if (Root == null)
-                {
-                    SetRootScope(scope);
-                }
-
-                return scope;
+                Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_c";
+                return LoadScopeSync(uri);
             });
+            task.Start();
+            return task;
+        }
+
+        public override string ToString ()
+        {
+            return $"Library(Units:[{String.Join(',', Scopes.Select(u => u.Key))}])";
+        }
+
+
+        // ========== INTERNALS ==========
+
+
+        private Scope GetScopeUnsafe (Uri uri)
+        {
+            Task<Scope> task = Scopes[uri];
+            if (!task.IsCompleted)
+            {
+                LOGGER.Debug($"Waiting for scope {uri} to finish loading...");
+                task.Wait();
+            }
+            return task.Result;
+        }
+
+        private Scope LoadScopeSync (Uri uri)
+        {
+            Stream source = GetStreamOf(uri);
+            StreamReader reader = new StreamReader(source);
+            string text = reader.ReadToEnd();
+
+            Scope scope = ParseScopeText(uri, text);
+
+            LoadScopeDependencies(scope);
+
+            if (Root == null)
+            {
+                SetRootScope(scope);
+            }
+
+            return scope;
         }
 
         /// <summary>
@@ -106,7 +159,7 @@ namespace Crimson.CSharp.Core
             // Queue loading of its dependencies (once it's loaded)
             foreach (var i in root.Imports)
             {
-                Task<Scope> scope = LoadScopeAsync(i.Value.URI);
+                Task<Scope> scope = StartLoadingScope(i.Value.URI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
 
                 ongoingLoadingTasks.Add(dependencyTask);
@@ -128,26 +181,35 @@ namespace Crimson.CSharp.Core
 
         private Scope ParseScopeText (Uri source, string textIn)
         {
-            LOGGER.Debug($"Parsing {textIn.Length} characters from {source} with ANTLR...");
+            try
+            {
+                LOGGER.Debug($"Parsing {textIn.Length} characters from {source} with ANTLR...");
 
-            // Get Antlr context
-            AntlrInputStream a4is = new AntlrInputStream(textIn);
-            CrimsonLexer lexer = new CrimsonLexer(a4is);
-            CommonTokenStream cts = new CommonTokenStream(lexer);
-            CrimsonParser parser = new CrimsonParser(cts);
+                // Get Antlr context
+                AntlrInputStream a4is = new AntlrInputStream(textIn);
+                CrimsonLexer lexer = new CrimsonLexer(a4is);
+                CommonTokenStream cts = new CommonTokenStream(lexer);
+                CrimsonParser parser = new CrimsonParser(cts);
 
-            string sourceName = $"{source}";
+                string sourceName = $"{source}";
 
-            lexer.AddErrorListener(new LexerErrorListener(sourceName));
-            parser.ErrorHandler = new ParserErrorStrategy(sourceName);
+                lexer.AddErrorListener(new LexerErrorListener(sourceName));
+                parser.ErrorHandler = new ParserErrorStrategy(sourceName);
 
-            CrimsonParser.ScopeContext cuCtx = parser.scope();
-            ScopeVisitor visitor = new ScopeVisitor();
-            Scope scope = visitor.VisitScope(cuCtx);
+                CrimsonParser.ScopeContext cuCtx = parser.scope();
+                ScopeVisitor visitor = new ScopeVisitor();
+                Scope scope = visitor.VisitScope(cuCtx);
 
-            scope.Uri = source;
+                scope.Uri = source;
 
-            return scope;
+                return scope;
+            }
+            catch (Exception ex)
+            {
+                LOGGER.Error("An error ocurred while parsing a scope");
+                Console.WriteLine("An error ocurred while parsing a scope");
+                throw new StatementParseException("A parser error occurred :( ", ex);
+            }
         }
 
         private Stream GetStreamOf (Uri uri)
@@ -181,11 +243,6 @@ namespace Crimson.CSharp.Core
             }
 
             return builder.Uri;
-        }
-
-        public override string ToString ()
-        {
-            return $"Library(Units:[{String.Join(',', Units.Select(u => u.Key))}])";
         }
     }
 }
