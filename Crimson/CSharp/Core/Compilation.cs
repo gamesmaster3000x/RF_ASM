@@ -23,9 +23,9 @@ namespace Crimson.CSharp.Core
         /// </summary>
         internal Library Library { get; }
 
-        public Compilation (Scope rootUnit, CrimsonOptions options)
+        public Compilation (Library library)
         {
-            Library = new Library();
+            Library = library;
         }
 
         public override string ToString ()
