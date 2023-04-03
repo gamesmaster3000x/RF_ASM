@@ -134,19 +134,24 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
         }
 
+        private static readonly object panicLock = new object();
         public static void Panic (CrimsonException reason)
         {
-            List<string> lines = new List<string>
+            // Prevent multi access (keep logs clean)
+            lock (panicLock)
             {
-                "",
-                " ### COMPILER PANIC!! ###"
-            };
-            lines.AddRange(reason.GetDetailedMessage());
-            lines.Add($"Panic code: {(int) reason.Code}");
+                List<string> lines = new List<string>
+                {
+                    "",
+                    " ### COMPILER PANIC!! ###"
+                };
+                lines.AddRange(reason.GetDetailedMessage());
+                lines.Add($"Panic code: {(int) reason.Code}");
 
-            lines.ForEach(line => LOGGER!.Error(line));
-            lines.ForEach(line => Console.Error.WriteLine(line));
-            Environment.Exit((int) reason.Code);
+                lines.ForEach(line => LOGGER!.Error(line));
+                lines.ForEach(line => Console.Error.WriteLine(line));
+                Environment.Exit((int) reason.Code);
+            }
         }
 
         public static void Panic (string message, PanicCode code, Exception e)
