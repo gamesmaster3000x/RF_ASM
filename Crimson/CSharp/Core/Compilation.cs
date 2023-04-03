@@ -43,7 +43,7 @@ namespace Crimson.CSharp.Core
             IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
             if (funcs.Count == 0)
             {
-                throw new FlatteningException($"No valid entry function found. Invalid contenders were: [{string.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Core.Crimson.Options.EntryFunctionName}' using Regex: '{pattern}'.");
+                throw new GeneralisingException($"No valid entry function found. Invalid contenders were: [{string.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Core.Crimson.Options.EntryFunctionName}' using Regex: '{pattern}'.");
             }
             else if (funcs.Count == 1)
             {
@@ -52,11 +52,11 @@ namespace Crimson.CSharp.Core
             }
             else if (funcs.Count > 1)
             {
-                throw new FlatteningException($"Cannot determine correct entry function. Found {funcs.Count} valid contenders: [{string.Join(',', funcs.Select(f => f.Name))}].");
+                throw new GeneralisingException($"Cannot determine correct entry function. Found {funcs.Count} valid contenders: [{string.Join(',', funcs.Select(f => f.Name))}].");
             }
             else
             {
-                throw new FlatteningException($"Congratulations, you've managed to find a very strange number of entry functions: {funcs.Count}");
+                throw new GeneralisingException($"Congratulations, you've managed to find a very strange number of entry functions: {funcs.Count}");
             }
         }
     }

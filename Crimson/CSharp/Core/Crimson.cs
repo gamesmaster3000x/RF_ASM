@@ -3,6 +3,7 @@ using Crimson.CSharp.Linking;
 using Crimson.CSharp.Specialising;
 using Crimson.CSharp.Specialising.RFASM;
 using Crimson.CSharp.Generalising;
+using Crimson.CSharp.Exceptions;
 
 namespace Crimson.CSharp.Core
 {
@@ -133,30 +134,45 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
         }
 
-        public static void Panic (PanicCode code, Exception e)
+        public static void Panic (CrimsonException reason)
         {
-            LOGGER.Error("");
-            LOGGER.Error(" ### COMPILER PANIC!! ###");
-
-            if (e != null)
+            List<string> lines = new List<string>
             {
-                LOGGER.Error(e);
+                "",
+                " ### COMPILER PANIC!! ###"
+            };
+            lines.AddRange(reason.GetDetailedMessage());
+            lines.Add($"Panic code: {(int) reason.Code}");
+
+            lines.ForEach(line => LOGGER!.Error(line));
+            lines.ForEach(line => Console.Error.WriteLine(line));
+            Environment.Exit((int) reason.Code);
+        }
+
+        public static void Panic (string message, PanicCode code, Exception e)
+        {
+            if (e is CrimsonException ce)
+            {
+                Panic(ce);
             }
             else
             {
-                LOGGER.Error("An error during compilation has caused the compiler to halt!");
+                ExceptionCrimsonException reason = new ExceptionCrimsonException(message, code, e);
+                Panic(reason);
             }
 
-            int codeNum = (int) code;
-            LOGGER.Error($"Panic code: {codeNum}");
-
+            // Exits before here
             Environment.Exit((int) code);
         }
 
         public enum PanicCode
         {
             OK = 0,
+
             PARSE = -100,
+            PARSE_STATEMENT = -110,
+            PARSE_SCOPE = -120,
+
             LINK = -200,
             GENERALISE = -300,
             SPECIALISE = -400,

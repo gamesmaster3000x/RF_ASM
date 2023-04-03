@@ -162,6 +162,7 @@ namespace Crimson.CSharp.Core
             // Queue loading of its dependencies (once it's loaded)
             foreach (var i in root.Imports)
             {
+                if (Scopes.ContainsKey(i.Value.URI)) continue;
                 Task<Scope> scope = LoadScopeAsync(i.Value.URI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
 
@@ -219,15 +220,24 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception ex)
             {
-                throw new StatementParseException($"An error ocurred while parsing a scope originating from {source}", ex);
+                Crimson.Panic($"An error ocurred while parsing a scope originating from {source}", Crimson.PanicCode.PARSE_SCOPE, ex);
+                Environment.Exit(1);
             }
         }
 
         private Stream GetStreamOf (Uri uri)
         {
-            uri = SquashUri(uri);
-            FileStream stream = new FileStream(uri.LocalPath, FileMode.Open);
-            return stream;
+            try
+            {
+                uri = SquashUri(uri);
+                FileStream stream = new FileStream(uri.LocalPath, FileMode.Open);
+                return stream;
+            }
+            catch (Exception e)
+            {
+                Crimson.Panic(Crimson.PanicCode.PARSE, e);
+                throw;
+            }
         }
 
         private Uri SquashUri (Uri uri)
@@ -237,7 +247,7 @@ namespace Crimson.CSharp.Core
             if (uri.Scheme != Uri.UriSchemeFile)
                 throw new UriFormatException($"Crimson only accepts URIs of the file:/// scheme at this time. Found: {uri.Scheme}");
 
-            // file:///crimson.native/heap.crm
+            // file:///native.crimson/heap.crm
             if (uri.Host.Equals(NATIVE_HOST))
             {
                 string localPath = Path.Combine(Crimson.Options.NativeUri.AbsolutePath, uri.AbsolutePath);
