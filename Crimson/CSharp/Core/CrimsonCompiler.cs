@@ -92,7 +92,8 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception e)
             {
-                Crimson.Panic(Crimson.PanicCode.PARSE, e);
+                Crimson.Panic("An uncaught exception occurred during the compilation process.", Crimson.PanicCode.PARSE, e);
+                throw;
             }
         }
 

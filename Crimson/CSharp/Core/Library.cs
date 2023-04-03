@@ -221,7 +221,7 @@ namespace Crimson.CSharp.Core
             catch (Exception ex)
             {
                 Crimson.Panic($"An error ocurred while parsing a scope originating from {source}", Crimson.PanicCode.PARSE_SCOPE, ex);
-                Environment.Exit(1);
+                throw;
             }
         }
 
@@ -235,7 +235,7 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception e)
             {
-                Crimson.Panic(Crimson.PanicCode.PARSE, e);
+                Crimson.Panic($"An error occurred getting the stream of the resource at the uri {uri}", Crimson.PanicCode.PARSE, e);
                 throw;
             }
         }
