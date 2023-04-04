@@ -36,7 +36,7 @@ namespace Crimson.CSharp.Core
                 args = new string[] {
                     $"-s {CombineAndFormatPath(resourcesPath, "Test Compilations/main.crm")}",
                     $"-t {CombineAndFormatPath(resourcesPath, "Test Compilations/result/main")}",
-                    $"-n {CombineAndFormatPath(resourcesPath, "Native Library")}",
+                    $"-n {CombineAndFormatPath(resourcesPath, "Native Library/")}",
                     "-w", "4",
                     "--rfasm"
                 };

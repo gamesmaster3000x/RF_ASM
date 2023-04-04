@@ -30,7 +30,7 @@ namespace Crimson.CSharp.Exceptions
         {
             List<string> strings = new List<string>();
             strings.Add($"An error occurred while parsing the statement {(Statement != null ? Statement : "NULL")}");
-            strings.AddRange(FormatException(Cause));
+            strings.AddRange(FormatException(Cause) ?? Enumerable.Empty<string>());
             return strings;
         }
     }

@@ -250,19 +250,23 @@ namespace Crimson.CSharp.Core
             // file:///native.crimson/heap.crm
             if (uri.Host.Equals(NATIVE_HOST))
             {
-                string localPath = Path.Combine(Crimson.Options.NativeUri.AbsolutePath, uri.AbsolutePath);
+                string localPath = $"{Crimson.Options.NativeUri.AbsolutePath}/{uri.AbsolutePath}";
                 builder.Host = "";
                 builder.Path = localPath;
             }
 
-            // file:///heap.crm
-            if (!Path.IsPathRooted(uri.AbsolutePath))
+            // file://root.crimson/heap.crm
+            if (uri.Host.Equals(ROOT_HOST))
             {
                 string? parentDirectory = Path.GetDirectoryName(Crimson.Options.SourceUri.AbsolutePath);
-                string localPath = Path.Combine(parentDirectory, uri.AbsolutePath);
+                string localPath = $"{parentDirectory}/{uri.AbsolutePath}";
+                builder.Host = "";
                 builder.Path = localPath;
             }
 
+
+
+            // file://C:/Crimson/Native%20Library/root.crimson/heap.crm or whatever
             return builder.Uri;
         }
     }
