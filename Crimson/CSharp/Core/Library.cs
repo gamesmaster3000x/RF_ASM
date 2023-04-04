@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Net;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Crimson.AntlrBuild;
@@ -64,6 +65,7 @@ namespace Crimson.CSharp.Core
             {
                 Task<Scope> task = pair.Value;
 
+                // TODO Key non-null, task null here
                 if (task.Status == TaskStatus.Created)
                     task.Start();
 
@@ -102,9 +104,33 @@ namespace Crimson.CSharp.Core
 
             LoadScopeDependencies(scope);
 
+            // Only runs once (for root)
             if (Root == null)
             {
                 SetRootScope(scope);
+
+                bool waiting;
+                do
+                {
+                    List<string> waitingList = new List<string>();
+                    foreach (var pair in Scopes)
+                    {
+                        if (pair.Value == null) waitingList.Add(pair.Key.ToString());
+                    }
+
+                    waiting = waitingList.Count > 0;
+
+                    if (waiting)
+                    {
+                        LOGGER.Info($"Waiting for: {String.Join(',', waitingList)}");
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        LOGGER.Info($"Finished loading root scope!");
+                    }
+
+                } while (waiting);
             }
 
             return scope;
@@ -162,7 +188,13 @@ namespace Crimson.CSharp.Core
             // Queue loading of its dependencies (once it's loaded)
             foreach (var i in root.Imports)
             {
-                if (Scopes.ContainsKey(i.Value.URI)) continue;
+                if (Scopes.ContainsKey(i.Value.URI))
+                {
+                    LOGGER.Debug($"Skipping duplicate loading of {i.Value.URI}");
+                    continue;
+                }
+                LOGGER.Debug($"Trying to load {i.Value.URI}");
+
                 Task<Scope> scope = await LoadScopeAsync(i.Value.URI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
 
@@ -179,7 +211,7 @@ namespace Crimson.CSharp.Core
             }
 
             // Wait for multithreading to finish before returning.
-            foreach (var task in ongoingLoadingTasks)
+            /*foreach (var task in ongoingLoadingTasks)
             {
                 try
                 {
@@ -189,7 +221,8 @@ namespace Crimson.CSharp.Core
                 {
                     throw;
                 }
-            }
+            }*/
+            LOGGER.Error(" ! NOT WAITING FOR DEPENDENCY LOADING TO FINISH ! ");
             LOGGER.Debug($"Finished loading dependencies of {root}");
         }
 
@@ -229,20 +262,28 @@ namespace Crimson.CSharp.Core
         {
             try
             {
-                uri = SquashUri(uri);
+                if (uri.Scheme == Uri.UriSchemeFile)
+                {
+                    return File.OpenRead(uri.LocalPath);
+                }
 
-                // New HTTP stuff
-                HttpClient client = new HttpClient();
-                var httpResponse = await client.GetAsync(uri);
-                return httpResponse.Content.ReadAsStream();
-                //
+                else if (uri.Scheme == Uri.UriSchemeHttp)
+                {
 
-                FileStream stream = new FileStream(uri.LocalPath, FileMode.Open);
-                return stream;
+                    // New HTTP stuff
+                    HttpClient client = new HttpClient();
+                    HttpResponseMessage httpResponse = await client.GetAsync(uri);
+                    return httpResponse.Content.ReadAsStream();
+                }
+
+                else
+                {
+                    throw new UriSchemeException(uri);
+                }
             }
             catch (Exception e)
             {
-                Crimson.Panic($"An error occurred getting the stream of the resource at the uri {uri}", Crimson.PanicCode.PARSE, e);
+                Crimson.Panic($"An error occurred getting the stream of the resource at the URI {uri}", Crimson.PanicCode.PARSE, e);
                 throw;
             }
         }

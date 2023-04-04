@@ -177,6 +177,7 @@ namespace Crimson.CSharp.Core
             PARSE = -100,
             PARSE_STATEMENT = -110,
             PARSE_SCOPE = -120,
+            PARSE_URI = -130,
 
             LINK = -200,
             GENERALISE = -300,

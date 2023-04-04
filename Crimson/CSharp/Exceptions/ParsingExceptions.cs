@@ -35,6 +35,26 @@ namespace Crimson.CSharp.Exceptions
         }
     }
 
+    internal class UriSchemeException : CrimsonException
+    {
+        public Uri URI { get; private set; }
+
+        public UriSchemeException (Uri uri) : base(Core.Crimson.PanicCode.PARSE_URI)
+        {
+            URI = uri;
+        }
+
+        public override IList<string> GetDetailedMessage ()
+        {
+            List<string> strings = new List<string>
+            {
+                $"The URI '{URI}' has a disallowed scheme: '{URI.Scheme}'.",
+                $"Only '{Uri.UriSchemeFile}' and '{Uri.UriSchemeHttp}' are allowed."
+            };
+            return strings;
+        }
+    }
+
     internal class CrimsonParserException : CrimsonException
     {
         public CrimsonParserException (string message) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
