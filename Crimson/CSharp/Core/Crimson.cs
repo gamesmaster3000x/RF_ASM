@@ -156,18 +156,62 @@ namespace Crimson.CSharp.Core
 
         public static void Panic (string message, PanicCode code, Exception e)
         {
-            if (e is CrimsonException ce)
+            lock (panicLock)
             {
-                Panic(ce);
-            }
-            else
-            {
-                ExceptionCrimsonException reason = new ExceptionCrimsonException(message, code, e);
-                Panic(reason);
+                CrimsonException? ce = e as CrimsonException;
+
+                List<string> lines = new List<string>
+                {
+                    $"",
+                    $"",
+                    $" >> COMPILER PANIC!!",
+                    $" >> {GetPanicRemark()}",
+                    $"",
+                    $" >> {message}",
+                    $"",
+                };
+                lines.AddRange(ce.GetDetailedMessage());
+                lines.Add($"Inner panic code: {(int) ce.Code}");
+                lines.Add($"Outer panic code: {(int) code}");
+
+                lines.ForEach(line => LOGGER!.Error($" ### {line}"));
+                lines.ForEach(line => Console.Error.WriteLine($" ### {line}"));
+                Environment.Exit((int) ce.Code);
             }
 
             // Exits before here
             Environment.Exit((int) code);
+        }
+
+        public static List<string> PanicRemarks { get; set; } = new List<string>
+        {
+            "Was that intentional?",
+            "I think you're enjoying this...",
+            "AAAAHHHAHHAHAHHGHG PANNNIIICCCC!!!",
+            "Everybody stay calm!",
+            "Is anyone here a doctor?",
+            "Nice one...",
+            "I need more coffee.",
+            "We're gonna need a bigger boat...",
+            "Don't worry, I'm a doctor!",
+            "You've got to be kidding me...",
+            "Again?",
+            "I thought you said we'd fixed this!",
+            "It's meant to do that, right?",
+            "Nerd.",
+            "Well this is awkward...",
+            "Hey, I'm compiler! What's your name?",
+            "Bonjour, mon ami!",
+            "Beep boop beep boop",
+            "*your computer catches fire*",
+            "It wasn't me, I swear!"
+        };
+
+        private static string GetPanicRemark ()
+        {
+            Random random = new Random();
+            int index = random.Next(PanicRemarks.Count);
+            return PanicRemarks[index];
         }
 
         public enum PanicCode

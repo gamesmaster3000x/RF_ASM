@@ -264,7 +264,8 @@ namespace Crimson.CSharp.Core
             {
                 if (uri.Scheme == Uri.UriSchemeFile)
                 {
-                    return File.OpenRead(uri.LocalPath);
+                    uri = SquashUri(uri);
+                    return File.OpenRead(uri.LocalPath); // TODO IO error here (path not found )
                 }
 
                 else if (uri.Scheme == Uri.UriSchemeHttp)

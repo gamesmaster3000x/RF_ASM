@@ -5,6 +5,7 @@ using Crimson.CSharp.Parsing.Statements;
 using Crimson.CSharp.Parsing.Tokens;
 using Crimson.CSharp.Parsing.Tokens.Values;
 using NLog;
+using System.Text.RegularExpressions;
 using static Crimson.CSharp.Parsing.Tokens.Comparator;
 
 namespace Crimson.CSharp.Parsing
@@ -16,6 +17,8 @@ namespace Crimson.CSharp.Parsing
         // ==================== VISITOR ====================
 
         public static readonly Stack<Scope> scopeStack = new Stack<Scope>();
+
+        private static readonly Regex URI_SCHEME_FIXER = new Regex(@"");
 
         public override Scope VisitScope ([NotNull] CrimsonParser.ScopeContext context)
         {
@@ -31,10 +34,18 @@ namespace Crimson.CSharp.Parsing
                     string originalUriText = importCtx.uri.Text;
                     string trimmedUriText = originalUriText.Trim(' ', '\t', '\n', '\v', '\f', '\r', '"');
                     if (!originalUriText.Equals(trimmedUriText, StringComparison.OrdinalIgnoreCase))
+                    {
                         LOGGER.Debug($"Trimmed URI {originalUriText} to {trimmedUriText}");
+                    }
                     Uri? uri;
                     if (!Uri.TryCreate(trimmedUriText, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out uri))
+                    {
                         throw new StatementParseException($"Unable to parse illegal URI '{importCtx.uri.Text}'");
+                    }
+                    if (String.IsNullOrWhiteSpace(uri.Host))
+                    {
+                        throw new UriSchemeException(uri);
+                    }
 
                     FullNameCToken id = VisitFullName(importCtx.fullName());
                     ImportCStatement import = new ImportCStatement(uri, id);
@@ -63,7 +74,8 @@ namespace Crimson.CSharp.Parsing
             }
             catch (Exception ex)
             {
-                throw new StatementParseException($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", ex);
+                Core.Crimson.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", Core.Crimson.PanicCode.PARSE_SCOPE, ex);
+                throw;
             }
         }
 
