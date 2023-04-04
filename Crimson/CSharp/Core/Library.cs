@@ -90,11 +90,11 @@ namespace Crimson.CSharp.Core
             Root = scope;
         }
 
-        public Scope LoadScope (Uri uri)
+        public async Task<Scope> LoadScope (Uri uri)
         {
             LOGGER.Info($"Loading scope from {uri}");
 
-            Stream source = GetStreamOf(uri);
+            Stream source = await GetStreamOf(uri);
             StreamReader reader = new StreamReader(source);
             string text = reader.ReadToEnd();
 
@@ -110,17 +110,17 @@ namespace Crimson.CSharp.Core
             return scope;
         }
 
-        private Task<Scope> LoadScopeAsync (Uri uri)
+        private async Task<Task<Scope>> LoadScopeAsync (Uri uri)
         {
             // Check if already loading/loaded and reserve key if not
             if (Scopes.ContainsKey(uri)) return Scopes[uri];
             Scopes[uri] = null!;
 
             // Generate task
-            Task<Scope> task = Task.Factory.StartNew(() =>
+            Task<Scope> task = await Task.Factory.StartNew(async () =>
             {
                 Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_{uri.ToString()}";
-                return LoadScope(uri);
+                return await LoadScope(uri);
             });
 
             // Assign correct non-null task to key
@@ -163,7 +163,7 @@ namespace Crimson.CSharp.Core
             foreach (var i in root.Imports)
             {
                 if (Scopes.ContainsKey(i.Value.URI)) continue;
-                Task<Scope> scope = LoadScopeAsync(i.Value.URI);
+                Task<Scope> scope = await LoadScopeAsync(i.Value.URI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
 
                 ongoingLoadingTasks.Add(dependencyTask);
@@ -225,11 +225,18 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private Stream GetStreamOf (Uri uri)
+        private async Task<Stream> GetStreamOf (Uri uri)
         {
             try
             {
                 uri = SquashUri(uri);
+
+                // New HTTP stuff
+                HttpClient client = new HttpClient();
+                var httpResponse = await client.GetAsync(uri);
+                return httpResponse.Content.ReadAsStream();
+                //
+
                 FileStream stream = new FileStream(uri.LocalPath, FileMode.Open);
                 return stream;
             }
@@ -263,8 +270,6 @@ namespace Crimson.CSharp.Core
                 builder.Host = "";
                 builder.Path = localPath;
             }
-
-
 
             // file://C:/Crimson/Native%20Library/root.crimson/heap.crm or whatever
             return builder.Uri;
