@@ -170,13 +170,16 @@ namespace Crimson.CSharp.Core
                     $" >> {message}",
                     $"",
                 };
-                lines.AddRange(ce.GetDetailedMessage());
-                lines.Add($"Inner panic code: {(int) ce.Code}");
-                lines.Add($"Outer panic code: {(int) code}");
+                if (ce != null)
+                {
+                    lines.AddRange(ce.GetDetailedMessage());
+                    lines.Add($"Inner panic code: {(int) ce.Code} ({Enum.GetName(ce.Code)})");
+                }
+                lines.Add($"Outer panic code: {(int) code} ({Enum.GetName(code)})");
 
                 lines.ForEach(line => LOGGER!.Error($" ### {line}"));
                 lines.ForEach(line => Console.Error.WriteLine($" ### {line}"));
-                Environment.Exit((int) ce.Code);
+                Environment.Exit((int) code);
             }
 
             // Exits before here
@@ -204,7 +207,9 @@ namespace Crimson.CSharp.Core
             "Bonjour, mon ami!",
             "Beep boop beep boop",
             "*your computer catches fire*",
-            "It wasn't me, I swear!"
+            "It wasn't me, I swear!",
+            "Hello there!",
+            "Ah General Kenobi, the Negotiator!"
         };
 
         private static string GetPanicRemark ()
@@ -216,7 +221,7 @@ namespace Crimson.CSharp.Core
 
         public enum PanicCode
         {
-            OK = 0,
+            OK_OR_NONE = 0,
 
             PARSE = -100,
             PARSE_STATEMENT = -110,
