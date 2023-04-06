@@ -20,6 +20,7 @@ namespace Crimson.CSharp.Core
 
         public static readonly string NATIVE_HOST = "native.crimson";
         public static readonly string ROOT_HOST = "root.crimson";
+        public static readonly string ABSOLUTE_HOST = "abs.crimson";
 
         /// <summary>
         /// The "master" list of units. Stored so that each unique unit is only created once.

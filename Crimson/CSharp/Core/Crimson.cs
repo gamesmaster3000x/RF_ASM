@@ -158,8 +158,6 @@ namespace Crimson.CSharp.Core
         {
             lock (panicLock)
             {
-                CrimsonException? ce = e as CrimsonException;
-
                 List<string> lines = new List<string>
                 {
                     $"",
@@ -170,10 +168,14 @@ namespace Crimson.CSharp.Core
                     $" >> {message}",
                     $"",
                 };
-                if (ce != null)
+                if (e is CrimsonException ce)
                 {
                     lines.AddRange(ce.GetDetailedMessage());
                     lines.Add($"Inner panic code: {(int) ce.Code} ({Enum.GetName(ce.Code)})");
+                }
+                else
+                {
+                    lines.AddRange(e.ToString().Split(Environment.NewLine));
                 }
                 lines.Add($"Outer panic code: {(int) code} ({Enum.GetName(code)})");
 
@@ -226,7 +228,8 @@ namespace Crimson.CSharp.Core
             PARSE = -100,
             PARSE_STATEMENT = -110,
             PARSE_SCOPE = -120,
-            PARSE_URI = -130,
+            PARSE_URI_SCHEME = -130,
+            PARSE_URI_HOST = -131,
 
             LINK = -200,
             GENERALISE = -300,

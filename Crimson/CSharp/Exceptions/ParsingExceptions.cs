@@ -1,4 +1,5 @@
-﻿using Crimson.CSharp.Parsing.Statements;
+﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Parsing.Statements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Crimson.CSharp.Exceptions
     {
         public Uri URI { get; private set; }
 
-        public UriSchemeException (Uri uri) : base(Core.Crimson.PanicCode.PARSE_URI)
+        public UriSchemeException (Uri uri) : base(Core.Crimson.PanicCode.PARSE_URI_SCHEME)
         {
             URI = uri;
         }
@@ -50,6 +51,26 @@ namespace Crimson.CSharp.Exceptions
             {
                 $"The URI '{URI}' has a disallowed scheme: '{URI.Scheme}'.",
                 $"Only '{Uri.UriSchemeFile}' and '{Uri.UriSchemeHttp}' are allowed."
+            };
+            return strings;
+        }
+    }
+
+    internal class UriHostException : CrimsonException
+    {
+        public Uri URI { get; private set; }
+
+        public UriHostException (Uri uri) : base(Core.Crimson.PanicCode.PARSE_URI_HOST)
+        {
+            URI = uri;
+        }
+
+        public override IList<string> GetDetailedMessage ()
+        {
+            List<string> strings = new List<string>
+            {
+                $"The URI '{URI}' has an illegal host: '{URI.Host}'.",
+                $"Only '{Library.ROOT_HOST}', '{Library.ABSOLUTE_HOST}' and '{Library.NATIVE_HOST}' are allowed."
             };
             return strings;
         }

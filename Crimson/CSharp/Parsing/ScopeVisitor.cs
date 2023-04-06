@@ -31,20 +31,11 @@ namespace Crimson.CSharp.Parsing
                 IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
                 foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
                 {
-                    string originalUriText = importCtx.uri.Text;
-                    string trimmedUriText = originalUriText.Trim(' ', '\t', '\n', '\v', '\f', '\r', '"');
-                    if (!originalUriText.Equals(trimmedUriText, StringComparison.OrdinalIgnoreCase))
-                    {
-                        LOGGER.Debug($"Trimmed URI {originalUriText} to {trimmedUriText}");
-                    }
+                    //TODO 
                     Uri? uri;
-                    if (!Uri.TryCreate(trimmedUriText, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out uri))
+                    if (!Uri.TryCreate(importCtx.uri.Text, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out uri))
                     {
                         throw new StatementParseException($"Unable to parse illegal URI '{importCtx.uri.Text}'");
-                    }
-                    if (String.IsNullOrWhiteSpace(uri.Host))
-                    {
-                        throw new UriSchemeException(uri);
                     }
 
                     FullNameCToken id = VisitFullName(importCtx.fullName());
