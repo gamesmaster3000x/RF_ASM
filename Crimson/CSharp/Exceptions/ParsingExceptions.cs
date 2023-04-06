@@ -10,28 +10,26 @@ namespace Crimson.CSharp.Exceptions
 {
     internal class StatementParseException : CrimsonException
     {
-        public AbstractCrimsonStatement Statement { get; private set; }
-        public Exception Cause { get; private set; }
+        public string Message { get; private set; }
+        public AbstractCrimsonStatement? Statement { get; private set; }
+        public Exception? Cause { get; private set; }
 
-        public StatementParseException (object message, object other) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
+        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
         {
-        }
-
-        public StatementParseException (object message) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
-        {
-        }
-
-        public StatementParseException (AbstractCrimsonStatement statement, Exception cause) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
-        {
+            Message = message;
             Statement = statement;
             Cause = cause;
         }
 
         public override IList<string> GetDetailedMessage ()
         {
-            List<string> strings = new List<string>();
-            strings.Add($"An error occurred while parsing the statement {(Statement != null ? Statement : "NULL")}");
-            strings.AddRange(FormatException(Cause) ?? Enumerable.Empty<string>());
+            List<string> strings = new List<string>()
+            {
+                $"An error occurred while parsing the statement {(Statement != null ? Statement : "NULL")}",
+                Message
+            };
+            IEnumerable<string>? formatted = FormatException(Cause);
+            strings.AddRange(formatted ?? Enumerable.Empty<string>());
             return strings;
         }
     }

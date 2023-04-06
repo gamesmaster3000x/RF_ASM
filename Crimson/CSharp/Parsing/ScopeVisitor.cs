@@ -31,15 +31,8 @@ namespace Crimson.CSharp.Parsing
                 IList<CrimsonParser.ImportUnitContext> importCtxs = context._imports;
                 foreach (CrimsonParser.ImportUnitContext importCtx in importCtxs)
                 {
-                    //TODO 
-                    Uri? uri;
-                    if (!Uri.TryCreate(importCtx.uri.Text, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out uri))
-                    {
-                        throw new StatementParseException($"Unable to parse illegal URI '{importCtx.uri.Text}'");
-                    }
-
                     FullNameCToken id = VisitFullName(importCtx.fullName());
-                    ImportCStatement import = new ImportCStatement(uri, id);
+                    ImportCStatement import = new ImportCStatement(importCtx.uri.Text, id);
                     scope.Imports.Add(id.ToString(), import);
                 }
 
@@ -130,7 +123,7 @@ namespace Crimson.CSharp.Parsing
             }
             else
             {
-                throw new StatementParseException("The given CrimsonParser.FunctionStatementContext " + stCtx + " is not of a permissable type");
+                throw new StatementParseException("The given CrimsonParser.FunctionStatementContext " + stCtx + " is not of a permissable type", null, null);
             }
         }
 
@@ -218,7 +211,7 @@ namespace Crimson.CSharp.Parsing
 
         public VariableAssignmentCStatement ParseAssignVariable ([NotNull] CrimsonParser.AssignVariableContext context)
         {
-            if (context == null) throw new StatementParseException("Illegal null CrimsonParser.AssignVariableContext");
+            if (context == null) throw new StatementParseException("Illegal null CrimsonParser.AssignVariableContext", null, null);
             if (context is CrimsonParser.AssignVariableDirectContext avdc)
             {
                 return VisitAssignVariableDirect(avdc);
@@ -229,7 +222,7 @@ namespace Crimson.CSharp.Parsing
             }
             else
             {
-                throw new StatementParseException("The given CrimsonParser.AssignVariableContext (" + context + ") is not of a permissable type");
+                throw new StatementParseException("The given CrimsonParser.AssignVariableContext (" + context + ") is not of a permissable type", null, null);
             }
         }
 

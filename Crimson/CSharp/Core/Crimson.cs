@@ -135,24 +135,6 @@ namespace Crimson.CSharp.Core
         }
 
         private static readonly object panicLock = new object();
-        public static void Panic (CrimsonException reason)
-        {
-            // Prevent multi access (keep logs clean)
-            lock (panicLock)
-            {
-                List<string> lines = new List<string>
-                {
-                    "",
-                    " ### COMPILER PANIC!! ###"
-                };
-                lines.AddRange(reason.GetDetailedMessage());
-                lines.Add($"Panic code: {(int) reason.Code}");
-
-                lines.ForEach(line => LOGGER!.Error(line));
-                lines.ForEach(line => Console.Error.WriteLine(line));
-                Environment.Exit((int) reason.Code);
-            }
-        }
 
         public static void Panic (string message, PanicCode code, Exception e)
         {
@@ -167,15 +149,24 @@ namespace Crimson.CSharp.Core
                     $"",
                     $" >> {message}",
                     $"",
+                    $"{(e != null ? e.GetType().Name : "<Null Exception>")}",
                 };
-                if (e is CrimsonException ce)
+                if (e != null)
                 {
-                    lines.AddRange(ce.GetDetailedMessage());
-                    lines.Add($"Inner panic code: {(int) ce.Code} ({Enum.GetName(ce.Code)})");
+                    if (e is CrimsonException ce)
+                    {
+                        lines.Add($"({typeof(CrimsonException).Name})");
+                        lines.AddRange(ce.GetDetailedMessage());
+                        lines.Add($"Inner panic code: {(int) ce.Code} ({Enum.GetName(ce.Code)})");
+                    }
+                    else
+                    {
+                        lines.AddRange(e.ToString().Split(Environment.NewLine));
+                    }
                 }
                 else
                 {
-                    lines.AddRange(e.ToString().Split(Environment.NewLine));
+                    lines.Add("Causing exception is null. No further exception information available.");
                 }
                 lines.Add($"Outer panic code: {(int) code} ({Enum.GetName(code)})");
 

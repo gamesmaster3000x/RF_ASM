@@ -124,7 +124,7 @@ namespace Crimson.CSharp.Parsing
                 if (acs == null) throw new ArgumentNullException($"Cannot pass null {typeof(AbsCrimSt)} for statement adding.");
                 if (string.IsNullOrWhiteSpace(typeNameForError)) throw new ArgumentNullException("Cannot pass null or whitespace type name for statement adding.");
 
-                if (dict.ContainsKey(acs.GetName().ToString())) throw new StatementParseException($"Duplicate {typeNameForError} '{acs.GetName()}' in statement '{statement}' in scope: {this}");
+                if (dict.ContainsKey(acs.GetName().ToString())) throw new StatementParseException($"Duplicate {typeNameForError} '{acs.GetName()}' in scope: {this}", statement, null);
                 string name = acs.GetName().ToString();
                 dict.Add(name, acs);
                 Delegates.Add(() => dict[name]);
