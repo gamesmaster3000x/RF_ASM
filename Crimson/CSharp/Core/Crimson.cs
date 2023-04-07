@@ -213,7 +213,25 @@ namespace Crimson.CSharp.Core
             $"{(DateTime.UtcNow - new DateTime(1970, 1, 1)).Days}th time's the charm!",
             "Why is it always raining in Denley Moor?",
             "Hop to it!",
-            "You'll get it next time!"
+            "You'll get it next time!",
+            "Oh no! I've thingemmyjigged my whatchamecallit!",
+            "Just blame it on a solar flare...",
+            "Congrats! You've found a new feature!",
+            "This is what we call an unscheduled rapid disassembly.",
+            "They'll be telling the stories for years...",
+            "You took me right into the danger zone!",
+            "Is it CO2 or foam for electrical fires?",
+            "Still a better error message than C.",
+            "I wonder if Python does this...",
+            "You ever heard the joke about the compiler which kept breaking?",
+            "Please star our GitHub repo :)",
+            "It all builds character...",
+            "*whistles nonchalantly*",
+            "I wouldn't worry about it.",
+            "It'll probably fix itself...",
+            "I gotta feeling that tonight's gonna be a good night...",
+            "Hello humans!",
+            "Please come back! The transistors miss you!"
         };
 
         private static string GetPanicRemark ()
