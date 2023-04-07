@@ -18,10 +18,6 @@ namespace Crimson.CSharp.Core
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public static readonly string NATIVE_HOST = "native.crimson";
-        public static readonly string ROOT_HOST = "root.crimson";
-        public static readonly string ABSOLUTE_HOST = "abs.crimson";
-
         /// <summary>
         /// The "master" list of units. Stored so that each unique unit is only created once.
         /// 
@@ -49,7 +45,7 @@ namespace Crimson.CSharp.Core
             }
             else
             {
-                Uri nativePath = SquashUri(uri);
+                Uri nativePath = URIs.StandardiseUri(uri);
                 if (Scopes.ContainsKey(nativePath))
                 {
                     return GetScopeUnsafe(nativePath);
@@ -182,7 +178,6 @@ namespace Crimson.CSharp.Core
         /// <param name="root"></param>
         private async void LoadScopeDependencies (Scope root)
         {
-            LOGGER.Info($"Loading dependencies of {root}");
             List<Task> ongoingLoadingTasks = new List<Task>();
 
             // Load each imported scope
@@ -210,21 +205,6 @@ namespace Crimson.CSharp.Core
                     LoadScopeDependencies(hasScope.GetScope());
                 }
             }
-
-            // Wait for multithreading to finish before returning.
-            /*foreach (var task in ongoingLoadingTasks)
-            {
-                try
-                {
-                    task.Wait();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }*/
-            LOGGER.Error(" ! NOT WAITING FOR DEPENDENCY LOADING TO FINISH ! ");
-            LOGGER.Debug($"Finished loading dependencies of {root}");
         }
 
         private Scope ParseScopeText (Uri source, string textIn)
@@ -265,17 +245,12 @@ namespace Crimson.CSharp.Core
             {
                 if (uri.Scheme == Uri.UriSchemeFile)
                 {
-                    uri = SquashUri(uri);
-                    return File.OpenRead(uri.LocalPath); // TODO IO error here (path not found )
+                    return StreamFile(uri);
                 }
 
                 else if (uri.Scheme == Uri.UriSchemeHttp)
                 {
-
-                    // New HTTP stuff
-                    HttpClient client = new HttpClient();
-                    HttpResponseMessage httpResponse = await client.GetAsync(uri);
-                    return httpResponse.Content.ReadAsStream();
+                    return await StreamHttp(uri);
                 }
 
                 else
@@ -285,37 +260,23 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception e)
             {
-                Crimson.Panic($"An error occurred getting the stream of the resource at the URI {uri}", Crimson.PanicCode.PARSE, e);
+                Crimson.Panic($"An error occurred obtaining a stream of the resource at the URI {uri}", Crimson.PanicCode.PARSE, e);
                 throw;
             }
         }
 
-        private Uri SquashUri (Uri uri)
+        private Stream StreamFile (Uri uri)
         {
-            UriBuilder builder = new UriBuilder(uri);
+            Uri standard = URIs.StandardiseUri(uri);
+            return File.OpenRead(standard.LocalPath); // TODO IO error here (path not found )
+        }
 
-            if (uri.Scheme != Uri.UriSchemeFile)
-                throw new UriFormatException($"Crimson only accepts URIs of the file:/// scheme at this time. Found: {uri.Scheme}");
-
-            // file:///native.crimson/heap.crm
-            if (uri.Host.Equals(NATIVE_HOST))
-            {
-                string localPath = $"{Crimson.Options.NativeUri.AbsolutePath}/{uri.AbsolutePath}";
-                builder.Host = "";
-                builder.Path = localPath;
-            }
-
-            // file://root.crimson/heap.crm
-            if (uri.Host.Equals(ROOT_HOST))
-            {
-                string? parentDirectory = Path.GetDirectoryName(Crimson.Options.SourceUri.AbsolutePath);
-                string localPath = $"{parentDirectory}/{uri.AbsolutePath}";
-                builder.Host = "";
-                builder.Path = localPath;
-            }
-
-            // file://C:/Crimson/Native%20Library/root.crimson/heap.crm or whatever
-            return builder.Uri;
+        private async Task<Stream> StreamHttp (Uri uri)
+        {
+            // New HTTP stuff
+            HttpClient client = new HttpClient();
+            HttpResponseMessage httpResponse = await client.GetAsync(uri);
+            return httpResponse.Content.ReadAsStream();
         }
     }
 }

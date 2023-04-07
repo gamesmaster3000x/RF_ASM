@@ -4,6 +4,7 @@ using Crimson.CSharp.Specialising;
 using Crimson.CSharp.Specialising.RFASM;
 using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Exceptions;
+using System.Globalization;
 
 namespace Crimson.CSharp.Core
 {
@@ -199,10 +200,20 @@ namespace Crimson.CSharp.Core
             "Hey, I'm compiler! What's your name?",
             "Bonjour, mon ami!",
             "Beep boop beep boop",
-            "*your computer catches fire*",
+            "Houston, we have a problem...",
             "It wasn't me, I swear!",
             "Hello there!",
-            "Ah General Kenobi, the Negotiator!"
+            "Well look what the CPU dragged in...",
+            "Fight fire with fire!",
+            "There's no need to make a fuss...",
+            "Disco inferno!",
+            "You new round here?",
+            "Why did we hire this guy again?",
+            "What am I paying you for!?",
+            $"{(DateTime.UtcNow - new DateTime(1970, 1, 1)).Days}th time's the charm!",
+            "Why is it always raining in Denley Moor?",
+            "Hop to it!",
+            "You'll get it next time!"
         };
 
         private static string GetPanicRemark ()

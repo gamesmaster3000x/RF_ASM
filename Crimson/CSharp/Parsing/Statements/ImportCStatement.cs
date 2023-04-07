@@ -11,7 +11,7 @@ namespace Crimson.CSharp.Parsing.Statements
         public Uri URI { get; set; }
         public FullNameCToken Alias { get; set; }
 
-        public ImportCStatement (string uri, FullNameCToken alias) : this(CreateUri(uri), alias)
+        public ImportCStatement (string uri, FullNameCToken alias) : this(URIs.CreateUri(uri), alias)
         {
         }
 
@@ -24,18 +24,6 @@ namespace Crimson.CSharp.Parsing.Statements
             Alias = alias;
         }
 
-        public static Uri CreateUri (string uriText)
-        {
-
-            //TODO 
-            Uri? uri;
-            if (!Uri.TryCreate(uriText, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out uri))
-            {
-                throw new UriFormatException($"Unable to parse illegal URI '{uriText}'");
-            }
-            throw new UriFormatException($"Unable to parse illegal URI '{uriText}'");
-        }
-
         public static void VerifyUri (Uri uri)
         {
             // Check host
@@ -43,9 +31,7 @@ namespace Crimson.CSharp.Parsing.Statements
             {
                 throw new UriHostException(uri);
             }
-            else if (
-                !new string[] { Library.ABSOLUTE_HOST, Library.NATIVE_HOST, Library.ROOT_HOST }.Contains(uri.Host)
-                )
+            else if (!URIs.CustomHosts.Contains(uri.Host))
             {
                 throw new UriHostException(uri);
             }

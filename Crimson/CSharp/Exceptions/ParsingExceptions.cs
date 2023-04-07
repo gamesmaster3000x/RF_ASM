@@ -67,8 +67,9 @@ namespace Crimson.CSharp.Exceptions
         {
             List<string> strings = new List<string>
             {
-                $"The URI '{URI}' has an illegal host: '{URI.Host}'.",
-                $"Only '{Library.ROOT_HOST}', '{Library.ABSOLUTE_HOST}' and '{Library.NATIVE_HOST}' are allowed."
+                $"The URI '{URI}' host '{URI.Host}' could not be resolved.",
+                $"Please check that the given host is permitted in the current context.",
+                $"Crimson's custom hosts are: {String.Join(',', URIs.CustomHosts)}"
             };
             return strings;
         }
