@@ -25,7 +25,8 @@ namespace Crimson.CSharp.Core
             {
                 throw new UriFormatException($"Unable to parse illegal URI '{trimmedText}' ({uriText})");
             }
-            return uri;
+
+            return StandardiseUri(uri);
         }
 
         /// <summary>
@@ -44,25 +45,41 @@ namespace Crimson.CSharp.Core
             throw new UriFormatException($"Crimson only accepts URIs of the file:/// scheme at this time. Found: {uri.Scheme}");
         }
 
+        /// <summary>
+        /// file://root.crimson/memory/heap.crm
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public static Uri StandardiseFileUri (Uri uri)
         {
             UriBuilder builder = new UriBuilder(uri);
 
-            // file:///native.crimson/heap.crm
-            if (uri.Host.Equals(NATIVE_HOST))
+            if (String.IsNullOrWhiteSpace(builder.Host))
             {
-                builder.Path = $"{Crimson.Options.NativeUri.AbsolutePath}/{uri.AbsolutePath}";
+                builder.Host = ABSOLUTE_HOST;
+            }
+
+            // file:///native.crimson/heap.crm
+            if (builder.Host.Equals(NATIVE_HOST))
+            {
+                builder.Path = $"{Crimson.Options.NativeUri.AbsolutePath}/{builder.Path}";
             }
 
             // file://root.crimson/heap.crm
-            if (uri.Host.Equals(ROOT_HOST))
+            if (builder.Host.Equals(ROOT_HOST))
             {
                 string? parentDirectory = Path.GetDirectoryName(Crimson.Options.SourceUri.AbsolutePath);
-                builder.Path = $"{parentDirectory}/{uri.AbsolutePath}";
+                builder.Path = $"{parentDirectory}/{builder.Path}";
             }
 
             return builder.Uri;
         }
+
+        /// <summary>
+        /// http://example.com/path/to/thing.crm
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public static Uri StandardiseHttpUri (Uri uri)
         {
             return uri;

@@ -69,7 +69,7 @@ namespace Crimson.CSharp.Exceptions
             {
                 $"The URI '{URI}' host '{URI.Host}' could not be resolved.",
                 $"Please check that the given host is permitted in the current context.",
-                $"Crimson's custom hosts are: {String.Join(',', URIs.CustomHosts)}"
+                $"Crimson's custom hosts are: {string.Join(',', URIs.CustomHosts)}"
             };
             return strings;
         }

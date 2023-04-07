@@ -244,19 +244,11 @@ namespace Crimson.CSharp.Core
             try
             {
                 if (uri.Scheme == Uri.UriSchemeFile)
-                {
                     return StreamFile(uri);
-                }
-
                 else if (uri.Scheme == Uri.UriSchemeHttp)
-                {
                     return await StreamHttp(uri);
-                }
 
-                else
-                {
-                    throw new UriSchemeException(uri);
-                }
+                throw new UriSchemeException(uri);
             }
             catch (Exception e)
             {
@@ -268,7 +260,8 @@ namespace Crimson.CSharp.Core
         private Stream StreamFile (Uri uri)
         {
             Uri standard = URIs.StandardiseUri(uri);
-            return File.OpenRead(standard.LocalPath); // TODO IO error here (path not found )
+            LOGGER.Info($"Standardised URI to {standard}");
+            return File.OpenRead(standard.LocalPath); // TODO IO error here (path not found)#
         }
 
         private async Task<Stream> StreamHttp (Uri uri)

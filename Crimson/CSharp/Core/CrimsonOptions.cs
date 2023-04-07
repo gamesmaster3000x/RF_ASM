@@ -14,7 +14,7 @@ namespace Crimson.CSharp.Core
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
             "If no file extension given, .crm will be assumed.")]
         public Uri SourceUri { get; private set; }
-        public void SetSourcePath (string path) => SourceUri = new Uri(path);
+        public void SetSourcePath (string path) => SourceUri = URIs.CreateUri(path);
         public void SetSourcePath (Uri uri) => SourceUri = uri;
 
 
@@ -22,7 +22,7 @@ namespace Crimson.CSharp.Core
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
             "If no file extension provided, will assume .crm.")]
         public Uri TargetUri { get; private set; }
-        public void SetTargetPath (string path) => TargetUri = new Uri(path);
+        public void SetTargetPath (string path) => TargetUri = URIs.CreateUri(path);
         public void SetTargetPath (Uri uri) => TargetUri = uri;
 
 
@@ -31,7 +31,7 @@ namespace Crimson.CSharp.Core
             "If not provided, will use a packaged version. " +
             "If provided, but a required file is not found, the file will be created from the packaged library.")]
         public Uri NativeUri { get; private set; }
-        public void SetNativePath (string path) => NativeUri = new Uri(path);
+        public void SetNativePath (string path) => NativeUri = URIs.CreateUri(path);
         public void SetNativePath (Uri uri) => NativeUri = uri;
 
 

@@ -20,7 +20,7 @@ namespace Crimson.CSharp.Parsing.Statements
             if (alias.HasLibrary()) throw new CrimsonParserException($"The alias {alias} cannot be given to the import '{uri}' because it must only contain a member name.");
             if (!alias.HasMember()) throw new CrimsonParserException($"The alias {alias} cannot be given to the import '{uri}' because it does not contain a member name.");
 
-            URI = uri;
+            URI = URIs.StandardiseUri(uri);
             Alias = alias;
         }
 
