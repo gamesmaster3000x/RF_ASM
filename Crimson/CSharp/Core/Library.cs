@@ -259,9 +259,12 @@ namespace Crimson.CSharp.Core
 
         private Stream StreamFile (Uri uri)
         {
+
             Uri standard = URIs.StandardiseUri(uri);
-            LOGGER.Info($"Standardised URI to {standard}");
-            return File.OpenRead(standard.LocalPath); // TODO IO error here (path not found)#
+            string path = URIs.GetAbsolutePath(standard);
+            LOGGER.Info($"Streaming file at URI {path}");
+
+            return File.OpenRead(path); // TODO IO error here (path not found)#
         }
 
         private async Task<Stream> StreamHttp (Uri uri)

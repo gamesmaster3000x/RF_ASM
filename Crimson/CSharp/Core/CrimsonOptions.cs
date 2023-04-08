@@ -13,26 +13,26 @@ namespace Crimson.CSharp.Core
         // Source
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
             "If no file extension given, .crm will be assumed.")]
-        public Uri SourceUri { get; private set; }
-        public void SetSourcePath (string path) => SourceUri = URIs.CreateUri(path);
-        public void SetSourcePath (Uri uri) => SourceUri = uri;
+        public URI SourceUri { get; private set; }
+        public void SetSourcePath (string path) => SourceUri = new URI(path);
+        public void SetSourcePath (URI uri) => SourceUri = uri;
 
 
         // Target
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
             "If no file extension provided, will assume .crm.")]
-        public Uri TargetUri { get; private set; }
-        public void SetTargetPath (string path) => TargetUri = URIs.CreateUri(path);
-        public void SetTargetPath (Uri uri) => TargetUri = uri;
+        public URI TargetUri { get; private set; }
+        public void SetTargetPath (string path) => TargetUri = new URI(path);
+        public void SetTargetPath (URI uri) => TargetUri = uri;
 
 
         // Native library
         [Option(longName: "native", shortName: 'n', Required = false, HelpText = "Path to the native Crimson library. " +
             "If not provided, will use a packaged version. " +
             "If provided, but a required file is not found, the file will be created from the packaged library.")]
-        public Uri NativeUri { get; private set; }
-        public void SetNativePath (string path) => NativeUri = URIs.CreateUri(path);
-        public void SetNativePath (Uri uri) => NativeUri = uri;
+        public URI NativeUri { get; private set; }
+        public void SetNativePath (string path) => NativeUri = new URI(path);
+        public void SetNativePath (URI uri) => NativeUri = uri;
 
 
         // Entry function

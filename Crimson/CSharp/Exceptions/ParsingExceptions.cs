@@ -48,7 +48,7 @@ namespace Crimson.CSharp.Exceptions
             List<string> strings = new List<string>
             {
                 $"The URI '{URI}' has a disallowed scheme: '{URI.Scheme}'.",
-                $"Only '{Uri.UriSchemeFile}' and '{Uri.UriSchemeHttp}' are allowed."
+                $"Only {String.Join(',', URIs.AcceptedSchemes)} are allowed."
             };
             return strings;
         }
