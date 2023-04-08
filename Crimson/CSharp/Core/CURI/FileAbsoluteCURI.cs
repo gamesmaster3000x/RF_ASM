@@ -12,39 +12,35 @@ namespace Crimson.CSharp.Core.CURI
     {
         public static readonly string SCHEME = "file";
 
+        public string AbsolutePath
+        {
+            get
+            {
+                string path = WebUtility.UrlDecode(Uri.AbsolutePath);
+                return path;
+            }
+        }
+
         public FileAbsoluteCURI (Uri uri) : base(uri)
         {
-            if (!Uri.UriSchemeHttp.Equals(uri.Scheme))
-            {
-                throw new UriFormatException("The");
-            }
+            if (!Uri.UriSchemeFile.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeFile}.");
         }
 
         public override bool Equals (AbstractCURI? other)
         {
-            throw new NotImplementedException();
+            return other?.Uri?.Equals(Uri) ?? false;
         }
 
         public override async Task<Stream> GetStream ()
         {
-            string trimmed = uri.AbsolutePath.TrimStart('/', '\\', '\n', '\t');
-            string uriPath = WebUtility.UrlDecode(trimmed);
-
-            // file://abs.crimson/C:/etc/thing.crm
-            // C://etc/thing.crm
-            if (ABSOLUTE_SCHEME.Equals(uri.Host))
-            {
-                return uriPath;
-            }
-
-            return File.OpenRead(path); // TODO IO error here (path not found)#
+            return await Task.Run(() => File.OpenRead(AbsolutePath));
         }
 
         public class Factory : ICURIFactory
         {
             public AbstractCURI Make (Uri uri)
             {
-
+                return new FileAbsoluteCURI(uri);
             }
         }
     }

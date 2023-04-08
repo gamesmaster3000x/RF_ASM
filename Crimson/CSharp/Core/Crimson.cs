@@ -49,9 +49,9 @@ namespace Crimson.CSharp.Core
             Options = CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).Value;
             if (Options == null) throw new NullReferenceException($"Unable to parse arguments {args}");
 
-            Console.WriteLine("  Option: SourceUri: " + Options.SourceUri);
-            Console.WriteLine("  Option: TargetUri: " + Options.TargetUri);
-            Console.WriteLine("  Option: NativeUri: " + Options.NativeUri);
+            Console.WriteLine("  Option: SourceUri: " + Options.SourceCURI);
+            Console.WriteLine("  Option: TargetUri: " + Options.TargetCURI);
+            Console.WriteLine("  Option: NativeUri: " + Options.NativeCURI);
             Console.WriteLine("  Option: DumpIntermediates: " + Options.DumpIntermediates);
             Console.WriteLine("  Option: DataWidth: " + Options.DataWidth);
             Console.WriteLine("  Option: (Platform) CrimsonBasic: " + Options.CrimsonBasic);

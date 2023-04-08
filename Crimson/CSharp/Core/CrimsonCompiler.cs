@@ -3,6 +3,7 @@ using Crimson.CSharp.Linking;
 using Crimson.CSharp.Parsing;
 using Crimson.CSharp.Specialising;
 using NLog;
+using System.Net;
 
 namespace Crimson.CSharp.Core
 {
@@ -41,7 +42,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" P A R S I N G ");
-                Scope rootScope = await Library.LoadScope(Options.SourceUri); // Get the root unit (ie. main.crm)
+                Scope rootScope = await Library.LoadScope(Options.SourceCURI); // Get the root unit (ie. main.crm)
                 Compilation compilation = new Compilation(Library); // Generate dependency units (all resources are henceforth accessible)
 
 
@@ -100,7 +101,8 @@ namespace Crimson.CSharp.Core
         {
             if (Options.DumpIntermediates)
             {
-                string basicTarget = Path.ChangeExtension(Options.TargetUri.AbsolutePath, specialisedProgram.GetExtension());
+                string target = WebUtility.UrlDecode(Options.TargetCURI.Uri.AbsolutePath);
+                string basicTarget = Path.ChangeExtension(target, specialisedProgram.GetExtension());
                 specialisedProgram.Write(basicTarget);
             }
             else
@@ -113,7 +115,8 @@ namespace Crimson.CSharp.Core
         {
             if (Options.DumpIntermediates)
             {
-                string basicTarget = Path.ChangeExtension(Options.TargetUri.AbsolutePath, ".gen");
+                string target = WebUtility.UrlDecode(Options.TargetCURI.Uri.AbsolutePath);
+                string basicTarget = Path.ChangeExtension(target, ".gen");
                 LOGGER.Info("Dumping generalised program to " + basicTarget);
 
                 List<string> lines = new List<string>();
@@ -122,7 +125,7 @@ namespace Crimson.CSharp.Core
                     lines.Add(s.ToString() ?? "(null)");
                 }
 
-                _ = Directory.CreateDirectory(Path.GetDirectoryName(Options.TargetUri.AbsolutePath)!);
+                _ = Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                 File.WriteAllLines(basicTarget, lines.ToArray());
                 LOGGER.Info("Written!");
             }

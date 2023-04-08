@@ -17,7 +17,7 @@ namespace Crimson.CSharp.Parsing
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public Scope? Parent { get; set; }
-        public AbstractCURI? Uri { get; set; }
+        public AbstractCURI? CURI { get; set; }
 
         private string _name;
         public string Name
@@ -38,7 +38,7 @@ namespace Crimson.CSharp.Parsing
         private Scope (string name, Scope? parent, AbstractCURI? path)
         {
             Parent = null;
-            Uri = path;
+            CURI = path;
             Name = name;
 
             Delegates = new List<StatementDelegate>();
@@ -66,8 +66,8 @@ namespace Crimson.CSharp.Parsing
 
         public AbstractCURI GetPath ()
         {
-            if (Uri.IsWellFormedUriString(Uri.ToString(), UriKind.Absolute))
-                return Uri;
+            if (CURI != null)
+                return CURI;
 
             if (HasParent())
                 return GetParent().GetPath();
@@ -173,7 +173,7 @@ namespace Crimson.CSharp.Parsing
                  * For example:
                  *  '#using "utils.crm" as u' may result in 'C:/utils.crm'
                  */
-                Uri relativePath = importPair.Value.URI;
+                AbstractCURI relativePath = importPair.Value.CURI;
 
                 /*
                  * 

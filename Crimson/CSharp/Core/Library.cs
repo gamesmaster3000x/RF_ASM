@@ -175,14 +175,14 @@ namespace Crimson.CSharp.Core
             // Queue loading of its dependencies (once it's loaded)
             foreach (var i in root.Imports)
             {
-                if (Scopes.ContainsKey(i.Value.URI))
+                if (Scopes.ContainsKey(i.Value.CURI))
                 {
-                    LOGGER.Debug($"Skipping duplicate loading of {i.Value.URI}");
+                    LOGGER.Debug($"Skipping duplicate loading of {i.Value.CURI}");
                     continue;
                 }
-                LOGGER.Debug($"Trying to load {i.Value.URI}");
+                LOGGER.Debug($"Trying to load {i.Value.CURI}");
 
-                Task<Scope> scope = await LoadScopeAsync(i.Value.URI);
+                Task<Scope> scope = await LoadScopeAsync(i.Value.CURI);
                 Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
 
                 ongoingLoadingTasks.Add(dependencyTask);
@@ -219,7 +219,7 @@ namespace Crimson.CSharp.Core
                 ScopeVisitor visitor = new ScopeVisitor();
                 Scope scope = visitor.VisitScope(cuCtx);
 
-                scope.Uri = source;
+                scope.CURI = source;
 
                 return scope;
             }

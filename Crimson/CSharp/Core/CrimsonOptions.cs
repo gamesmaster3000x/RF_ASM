@@ -14,26 +14,26 @@ namespace Crimson.CSharp.Core
         // Source
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
             "If no file extension given, .crm will be assumed.")]
-        public AbstractCURI SourceUri { get; private set; }
-        public void SetSourcePath (string path) => SourceUri = AbstractCURI.Create(path);
-        public void SetSourcePath (AbstractCURI uri) => SourceUri = uri;
+        public AbstractCURI SourceCURI { get; private set; }
+        public void SetSourcePath (string path) => SourceCURI = AbstractCURI.Create(path);
+        public void SetSourcePath (AbstractCURI uri) => SourceCURI = uri;
 
 
         // Target
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
             "If no file extension provided, will assume .crm.")]
-        public AbstractCURI TargetUri { get; private set; }
-        public void SetTargetPath (string path) => TargetUri = AbstractCURI.Create(path);
-        public void SetTargetPath (AbstractCURI uri) => TargetUri = uri;
+        public AbstractCURI TargetCURI { get; private set; }
+        public void SetTargetPath (string path) => TargetCURI = AbstractCURI.Create(path);
+        public void SetTargetPath (AbstractCURI uri) => TargetCURI = uri;
 
 
         // Native library
         [Option(longName: "native", shortName: 'n', Required = false, HelpText = "Path to the native Crimson library. " +
             "If not provided, will use a packaged version. " +
             "If provided, but a required file is not found, the file will be created from the packaged library.")]
-        public AbstractCURI NativeUri { get; private set; }
-        public void SetNativePath (string path) => NativeUri = AbstractCURI.Create(path);
-        public void SetNativePath (AbstractCURI uri) => NativeUri = uri;
+        public AbstractCURI NativeCURI { get; private set; }
+        public void SetNativePath (string path) => NativeCURI = AbstractCURI.Create(path);
+        public void SetNativePath (AbstractCURI uri) => NativeCURI = uri;
 
 
         // Entry function

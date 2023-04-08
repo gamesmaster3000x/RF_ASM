@@ -18,31 +18,45 @@ namespace Crimson.CSharp.Core.CURI
     ///     does in the background (i.e. custom "root.crimson" and "native.crimson" hosts).
     /// </para>
     /// </summary>
-    public abstract class NativeCURI : AbstractCURI
+    public class NativeCURI : AbstractCURI
     {
 
         public static readonly string SCHEME = "native";
 
+        public string AbsolutePath
+        {
+            get
+            {
+                string native = WebUtility.UrlDecode(Crimson.Options.NativeCURI.Uri.AbsolutePath);
+
+                string abs = WebUtility.UrlDecode(Uri.AbsolutePath);
+
+                string path = Path.Combine(native, abs);
+                return path;
+            }
+        }
+
         public NativeCURI (Uri uri) : base(uri)
         {
-            if (!Uri.UriSchemeHttp.Equals(uri.Scheme))
-            {
-                throw new UriFormatException("The");
-            }
+            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}.");
+            if (Path.IsPathRooted(AbsolutePath)) throw new UriFormatException($"The path of a URI with host {SCHEME} may not be rooted.");
+        }
+
+        public override bool Equals (AbstractCURI? other)
+        {
+            return other?.Uri?.Equals(Uri) ?? false;
         }
 
         public override async Task<Stream> GetStream ()
         {
-            if (Path.IsPathRooted(uriPath)) throw new UriFormatException($"The path of a URI with host {NATIVE_SCHEME} may not be rooted.");
-            string native = WebUtility.UrlDecode(Crimson.Options.NativeUri.AbsolutePath);
-            return Path.Combine(native, uriPath);
+            return await Task.Run(() => File.OpenRead(AbsolutePath));
         }
 
         public class Factory : ICURIFactory
         {
             public AbstractCURI Make (Uri uri)
             {
-                return null;
+                return new NativeCURI(uri);
             }
         }
     }

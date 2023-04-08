@@ -38,7 +38,7 @@ namespace Crimson.CSharp.Exceptions
     internal class CURIException : CrimsonException
     {
         public override string Message { get; }
-        public AbstractCURI? CURI { get; private set; }
+        public AbstractCURI CURI { get; private set; }
         public CURIExceptionReason Reason { get; private set; }
 
         public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(Core.Crimson.PanicCode.CURI)
@@ -58,7 +58,7 @@ namespace Crimson.CSharp.Exceptions
 
             string extra = Reason switch
             {
-                CURIExceptionReason.SCHEME => $"Scheme: {CURI.Scheme}.",
+                CURIExceptionReason.SCHEME => $"Scheme: {CURI.Uri.Scheme}.",
                 CURIExceptionReason.HOST => $"Host: {CURI.Uri.Host}.",
                 CURIExceptionReason.PATH => $"Path: {CURI.Uri.AbsolutePath}.",
                 _ => $"No extra information.",

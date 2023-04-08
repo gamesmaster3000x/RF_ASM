@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crimson.CSharp.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,12 @@ namespace Crimson.CSharp.Core.CURI
 
         public HttpCURI (Uri uri) : base(uri)
         {
-            if (!Uri.UriSchemeHttp.Equals(uri.Scheme))
-            {
-                throw new UriFormatException("The");
-            }
+            if (!Uri.UriSchemeFile.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeHttp}.");
+        }
+
+        public override bool Equals (AbstractCURI? other)
+        {
+            return other?.Uri?.Equals(Uri) ?? false;
         }
 
         public override async Task<Stream> GetStream ()
@@ -30,7 +33,7 @@ namespace Crimson.CSharp.Core.CURI
         {
             public AbstractCURI Make (Uri uri)
             {
-                return null;
+                return new HttpCURI(uri);
             }
         }
     }

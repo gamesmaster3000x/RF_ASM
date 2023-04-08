@@ -18,30 +18,47 @@ namespace Crimson.CSharp.Core.CURI
     ///     does in the background (i.e. custom "root.crimson" and "native.crimson" hosts).
     /// </para>
     /// </summary>
-    public abstract class RelativeCURI : AbstractCURI
+    public class RelativeCURI : AbstractCURI
     {
         public static readonly string SCHEME = "relative";
+
+        public string AbsolutePath
+        {
+            get
+            {
+                string source = WebUtility.UrlDecode(Crimson.Options.NativeCURI.Uri.AbsolutePath);
+                string? dir = Path.GetDirectoryName(source);
+
+                string uri = WebUtility.UrlDecode(Uri.AbsolutePath);
+
+                string path = Path.Combine(dir!, uri);
+                return path;
+            }
+        }
+
+        public override bool Equals (AbstractCURI? other)
+        {
+            return other?.Uri?.Equals(Uri) ?? false;
+        }
+
         public RelativeCURI (Uri uri) : base(uri)
         {
-            if (!Uri.UriSchemeHttp.Equals(uri.Scheme))
-            {
-                throw new UriFormatException("The");
-            }
+            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}.");
+
+            string abs = WebUtility.UrlDecode(Uri.AbsolutePath);
+            if (Path.IsPathRooted(abs)) throw new UriFormatException($"The path of a {GetType()} may not be rooted.");
         }
 
         public override async Task<Stream> GetStream ()
         {
-            if (Path.IsPathRooted(uriPath)) throw new UriFormatException($"The path of a URI with host {RELATIVE_SCHEME} may not be rooted.");
-            string source = WebUtility.UrlDecode(Crimson.Options.SourceUri.AbsolutePath);
-            string dir = Path.GetDirectoryName(source)!;
-            return Path.Combine(dir, uriPath);
+            return await Task.Run(() => File.OpenRead(AbsolutePath));
         }
 
         public class Factory : ICURIFactory
         {
             public AbstractCURI Make (Uri uri)
             {
-                return null;
+                return new RelativeCURI(uri);
             }
         }
     }
