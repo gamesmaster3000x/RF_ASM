@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Crimson.AntlrBuild;
+using Crimson.CSharp.Core.CURI;
 using Crimson.CSharp.Exceptions;
 using Crimson.CSharp.Parsing;
 using NLog;
@@ -25,33 +26,21 @@ namespace Crimson.CSharp.Core
         /// [ C:/utils.crm => UTILS_UNIT ]
         /// [ C:/main.crm  => MAIN_UNIT  ]
         /// </summary>
-        private ConcurrentDictionary<Uri, Task<Scope>> Scopes { get; }
+        private ConcurrentDictionary<AbstractCURI, Task<Scope>> Scopes { get; }
 
         public Scope Root { get; set; }
 
         public Library ()
         {
-            Scopes = new ConcurrentDictionary<Uri, Task<Scope>>();
+            Scopes = new ConcurrentDictionary<AbstractCURI, Task<Scope>>();
         }
 
 
         // ========== API ==========
 
-        public Scope? GetScope (Uri uri)
+        public Scope? GetScope (AbstractCURI curi)
         {
-            if (Scopes.ContainsKey(uri))
-            {
-                return GetScopeUnsafe(uri);
-            }
-            else
-            {
-                Uri nativePath = URIs.StandardiseUri(uri);
-                if (Scopes.ContainsKey(nativePath))
-                {
-                    return GetScopeUnsafe(nativePath);
-                }
-            }
-            return null;
+            return GetScopeUnsafe(curi);
         }
 
         public List<Scope> GetScopes ()
@@ -89,7 +78,7 @@ namespace Crimson.CSharp.Core
             Root = scope;
         }
 
-        public async Task<Scope> LoadScope (Uri uri)
+        public async Task<Scope> LoadScope (AbstractCURI uri)
         {
             LOGGER.Info($"Loading scope from {uri}");
 
@@ -133,7 +122,7 @@ namespace Crimson.CSharp.Core
             return scope;
         }
 
-        private async Task<Task<Scope>> LoadScopeAsync (Uri uri)
+        private async Task<Task<Scope>> LoadScopeAsync (AbstractCURI uri)
         {
             // Check if already loading/loaded and reserve key if not
             if (Scopes.ContainsKey(uri)) return Scopes[uri];
@@ -160,14 +149,16 @@ namespace Crimson.CSharp.Core
         // ========== INTERNALS ==========
 
 
-        private Scope GetScopeUnsafe (Uri uri)
+        private Scope GetScopeUnsafe (AbstractCURI uri)
         {
-            Task<Scope> task = Scopes[uri];
+            if (!Scopes.TryGetValue(uri, out Task<Scope>? task))
+                throw new ArgumentNullException("UNSAFE NULL");
             if (!task.IsCompleted)
             {
                 LOGGER.Debug($"Waiting for scope {uri} to finish loading...");
                 task.Wait();
             }
+
             return task.Result;
         }
 
@@ -207,7 +198,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private Scope ParseScopeText (Uri source, string textIn)
+        private Scope ParseScopeText (AbstractCURI source, string textIn)
         {
             try
             {
@@ -239,40 +230,17 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private async Task<Stream> GetStreamOf (Uri uri)
+        private async Task<Stream> GetStreamOf (AbstractCURI uri)
         {
             try
             {
-                if (uri.Scheme == Uri.UriSchemeFile)
-                    return StreamFile(uri);
-                else if (uri.Scheme == Uri.UriSchemeHttp)
-                    return await StreamHttp(uri);
-
-                throw new UriSchemeException(uri);
+                return await uri.GetStream();
             }
             catch (Exception e)
             {
                 Crimson.Panic($"An error occurred obtaining a stream of the resource at the URI {uri}", Crimson.PanicCode.PARSE, e);
                 throw;
             }
-        }
-
-        private Stream StreamFile (Uri uri)
-        {
-
-            Uri standard = URIs.StandardiseUri(uri);
-            string path = URIs.GetAbsolutePath(standard);
-            LOGGER.Info($"Streaming file at URI {path}");
-
-            return File.OpenRead(path); // TODO IO error here (path not found)#
-        }
-
-        private async Task<Stream> StreamHttp (Uri uri)
-        {
-            // New HTTP stuff
-            HttpClient client = new HttpClient();
-            HttpResponseMessage httpResponse = await client.GetAsync(uri);
-            return httpResponse.Content.ReadAsStream();
         }
     }
 }

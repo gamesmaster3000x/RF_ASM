@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Core.CURI;
 using Crimson.CSharp.Exceptions;
 using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Generalising.Structures;
@@ -16,7 +17,7 @@ namespace Crimson.CSharp.Parsing
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         public Scope? Parent { get; set; }
-        public Uri? Uri { get; set; }
+        public AbstractCURI? Uri { get; set; }
 
         private string _name;
         public string Name
@@ -32,9 +33,9 @@ namespace Crimson.CSharp.Parsing
 
         public Scope (string name, Scope? parent) : this(name, parent, null) { }
 
-        public Scope (string name, Uri? path) : this(name, null, path) { }
+        public Scope (string name, AbstractCURI? path) : this(name, null, path) { }
 
-        private Scope (string name, Scope? parent, Uri? path)
+        private Scope (string name, Scope? parent, AbstractCURI? path)
         {
             Parent = null;
             Uri = path;
@@ -63,7 +64,7 @@ namespace Crimson.CSharp.Parsing
             return parent;
         }
 
-        public Uri GetPath ()
+        public AbstractCURI GetPath ()
         {
             if (Uri.IsWellFormedUriString(Uri.ToString(), UriKind.Absolute))
                 return Uri;

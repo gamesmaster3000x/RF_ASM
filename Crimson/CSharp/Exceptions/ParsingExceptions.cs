@@ -1,4 +1,5 @@
 ﻿using Crimson.CSharp.Core;
+using Crimson.CSharp.Core.CURI;
 using Crimson.CSharp.Parsing.Statements;
 using System;
 using System.Collections.Generic;
@@ -34,44 +35,42 @@ namespace Crimson.CSharp.Exceptions
         }
     }
 
-    internal class UriSchemeException : CrimsonException
+    internal class CURIException : CrimsonException
     {
-        public Uri URI { get; private set; }
+        public override string Message { get; }
+        public AbstractCURI? CURI { get; private set; }
+        public CURIExceptionReason Reason { get; private set; }
 
-        public UriSchemeException (Uri uri) : base(Core.Crimson.PanicCode.PARSE_URI_SCHEME)
+        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(Core.Crimson.PanicCode.CURI)
         {
-            URI = uri;
+            Message = message;
+            CURI = uri;
+            Reason = reason;
         }
 
         public override IList<string> GetDetailedMessage ()
         {
             List<string> strings = new List<string>
             {
-                $"The URI '{URI}' has a disallowed scheme: '{URI.Scheme}'.",
-                $"Only {String.Join(',', URIs.AcceptedSchemes)} are allowed."
+                $"The Crimson URI '{CURI}' is invalid in the given context.",
+                Message
             };
-            return strings;
-        }
-    }
 
-    internal class UriHostException : CrimsonException
-    {
-        public Uri URI { get; private set; }
-
-        public UriHostException (Uri uri) : base(Core.Crimson.PanicCode.PARSE_URI_HOST)
-        {
-            URI = uri;
-        }
-
-        public override IList<string> GetDetailedMessage ()
-        {
-            List<string> strings = new List<string>
+            string extra = Reason switch
             {
-                $"The URI '{URI}' host '{URI.Host}' could not be resolved.",
-                $"Please check that the given host is permitted in the current context.",
-                $"Crimson's custom hosts are: {string.Join(',', URIs.CustomHosts)}"
+                CURIExceptionReason.SCHEME => $"Scheme: {CURI.Scheme}.",
+                CURIExceptionReason.HOST => $"Host: {CURI.Uri.Host}.",
+                CURIExceptionReason.PATH => $"Path: {CURI.Uri.AbsolutePath}.",
+                _ => $"No extra information.",
             };
+            strings.Add(extra);
+
             return strings;
+        }
+
+        public enum CURIExceptionReason
+        {
+            SCHEME, HOST, PATH
         }
     }
 

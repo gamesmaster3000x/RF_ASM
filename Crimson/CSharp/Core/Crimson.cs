@@ -248,13 +248,11 @@ namespace Crimson.CSharp.Core
             PARSE = -100,
             PARSE_STATEMENT = -110,
             PARSE_SCOPE = -120,
-            PARSE_URI_SCHEME = -130,
-            PARSE_URI_HOST = -131,
-            PARSE_URI_STREAM = -131,
 
             LINK = -200,
             GENERALISE = -300,
             SPECIALISE = -400,
+            CURI = -500,
         }
     }
 }
