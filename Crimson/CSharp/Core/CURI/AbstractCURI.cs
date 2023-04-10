@@ -34,7 +34,7 @@ namespace Crimson.CSharp.Core.CURI
         /// </para>
         /// </summary>
         /// <returns></returns>
-        public abstract Task<Stream> GetStream ();
+        public abstract Stream GetStream ();
 
         /// <summary>
         /// <para>
@@ -87,6 +87,11 @@ namespace Crimson.CSharp.Core.CURI
             }
 
             throw new UriFormatException($"No CURI factory is registered for URIs with scheme {uri.Host}: {uri}");
+        }
+
+        public override string ToString ()
+        {
+            return Uri.ToString();
         }
     }
 }

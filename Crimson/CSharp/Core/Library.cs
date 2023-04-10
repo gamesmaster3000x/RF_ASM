@@ -43,7 +43,7 @@ namespace Crimson.CSharp.Core
             return GetScopeUnsafe(curi);
         }
 
-        public List<Scope> GetScopes ()
+        public async Task<List<Scope>> GetScopes ()
         {
             List<Scope> scopes = new List<Scope>();
 
@@ -55,14 +55,15 @@ namespace Crimson.CSharp.Core
                 if (task.Status == TaskStatus.Created)
                     task.Start();
 
-                if (!task.IsCompleted)
+                try
                 {
-                    // TODO freezing here
-                    LOGGER.Debug("Waiting for async loading to finish before returning scope list...");
-                    task.Wait();
+                    scopes.Add(await task);
                 }
-
-                scopes.Add(pair.Value.Result!);
+                catch (Exception ex)
+                {
+                    Crimson.Panic("Unable to GetScopes", Crimson.PanicCode.PARSE, ex);
+                    throw;
+                }
             }
 
             return scopes;
@@ -78,62 +79,84 @@ namespace Crimson.CSharp.Core
             Root = scope;
         }
 
-        public async Task<Scope> LoadScope (AbstractCURI uri)
+        public Scope LoadScope (AbstractCURI uri)
         {
-            LOGGER.Info($"Loading scope from {uri}");
-
-            Stream source = await GetStreamOf(uri);
-            StreamReader reader = new StreamReader(source);
-            string text = reader.ReadToEnd();
-
-            Scope scope = ParseScopeText(uri, text);
-
-            LoadScopeDependencies(scope);
-
-            // Only runs once (for root)
-            if (Root == null)
+            try
             {
-                SetRootScope(scope);
+                LOGGER.Info($"Loading scope from {uri}");
 
-                bool waiting;
-                do
+                Stream source = uri.GetStream();
+                StreamReader reader = new StreamReader(source);
+                string text = reader.ReadToEnd();
+                source.Close();
+
+                Scope scope = ParseScopeText(uri, text);
+
+                LoadScopeDependencies(scope);
+
+                // Only runs once (for root)
+                if (Root == null)
                 {
-                    List<string> waitingList = new List<string>();
-                    foreach (var pair in Scopes)
-                    {
-                        if (pair.Value == null) waitingList.Add(pair.Key.ToString());
-                    }
+                    SetRootScope(scope);
 
-                    waiting = waitingList.Count > 0;
-
-                    if (waiting)
+                    // Wait for dependencies to load
+                    bool waiting;
+                    do
                     {
-                        LOGGER.Info($"Waiting for: {String.Join(',', waitingList)}");
-                        Thread.Sleep(1000);
-                    }
-                    else
-                    {
-                        LOGGER.Info($"Finished loading root scope!");
-                    }
+                        List<string> waitingList = new List<string>();
+                        foreach (var pair in Scopes)
+                        {
+                            if (pair.Value == null) waitingList.Add(pair.Key.ToString());
+                        }
 
-                } while (waiting);
+                        waiting = waitingList.Count > 0;
+
+                        if (waiting)
+                        {
+                            LOGGER.Info($"Waiting for: {String.Join(',', waitingList)}");
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                            LOGGER.Info($"Finished loading root scope!");
+                        }
+
+                    } while (waiting);
+                }
+
+                //
+                return scope;
             }
-
-            return scope;
+            catch (Exception ex)
+            {
+                Crimson.Panic($"Error loading scope from {uri}", Crimson.PanicCode.PARSE_SCOPE, ex);
+                throw;
+            }
         }
 
-        private async Task<Task<Scope>> LoadScopeAsync (AbstractCURI uri)
+        private Task<Scope> GetScopeLoadingTask (AbstractCURI uri)
         {
             // Check if already loading/loaded and reserve key if not
             if (Scopes.ContainsKey(uri)) return Scopes[uri];
             Scopes[uri] = null!;
 
-            // Generate task
-            Task<Scope> task = await Task.Factory.StartNew(async () =>
+            // Kept seperate for debugging purposes
+            Func<Task<Scope>?> func = async () =>
             {
-                Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_{uri.ToString()}";
-                return await LoadScope(uri);
-            });
+                try
+                {
+                    Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_{uri.ToString()}";
+                    return LoadScope(uri);
+                }
+                catch (Exception ex)
+                {
+                    Crimson.Panic($"An error occurred while async loading {uri}", Crimson.PanicCode.PARSE_SCOPE_ASYNC, ex);
+                    throw;
+                }
+            };
+
+            // Generate task
+            Task<Scope> task = Task.Run(func);
 
             // Assign correct non-null task to key
             Scopes[uri] = task;
@@ -152,7 +175,10 @@ namespace Crimson.CSharp.Core
         private Scope GetScopeUnsafe (AbstractCURI uri)
         {
             if (!Scopes.TryGetValue(uri, out Task<Scope>? task))
+            {
+                LOGGER.Error("UNSAFE NULL");
                 throw new ArgumentNullException("UNSAFE NULL");
+            }
             if (!task.IsCompleted)
             {
                 LOGGER.Debug($"Waiting for scope {uri} to finish loading...");
@@ -167,34 +193,42 @@ namespace Crimson.CSharp.Core
         /// Also checks for nested scopes and loads them as well!
         /// </summary>
         /// <param name="root"></param>
-        private async void LoadScopeDependencies (Scope root)
+        private void LoadScopeDependencies (Scope root)
         {
-            List<Task> ongoingLoadingTasks = new List<Task>();
-
-            // Load each imported scope
-            // Queue loading of its dependencies (once it's loaded)
-            foreach (var i in root.Imports)
+            try
             {
-                if (Scopes.ContainsKey(i.Value.CURI))
+                List<Task> ongoingLoadingTasks = new List<Task>();
+
+                // Load each imported scope
+                // Queue loading of its dependencies (once it's loaded)
+                foreach (var i in root.Imports)
                 {
-                    LOGGER.Debug($"Skipping duplicate loading of {i.Value.CURI}");
-                    continue;
+                    if (Scopes.ContainsKey(i.Value.CURI))
+                    {
+                        LOGGER.Debug($"Skipping duplicate loading of {i.Value.CURI}");
+                        continue;
+                    }
+                    LOGGER.Debug($"Trying to load {i.Value.CURI}");
+
+                    Task<Scope> scope = GetScopeLoadingTask(i.Value.CURI);
+                    Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
+
+                    ongoingLoadingTasks.Add(dependencyTask);
                 }
-                LOGGER.Debug($"Trying to load {i.Value.CURI}");
 
-                Task<Scope> scope = await LoadScopeAsync(i.Value.CURI);
-                Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));
-
-                ongoingLoadingTasks.Add(dependencyTask);
+                // Check for imports in nested scopes
+                foreach (var del in root.Delegates)
+                {
+                    if (del.Invoke() is IHasScope hasScope)
+                    {
+                        LoadScopeDependencies(hasScope.GetScope());
+                    }
+                }
             }
-
-            // Check for imports in nested scopes
-            foreach (var del in root.Delegates)
+            catch (Exception ex)
             {
-                if (del.Invoke() is IHasScope hasScope)
-                {
-                    LoadScopeDependencies(hasScope.GetScope());
-                }
+                Crimson.Panic($"Error loading scope dependencies for {root}", Crimson.PanicCode.PARSE_SCOPE_DEPS, ex);
+                throw;
             }
         }
 
@@ -203,42 +237,28 @@ namespace Crimson.CSharp.Core
             try
             {
                 LOGGER.Debug($"Parsing {textIn.Length} characters from {source} with ANTLR...");
+                string sourceName = $"{source}";
 
                 // Get Antlr context
                 AntlrInputStream a4is = new AntlrInputStream(textIn);
+
                 CrimsonLexer lexer = new CrimsonLexer(a4is);
+                lexer.AddErrorListener(new LexerErrorListener(sourceName));
+
                 CommonTokenStream cts = new CommonTokenStream(lexer);
                 CrimsonParser parser = new CrimsonParser(cts);
-
-                string sourceName = $"{source}";
-
-                lexer.AddErrorListener(new LexerErrorListener(sourceName));
-                parser.ErrorHandler = new ParserErrorStrategy(sourceName);
+                parser.AddErrorListener(new ParserErrorListener(sourceName));
 
                 CrimsonParser.ScopeContext cuCtx = parser.scope();
                 ScopeVisitor visitor = new ScopeVisitor();
+
                 Scope scope = visitor.VisitScope(cuCtx);
-
                 scope.CURI = source;
-
                 return scope;
             }
             catch (Exception ex)
             {
                 Crimson.Panic($"An error ocurred while parsing a scope originating from {source}", Crimson.PanicCode.PARSE_SCOPE, ex);
-                throw;
-            }
-        }
-
-        private async Task<Stream> GetStreamOf (AbstractCURI uri)
-        {
-            try
-            {
-                return await uri.GetStream();
-            }
-            catch (Exception e)
-            {
-                Crimson.Panic($"An error occurred obtaining a stream of the resource at the URI {uri}", Crimson.PanicCode.PARSE, e);
                 throw;
             }
         }

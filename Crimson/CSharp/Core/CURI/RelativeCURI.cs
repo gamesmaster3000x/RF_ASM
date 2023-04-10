@@ -49,9 +49,17 @@ namespace Crimson.CSharp.Core.CURI
             if (Path.IsPathRooted(abs)) throw new UriFormatException($"The path of a {GetType()} may not be rooted.");
         }
 
-        public override async Task<Stream> GetStream ()
+        public override Stream GetStream ()
         {
-            return await Task.Run(() => File.OpenRead(AbsolutePath));
+            try
+            {
+                return File.OpenRead(AbsolutePath);
+            }
+            catch (Exception ex)
+            {
+                Crimson.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", Crimson.PanicCode.CURI_STREAM, ex);
+                throw;
+            }
         }
 
         public class Factory : ICURIFactory

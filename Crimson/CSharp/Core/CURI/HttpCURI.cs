@@ -21,12 +21,21 @@ namespace Crimson.CSharp.Core.CURI
             return other?.Uri?.Equals(Uri) ?? false;
         }
 
-        public override async Task<Stream> GetStream ()
+        public override Stream GetStream ()
         {
-            // New HTTP stuff
-            HttpClient client = new HttpClient();
-            HttpResponseMessage httpResponse = await client.GetAsync(Uri);
-            return httpResponse.Content.ReadAsStream();
+            try
+            {
+                // New HTTP stuff
+                HttpClient client = new HttpClient();
+                Task<HttpResponseMessage> responseTask = client.GetAsync(Uri);
+                responseTask.Wait();
+                return responseTask.Result.Content.ReadAsStream();
+            }
+            catch (Exception ex)
+            {
+                Crimson.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", Crimson.PanicCode.CURI_STREAM, ex);
+                throw;
+            }
         }
 
         public class Factory : ICURIFactory

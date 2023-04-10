@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,37 +15,29 @@ namespace Crimson.CSharp.Core
         // Source
         [Option(longName: "source", shortName: 's', Required = true, HelpText = "Path to the root source file to translate. " +
             "If no file extension given, .crm will be assumed.")]
-        public AbstractCURI SourceCURI { get; private set; }
-        public void SetSourcePath (string path) => SourceCURI = AbstractCURI.Create(path);
-        public void SetSourcePath (AbstractCURI uri) => SourceCURI = uri;
+        public string? SourcePath { get; set; }
+        public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!); }
 
 
         // Target
         [Option(longName: "target", shortName: 't', Required = false, HelpText = "Path to the desired target location or output file. " +
             "If no file extension provided, will assume .crm.")]
-        public AbstractCURI TargetCURI { get; private set; }
-        public void SetTargetPath (string path) => TargetCURI = AbstractCURI.Create(path);
-        public void SetTargetPath (AbstractCURI uri) => TargetCURI = uri;
+        public string? TargetPath { get; set; }
+        public AbstractCURI TargetCURI { get => AbstractCURI.Create(TargetPath!); }
 
 
         // Native library
         [Option(longName: "native", shortName: 'n', Required = false, HelpText = "Path to the native Crimson library. " +
             "If not provided, will use a packaged version. " +
             "If provided, but a required file is not found, the file will be created from the packaged library.")]
-        public AbstractCURI NativeCURI { get; private set; }
-        public void SetNativePath (string path) => NativeCURI = AbstractCURI.Create(path);
-        public void SetNativePath (AbstractCURI uri) => NativeCURI = uri;
+        public string? NativePath { get; set; }
+        public AbstractCURI NativeCURI { get => AbstractCURI.Create(NativePath!); }
 
 
         // Entry function
-        private string _entryFunctionName;
         [Option(longName: "entry", shortName: 'e', Required = false, HelpText = "The name of the function where execution should " +
             "start in the primary source file.", Default = "main")]
-        public string EntryFunctionName
-        {
-            get { return _entryFunctionName; }
-            set { _entryFunctionName = value; }
-        }
+        public string? EntryFunctionName { get; set; }
 
 
         // DumpIntermediates
@@ -55,11 +48,5 @@ namespace Crimson.CSharp.Core
         // DumpIntermediates
         [Option(longName: "datawidth", shortName: 'w', Required = true, HelpText = "The width of an integer, in bytes.")]
         public int DataWidth { get; set; }
-
-
-        // Targeted language
-        [Option(Group = "platform")] public bool CrimsonBasic { get; set; }
-        [Option(Group = "platform")] public bool RFASM { get; set; }
-
     }
 }

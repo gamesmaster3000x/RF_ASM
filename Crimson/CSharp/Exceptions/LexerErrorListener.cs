@@ -13,11 +13,9 @@ namespace Crimson.CSharp.Exceptions
             Name = name;
         }
 
-        void IAntlrErrorListener<int>.SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        public void SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            string message = $"Lexer error lexing {Name} @ line:{line} char:{charPositionInLine} msg:{msg}";
-            LOGGER.Error(message);
-            throw new LexerException(message, e);
+            Core.Crimson.Panic($"A lexer error has occurred lexing {Name}", Core.Crimson.PanicCode.PARSE, null!);
         }
     }
 }

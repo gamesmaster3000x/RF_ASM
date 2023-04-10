@@ -14,7 +14,7 @@ namespace Crimson.CSharp.Generalising
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public GeneralAssemblyProgram Generalise (Compilation compilation)
+        public async Task<GeneralAssemblyProgram> Generalise (Compilation compilation)
         {
             GeneralAssemblyProgram program = new GeneralAssemblyProgram();
 
@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Generalising
              * These have already been dynamically mapped (they know which singletons each call refers to).
              * During collection, these values are reassigned names (which are globally updated) to avoid name clashes.
              */
-            foreach (Scope scope in compilation.Library.GetScopes())
+            foreach (Scope scope in await compilation.Library.GetScopes())
             {
                 foreach (var f in scope.Functions)
                 {

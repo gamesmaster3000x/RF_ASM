@@ -38,8 +38,7 @@ namespace Crimson.CSharp.Core
                     $"-s {CombineAndFormatPath(resourcesPath, "Test Compilations/main.crm")}",
                     $"-t {CombineAndFormatPath(resourcesPath, "Test Compilations/result/main")}",
                     $"-n {CombineAndFormatPath(resourcesPath, "Native Library/")}",
-                    "-w", "4",
-                    "--rfasm"
+                    "-w", "4"
                 };
 
                 Console.WriteLine(String.Join(' ', args));
@@ -47,18 +46,19 @@ namespace Crimson.CSharp.Core
 
             Console.WriteLine("Parsing Crimson options");
             Options = CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).Value;
-            if (Options == null) throw new NullReferenceException($"Unable to parse arguments {args}");
+            if (Options == null) throw new NullReferenceException($"Unable to parse arguments {args}. See above message for details.");
 
             Console.WriteLine("  Option: SourceUri: " + Options.SourceCURI);
             Console.WriteLine("  Option: TargetUri: " + Options.TargetCURI);
             Console.WriteLine("  Option: NativeUri: " + Options.NativeCURI);
             Console.WriteLine("  Option: DumpIntermediates: " + Options.DumpIntermediates);
             Console.WriteLine("  Option: DataWidth: " + Options.DataWidth);
-            Console.WriteLine("  Option: (Platform) CrimsonBasic: " + Options.CrimsonBasic);
-            Console.WriteLine("  Option: (Platform) RFASM: " + Options.RFASM);
 
             //
             ConfigureNLog();
+
+            //
+            ConfigureMultithreading();
 
             // 
             Library generator = new Library();
@@ -133,6 +133,10 @@ namespace Crimson.CSharp.Core
             LOGGER.Trace("Testing trace level logging...");
             LOGGER.Fatal("Testing fatal level logging...");
             Console.WriteLine("Did you see the TRACE and FATAL test messages?");
+        }
+
+        private static void ConfigureMultithreading ()
+        {
         }
 
         private static readonly object panicLock = new object();
@@ -248,11 +252,15 @@ namespace Crimson.CSharp.Core
             PARSE = -100,
             PARSE_STATEMENT = -110,
             PARSE_SCOPE = -120,
+            PARSE_SCOPE_ASYNC = -121,
+            PARSE_SCOPE_DEPS = -122,
 
             LINK = -200,
             GENERALISE = -300,
             SPECIALISE = -400,
+
             CURI = -500,
+            CURI_STREAM = -510,
         }
     }
 }

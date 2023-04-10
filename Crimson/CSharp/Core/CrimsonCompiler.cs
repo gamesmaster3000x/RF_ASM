@@ -42,7 +42,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" P A R S I N G ");
-                Scope rootScope = await Library.LoadScope(Options.SourceCURI); // Get the root unit (ie. main.crm)
+                Scope rootScope = Library.LoadScope(Options.SourceCURI); // Get the root unit (ie. main.crm)
                 Compilation compilation = new Compilation(Library); // Generate dependency units (all resources are henceforth accessible)
 
 
@@ -54,7 +54,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" L I N K I N G ");
-                Linker.Link(compilation);
+                await Linker.Link(compilation);
 
 
                 /*
@@ -65,7 +65,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" G E N E R A L I S I N G ");
-                GeneralAssemblyProgram generalProgram = Generaliser.Generalise(compilation);
+                GeneralAssemblyProgram generalProgram = await Generaliser.Generalise(compilation);
 
 
                 LOGGER.Info("\n\n");
