@@ -19,6 +19,27 @@ namespace Crimson.CSharp.Core
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
+        private static int _loaderIdCounter = 0;
+        private static object _loaderLock = new object();
+        public static int LoaderId
+        {
+            get
+            {
+                lock (_loaderLock)
+                {
+                    return _loaderIdCounter;
+                }
+            }
+
+            set
+            {
+                lock (_loaderLock)
+                {
+                    _loaderIdCounter = value;
+                }
+            }
+        }
+
         /// <summary>
         /// The "master" list of units. Stored so that each unique unit is only created once.
         /// 
@@ -145,7 +166,9 @@ namespace Crimson.CSharp.Core
             {
                 try
                 {
-                    Thread.CurrentThread.Name = $"{Thread.CurrentThread.Name}_{uri.ToString()}";
+                    int id = LoaderId++;
+                    LOGGER.Info($"Delegating loading of {uri} to worker [{id}]");
+                    Thread.CurrentThread.Name = $"CrimsonScopeLoaderWorker[{id}]";
                     return LoadScope(uri);
                 }
                 catch (Exception ex)
@@ -201,6 +224,7 @@ namespace Crimson.CSharp.Core
 
                 // Load each imported scope
                 // Queue loading of its dependencies (once it's loaded)
+                LOGGER.Debug($"Dependencies for {root} are {String.Join(", ", root.Imports.Values.Select((i) => $"'{i.CURI}'"))}");
                 foreach (var i in root.Imports)
                 {
                     if (Scopes.ContainsKey(i.Value.CURI))
@@ -208,7 +232,6 @@ namespace Crimson.CSharp.Core
                         LOGGER.Debug($"Skipping duplicate loading of {i.Value.CURI}");
                         continue;
                     }
-                    LOGGER.Debug($"Trying to load {i.Value.CURI}");
 
                     Task<Scope> scope = GetScopeLoadingTask(i.Value.CURI);
                     Task dependencyTask = scope.ContinueWith(finishedTask => LoadScopeDependencies(finishedTask.Result));

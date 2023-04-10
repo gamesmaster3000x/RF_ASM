@@ -120,7 +120,7 @@ namespace Crimson.CSharp.Core
             };
             var consoleTarget = new NLog.Targets.ConsoleTarget("CrimsonConsoleLogTarget")
             {
-                Layout = "${level:uppercase=true:padding=-10} | ${time} | ${threadname:whenEmpty=${threadid}:padding=-5} | ${logger} > ${message:withexception=true}"
+                Layout = "${level:uppercase=true:padding=-5} | ${time} | ${threadname:whenEmpty=${threadid}:padding=-6} | ${logger} > ${message:withexception=true}"
             };
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
