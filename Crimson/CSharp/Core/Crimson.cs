@@ -1,84 +1,112 @@
 ﻿using NLog;
+using Crimson.CSharp.Core;
 using Crimson.CSharp.Linking;
 using Crimson.CSharp.Specialising;
 using Crimson.CSharp.Specialising.RFASM;
 using Crimson.CSharp.Generalising;
 using Crimson.CSharp.Exceptions;
 using System.Globalization;
+using CommandLine;
+using System.Reflection;
+using System.Runtime.Intrinsics.X86;
+using Antlr4.Runtime.Misc;
 
 namespace Crimson.CSharp.Core
 {
     internal class Crimson
     {
-
         private static Logger? LOGGER;
-        internal static readonly string VERSION = "v0.0";
-        public static CrimsonOptions Options { get; private set; }
-        public static CrimsonCompiler Compiler { get; private set; }
-
-        public const int ERROR_UNKNOWN = -100;
+        public static readonly string VERSION = "v0.0";
 
         public static int Main (string[] args)
         {
-            Thread.CurrentThread.Name = "main";
-
-            // Start
-            ShowSplash();
-            ShowCredits();
-
-            // Setup arguments
-            string CombineAndFormatPath (string a, string b) => Path.GetFullPath(Path.Combine(a, b));
-            bool useAutowiredArgs = true;
-            if (useAutowiredArgs)
-            {
-                Console.WriteLine("Using autowired (debug) program arguments");
-                string resourcesPath = "Resources/"; // Escape bin, Debug, and net6.0
-
-                args = new string[] {
-                    $"-s {CombineAndFormatPath(resourcesPath, "Test Compilations/main.crm")}",
-                    $"-t {CombineAndFormatPath(resourcesPath, "Test Compilations/result/main")}",
-                    $"-n {CombineAndFormatPath(resourcesPath, "Native Library/")}",
-                    "-w", "4"
-                };
-
-                Console.WriteLine(String.Join(' ', args));
-            }
-
-            Console.WriteLine("Parsing Crimson options");
-            Options = CommandLine.Parser.Default.ParseArguments<CrimsonOptions>(args).Value;
-            if (Options == null) throw new NullReferenceException($"Unable to parse arguments {args}. See above message for details.");
-
-            Console.WriteLine("  Option: SourceUri: " + Options.SourceCURI);
-            Console.WriteLine("  Option: TargetUri: " + Options.TargetCURI);
-            Console.WriteLine("  Option: NativeUri: " + Options.NativeCURI);
-            Console.WriteLine("  Option: DumpIntermediates: " + Options.DumpIntermediates);
-            Console.WriteLine("  Option: DataWidth: " + Options.DataWidth);
-
-            //
-            ConfigureNLog();
-
-            //
-            ConfigureMultithreading();
-
-            // 
-            Library generator = new Library();
-            Linker linker = new Linker(Options);
-            Generaliser generaliser = new Generaliser();
-            ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default to RFASM
-            Compiler = new CrimsonCompiler(Options, generator, linker, generaliser, specialiser);
-
             try
             {
-                Compiler.FullyCompileFromOptions();
+                Thread.CurrentThread.Name = "main";
+
+                // Start
+                ShowSplash();
+                ShowCredits();
+
+                // Setup arguments
+                bool useAutowiredArgs = true;
+                args = useAutowiredArgs ? GetTestArguments() : args;
+                Console.WriteLine(String.Join(' ', args));
+
+                //
+                ConfigureNLog();
+
+                //
+                ConfigureMultithreading();
+
+                LOGGER!.Info("Parsing input arguments!");
+                var verbs = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
+                var result = Parser.Default.ParseArguments<
+                        CrimsonOptions.Compile,
+                        CrimsonOptions.Clear,
+                        CrimsonOptions.Install,
+                        CrimsonOptions.Refresh
+                        >(args)
+                    .WithParsed<CrimsonOptions.Compile>(options => Compile(options))
+                    .WithParsed<CrimsonOptions.Install>(options => Install(options))
+                    .WithParsed<CrimsonOptions.Clear>(options => Clear(options))
+                    .WithParsed<CrimsonOptions.Refresh>(options => Refresh(options));
             }
-            catch (System.Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
-                LOGGER!.Error(e);
-                return ERROR_UNKNOWN;
+                Crimson.Panic("An uncaught error occurred during program execution.", PanicCode.ARGUMENTS, ex);
+                throw;
             }
             return 0;
         }
+
+
+        // ================= STARTUP =================
+
+        private static string[] GetTestArguments ()
+        {
+            Console.WriteLine("OVERRIDING INPUT ARGUMENTS FOR TESTING");
+
+            bool COMPILE = false;
+            if (COMPILE)
+            {
+                return new string[] {
+                    $"compile",
+                    $"-s Resources/Test Compilations/main.crm",
+                    $"-t Resources/Test Compilations/result/main",
+                    $"-n Resources/Native Library/",
+                    $"-w 4"
+                };
+            }
+
+            bool INSTALL = false;
+            if (INSTALL)
+            {
+                return new string[] {
+                    $"install"
+                };
+            }
+
+            bool CLEAR = false;
+            if (CLEAR)
+            {
+                return new string[] {
+                    $"clear"
+                };
+            }
+
+            bool REFRESH = true;
+            if (REFRESH)
+            {
+                return new string[] {
+                    $"refresh",
+                    $"-a"
+                };
+            }
+
+            return null!;
+        }
+
 
         private static void ShowSplash ()
         {
@@ -138,6 +166,87 @@ namespace Crimson.CSharp.Core
         private static void ConfigureMultithreading ()
         {
         }
+
+        //
+
+        public static FileInfo GetRoamingFile (string path)
+        {
+            string roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string relative = $"Crimson/{path}";
+            string full = Path.Combine(roaming, relative);
+            return new FileInfo(full);
+        }
+
+
+        // ================= VERBS =================
+
+
+        private static void Compile (CrimsonOptions.Compile options)
+        {
+            try
+            {
+                Console.WriteLine("  Compile: SourceUri: " + options.SourceCURI);
+                Console.WriteLine("  Compile: TargetUri: " + options.TargetCURI);
+                Console.WriteLine("  Compile: NativeUri: " + options.NativeCURI);
+                Console.WriteLine("  Compile: DumpIntermediates: " + options.DumpIntermediates);
+                Console.WriteLine("  Compile: DataWidth: " + options.DataWidth);
+
+                Library generator = new Library();
+                Linker linker = new Linker();
+                Generaliser generaliser = new Generaliser();
+                ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default specialiser to RFASM
+
+                Compiler.Compile(options, generator, linker, generaliser, specialiser);
+            }
+            catch (Exception ex)
+            {
+                Crimson.Panic("Error executing verb 'compile'.", PanicCode.COMPILE, ex);
+                throw;
+            }
+        }
+
+        private static void Install (CrimsonOptions.Install options)
+        {
+            try
+            {
+                Cache.Install(options.SourceCURI, options.ForceRefreshCache);
+            }
+            catch (Exception ex)
+            {
+                Crimson.Panic("Error executing verb 'install'.", PanicCode.CACHE_INSTALL, ex);
+                throw;
+            }
+        }
+
+        private static void Clear (CrimsonOptions.Clear options)
+        {
+            try
+            {
+                Cache.Clear(options.ClearMode);
+            }
+            catch (Exception ex)
+            {
+                Crimson.Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
+                throw;
+            }
+        }
+
+        private static void Refresh (CrimsonOptions.Refresh options)
+        {
+            try
+            {
+                Cache.Refresh(options.SourceCURI, options.All);
+            }
+            catch (Exception ex)
+            {
+                Crimson.Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
+                throw;
+            }
+        }
+
+
+        // ================= PANIC =================
+
 
         private static readonly object panicLock = new object();
 
@@ -248,19 +357,30 @@ namespace Crimson.CSharp.Core
         public enum PanicCode
         {
             OK_OR_NONE = 0,
+            ARGUMENTS = -10,
 
-            PARSE = -100,
-            PARSE_STATEMENT = -110,
-            PARSE_SCOPE = -120,
-            PARSE_SCOPE_ASYNC = -121,
-            PARSE_SCOPE_DEPS = -122,
+            // CURI
+            CURI = -100,
+            CURI_STREAM = -110,
 
-            LINK = -200,
-            GENERALISE = -300,
-            SPECIALISE = -400,
+            // Compile
+            COMPILE = -1000,
+            COMPILE_PARSE = -1100,
+            COMPILE_PARSE_STATEMENT = -1110,
+            COMPILE_PARSE_SCOPE = -1120,
+            COMPILE_PARSE_SCOPE_ASYNC = -1121,
+            COMPILE_PARSE_SCOPE_DEPS = -1122,
+            COMPILE_LINK = -1200,
+            COMPILE_GENERALISE = -1300,
+            COMPILE_SPECIALISE = -1400,
 
-            CURI = -500,
-            CURI_STREAM = -510,
+            // Cache
+            CACHE = -2000,
+            CACHE_JSON = -2010,
+            CACHE_FETCH = -2020,
+            CACHE_ADD = -2021,
+            CACHE_INSTALL = -2100,
+            CACHE_CLEAR = -2200,
         }
     }
 }

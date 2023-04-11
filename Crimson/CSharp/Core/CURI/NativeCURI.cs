@@ -27,7 +27,7 @@ namespace Crimson.CSharp.Core.CURI
         {
             get
             {
-                string native = WebUtility.UrlDecode(Crimson.Options.NativeCURI.Uri.AbsolutePath);
+                string native = WebUtility.UrlDecode(Compiler.Options?.NativeCURI.Uri.AbsolutePath);
 
                 string abs = WebUtility.UrlDecode(Uri.AbsolutePath);
 

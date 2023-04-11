@@ -35,7 +35,7 @@ namespace Crimson.CSharp.Core
 
         public FunctionCStatement GetEntryFunction ()
         {
-            string baseName = Core.Crimson.Options.EntryFunctionName;
+            string baseName = Compiler.Options!.EntryFunctionName!;
             Scope rootUnit = Library.Root!;
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
@@ -43,7 +43,7 @@ namespace Crimson.CSharp.Core
             IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
             if (funcs.Count == 0)
             {
-                throw new GeneralisingException($"No valid entry function found. Invalid contenders were: [{string.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Core.Crimson.Options.EntryFunctionName}' using Regex: '{pattern}'.");
+                throw new GeneralisingException($"No valid entry function found. Invalid contenders were: [{string.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Compiler.Options.EntryFunctionName}' using Regex: '{pattern}'.");
             }
             else if (funcs.Count == 1)
             {

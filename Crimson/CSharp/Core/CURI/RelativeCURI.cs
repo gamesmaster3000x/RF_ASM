@@ -26,7 +26,7 @@ namespace Crimson.CSharp.Core.CURI
         {
             get
             {
-                string source = WebUtility.UrlDecode(Crimson.Options.NativeCURI.Uri.AbsolutePath);
+                string source = WebUtility.UrlDecode(Compiler.Options.SourceCURI.Uri.AbsolutePath);
                 string? dir = Path.GetDirectoryName(source);
 
                 string uri = WebUtility.UrlDecode(Uri.AbsolutePath);

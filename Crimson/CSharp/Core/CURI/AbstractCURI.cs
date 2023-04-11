@@ -69,8 +69,11 @@ namespace Crimson.CSharp.Core.CURI
             { RelativeCURI.SCHEME, new RelativeCURI.Factory() }
         };
 
-        public static AbstractCURI Create (string uriText)
+        public static AbstractCURI? Create (string uriText)
         {
+            if (String.IsNullOrWhiteSpace(uriText))
+                return null;
+
             string trimmedText = uriText.Trim(' ', '\t', '\n', '\v', '\f', '\r', '"');
 
             if (Uri.TryCreate(trimmedText, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out Uri? uri))

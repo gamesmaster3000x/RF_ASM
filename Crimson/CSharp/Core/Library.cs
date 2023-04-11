@@ -82,7 +82,7 @@ namespace Crimson.CSharp.Core
                 }
                 catch (Exception ex)
                 {
-                    Crimson.Panic("Unable to GetScopes", Crimson.PanicCode.PARSE, ex);
+                    Crimson.Panic("Unable to GetScopes", Crimson.PanicCode.COMPILE_PARSE, ex);
                     throw;
                 }
             }
@@ -150,7 +150,7 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"Error loading scope from {uri}", Crimson.PanicCode.PARSE_SCOPE, ex);
+                Crimson.Panic($"Error loading scope from {uri}", Crimson.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }
@@ -173,7 +173,7 @@ namespace Crimson.CSharp.Core
                 }
                 catch (Exception ex)
                 {
-                    Crimson.Panic($"An error occurred while async loading {uri}", Crimson.PanicCode.PARSE_SCOPE_ASYNC, ex);
+                    Crimson.Panic($"An error occurred while async loading {uri}", Crimson.PanicCode.COMPILE_PARSE_SCOPE_ASYNC, ex);
                     throw;
                 }
             };
@@ -250,7 +250,7 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"Error loading scope dependencies for {root}", Crimson.PanicCode.PARSE_SCOPE_DEPS, ex);
+                Crimson.Panic($"Error loading scope dependencies for {root}", Crimson.PanicCode.COMPILE_PARSE_SCOPE_DEPS, ex);
                 throw;
             }
         }
@@ -281,7 +281,7 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"An error ocurred while parsing a scope originating from {source}", Crimson.PanicCode.PARSE_SCOPE, ex);
+                Crimson.Panic($"An error ocurred while parsing a scope originating from {source}", Crimson.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }

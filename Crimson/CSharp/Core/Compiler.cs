@@ -10,28 +10,20 @@ namespace Crimson.CSharp.Core
     /// <summary>
     /// The root of all compilation. Initiates and delegates tasks for the compilation process.
     /// </summary>
-    internal class CrimsonCompiler
+    internal class Compiler
     {
         private static Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public CrimsonOptions Options { get; }
-        public Library Library { get; }
-        public Linker Linker { get; }
-        public Generaliser Generaliser { get; }
-        public ISpecialiser Specialiser { get; }
 
-        public CrimsonCompiler (CrimsonOptions options, Library unitGenerator, Linker linker, Generaliser generaliser, ISpecialiser flattener)
-        {
-            Options = options;
-            Library = unitGenerator;
-            Linker = linker;
-            Generaliser = generaliser;
-            Specialiser = flattener;
-        }
+        public static CrimsonOptions.Compile? Options { get; private set; } = null;
 
-        public async void FullyCompileFromOptions ()
+        private Compiler () { }
+
+        public static async void Compile (CrimsonOptions.Compile options, Library library, Linker linker, Generaliser generaliser, ISpecialiser flattener)
         {
             try
             {
+                Options = options;
+
                 /*
                  * == PARSING STAGE == 
                  * 
@@ -42,8 +34,8 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" P A R S I N G ");
-                Scope rootScope = Library.LoadScope(Options.SourceCURI); // Get the root unit (ie. main.crm)
-                Compilation compilation = new Compilation(Library); // Generate dependency units (all resources are henceforth accessible)
+                Scope rootScope = library.LoadScope(Options.SourceCURI); // Get the root unit (ie. main.crm)
+                Compilation compilation = new Compilation(library); // Generate dependency units (all resources are henceforth accessible)
 
 
                 /*
@@ -54,7 +46,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" L I N K I N G ");
-                await Linker.Link(compilation);
+                await linker.Link(compilation);
 
 
                 /*
@@ -65,7 +57,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" G E N E R A L I S I N G ");
-                GeneralAssemblyProgram generalProgram = await Generaliser.Generalise(compilation);
+                GeneralAssemblyProgram generalProgram = await generaliser.Generalise(compilation);
 
 
                 LOGGER.Info("\n\n");
@@ -79,7 +71,7 @@ namespace Crimson.CSharp.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" S P E C I A L I S I N G ");
-                AbstractSpecificAssemblyProgram specialisedProgram = Specialiser.Specialise(generalProgram);
+                AbstractSpecificAssemblyProgram specialisedProgram = flattener.Specialise(generalProgram);
 
                 /*
                  * == CLEANUP == 
@@ -92,12 +84,12 @@ namespace Crimson.CSharp.Core
             }
             catch (Exception e)
             {
-                Crimson.Panic("An uncaught exception occurred during the compilation process.", Crimson.PanicCode.PARSE, e);
+                Crimson.Panic("An uncaught exception occurred during the compilation process.", Crimson.PanicCode.COMPILE_PARSE, e);
                 throw;
             }
         }
 
-        private void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specialisedProgram)
+        private static void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specialisedProgram)
         {
             if (Options.DumpIntermediates)
             {
@@ -111,7 +103,7 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private void DumpGeneralisedProgram (GeneralAssemblyProgram generalProgram)
+        private static void DumpGeneralisedProgram (GeneralAssemblyProgram generalProgram)
         {
             if (Options.DumpIntermediates)
             {

@@ -15,7 +15,7 @@ namespace Crimson.CSharp.Exceptions
         public AbstractCrimsonStatement? Statement { get; private set; }
         public Exception? Cause { get; private set; }
 
-        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
+        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Core.Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
         {
             Message = message;
             Statement = statement;
@@ -76,14 +76,14 @@ namespace Crimson.CSharp.Exceptions
 
     internal class CrimsonParserException : CrimsonException
     {
-        public CrimsonParserException (string message) : base(Core.Crimson.PanicCode.PARSE_STATEMENT)
+        public CrimsonParserException (string message) : base(Core.Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
         {
         }
     }
 
     internal class ScopeGenerationException : CrimsonException
     {
-        public ScopeGenerationException () : base(Core.Crimson.PanicCode.PARSE_SCOPE)
+        public ScopeGenerationException () : base(Core.Crimson.PanicCode.COMPILE_PARSE_SCOPE)
         {
 
         }

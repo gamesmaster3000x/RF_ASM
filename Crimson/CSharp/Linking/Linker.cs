@@ -12,12 +12,6 @@ namespace Crimson.CSharp.Linking
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public CrimsonOptions Options { get; }
-        public Linker (CrimsonOptions options)
-        {
-            Options = options;
-        }
-
         // TODO Linking must include renaming functions/variables and reach down to identifiers simple values etc.
 
         /// <summary>

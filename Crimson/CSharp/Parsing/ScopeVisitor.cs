@@ -58,7 +58,7 @@ namespace Crimson.CSharp.Parsing
             }
             catch (Exception ex)
             {
-                Core.Crimson.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", Core.Crimson.PanicCode.PARSE_SCOPE, ex);
+                Core.Crimson.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", Core.Crimson.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }
