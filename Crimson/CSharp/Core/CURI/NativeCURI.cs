@@ -38,7 +38,7 @@ namespace Crimson.CSharp.Core.CURI
 
         public NativeCURI (Uri uri) : base(uri)
         {
-            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}.");
+            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}. Found '{uri.Scheme}'.");
             if (Path.IsPathRooted(AbsolutePath)) throw new UriFormatException($"The path of a URI with host {SCHEME} may not be rooted.");
         }
 

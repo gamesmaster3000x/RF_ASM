@@ -27,7 +27,9 @@ namespace Crimson.CSharp.Core.CURI
 
         /// <summary>
         /// <para>
-        ///     Get a <see cref="Stream"/> of the resource described by this <see cref="AbstractCURI"/>
+        ///     Directly get the remote <see cref="Stream"/> of the resource described by this <see cref="AbstractCURI"/>.
+        ///     Typically it is preferable to use <see cref="Cache.Get(AbstractCURI)"/> as that will return a cached 
+        ///     version if it exists which may reduce latency due to, for example, internet speeds.
         /// </para>
         /// <para>
         ///     For example, a CURI describing "http://example.com/crimson/heap.crm" would get a stream of the bytes of the file "heap.crm"

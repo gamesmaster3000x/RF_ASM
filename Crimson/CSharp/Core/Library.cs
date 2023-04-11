@@ -106,12 +106,10 @@ namespace Crimson.CSharp.Core
             {
                 LOGGER.Info($"Loading scope from {uri}");
 
-                Stream source = uri.GetStream();
-                StreamReader reader = new StreamReader(source);
-                string text = reader.ReadToEnd();
-                source.Close();
+                Cache.GetCachedQueryResult result = Cache.Get(uri);
+                if (!result.Exists) throw new NullReferenceException($"Library was unable to get cached or fetch new contents of {uri}.");
 
-                Scope scope = ParseScopeText(uri, text);
+                Scope scope = ParseScopeText(uri, result.Contents!);
 
                 LoadScopeDependencies(scope);
 

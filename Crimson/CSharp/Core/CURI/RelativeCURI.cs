@@ -43,7 +43,7 @@ namespace Crimson.CSharp.Core.CURI
 
         public RelativeCURI (Uri uri) : base(uri)
         {
-            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}.");
+            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}. Found '{uri.Scheme}'.");
 
             string abs = WebUtility.UrlDecode(Uri.AbsolutePath);
             if (Path.IsPathRooted(abs)) throw new UriFormatException($"The path of a {GetType()} may not be rooted.");

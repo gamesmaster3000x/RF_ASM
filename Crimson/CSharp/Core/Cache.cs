@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Core
@@ -17,13 +18,14 @@ namespace Crimson.CSharp.Core
         public static FileInfo INDEX { get; private set; } = Crimson.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
-        public class CacheIndex
+        public record CacheIndex
         {
             public DateTime CreatedTime { get; set; }
-            public Dictionary<string, IndexEntry> Contents { get; set; }
+            public Dictionary<CacheKey, IndexEntry> Contents { get; set; }
         }
-        public class IndexEntry
+        public record IndexEntry
         {
+            public string URI { get; set; }
             public DateTime InstalledTime { get; set; }
             public DateTime ModifiedTime { get; set; }
         }
@@ -40,6 +42,10 @@ namespace Crimson.CSharp.Core
                 throw;
             }
         }
+
+
+        // ============ INDEX ============
+
 
         private static void CreateIndexIfNotPresent ()
         {
@@ -65,7 +71,7 @@ namespace Crimson.CSharp.Core
                     Index = new CacheIndex
                     {
                         CreatedTime = DateTime.Now,
-                        Contents = new Dictionary<string, IndexEntry>()
+                        Contents = new Dictionary<CacheKey, IndexEntry>()
                     };
                     JsonSerializer.Serialize(writeStream, Index);
                 }
@@ -113,64 +119,141 @@ namespace Crimson.CSharp.Core
             return;
         }
 
-        private static void Fetch (AbstractCURI curi, bool overwrite)
+        private static readonly object _ioLock = new object();
+        private static byte[] ReadCached (CacheKey key)
         {
-            try
+            lock (_ioLock)
             {
-                string data;
-                using (Stream readStream = curi.GetStream())
+                FileInfo info = GetCachedFileInfo(key);
+                using (FileStream fileStream = info.OpenRead())
+                using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    StreamReader reader = new StreamReader(readStream);
-                    data = reader.ReadToEnd();
+                    fileStream.CopyTo(memoryStream);
+                    return memoryStream.ToArray();
                 }
-                Add(curi, data);
-            }
-            catch (Exception ex)
-            {
-                Crimson.Panic($"Error fetching {curi}", Crimson.PanicCode.CACHE_FETCH, ex);
-                throw;
             }
         }
 
-        private static void Add (AbstractCURI curi, string data)
+        private static void WriteCached (CacheKey path, byte[] contents)
         {
-            try
+            lock (_ioLock)
             {
-                string path = GetLocalCachePath(curi);
-                _ = Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                using (Stream writeStream = Crimson.GetRoamingFile($"cache/{path}").Open(FileMode.OpenOrCreate, FileAccess.Write))
+                FileInfo info = GetCachedFileInfo(path);
+                _ = Directory.CreateDirectory(Path.GetDirectoryName(info.FullName)!);
+                using (Stream writeStream = info.Open(FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     StreamWriter writer = new StreamWriter(writeStream);
-                    writer.Write(data);
+                    writer.Write(contents);
                 }
-
-                IndexEntry? entry = Index.Contents!.GetValueOrDefault(path, null) ?? new IndexEntry();
-                entry.ModifiedTime = DateTime.Now;
-
-                Index.Contents[path] = entry;
-                WriteIndex();
-            }
-            catch (Exception ex)
-            {
-                Crimson.Panic($"Error adding {curi}", Crimson.PanicCode.CACHE_ADD, ex);
-                throw;
             }
         }
 
-        private static string GetLocalCachePath (AbstractCURI curi)
+
+        // ============ KEYS ============
+
+        [JsonConverter(typeof(CacheKeyJsonConverter))]
+        public record CacheKey
         {
-            return $"{curi.Uri.Scheme}/{curi.Uri.LocalPath}";
+            public readonly string LocalPath;
+            public CacheKey (string localPath) => LocalPath = localPath;
+        }
+
+        private static CacheKey GetCacheKey (AbstractCURI curi)
+        {
+            return new CacheKey($"{curi.Uri.Scheme}/{curi.Uri.LocalPath}");
+        }
+
+        public class CacheKeyJsonConverter : JsonConverter<CacheKey>
+        {
+            public override CacheKey? Read (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+            }
+
+            public override void Write (Utf8JsonWriter writer, CacheKey value, JsonSerializerOptions options)
+            {
+            }
+        }
+
+        private static FileInfo GetCachedFileInfo (CacheKey key)
+        {
+            return Crimson.GetRoamingFile($"cache/{key.LocalPath}");
         }
 
         // =========== API ===========
+
+        public record GetCachedQueryResult
+        {
+            public readonly bool Exists = false;
+            public readonly CacheKey? CacheKey;
+            public readonly string? Contents = "";
+
+            public GetCachedQueryResult (bool exists, CacheKey? localPath = null, string? contents = "")
+            {
+                Exists = exists;
+                CacheKey = localPath;
+                Contents = contents;
+            }
+        }
+
+        public static GetCachedQueryResult Get (AbstractCURI curi)
+        {
+            CacheKey key = GetCacheKey(curi);
+
+            if (!Index.Contents.ContainsKey(key))
+                return new GetCachedQueryResult(exists: false);
+
+            FileInfo info = GetCachedFileInfo(key);
+
+            using (Stream stream = info.OpenRead())
+            {
+                StreamReader reader = new StreamReader(stream);
+                string contents = reader.ReadToEnd();
+                return new GetCachedQueryResult(exists: true, localPath: key, contents: contents);
+            }
+        }
+
+        public static GetCachedQueryResult GetOrInstall (AbstractCURI curi)
+        {
+            GetCachedQueryResult result = Get(curi);
+            if (result.Exists) return result;
+
+            Install(curi, true);
+            return Get(curi);
+        }
+
         public static void Clear (ClearMode clearMode)
         {
             throw new NotImplementedException();
         }
 
-        public static void Install (AbstractCURI sourceCURI, bool forceRefreshCache)
+        public static void Install (AbstractCURI sourceCURI, bool overwrite = false)
         {
-            throw new NotImplementedException();
+            GetCachedQueryResult getResult = Get(sourceCURI);
+            if (!overwrite && getResult.Exists)
+            {
+                LOGGER.Info($"{sourceCURI} is already installed and the 'overwrite' flag is not specified.");
+                return;
+            }
+
+            if (getResult.Exists) { }
+
+            CacheKey key = GetCacheKey(sourceCURI);
+            using (Stream curiStream = sourceCURI.GetStream())
+            using (MemoryStream memStream = new MemoryStream())
+            {
+                curiStream.CopyTo(memStream);
+                byte[] contents = memStream.ToArray();
+
+                WriteCached(key, contents);
+            }
+
+            Index.Contents[key] = new IndexEntry()
+            {
+                InstalledTime = DateTime.Now,
+                ModifiedTime = DateTime.Now,
+                URI = sourceCURI.ToString(),
+            };
+            WriteIndex();
         }
 
         public static void Refresh (AbstractCURI? sourceCURI, bool all = false)
@@ -180,7 +263,7 @@ namespace Crimson.CSharp.Core
                 LOGGER.Info($"Refreshing all {Index.Contents.Count} indexed CURIs...");
                 foreach (var pair in Index.Contents)
                 {
-                    AbstractCURI? curi = AbstractCURI.Create(pair.Key);
+                    AbstractCURI? curi = AbstractCURI.Create(pair.Value.URI);
                     Refresh(curi);
                 }
                 LOGGER.Info("Refresh complete.");
@@ -188,18 +271,13 @@ namespace Crimson.CSharp.Core
             else if (sourceCURI != null)
             {
                 LOGGER.Info($"Refreshing {sourceCURI}...");
-                Fetch(sourceCURI, true);
+                Install(sourceCURI);
                 LOGGER.Info($"Done!");
             }
             else
             {
                 LOGGER.Error("'--all' is false and the source CURI is null. Refresh failed.");
             }
-        }
-
-        public static void Info (AbstractCURI sourceCURI)
-        {
-            throw new NotImplementedException();
         }
 
         public enum ClearMode

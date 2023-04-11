@@ -23,7 +23,7 @@ namespace Crimson.CSharp.Core.CURI
 
         public FileAbsoluteCURI (Uri uri) : base(uri)
         {
-            if (!Uri.UriSchemeFile.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeFile}.");
+            if (!Uri.UriSchemeFile.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeFile}. Found '{uri.Scheme}'.");
         }
 
         public override bool Equals (AbstractCURI? other)

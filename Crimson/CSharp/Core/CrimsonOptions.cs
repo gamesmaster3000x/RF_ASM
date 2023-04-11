@@ -99,10 +99,10 @@ namespace Crimson.CSharp.Core
             public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!); }
 
             //
-            [Option(longName: "preserve", shortName: 'p',
+            [Option(longName: "overwrite", shortName: 'o',
                 Required = false, Default = false,
-                HelpText = "The width of an integer, in bytes.")]
-            public bool ForceRefreshCache { get; set; }
+                HelpText = "Overwrite existing versions of this file. Consider using the 'refresh' verb instead.")]
+            public bool Overwrite { get; set; }
         }
 
         /// <summary>

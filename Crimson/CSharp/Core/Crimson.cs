@@ -79,11 +79,13 @@ namespace Crimson.CSharp.Core
                 };
             }
 
-            bool INSTALL = false;
+            bool INSTALL = true;
             if (INSTALL)
             {
                 return new string[] {
-                    $"install"
+                    $"install",
+                    $"-s http://raw.githubusercontent.com/GenElectrovise/RF_ASM/master/Crimson/Resources/Native%20Library/heap.crm",
+                    $"-o"
                 };
             }
 
@@ -95,7 +97,7 @@ namespace Crimson.CSharp.Core
                 };
             }
 
-            bool REFRESH = true;
+            bool REFRESH = false;
             if (REFRESH)
             {
                 return new string[] {
@@ -183,6 +185,7 @@ namespace Crimson.CSharp.Core
 
         private static void Compile (CrimsonOptions.Compile options)
         {
+            LOGGER!.Info($"Compiling with: {options}");
             try
             {
                 Console.WriteLine("  Compile: SourceUri: " + options.SourceCURI);
@@ -207,9 +210,10 @@ namespace Crimson.CSharp.Core
 
         private static void Install (CrimsonOptions.Install options)
         {
+            LOGGER!.Info($"Installing with: {options}");
             try
             {
-                Cache.Install(options.SourceCURI, options.ForceRefreshCache);
+                Cache.Install(options.SourceCURI, options.Overwrite);
             }
             catch (Exception ex)
             {
@@ -220,6 +224,7 @@ namespace Crimson.CSharp.Core
 
         private static void Clear (CrimsonOptions.Clear options)
         {
+            LOGGER!.Info($"Clearing with: {options}");
             try
             {
                 Cache.Clear(options.ClearMode);
@@ -233,6 +238,7 @@ namespace Crimson.CSharp.Core
 
         private static void Refresh (CrimsonOptions.Refresh options)
         {
+            LOGGER!.Info($"Refreshing with: {options}");
             try
             {
                 Cache.Refresh(options.SourceCURI, options.All);

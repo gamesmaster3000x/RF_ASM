@@ -13,7 +13,7 @@ namespace Crimson.CSharp.Core.CURI
 
         public HttpCURI (Uri uri) : base(uri)
         {
-            if (!Uri.UriSchemeFile.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeHttp}.");
+            if (!Uri.UriSchemeHttp.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeHttp}. Found '{uri.Scheme}'.");
         }
 
         public override bool Equals (AbstractCURI? other)
