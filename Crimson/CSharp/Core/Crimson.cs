@@ -18,7 +18,6 @@ namespace Crimson.CSharp.Core
     {
         private static Logger? LOGGER;
         public static readonly string VERSION = "v0.0";
-        public static SettingsRecord Settings;
 
         public static int Main (string[] args)
         {
@@ -34,9 +33,6 @@ namespace Crimson.CSharp.Core
                 bool useAutowiredArgs = true;
                 args = useAutowiredArgs ? GetTestArguments() : args;
                 Console.WriteLine(String.Join(' ', args));
-
-                //
-                LoadSettings();
 
                 //
                 ConfigureNLog();
@@ -141,54 +137,6 @@ namespace Crimson.CSharp.Core
             Console.WriteLine("Written using Visual Studio in C#/.NET 6.0 (LTS)");
             Console.WriteLine("  -> - - - - - - - <-  ");
             Console.WriteLine("");
-        }
-
-        public record SettingsRecord
-        {
-
-        }
-
-        public static readonly SettingsRecord DEFAULT_SETTINGS = new SettingsRecord()
-        {
-
-        };
-
-        private static void LoadSettings ()
-        {
-            try
-            {
-                FileInfo info = GetRoamingFile("settings.json");
-                if (!info.Exists)
-                {
-                    _ = Directory.CreateDirectory(Path.GetDirectoryName(info.FullName));
-                    using (Stream writeStream = info.Open(FileMode.OpenOrCreate, FileAccess.Write))
-                    {
-                        string settings = JsonSerializer.Serialize(DEFAULT_SETTINGS, new JsonSerializerOptions() { WriteIndented = true });
-                        StreamWriter writer = new StreamWriter(writeStream);
-                        writer.Write(settings);
-                    }
-                }
-
-                using (Stream readStream = info.OpenRead())
-                {
-                    StreamReader reader = new StreamReader(readStream);
-                    string contents = reader.ReadToEnd();
-                    Settings = JsonSerializer.Deserialize<SettingsRecord>(contents) ?? throw new JsonException("Failed to deserialise settings!");
-                }
-
-
-                //var name = "PATH";
-                //var scope = EnvironmentVariableTarget.Machine; // or User
-                //var oldValue = Environment.GetEnvironmentVariable(name, scope);
-                //var newValue = oldValue + @";C:\Program Files\MySQL\MySQL Server 5.1\bin\\";
-                //Environment.SetEnvironmentVariable(name, newValue, scope);
-
-            }
-            catch (Exception ex)
-            {
-                Crimson.Panic("Unable to read settings. Cannot continue.", PanicCode.SETTINGS, ex);
-                throw;
-            }
         }
 
         private static void ConfigureNLog ()
