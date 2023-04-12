@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 using Crimson.CSharp.Core.CURI;
+using Crimson.CSharp.Exceptions;
 using NLog.Targets;
 
 namespace Crimson.CSharp.Core
@@ -115,21 +116,21 @@ namespace Crimson.CSharp.Core
             // Source
             [Option(longName: "erase", shortName: 'e',
                 Required = false,
-                SetName = "mode",
+                Group = "mode",
                 HelpText = "Completely remove the cache directories... It's like it was never there!")]
             public bool Erase { get; set; }
 
             // 
             [Option(longName: "directories", shortName: 'd',
                 Required = false,
-                SetName = "mode",
+                Group = "mode",
                 HelpText = "Remove directories regardless of contents.")]
             public bool Directories { get; set; }
 
             // Source
             [Option(longName: "indexed", shortName: 'i',
                 Required = false,
-                SetName = "mode",
+                Group = "mode",
                 HelpText = "Clean only files listed in the cache index.")]
             public bool Indexed { get; set; }
 
@@ -140,7 +141,7 @@ namespace Crimson.CSharp.Core
                     (true, false, false) => Cache.ClearMode.ERASE,
                     (false, true, false) => Cache.ClearMode.INDEXED,
                     (false, false, true) => Cache.ClearMode.DIRECTORIES,
-                    _ => throw new ArgumentException(),
+                    _ => throw new ClearModeException(this)
                 };
             }
         }
@@ -169,3 +170,4 @@ namespace Crimson.CSharp.Core
         }
     }
 }
+

@@ -3,12 +3,36 @@ using Crimson.CSharp.Core.CURI;
 using Crimson.CSharp.Parsing.Statements;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Crimson.CSharp.Exceptions
 {
+    internal class ClearModeException : CrimsonException
+    {
+        public CrimsonOptions.Clear Clear { get; private set; }
+
+        public ClearModeException (CrimsonOptions.Clear clear) : base(Core.Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
+        {
+            Clear = clear;
+        }
+
+        public override IList<string> GetDetailedMessage ()
+        {
+            List<string> strings = new List<string>()
+            {
+                $"Illegal ClearMode comination (there can only be 1). ",
+                $"Found {(Clear.Erase ? "-e" : "")}" +
+                        $" {(Clear.Directories ? "-d" : "")}" +
+                        $" {(Clear.Indexed ? "-i" : "")}"
+
+            };
+            return strings;
+        }
+    }
+
     internal class StatementParseException : CrimsonException
     {
         public string Message { get; private set; }

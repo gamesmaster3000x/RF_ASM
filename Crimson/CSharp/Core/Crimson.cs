@@ -80,21 +80,22 @@ namespace Crimson.CSharp.Core
                 };
             }
 
-            bool INSTALL = true;
+            bool INSTALL = false;
             if (INSTALL)
             {
                 return new string[] {
                     $"install",
                     $"-s http://raw.githubusercontent.com/GenElectrovise/RF_ASM/master/Crimson/Resources/Native%20Library/heap.crm",
-                    $"-o"
+                    //$"-o"
                 };
             }
 
-            bool CLEAR = false;
+            bool CLEAR = true;
             if (CLEAR)
             {
                 return new string[] {
-                    $"clear"
+                    $"clear",
+                    $"-e"
                 };
             }
 
@@ -103,7 +104,8 @@ namespace Crimson.CSharp.Core
             {
                 return new string[] {
                     $"refresh",
-                    $"-a"
+                    $"-s http://raw.githubusercontent.com/GenElectrovise/RF_ASM/master/Crimson/Resources/Native%20Library/heap.crm",
+                    //$"-a"
                 };
             }
 
@@ -176,7 +178,8 @@ namespace Crimson.CSharp.Core
         {
             string roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string relative = $"Crimson/{path}";
-            string full = Path.Combine(roaming, relative);
+            string combined = Path.Combine(roaming, relative);
+            string full = Path.GetFullPath(combined);
             return new FileInfo(full);
         }
 
@@ -270,13 +273,12 @@ namespace Crimson.CSharp.Core
                     $"",
                     $" >> {message}",
                     $"",
-                    $"{(e != null ? e.GetType().Name : "<Null Exception>")}",
+                    $"{(e != null ? e.GetType().Name : "<Exception is Null>")} {(e is CrimsonException ? ($"({typeof(CrimsonException).Name})") : "")}",
                 };
                 if (e != null)
                 {
                     if (e is CrimsonException ce)
                     {
-                        lines.Add($"({typeof(CrimsonException).Name})");
                         lines.AddRange(ce.GetDetailedMessage());
                         lines.Add($"Inner panic code: {(int) ce.Code} ({Enum.GetName(ce.Code)})");
                     }

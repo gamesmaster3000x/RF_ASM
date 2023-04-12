@@ -54,6 +54,29 @@ namespace Crimson.CSharp.Core.CURI
 
         protected AbstractCURI (Uri uri) => Uri = uri;
 
+        public string ToShortString ()
+        {
+            List<string> parts = new List<string>();
+
+            if (Uri.Segments.Length <= 5)
+            {
+                parts.AddRange(Uri.Segments);
+            }
+            else
+            {
+                parts.AddRange(Uri.Segments.Take(3));
+                parts.Add(".../");
+                parts.AddRange(Uri.Segments.TakeLast(2));
+            }
+
+            return $"{Uri.Scheme}://{Uri.UserInfo}@{Uri.Host}:{Uri.Port}{String.Join("", parts)}";
+        }
+
+        public override string ToString ()
+        {
+            return Uri.ToString();
+        }
+
         /// <summary>
         /// <para>
         ///     Contains the factories used for making CURIs. 
@@ -92,11 +115,6 @@ namespace Crimson.CSharp.Core.CURI
             }
 
             throw new UriFormatException($"No CURI factory is registered for URIs with scheme {uri.Host}: {uri}");
-        }
-
-        public override string ToString ()
-        {
-            return Uri.ToString();
         }
     }
 }

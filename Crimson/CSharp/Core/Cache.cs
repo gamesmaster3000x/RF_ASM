@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -103,20 +104,17 @@ namespace Crimson.CSharp.Core
         {
             try
             {
+                LOGGER.Debug($"Writing to index {INDEX}");
                 CreateIndexIfNotPresent();
-                using (FileStream stream = INDEX.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                {
-                    string data = JsonSerializer.Serialize(Index, new JsonSerializerOptions { WriteIndented = true });
-                    StreamWriter writer = new StreamWriter(stream);
-                    writer.Write(data);
-                }
+                string data = JsonSerializer.Serialize(Index, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(INDEX.FullName, data);
+                return;
             }
             catch (Exception ex)
             {
                 Crimson.Panic($"Unable to write to cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
                 throw;
             }
-            return;
         }
 
         private static readonly object _ioLock = new object();
@@ -140,11 +138,7 @@ namespace Crimson.CSharp.Core
             {
                 FileInfo info = GetCachedFileInfo(path);
                 _ = Directory.CreateDirectory(Path.GetDirectoryName(info.FullName)!);
-                using (Stream writeStream = info.Open(FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    StreamWriter writer = new StreamWriter(writeStream);
-                    writer.Write(contents);
-                }
+                File.WriteAllBytes(info.FullName, contents);
             }
         }
 
@@ -152,25 +146,51 @@ namespace Crimson.CSharp.Core
         // ============ KEYS ============
 
         [JsonConverter(typeof(CacheKeyJsonConverter))]
+        [TypeConverter(typeof(CacheKey))]
         public record CacheKey
         {
             public readonly string LocalPath;
             public CacheKey (string localPath) => LocalPath = localPath;
+            public override string ToString () => LocalPath;
         }
 
         private static CacheKey GetCacheKey (AbstractCURI curi)
         {
-            return new CacheKey($"{curi.Uri.Scheme}/{curi.Uri.LocalPath}");
+            return new CacheKey($"{curi.Uri.Scheme}{curi.Uri.LocalPath}");
         }
 
         public class CacheKeyJsonConverter : JsonConverter<CacheKey>
         {
+            public override bool CanConvert (Type typeToConvert)
+            {
+                bool good = typeof(CacheKey).Equals(typeToConvert);
+                return good;
+            }
+
+            public override CacheKey ReadAsPropertyName (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                return Read(ref reader, typeToConvert, options)!;
+            }
+
+            public override void WriteAsPropertyName (Utf8JsonWriter writer, CacheKey value, JsonSerializerOptions options)
+            {
+                string? str = value.LocalPath;
+                if (String.IsNullOrWhiteSpace(str)) throw new JsonException("Cannot write NullOrWhiteSpace CacheKey.");
+                writer.WritePropertyName(str);
+            }
+
             public override CacheKey? Read (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
+                string? str = reader.GetString();
+                if (String.IsNullOrWhiteSpace(str)) throw new JsonException("Cannot read NullOrWhiteSpace CacheKey.");
+                return new CacheKey(str!);
             }
 
             public override void Write (Utf8JsonWriter writer, CacheKey value, JsonSerializerOptions options)
             {
+                string? str = value.LocalPath;
+                if (String.IsNullOrWhiteSpace(str)) throw new JsonException("Cannot write NullOrWhiteSpace CacheKey.");
+                writer.WriteStringValue(str);
             }
         }
 
@@ -235,7 +255,7 @@ namespace Crimson.CSharp.Core
                 return;
             }
 
-            if (getResult.Exists) { }
+            LOGGER.Info($"Installing '{sourceCURI.ToShortString()}'...");
 
             CacheKey key = GetCacheKey(sourceCURI);
             using (Stream curiStream = sourceCURI.GetStream())
@@ -247,12 +267,14 @@ namespace Crimson.CSharp.Core
                 WriteCached(key, contents);
             }
 
+            LOGGER.Debug($"Indexing '{sourceCURI.ToShortString()}' as '{key}'...");
             Index.Contents[key] = new IndexEntry()
             {
                 InstalledTime = DateTime.Now,
                 ModifiedTime = DateTime.Now,
                 URI = sourceCURI.ToString(),
             };
+
             WriteIndex();
         }
 
@@ -270,8 +292,8 @@ namespace Crimson.CSharp.Core
             }
             else if (sourceCURI != null)
             {
-                LOGGER.Info($"Refreshing {sourceCURI}...");
-                Install(sourceCURI);
+                LOGGER.Info($"Refreshing '{sourceCURI.ToShortString()}'...");
+                Install(sourceCURI, true);
                 LOGGER.Info($"Done!");
             }
             else
