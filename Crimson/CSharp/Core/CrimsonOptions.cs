@@ -121,7 +121,7 @@ namespace Crimson.CSharp.Core
             public bool Erase { get; set; }
 
             // 
-            [Option(longName: "directories", shortName: 'd',
+            [Option(longName: "unindexed", shortName: 'u',
                 Required = false,
                 Group = "mode",
                 HelpText = "Remove directories regardless of contents.")]
@@ -140,7 +140,7 @@ namespace Crimson.CSharp.Core
                 {
                     (true, false, false) => Cache.ClearMode.ERASE,
                     (false, true, false) => Cache.ClearMode.INDEXED,
-                    (false, false, true) => Cache.ClearMode.DIRECTORIES,
+                    (false, false, true) => Cache.ClearMode.UNINDEXED,
                     _ => throw new ClearModeException(this)
                 };
             }

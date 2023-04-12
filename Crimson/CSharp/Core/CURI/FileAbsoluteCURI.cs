@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace Crimson.CSharp.Core.CURI
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", Crimson.PanicCode.CURI_STREAM, ex);
+                Crimson.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", Crimson.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

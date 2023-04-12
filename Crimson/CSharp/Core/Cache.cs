@@ -15,7 +15,6 @@ namespace Crimson.CSharp.Core
     public class Cache
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public static FileInfo CACHE_ROOT { get; private set; } = Crimson.GetRoamingFile("cache/");
         public static FileInfo INDEX { get; private set; } = Crimson.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
@@ -81,44 +80,51 @@ namespace Crimson.CSharp.Core
             INDEX.Refresh();
         }
 
+        private static readonly object _indexLock = new object();
         private static CacheIndex? ReadIndex ()
         {
-            CacheIndex? index;
-            try
+            lock (_indexLock)
             {
-                CreateIndexIfNotPresent();
-                using (FileStream stream = INDEX.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                CacheIndex? index;
+                try
                 {
-                    index = JsonSerializer.Deserialize<CacheIndex>(stream);
+                    CreateIndexIfNotPresent();
+                    using (FileStream stream = INDEX.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        index = JsonSerializer.Deserialize<CacheIndex>(stream);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Crimson.Panic($"Unable to deserialise cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
+                    throw;
+                }
+                return index;
             }
-            catch (Exception ex)
-            {
-                Crimson.Panic($"Unable to deserialise cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
-                throw;
-            }
-            return index;
         }
 
         private static void WriteIndex ()
         {
-            try
+            lock (_indexLock)
             {
-                LOGGER.Debug($"Writing to index {INDEX}");
-                CreateIndexIfNotPresent();
-                string data = JsonSerializer.Serialize(Index, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(INDEX.FullName, data);
-                return;
-            }
-            catch (Exception ex)
-            {
-                Crimson.Panic($"Unable to write to cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
-                throw;
+                try
+                {
+                    LOGGER.Debug($"Writing to index {INDEX}");
+                    CreateIndexIfNotPresent();
+                    string data = JsonSerializer.Serialize(Index, new JsonSerializerOptions { WriteIndented = true });
+                    File.WriteAllText(INDEX.FullName, data);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Crimson.Panic($"Unable to write to cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
+                    throw;
+                }
             }
         }
 
         private static readonly object _ioLock = new object();
-        private static byte[] ReadCached (CacheKey key)
+        private static char[] ReadCached (CacheKey key)
         {
             lock (_ioLock)
             {
@@ -127,16 +133,18 @@ namespace Crimson.CSharp.Core
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     fileStream.CopyTo(memoryStream);
-                    return memoryStream.ToArray();
+                    byte[] bytes = memoryStream.ToArray();
+                    char[] chars = Encoding.UTF8.GetString(bytes).ToCharArray();
+                    return chars;
                 }
             }
         }
 
-        private static void WriteCached (CacheKey path, byte[] contents)
+        private static void WriteCached (CacheKey key, byte[] contents)
         {
             lock (_ioLock)
             {
-                FileInfo info = GetCachedFileInfo(path);
+                FileInfo info = GetCachedFileInfo(key);
                 _ = Directory.CreateDirectory(Path.GetDirectoryName(info.FullName)!);
                 File.WriteAllBytes(info.FullName, contents);
             }
@@ -199,15 +207,58 @@ namespace Crimson.CSharp.Core
             return Crimson.GetRoamingFile($"cache/{key.LocalPath}");
         }
 
+        // Clearing
+
+        private static void Erase ()
+        {
+            Crimson.GetRoamingDirectory("cache/").Delete(true);
+        }
+
+        private static void ClearUnindexed ()
+        {
+
+        }
+
+        private static void ClearIndexed ()
+        {
+            foreach (var x in Index.Contents)
+            {
+                FileInfo info = GetCachedFileInfo(x.Key);
+                info.Delete();
+                CutOffEmptyDirectories(info.Directory!);
+            }
+        }
+
+        private static void CutOffEmptyDirectories (DirectoryInfo root)
+        {
+            if (root.GetFiles().Length == 0 && root.GetDirectories().Length == 0)
+            {
+                root.Delete();
+                // CutOffEmptyDirectories(root.Parent);
+            }
+        }
+
+        private static void RemoveEmptyDirectories (DirectoryInfo root)
+        {
+            foreach (DirectoryInfo directory in root.GetDirectories())
+            {
+                RemoveEmptyDirectories(directory);
+                if (root.GetFiles().Length == 0 && root.GetDirectories().Length == 0)
+                {
+                    directory.Delete(false);
+                }
+            }
+        }
+
         // =========== API ===========
 
         public record GetCachedQueryResult
         {
             public readonly bool Exists = false;
             public readonly CacheKey? CacheKey;
-            public readonly string? Contents = "";
+            public readonly char[]? Contents;
 
-            public GetCachedQueryResult (bool exists, CacheKey? localPath = null, string? contents = "")
+            public GetCachedQueryResult (bool exists, CacheKey? localPath = null, char[]? contents = null)
             {
                 Exists = exists;
                 CacheKey = localPath;
@@ -217,19 +268,23 @@ namespace Crimson.CSharp.Core
 
         public static GetCachedQueryResult Get (AbstractCURI curi)
         {
+            //
+            //
+            // TODO GET/REFRESHING NOTES
+            //
+            // ABSTRACT CURI ALWAYS REFRESH.
+            // File/absolute always true.
+            // Perhaps add to query? http://example.com/file.crm?volatile=true
+            //
+            //
+
             CacheKey key = GetCacheKey(curi);
 
             if (!Index.Contents.ContainsKey(key))
                 return new GetCachedQueryResult(exists: false);
 
-            FileInfo info = GetCachedFileInfo(key);
-
-            using (Stream stream = info.OpenRead())
-            {
-                StreamReader reader = new StreamReader(stream);
-                string contents = reader.ReadToEnd();
-                return new GetCachedQueryResult(exists: true, localPath: key, contents: contents);
-            }
+            char[] contents = ReadCached(key);
+            return new GetCachedQueryResult(exists: true, localPath: key, contents: contents);
         }
 
         public static GetCachedQueryResult GetOrInstall (AbstractCURI curi)
@@ -243,7 +298,25 @@ namespace Crimson.CSharp.Core
 
         public static void Clear (ClearMode clearMode)
         {
-            throw new NotImplementedException();
+            switch (clearMode)
+            {
+                case ClearMode.ERASE:
+                    Erase();
+                    break;
+                case ClearMode.INDEXED:
+                    ClearIndexed();
+                    break;
+                case ClearMode.UNINDEXED:
+                    ClearUnindexed();
+                    break;
+            }
+        }
+
+        public enum ClearMode
+        {
+            ERASE,
+            INDEXED,
+            UNINDEXED
         }
 
         public static void Install (AbstractCURI sourceCURI, bool overwrite = false)
@@ -300,13 +373,6 @@ namespace Crimson.CSharp.Core
             {
                 LOGGER.Error("'--all' is false and the source CURI is null. Refresh failed.");
             }
-        }
-
-        public enum ClearMode
-        {
-            ERASE,
-            INDEXED,
-            DIRECTORIES
         }
     }
 }

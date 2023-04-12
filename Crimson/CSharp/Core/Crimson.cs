@@ -1,4 +1,7 @@
-﻿using NLog;
+﻿
+#define DEBUG
+
+using NLog;
 using Crimson.CSharp.Core;
 using Crimson.CSharp.Linking;
 using Crimson.CSharp.Specialising;
@@ -14,8 +17,10 @@ using System.Text.Json;
 
 namespace Crimson.CSharp.Core
 {
+
     internal class Crimson
     {
+
         private static Logger? LOGGER;
         public static readonly string VERSION = "v0.0";
 
@@ -30,8 +35,9 @@ namespace Crimson.CSharp.Core
                 ShowCredits();
 
                 // Setup arguments
-                bool useAutowiredArgs = true;
-                args = useAutowiredArgs ? GetTestArguments() : args;
+#if DEBUG
+                args = GetTestArguments() ?? args;
+#endif
                 Console.WriteLine(String.Join(' ', args));
 
                 //
@@ -63,19 +69,19 @@ namespace Crimson.CSharp.Core
 
 
         // ================= STARTUP =================
-
+#if DEBUG
         private static string[] GetTestArguments ()
         {
             Console.WriteLine("OVERRIDING INPUT ARGUMENTS FOR TESTING");
 
-            bool COMPILE = false;
+            bool COMPILE = true;
             if (COMPILE)
             {
                 return new string[] {
                     $"compile",
-                    $"-s Resources/Test Compilations/main.crm",
-                    $"-t Resources/Test Compilations/result/main",
-                    $"-n Resources/Native Library/",
+                    $"-s relative:///Resources/Test Compilations/main.crm",
+                    $"-t relative:///Resources/Test Compilations/result/main",
+                    $"-n relative:///Resources/Native Library/",
                     $"-w 4"
                 };
             }
@@ -90,12 +96,14 @@ namespace Crimson.CSharp.Core
                 };
             }
 
-            bool CLEAR = true;
+            bool CLEAR = false;
             if (CLEAR)
             {
                 return new string[] {
                     $"clear",
-                    $"-e"
+                    $"-e",
+                    //$"-i"
+                    //$"-u"
                 };
             }
 
@@ -111,6 +119,7 @@ namespace Crimson.CSharp.Core
 
             return null!;
         }
+#endif
 
 
         private static void ShowSplash ()
@@ -174,13 +183,25 @@ namespace Crimson.CSharp.Core
 
         //
 
-        public static FileInfo GetRoamingFile (string path)
+        public static string GetRoamingPath (string path)
         {
             string roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string relative = $"Crimson/{path}";
             string combined = Path.Combine(roaming, relative);
             string full = Path.GetFullPath(combined);
-            return new FileInfo(full);
+            return full;
+        }
+
+        public static FileInfo GetRoamingFile (string path)
+        {
+            string betterPath = GetRoamingPath(path);
+            return new FileInfo(betterPath);
+        }
+
+        public static DirectoryInfo GetRoamingDirectory (string path)
+        {
+            string betterPath = GetRoamingPath(path);
+            return new DirectoryInfo(betterPath);
         }
 
 

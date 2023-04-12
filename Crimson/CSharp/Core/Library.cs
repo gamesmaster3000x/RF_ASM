@@ -106,7 +106,7 @@ namespace Crimson.CSharp.Core
             {
                 LOGGER.Info($"Loading scope from {uri}");
 
-                Cache.GetCachedQueryResult result = Cache.Get(uri);
+                Cache.GetCachedQueryResult result = Cache.GetOrInstall(uri);
                 if (!result.Exists) throw new NullReferenceException($"Library was unable to get cached or fetch new contents of {uri}.");
 
                 Scope scope = ParseScopeText(uri, result.Contents!);
@@ -253,15 +253,15 @@ namespace Crimson.CSharp.Core
             }
         }
 
-        private Scope ParseScopeText (AbstractCURI source, string textIn)
+        private Scope ParseScopeText (AbstractCURI source, char[] data)
         {
             try
             {
-                LOGGER.Debug($"Parsing {textIn.Length} characters from {source} with ANTLR...");
+                LOGGER.Debug($"Parsing {data.Length} characters from {source} with ANTLR...");
                 string sourceName = $"{source}";
 
                 // Get Antlr context
-                AntlrInputStream a4is = new AntlrInputStream(textIn);
+                AntlrInputStream a4is = new AntlrInputStream(data, data.Length);
 
                 CrimsonLexer lexer = new CrimsonLexer(a4is);
                 lexer.AddErrorListener(new LexerErrorListener(sourceName));
