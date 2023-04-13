@@ -94,27 +94,27 @@ namespace Crimson.CSharp.Core.CURI
             { RelativeCURI.SCHEME, new RelativeCURI.Factory() }
         };
 
-        public static AbstractCURI? Create (string uriText)
+        public static AbstractCURI? Create (string relativeOrAbsoluteUri, AbstractCURI? anchor)
         {
-            if (String.IsNullOrWhiteSpace(uriText))
+            if (String.IsNullOrWhiteSpace(relativeOrAbsoluteUri))
                 return null;
 
-            string trimmedText = uriText.Trim(' ', '\t', '\n', '\v', '\f', '\r', '"');
+            string trimmedText = relativeOrAbsoluteUri.Trim(' ', '\t', '\n', '\v', '\f', '\r', '"');
 
             if (Uri.TryCreate(trimmedText, new UriCreationOptions { DangerousDisablePathAndQueryCanonicalization = false }, out Uri? uri))
-                return Create(uri);
+                return Create(uri, anchor);
 
-            throw new UriFormatException($"Unable to parse illegal URI string '{trimmedText}' ({uriText})");
+            throw new UriFormatException($"Unable to parse illegal URI string '{trimmedText}' ({relativeOrAbsoluteUri})");
         }
 
-        public static AbstractCURI Create (Uri uri)
+        public static AbstractCURI Create (Uri relativeOrAbsoluteUri, AbstractCURI? anchor)
         {
-            if (Factories.TryGetValue(uri.Scheme, out ICURIFactory? factory))
+            if (Factories.TryGetValue(relativeOrAbsoluteUri.Scheme, out ICURIFactory? factory))
             {
-                return factory!.Make(uri);
+                return factory!.Make(relativeOrAbsoluteUri, anchor);
             }
 
-            throw new UriFormatException($"No CURI factory is registered for URIs with scheme {uri.Host}: {uri}");
+            throw new UriFormatException($"No CURI factory is registered for URIs with scheme {relativeOrAbsoluteUri.Host}: {relativeOrAbsoluteUri}");
         }
     }
 }

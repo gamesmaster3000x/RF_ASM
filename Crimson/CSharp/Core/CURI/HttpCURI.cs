@@ -40,7 +40,7 @@ namespace Crimson.CSharp.Core.CURI
 
         public class Factory : ICURIFactory
         {
-            public AbstractCURI Make (Uri uri)
+            public AbstractCURI Make (Uri relativeOrAbsoluteUri, AbstractCURI? anchor)
             {
                 return new HttpCURI(uri);
             }

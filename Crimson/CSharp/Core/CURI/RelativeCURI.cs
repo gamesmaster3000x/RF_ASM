@@ -10,13 +10,7 @@ using System.Threading.Tasks;
 namespace Crimson.CSharp.Core.CURI
 {
     /// <summary>
-    /// <para>
-    ///     <b>Crimson URI</b>
-    /// </para>
-    /// <para>
-    ///     A wrapper class for a Uri which conceals all of the strange things which Crimson 
-    ///     does in the background (i.e. custom "root.crimson" and "native.crimson" hosts).
-    /// </para>
+    ///     A CURI which inherits the scheme of its anchor and creates a new path by combining the paths of its anchor and its path.
     /// </summary>
     public class RelativeCURI : AbstractCURI
     {
@@ -36,14 +30,26 @@ namespace Crimson.CSharp.Core.CURI
             }
         }
 
+        public AbstractCURI Anchor { get; private set; }
+
+        public AbstractCURI Result
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         public override bool Equals (AbstractCURI? other)
         {
             return other?.Uri?.Equals(Uri) ?? false;
         }
 
-        public RelativeCURI (Uri uri) : base(uri)
+        public RelativeCURI (Uri relative, AbstractCURI anchor) : base(relative)
         {
-            if (!SCHEME.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}. Found '{uri.Scheme}'.");
+            Anchor = anchor;
+            if (SCHEME.Equals(Anchor.Uri.Scheme)) throw new UriFormatException($"The anchor {anchor} for the {GetType()} {relative} may not be relative.");
+            if (!SCHEME.Equals(relative.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {SCHEME}. Found '{relative.Scheme}'.");
 
             string abs = WebUtility.UrlDecode(Uri.AbsolutePath);
             if (Path.IsPathRooted(abs)) throw new UriFormatException($"The path of a {GetType()} may not be rooted.");
@@ -53,7 +59,7 @@ namespace Crimson.CSharp.Core.CURI
         {
             try
             {
-                return File.OpenRead(AbsolutePath);
+                return Result.GetStream();
             }
             catch (Exception ex)
             {

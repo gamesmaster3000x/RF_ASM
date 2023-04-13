@@ -47,9 +47,15 @@ namespace Crimson.CSharp.Core.CURI
 
         public class Factory : ICURIFactory
         {
-            public AbstractCURI Make (Uri uri)
+            /// <summary>
+            /// Implementation of <see cref="ICURIFactory.Make(Uri, AbstractCURI?)"/> which ignores the <paramref name="absoluteOrRelativeUri"/>.
+            /// </summary>
+            /// <param name="absoluteOrRelativeUri"></param>
+            /// <param name="anchor"></param>
+            /// <returns>A <see cref="FileAbsoluteCURI"/> of the <paramref name="absoluteOrRelativeUri"/>.</returns>
+            public AbstractCURI Make (Uri absoluteOrRelativeUri, AbstractCURI? anchor)
             {
-                return new FileAbsoluteCURI(uri);
+                return new FileAbsoluteCURI(absoluteOrRelativeUri);
             }
         }
     }
