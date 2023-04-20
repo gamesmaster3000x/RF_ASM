@@ -13,6 +13,10 @@
         <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.0" />
+    </ItemGroup>
+
     <Target Name="Tailwind" BeforeTargets="Build">
         <Exec Command="npm run css:build" />
     </Target>
