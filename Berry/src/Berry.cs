@@ -3,6 +3,7 @@ using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Pqc.Crypto.Crystals.Dilithium;
 using Org.BouncyCastle.Pqc.Crypto.Crystals.Kyber;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Tls;
 using System.Text;
 
 namespace Berry.src
@@ -11,7 +12,7 @@ namespace Berry.src
 	{
 		public static int Main (string[] args)
 		{
-			Crypto();
+			Test();
 
 			Run();
 			return 0;
@@ -65,7 +66,19 @@ namespace Berry.src
 			return $"Hello, World! {id}";
 		}
 
-		public static void Generate ()
+		public static void Test ()
+		{
+			AsymmetricCipherKeyPair keyPair1 = Generate();
+			AsymmetricCipherKeyPair keyPair2 = Generate();
+
+			byte[] message = Encoding.UTF8.GetBytes("Important Message!");
+			byte[] signature = Sign((DilithiumPrivateKeyParameters) keyPair1.Private, message);
+
+			bool good1 = Verify((DilithiumPublicKeyParameters) keyPair1.Public, message, signature);
+			bool good2 = Verify((DilithiumPublicKeyParameters) keyPair2.Public, message, signature);
+		}
+
+		public static AsymmetricCipherKeyPair Generate ()
 		{
 			DilithiumKeyPairGenerator generator = new DilithiumKeyPairGenerator();
 			generator.Init(new DilithiumKeyGenerationParameters(
@@ -75,42 +88,40 @@ namespace Berry.src
 
 			AsymmetricCipherKeyPair keyPair = generator.GenerateKeyPair();
 
-			// All the later methods need bytes of these key - how do I get them?
-			AsymmetricKeyParameter publicKey = keyPair.Public;
-			AsymmetricKeyParameter privateKey = keyPair.Private;
+			return keyPair;
 		}
 
-		public static void Sign ()
+		public static byte[] Sign (DilithiumPrivateKeyParameters privateKey, byte[] message)
 		{
 			DilithiumSigner signer = new DilithiumSigner();
 
 			// What do I put in all these parameters?
 			signer.Init(true, new DilithiumPrivateKeyParameters(
 				DilithiumParameters.Dilithium5Aes,
-						// byte[] rho,
-						// byte[] K,
-						// byte[] tr,
-						// byte[] s1,
-						// byte[] s2,
-						// byte[] t1,
-						// byte[] t2,
+						privateKey.Rho,
+						privateKey.K,
+						privateKey.Tr,
+						privateKey.S1,
+						privateKey.S2,
+						privateKey.T0,
+						privateKey.T1
 				));
 
-			string messageText = "Important Message!";
-
-			// Send the message and signature
-			byte[] message = Encoding.UTF8.GetBytes(messageText);
 			byte[] signature = signer.GenerateSignature(message);
+			return signature;
 		}
 
-		public void Verify (byte[] publicKey, byte[] message, byte[] signature)
+		public static bool Verify (DilithiumPublicKeyParameters publicKey, byte[] message, byte[] signature)
 		{
 			DilithiumSigner verifier = new DilithiumSigner();
 
 			// The constructor asks for "pkEncoded" - how should the bytes be encoded?
-			verifier.Init(false, new DilithiumPublicKeyParameters(publicKey));
+			verifier.Init(false, new DilithiumPublicKeyParameters(
+				DilithiumParameters.Dilithium5Aes,
+				publicKey.GetEncoded()
+				));
 
-			bool good = verifier.VerifySignature(message, signature);
+			return verifier.VerifySignature(message, signature);
 		}
 	}
 }
