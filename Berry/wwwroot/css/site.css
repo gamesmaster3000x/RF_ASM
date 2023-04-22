@@ -24059,20 +24059,6 @@ html {
   justify-content: space-between;
 }
 
-html.theme-light {
-  --background-color: #e9e8ed;
-  --accent-colour: #f68f5e;
-  --text-colour: #92374d;
-  --background-image-url: "../res/light/BerryLogo (Light).svg";
-}
-
-html.theme-dark {
-  --background-color: #222A68;
-  --accent-colour: #4B644A;
-  --text-colour: #c7d6d5;
-  --background-image-url: "../res/light/BerryLogo (Light).svg";
-}
-
 header {
   position: sticky;
   top: 0;
@@ -24082,17 +24068,21 @@ header {
   padding: 0;
 }
 
+.berry-background {
+  background-image: url("../res/light/BerryLogo (Light).svg");
+  background-size: auto;
+  background-repeat: no-repeat;
+  z-index: -10;
+}
+
 body {
   min-height: 100vh;
+  min-width: 100vw;
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 0;
   margin: 0;
-  background-image: --background-image-url;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 body h1, body .h1 {
   font-size: 72px;
@@ -24105,9 +24095,23 @@ body h2, body .h2 {
   color: var(--text-colour);
 }
 
+body::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: url("../res/light/BerryLogo (Light).svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(8px);
+  z-index: -1;
+}
+
 footer {
   margin-top: auto;
-  border-top: 1px solid #9C92A3;
   width: 100vw;
   max-width: 100%;
 }
