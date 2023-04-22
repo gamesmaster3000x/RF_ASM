@@ -1,1 +1,64 @@
-/*# sourceMappingURL=site.css.map */
+.theme-light {
+  --background-color: #e9e8ed;
+  --accent-colour: #f68f5e;
+  --text-colour: #92374d;
+}
+
+.theme-dark {
+  --background-color: #222A68;
+  --accent-colour: #4B644A;
+  --text-colour: #c7d6d5;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+}
+
+header {
+  position: sticky;
+  top: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+  border-top: 1px solid #9C92A3;
+}
+
+ul.navbar {
+  background-color: #92374d;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul.navbar li {
+  float: right;
+  background-color: var(--accent-colour);
+}
+ul.navbar li a {
+  display: block;
+  text-align: center;
+  color: var(--text-colour);
+  width: 60px;
+  padding: 8px;
+  text-decoration: none;
+}
+ul.navbar li .active {
+  filter: brightness(50%);
+}
+ul.navbar li :not(.active) {
+  filter: brightness(100%);
+}
+ul.navbar li :hover {
+  filter: brightness(75%);
+}/*# sourceMappingURL=site.css.map */
