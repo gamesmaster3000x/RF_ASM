@@ -35,6 +35,8 @@ namespace Berry.src
 			// Add services to the container.
 			_ = builder.Services.AddRazorPages();
 
+			_ = builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
 			var app = builder.Build();
 
 			string expression = @".+exp.+";
