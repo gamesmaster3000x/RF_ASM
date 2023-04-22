@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components;
 
 <!DOCTYPE html>
-<html lang="en" class="theme-dark">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />
@@ -13,12 +13,22 @@
 
 <body>
 
-    <header>
-        <ul class="navbar">
-            <li><a asp-page="/Index">Home</a></li>
-            <li><a asp-page="/Browse">Browse</a></li>
+    <nav class="navbar navbar-expand-lg">
+        <ul class="navbar-nav">
+            <a class="navbar-brand" href="#">
+                <picture>
+                    
+                </picture>
+                Berry
+            </a>
+            <li class="nav-item">
+                <a class="nav-link active" asp-page="/Index">Home</a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link active" asp-page="/Browse">Browse</a>
+            </li>
         </ul>
-    </header>
+    </nav>
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -28,7 +38,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Berry - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <p>&copy; 2023 - Berry - <a asp-area="" asp-page="/Privacy">Privacy</a></p>
         </div>
     </footer>
 

@@ -1,39 +1,39 @@
 
-$magenta: #92374d;
-$mint: #cbf3f0;
-$white: #e9e8ed;
-$tangerine: #f68f5e;
-$bittersweet: #f76d5f;
-
-$majorelle: #574AE2;
-$royal: #222A68;
-$hunter: #4B644A;
-$ash: #c7d6d5;
-$quartz: #9C92A3;
-
-.theme-light {
-  --background-color: #e9e8ed;
-  --accent-colour: #f68f5e;
-  --text-colour: #92374d;
-}
-
-.theme-dark {
-  --background-color: #222A68;
-  --accent-colour: #4B644A;
-  --text-colour: #c7d6d5;
-}
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,600;1,200;1,300&display=swap');
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "themes.scss";
 
 html {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-flow: column wrap;
   background-color: var(--background-color);
+  font-family: 'Nunito Sans', sans-serif;
+  justify-content: space-between;  
+}
+
+html.theme-light {
+  --background-color: #e9e8ed; 
+  --accent-colour: #f68f5e;
+  --text-colour: #92374d;
+  --background-image-url: "../res/light/BerryLogo (Light).svg";
+}
+
+html.theme-dark {
+  --background-color: #222A68; 
+  --accent-colour: #4B644A;
+  --text-colour: #c7d6d5;
+  --background-image-url: "../res/light/BerryLogo (Light).svg";
 }
 
 header {
   position: sticky;
   top: 0;
+  width: 100vw;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -41,43 +41,40 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 0;
+  margin: 0;
+
+  //background-image: url(--background-image-url);
+  //filter: blur(8px);
+  background-image: --background-image-url;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  h1 {
+    font-size: 72px;
+    font-weight: 600;
+    color: var(--text-colour);
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--text-colour);
+  }
 }
 
 footer {
   margin-top: auto;
   border-top:1px solid $quartz;
-}
+  width: 100vw;
+  max-width: 100%;
 
-// Navigation bar
-ul.navbar {
-  background-color: $magenta;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+  p {
+    color: var(--text-colour)
+  }
 
-  li {
-    float: right;
-    background-color: var(--accent-colour);
-
-    a {
-      display: block;
-      text-align: center;
-      color: var(--text-colour);
-      width: 60px;
-      padding: 8px;
-      text-decoration: none;
-    }
-
-    .active {
-      filter: brightness(50%)
-    }
-
-    :not(.active) {
-      filter: brightness(100%)
-    }
-
-    :hover {
-      filter: brightness(75%)
-    }
+  a {
+    color: var(--text-colour)
   }
 }

@@ -1,0 +1,19 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$magenta: #92374d;
+$mint: #cbf3f0;
+$white: #e9e8ed;
+$tangerine: #f68f5e;
+$bittersweet: #f76d5f;
+
+$majorelle: #574AE2;
+$royal: #222A68;
+$hunter: #4B644A;
+$ash: #c7d6d5;
+$quartz: #9C92A3; 
+
+@include color-mode(light) {
+    // CSS variable overrides here...
+
+    $body-bg: $white;
+} 
