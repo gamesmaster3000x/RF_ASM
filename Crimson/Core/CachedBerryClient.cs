@@ -347,7 +347,7 @@ namespace Crimson.Core
                 LOGGER.Info($"Refreshing all {Index.Contents.Count} indexed CURIs...");
                 foreach (var pair in Index.Contents)
                 {
-                    AbstractCURI? curi = AbstractCURI.Create(pair.Value.URI);
+                    AbstractCURI? curi = AbstractCURI.Create(pair.Value.URI, null);
                     Refresh(curi);
                 }
                 LOGGER.Info("Refresh complete.");

@@ -13,8 +13,8 @@ namespace Crimson.Parsing.Statements
         public AbstractCURI CURI { get; set; }
         public FullNameCToken Alias { get; set; }
 
-        public ImportCStatement (string uri, FullNameCToken alias) : this(AbstractCURI.Create(uri), alias) { }
-        public ImportCStatement (Uri uri, FullNameCToken alias) : this(AbstractCURI.Create(uri), alias) { }
+        public ImportCStatement (string uri, FullNameCToken alias) : this(AbstractCURI.Create(uri, null), alias) { }
+        public ImportCStatement (Uri uri, FullNameCToken alias) : this(AbstractCURI.Create(uri, null), alias) { }
 
         public ImportCStatement (AbstractCURI curi, FullNameCToken alias)
         {

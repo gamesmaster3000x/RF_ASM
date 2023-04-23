@@ -8,14 +8,14 @@ namespace Crimson.Exceptions
         public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private string Name { get; set; }
-        public ParserErrorListener(string name)
+        public ParserErrorListener (string name)
         {
             Name = name;
         }
 
-        public void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        public void SyntaxError (TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            Crimson.Crimson.Panic($"A parser error has occurred parsing {Name}", Crimson.Crimson.PanicCode.COMPILE_PARSE, null!);
+            Crimson.Panic($"A parser error has occurred parsing {Name}", Crimson.PanicCode.COMPILE_PARSE, null!);
         }
     }
 }

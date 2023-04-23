@@ -21,7 +21,7 @@ namespace Crimson.Core
                 HelpText = "Path to the root source file to translate. " +
                 "If no file extension given, .crm will be assumed.")]
             public string SourcePath { get; set; }
-            public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!); }
+            public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!, null); }
 
 
             // Target
@@ -30,7 +30,7 @@ namespace Crimson.Core
                 HelpText = "Path to the desired target location or output file. " +
                 "If no file extension provided, will assume .crm.")]
             public string? TargetPath { get; set; }
-            public AbstractCURI TargetCURI { get => AbstractCURI.Create(TargetPath!); }
+            public AbstractCURI TargetCURI { get => AbstractCURI.Create(TargetPath!, null); }
 
 
             // Native library
@@ -40,7 +40,7 @@ namespace Crimson.Core
                 "If not provided, will use a packaged version. " +
                 "If provided, but a required file is not found, the file will be created from the packaged library.")]
             public string? NativePath { get; set; }
-            public AbstractCURI NativeCURI { get => AbstractCURI.Create(NativePath!); }
+            public AbstractCURI NativeCURI { get => AbstractCURI.Create(NativePath!, null); }
 
 
             // Entry function
@@ -91,7 +91,7 @@ namespace Crimson.Core
                 Required = true,
                 HelpText = "URI to the source file to install.")]
             public string? SourcePath { get; set; }
-            public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!); }
+            public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!, null); }
 
             //
             [Option(longName: "overwrite", shortName: 'o',
@@ -153,7 +153,7 @@ namespace Crimson.Core
                 Default = "",
                 HelpText = "URI to the source file to refresh.")]
             public string? SourcePath { get; set; }
-            public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!); }
+            public AbstractCURI SourceCURI { get => AbstractCURI.Create(SourcePath!, null); }
 
             // 
             [Option(longName: "all", shortName: 'a',

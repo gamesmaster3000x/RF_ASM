@@ -8,14 +8,14 @@ namespace Crimson.Exceptions
         public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private string Name { get; set; }
-        public LexerErrorListener(string name)
+        public LexerErrorListener (string name)
         {
             Name = name;
         }
 
-        public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        public void SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            Crimson.Crimson.Panic($"A lexer error has occurred lexing {Name}", Crimson.Crimson.PanicCode.COMPILE_PARSE, null!);
+            Crimson.Panic($"A lexer error has occurred lexing {Name}", Crimson.PanicCode.COMPILE_PARSE, null!);
         }
     }
 }

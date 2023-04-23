@@ -67,6 +67,11 @@ namespace Crimson.CURI
             {
                 return new NativeCURI(uri);
             }
+
+            public AbstractCURI Make (Uri relativeOrAbsoluteUri, AbstractCURI? anchor)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

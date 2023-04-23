@@ -42,7 +42,7 @@ namespace Crimson.CURI
         {
             public AbstractCURI Make (Uri relativeOrAbsoluteUri, AbstractCURI? anchor)
             {
-                return new HttpCURI(uri);
+                return new HttpCURI(relativeOrAbsoluteUri);
             }
         }
     }

@@ -14,12 +14,12 @@ namespace Crimson.Exceptions
     {
         public CrimsonOptions.Clear Clear { get; private set; }
 
-        public ClearModeException(CrimsonOptions.Clear clear) : base(Crimson.Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
+        public ClearModeException (CrimsonOptions.Clear clear) : base(Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
         {
             Clear = clear;
         }
 
-        public override IList<string> GetDetailedMessage()
+        public override IList<string> GetDetailedMessage ()
         {
             List<string> strings = new List<string>()
             {
@@ -39,14 +39,14 @@ namespace Crimson.Exceptions
         public AbstractCrimsonStatement? Statement { get; private set; }
         public Exception? Cause { get; private set; }
 
-        public StatementParseException(string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Crimson.Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
+        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
         {
             Message = message;
             Statement = statement;
             Cause = cause;
         }
 
-        public override IList<string> GetDetailedMessage()
+        public override IList<string> GetDetailedMessage ()
         {
             List<string> strings = new List<string>()
             {
@@ -65,14 +65,14 @@ namespace Crimson.Exceptions
         public AbstractCURI CURI { get; private set; }
         public CURIExceptionReason Reason { get; private set; }
 
-        public CURIException(string message, AbstractCURI uri, CURIExceptionReason reason) : base(Crimson.Crimson.PanicCode.CURI)
+        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(Crimson.PanicCode.CURI)
         {
             Message = message;
             CURI = uri;
             Reason = reason;
         }
 
-        public override IList<string> GetDetailedMessage()
+        public override IList<string> GetDetailedMessage ()
         {
             List<string> strings = new List<string>
             {
@@ -100,14 +100,14 @@ namespace Crimson.Exceptions
 
     internal class CrimsonParserException : CrimsonException
     {
-        public CrimsonParserException(string message) : base(Crimson.Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
+        public CrimsonParserException (string message) : base(Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
         {
         }
     }
 
     internal class ScopeGenerationException : CrimsonException
     {
-        public ScopeGenerationException() : base(Crimson.Crimson.PanicCode.COMPILE_PARSE_SCOPE)
+        public ScopeGenerationException () : base(Crimson.PanicCode.COMPILE_PARSE_SCOPE)
         {
 
         }
