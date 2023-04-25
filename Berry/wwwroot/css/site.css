@@ -12032,8 +12032,7 @@ html {
   font-family: "Nunito Sans", sans-serif;
   justify-content: space-between;
 }
-
-header {
+html header {
   position: sticky;
   top: 0;
   width: 100vw;
@@ -12041,26 +12040,31 @@ header {
   margin: 0;
   padding: 0;
 }
-
-body {
+html body {
   min-height: 100vh;
   min-width: 100vw;
   display: flex;
   flex-direction: column;
+  align-items: center;
   flex: 1;
   padding: 0;
   margin: 0;
 }
-body h1, body .h1 {
+html body h1, html body .h1 {
   font-size: 72px;
   font-weight: 600;
 }
-body h2, body .h2 {
+html body h2, html body .h2 {
   font-size: 36px;
   font-weight: 600;
 }
-
-body::before {
+html body input[type=search] {
+  filter: brightness(120%);
+}
+html body input[type=text] {
+  filter: brightness(120%);
+}
+html body::before {
   content: "";
   position: absolute;
   left: 0;
@@ -12073,15 +12077,10 @@ body::before {
   background-position: center;
   z-index: -1;
 }
-
-footer {
+html footer {
   margin-top: auto;
   width: 100vw;
   max-width: 100%;
-}
-
-input[type=search] {
-  filter: brightness(120%);
 }
 
 [data-bs-theme=light] {

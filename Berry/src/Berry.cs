@@ -59,6 +59,7 @@ namespace Berry.src
             }
             _ = app.MapRazorPages();
             _ = app.UseRouting();
+            _ = app.UseStaticFiles();
             _ = app.UseAuthorization();
             _ = app.UseHsts();
             _ = app.UseHttpsRedirection();

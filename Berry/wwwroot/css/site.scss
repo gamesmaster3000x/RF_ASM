@@ -28,63 +28,68 @@ html {
   flex-flow: column wrap;
   font-family: 'Nunito Sans', sans-serif;
   justify-content: space-between;  
-}
 
-header {
-  position: sticky;
-  top: 0;
-  width: 100vw;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100vh;
-  min-width: 100vw;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 0;
-  margin: 0;
-
-  h1 {
-    font-size: 72px;
-    font-weight: 600;
+  header {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
   }
+  
+  body {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+  
+    h1 {
+      font-size: 72px;
+      font-weight: 600;
+    }
+  
+    h2 {
+      font-size: 36px;
+      font-weight: 600;
+    }
+  
+    input[type=search] {
+      filter: brightness(120%);
+    }
 
-  h2 {
-    font-size: 36px;
-    font-weight: 600;
+    input[type=text] {
+      filter: brightness(120%);
+    }
+  }
+  
+  body::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-image: url($berryLogo);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    // filters in color theme
+    z-index: -1;  
+  }
+  
+  footer {
+    margin-top: auto;
+    width: 100vw;
+    max-width: 100%;
   }
 }
 
-body::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-image: url($berryLogo);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  // filters in color theme
-  z-index: -1; 
-}
-
-footer {
-  margin-top: auto;
-  width: 100vw;
-  max-width: 100%;
-}
-
-input[type=search] {
-  filter: brightness(120%);
-}
-
-// Themes
+// ======================= Themes =======================
 
 @include color-mode("light") {
 
@@ -126,4 +131,4 @@ input[type=search] {
   --bs-body-bg: var(--bs-blue);
   --bs-body-bg-rgb: #{to-rgb($blue)};
   --bs-tertiary-bg: #{$blue-600};
-}
+} 
