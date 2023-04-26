@@ -39,8 +39,8 @@ namespace CrimsonCore.Parsing
 
                 // Add operation handlers
                 IList<CrimsonParser.OperationHandlerContext> operationHandlersCtxs = context._opHandlers;
-                foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs)
-                    OperationHandlerCStatement unitStatement = VisitOperationHandler(unitStatementCtx);
+                //foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs) //TODO Operation handlers ScopeVisitor
+                //    OperationHandlerCStatement unitStatement = VisitOperationHandler(unitStatementCtx);
 
                 // Visit Compilation-Unit statements
                 IList<CrimsonParser.StatementContext> unitStatementCtxs = context._statements;

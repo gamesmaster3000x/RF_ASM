@@ -14,11 +14,11 @@ namespace CrimsonCore.Core
     {
         private static Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public static CrimsonCoreOptions.Compile? Options { get; private set; } = null;
+        public static CrimsonCoreOptions Options { get; private set; } = null;
 
         private Compiler () { }
 
-        public static async void Compile (CrimsonCoreOptions.Compile options, Library library, Linker linker, Generaliser generaliser, ISpecialiser flattener)
+        public static async void Compile (CrimsonCoreOptions options, Library library, Linker linker, Generaliser generaliser, ISpecialiser flattener)
         {
             try
             {

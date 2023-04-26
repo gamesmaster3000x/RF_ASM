@@ -206,7 +206,7 @@ namespace CrimsonCLI
             return new GetResult(exists: true, localPath: key, contents: contents);
         }
 
-        public static GetResult GetOrInstall (AbstractCURI curi)
+        public GetResult GetOrInstall (AbstractCURI curi)
         {
             GetResult result = Get(curi);
             if (result.Exists) return result;

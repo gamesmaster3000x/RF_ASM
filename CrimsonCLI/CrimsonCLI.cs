@@ -1,7 +1,6 @@
 ﻿#define CLI_DEBUG
 
 using CommandLine;
-using CrimsonCore.Core;
 using NLog.Config;
 using NLog;
 using System.Reflection;
@@ -21,9 +20,6 @@ namespace CrimsonCLI
                 args = GetTestArguments() ?? args;
 #endif
                 Console.WriteLine(string.Join(' ', args));
-
-                //
-                ConfigureMultithreading();
 
                 LOGGER!.Info("Parsing input arguments!");
                 var verbs = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
@@ -46,6 +42,7 @@ namespace CrimsonCLI
             return 0;
         }
 
+        private static Logger LOGGER;
         public static LogFactory LogFactory { get; private set; }
         public static string AssemblyLocation { get => Assembly.GetExecutingAssembly().Location; }
         private static LoggingConfiguration LogConfig { get; set; }
@@ -57,9 +54,10 @@ namespace CrimsonCLI
             LogConfig = new XmlLoggingConfiguration(_assemblyFolder + "\\ProjectX.exe.nlog", LogFactory);
 
             LogFactory.Configuration = LogConfig;
+            LOGGER = LogFactory.GetCurrentClassLogger();
         }
 
-
+        static CachedBerryClient CACHED_CLIENT = null;
 
 
         // ================= STARTUP =================
@@ -107,13 +105,18 @@ namespace CrimsonCLI
         }
 #endif
 
+        private static void Compile (CrimsonCLIOptions.Compile options)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private static void Install (CrimsonCLIOptions.Install options)
         {
             LOGGER!.Info($"Installing with: {options}");
             try
             {
-                CachedBerryClient.Install(options.SourceCURI, options.Overwrite);
+                CACHED_CLIENT.Install(options.SourceCURI, options.Overwrite);
             }
             catch (Exception ex)
             {
@@ -127,7 +130,7 @@ namespace CrimsonCLI
             LOGGER!.Info($"Clearing with: {options}");
             try
             {
-                CachedBerryClient.Clear(options.ClearMode);
+                CACHED_CLIENT.Clear(options.ClearMode);
             }
             catch (Exception ex)
             {
@@ -141,7 +144,7 @@ namespace CrimsonCLI
             LOGGER!.Info($"Refreshing with: {options}");
             try
             {
-                CachedBerryClient.Refresh(options.SourceCURI, options.All);
+                CACHED_CLIENT.Refresh(options.SourceCURI, options.All);
             }
             catch (Exception ex)
             {

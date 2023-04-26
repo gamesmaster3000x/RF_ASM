@@ -35,7 +35,7 @@ namespace CrimsonCore
             LogFactory.Configuration = LogConfig;
         }
 
-        private static void Compile (CrimsonCoreOptions.Compile options)
+        public static void Compile (CrimsonCoreOptions options)
         {
             LOGGER!.Info($"Compiling with: {options}");
             try

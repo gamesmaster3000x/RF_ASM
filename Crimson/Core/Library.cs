@@ -102,7 +102,7 @@ namespace CrimsonCore.Core
             {
                 LOGGER.Info($"Loading scope from {uri}");
 
-                IScopeProvider.GetResult result = CrimsonCore.ScopeProvider.GetOrInstall(uri);
+                IScopeProvider.GetResult result = CrimsonCore.ScopeProvider.Get(uri);
                 if (!result.Exists) throw new NullReferenceException($"Library was unable to get cached or fetch new contents of {uri}.");
 
                 Scope scope = ParseScopeText(uri, result.Contents!);
