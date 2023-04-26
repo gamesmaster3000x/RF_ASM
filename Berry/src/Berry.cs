@@ -12,8 +12,6 @@ namespace Berry.src
             WebApplication app = BuildApp();
             ConfigureApp(app);
 
-
-
             app.Run();
 
             return 0;
