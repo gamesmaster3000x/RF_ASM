@@ -1,6 +1,7 @@
-﻿using NLog;
+﻿using CrimsonCore.Specialising;
+using NLog;
 
-namespace Crimson.Specialising.RFASM
+namespace CrimsonCore.Specialising.RFASM
 {
     internal class RFASMProgram : AbstractSpecificAssemblyProgram
     {
@@ -8,41 +9,41 @@ namespace Crimson.Specialising.RFASM
 
         public List<Fragment> Fragments { get; }
 
-        public RFASMProgram()
+        public RFASMProgram ()
         {
             Fragments = new List<Fragment>();
         }
 
-        public void Add(Fragment f)
+        public void Add (Fragment f)
         {
             Fragments.Add(f);
         }
 
-        public void Add(params RFASMStatement[] statements)
+        public void Add (params RFASMStatement[] statements)
         {
             Fragment f = new Fragment(0);
             f.Add(statements);
             Add(f);
         }
 
-        public void Add(RFASMStatement statement)
+        public void Add (RFASMStatement statement)
         {
             Fragment f = new Fragment(0);
             f.Add(statement);
             Fragments.Add(f);
         }
 
-        public override IEnumerable<Fragment> GetFragments()
+        public override IEnumerable<Fragment> GetFragments ()
         {
             return Fragments;
         }
 
-        public override string GetExtension()
+        public override string GetExtension ()
         {
             return ".rfp";
         }
 
-        public override void Write(string path)
+        public override void Write (string path)
         {
             LOGGER.Info("Writing RFASMProgram to " + path);
 

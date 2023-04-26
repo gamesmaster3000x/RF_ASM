@@ -1,7 +1,7 @@
-﻿using Crimson.Generalising;
-using Crimson.Linking;
+﻿using CrimsonCore.Generalising;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Statements
+namespace CrimsonCore.Parsing.Statements
 {
     /// <summary>
     /// A collection of ICrimsonTokens which make a coherent "phrase".
@@ -10,11 +10,11 @@ namespace Crimson.Parsing.Statements
     {
         public bool Linked { get; set; }
 
-        public abstract void Link(LinkingContext context);
+        public abstract void Link (LinkingContext context);
 
-        public abstract IGeneralAssemblyStructure Generalise(GeneralisationContext context);
+        public abstract IGeneralAssemblyStructure Generalise (GeneralisationContext context);
 
-        public override string ToString()
+        public override string ToString ()
         {
             return GetType().Name;
         }

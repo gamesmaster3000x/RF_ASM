@@ -1,117 +1,68 @@
 ﻿
-#define DEBUG
+#define CORE_DEBUG
 
 using NLog;
-using Crimson.Specialising.RFASM;
-using System.Globalization;
-using CommandLine;
+using CrimsonCore.Specialising.RFASM;
 using System.Reflection;
-using System.Runtime.Intrinsics.X86;
-using Antlr4.Runtime.Misc;
-using System.Text.Json;
-using Crimson.Exceptions;
-using Crimson.Generalising;
-using Crimson.Linking;
-using Crimson.Specialising;
-using Crimson.Core;
+using CrimsonCore.Core;
+using CrimsonCore.Exceptions;
+using CrimsonCore.Specialising;
+using CrimsonCore.Generalising;
+using CrimsonCore.Linking;
+using NLog.Config;
 
-namespace Crimson
+namespace CrimsonCore
 {
 
-    internal class Crimson
+    public class CrimsonCore
     {
 
         private static Logger? LOGGER;
         public static readonly string VERSION = "v0.0";
 
-        public static int Main (string[] args)
+        public static IScopeProvider ScopeProvider;
+
+        public static LogFactory LogFactory { get; private set; }
+        public static string AssemblyLocation { get => Assembly.GetExecutingAssembly().Location; }
+        private static LoggingConfiguration LogConfig { get; set; }
+
+        static CrimsonCore ()
         {
+            LogFactory = new LogFactory();
+            string _assemblyFolder = Path.GetDirectoryName(AssemblyLocation);
+            LogConfig = new XmlLoggingConfiguration(_assemblyFolder + "\\ProjectX.exe.nlog", LogFactory);
+
+            LogFactory.Configuration = LogConfig;
+        }
+
+        private static void Compile (CrimsonCoreOptions.Compile options)
+        {
+            LOGGER!.Info($"Compiling with: {options}");
             try
             {
-                Thread.CurrentThread.Name = "main";
+                Console.WriteLine("  Compile: SourceUri: " + options.SourceCURI);
+                Console.WriteLine("  Compile: TargetUri: " + options.TargetCURI);
+                Console.WriteLine("  Compile: NativeUri: " + options.NativeCURI);
+                Console.WriteLine("  Compile: DumpIntermediates: " + options.DumpIntermediates);
+                Console.WriteLine("  Compile: DataWidth: " + options.DataWidth);
 
-                // Start
                 ShowSplash();
                 ShowCredits();
-
-                // Setup arguments
-#if DEBUG
-                args = GetTestArguments() ?? args;
-#endif
-                Console.WriteLine(string.Join(' ', args));
-
-                //
                 ConfigureNLog();
 
-                //
-                ConfigureMultithreading();
+                Library generator = new Library();
+                Linker linker = new Linker();
+                Generaliser generaliser = new Generaliser();
+                ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default specialiser to RFASM
 
-                LOGGER!.Info("Parsing input arguments!");
-                var verbs = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
-                var result = Parser.Default.ParseArguments<
-                        CrimsonOptions.Compile,
-                        CrimsonOptions.Clear,
-                        CrimsonOptions.Install,
-                        CrimsonOptions.Refresh
-                        >(args)
-                    .WithParsed<CrimsonOptions.Compile>(options => Compile(options))
-                    .WithParsed<CrimsonOptions.Install>(options => Install(options))
-                    .WithParsed<CrimsonOptions.Clear>(options => Clear(options))
-                    .WithParsed<CrimsonOptions.Refresh>(options => Refresh(options));
+                Compiler.Compile(options, generator, linker, generaliser, specialiser);
             }
             catch (Exception ex)
             {
-                Panic("An uncaught error occurred during program execution.", PanicCode.ARGUMENTS, ex);
+                Panic("Error executing verb 'compile'.", PanicCode.COMPILE, ex);
                 throw;
             }
-            return 0;
         }
-
-
-        // ================= STARTUP =================
-#if DEBUG
-        private static string[] GetTestArguments ()
-        {
-            Console.WriteLine("OVERRIDING INPUT ARGUMENTS FOR TESTING");
-
-            bool COMPILE = true;
-            if (COMPILE)
-                return new string[] {
-                    $"compile",
-                    $"-s relative:///Resources/Test Compilations/main.crm",
-                    $"-t relative:///Resources/Test Compilations/result/main",
-                    $"-n relative:///Resources/Native Library/",
-                    $"-w 4"
-                };
-
-            bool INSTALL = false;
-            if (INSTALL)
-                return new string[] {
-                    $"install",
-                    $"-s http://raw.githubusercontent.com/GenElectrovise/RF_ASM/master/Crimson/Resources/Native%20Library/heap.crm",
-                    //$"-o"
-                };
-
-            bool CLEAR = false;
-            if (CLEAR)
-                return new string[] {
-                    $"clear",
-                    $"-e",
-                    //$"-i"
-                    //$"-u"
-                };
-
-            bool REFRESH = false;
-            if (REFRESH)
-                return new string[] {
-                    $"refresh",
-                    $"-s http://raw.githubusercontent.com/GenElectrovise/RF_ASM/master/Crimson/Resources/Native%20Library/heap.crm",
-                    //$"-a"
-                };
-
-            return null!;
-        }
-#endif
 
 
         private static void ShowSplash ()
@@ -197,77 +148,6 @@ namespace Crimson
         }
 
 
-        // ================= VERBS =================
-
-
-        private static void Compile (CrimsonOptions.Compile options)
-        {
-            LOGGER!.Info($"Compiling with: {options}");
-            try
-            {
-                Console.WriteLine("  Compile: SourceUri: " + options.SourceCURI);
-                Console.WriteLine("  Compile: TargetUri: " + options.TargetCURI);
-                Console.WriteLine("  Compile: NativeUri: " + options.NativeCURI);
-                Console.WriteLine("  Compile: DumpIntermediates: " + options.DumpIntermediates);
-                Console.WriteLine("  Compile: DataWidth: " + options.DataWidth);
-
-                Library generator = new Library();
-                Linker linker = new Linker();
-                Generaliser generaliser = new Generaliser();
-                ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default specialiser to RFASM
-
-                Compiler.Compile(options, generator, linker, generaliser, specialiser);
-            }
-            catch (Exception ex)
-            {
-                Panic("Error executing verb 'compile'.", PanicCode.COMPILE, ex);
-                throw;
-            }
-        }
-
-        private static void Install (CrimsonOptions.Install options)
-        {
-            LOGGER!.Info($"Installing with: {options}");
-            try
-            {
-                CachedBerryClient.Install(options.SourceCURI, options.Overwrite);
-            }
-            catch (Exception ex)
-            {
-                Panic("Error executing verb 'install'.", PanicCode.CACHE_INSTALL, ex);
-                throw;
-            }
-        }
-
-        private static void Clear (CrimsonOptions.Clear options)
-        {
-            LOGGER!.Info($"Clearing with: {options}");
-            try
-            {
-                CachedBerryClient.Clear(options.ClearMode);
-            }
-            catch (Exception ex)
-            {
-                Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
-                throw;
-            }
-        }
-
-        private static void Refresh (CrimsonOptions.Refresh options)
-        {
-            LOGGER!.Info($"Refreshing with: {options}");
-            try
-            {
-                CachedBerryClient.Refresh(options.SourceCURI, options.All);
-            }
-            catch (Exception ex)
-            {
-                Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
-                throw;
-            }
-        }
-
-
         // ================= PANIC =================
 
 
@@ -286,10 +166,10 @@ namespace Crimson
                     $"",
                     $" >> {message}",
                     $"",
-                    $"{(e != null ? e.GetType().Name : "<Exception is Null>")} {(e is CrimsonException ? $"({typeof(CrimsonException).Name})" : "")}",
+                    $"{(e != null ? e.GetType().Name : "<Exception is Null>")} {(e is CrimsonCoreException ? $"({typeof(CrimsonCoreException).Name})" : "")}",
                 };
                 if (e != null)
-                    if (e is CrimsonException ce)
+                    if (e is CrimsonCoreException ce)
                     {
                         lines.AddRange(ce.GetDetailedMessage());
                         lines.Add($"Inner panic code: {(int) ce.Code} ({Enum.GetName(ce.Code)})");

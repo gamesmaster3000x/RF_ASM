@@ -1,8 +1,7 @@
-﻿using Crimson.Specialising.RFASM;
-using Crimson.Generalising;
-using NLog;
+﻿using NLog;
+using CrimsonCore.Generalising;
 
-namespace Crimson.Specialising.RFASM
+namespace CrimsonCore.Specialising.RFASM
 {
     internal class RFASMSpecialiser : ISpecialiser
     {

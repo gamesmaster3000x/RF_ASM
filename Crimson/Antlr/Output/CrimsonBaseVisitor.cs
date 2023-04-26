@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Crimson.AntlrBuild {
+namespace CrimsonCore.AntlrBuild {
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -459,4 +459,4 @@ public partial class CrimsonBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitFullName([NotNull] CrimsonParser.FullNameContext context) { return VisitChildren(context); }
 }
-} // namespace Crimson.AntlrBuild
+} // namespace CrimsonCore.AntlrBuild

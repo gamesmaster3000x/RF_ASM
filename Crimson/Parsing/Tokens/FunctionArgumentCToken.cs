@@ -1,4 +1,4 @@
-﻿namespace Crimson.Parsing.Tokens
+﻿namespace CrimsonCore.Parsing.Tokens
 {
     public class FunctionArgumentCToken
     {

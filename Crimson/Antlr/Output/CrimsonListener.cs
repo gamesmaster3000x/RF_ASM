@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Crimson.AntlrBuild {
+namespace CrimsonCore.AntlrBuild {
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -468,4 +468,4 @@ public interface ICrimsonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFullName([NotNull] CrimsonParser.FullNameContext context);
 }
-} // namespace Crimson.AntlrBuild
+} // namespace CrimsonCore.AntlrBuild

@@ -1,5 +1,4 @@
-﻿using Crimson.CURI;
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,13 +8,17 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using CrimsonCore.Core;
+using CrimsonCore;
+using CrimsonCore.CURI;
+using static CrimsonCore.Core.IScopeProvider;
 
-namespace Crimson.Core
+namespace CrimsonCLI
 {
-    public class CachedBerryClient
+    public class CachedBerryClient : IScopeProvider
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public static FileInfo INDEX { get; private set; } = Crimson.GetRoamingFile("cache/index.json");
+        public static FileInfo INDEX { get; private set; } = CrimsonCore.CrimsonCore.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
         public record CacheIndex
@@ -38,7 +41,7 @@ namespace Crimson.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic("Unable to static-construct cache!", Crimson.PanicCode.CACHE, ex);
+                CrimsonCore.CrimsonCore.Panic("Unable to static-construct cache!", CrimsonCore.CrimsonCore.PanicCode.CACHE, ex);
                 throw;
             }
         }
@@ -92,7 +95,7 @@ namespace Crimson.Core
                 }
                 catch (Exception ex)
                 {
-                    Crimson.Panic($"Unable to deserialise cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
+                    CrimsonCore.CrimsonCore.Panic($"Unable to deserialise cache index {INDEX}", CrimsonCore.CrimsonCore.PanicCode.CACHE_JSON, ex);
                     throw;
                 }
                 return index;
@@ -112,7 +115,7 @@ namespace Crimson.Core
                 }
                 catch (Exception ex)
                 {
-                    Crimson.Panic($"Unable to write to cache index {INDEX}", Crimson.PanicCode.CACHE_JSON, ex);
+                    CrimsonCore.CrimsonCore.Panic($"Unable to write to cache index {INDEX}", CrimsonCore.CrimsonCore.PanicCode.CACHE_JSON, ex);
                     throw;
                 }
         }
@@ -144,68 +147,11 @@ namespace Crimson.Core
             }
         }
 
-
-        // ============ KEYS ============
-
-        [JsonConverter(typeof(CacheKeyJsonConverter))]
-        [TypeConverter(typeof(CacheKey))]
-        public record CacheKey
-        {
-            public readonly string LocalPath;
-            public CacheKey (string localPath) => LocalPath = localPath;
-            public override string ToString () => LocalPath;
-        }
-
-        private static CacheKey GetCacheKey (AbstractCURI curi)
-        {
-            return new CacheKey($"{curi.Uri.Scheme}{curi.Uri.LocalPath}");
-        }
-
-        public class CacheKeyJsonConverter : JsonConverter<CacheKey>
-        {
-            public override bool CanConvert (Type typeToConvert)
-            {
-                bool good = typeof(CacheKey).Equals(typeToConvert);
-                return good;
-            }
-
-            public override CacheKey ReadAsPropertyName (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                return Read(ref reader, typeToConvert, options)!;
-            }
-
-            public override void WriteAsPropertyName (Utf8JsonWriter writer, CacheKey value, JsonSerializerOptions options)
-            {
-                string? str = value.LocalPath;
-                if (string.IsNullOrWhiteSpace(str)) throw new JsonException("Cannot write NullOrWhiteSpace CacheKey.");
-                writer.WritePropertyName(str);
-            }
-
-            public override CacheKey? Read (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                string? str = reader.GetString();
-                if (string.IsNullOrWhiteSpace(str)) throw new JsonException("Cannot read NullOrWhiteSpace CacheKey.");
-                return new CacheKey(str!);
-            }
-
-            public override void Write (Utf8JsonWriter writer, CacheKey value, JsonSerializerOptions options)
-            {
-                string? str = value.LocalPath;
-                if (string.IsNullOrWhiteSpace(str)) throw new JsonException("Cannot write NullOrWhiteSpace CacheKey.");
-                writer.WriteStringValue(str);
-            }
-        }
-
-        private static FileInfo GetCachedFileInfo (CacheKey key)
-        {
-            return Crimson.GetRoamingFile($"cache/{key.LocalPath}");
-        }
-
         // Clearing
 
         private static void Erase ()
         {
-            Crimson.GetRoamingDirectory("cache/").Delete(true);
+            CrimsonCore.CrimsonCore.GetRoamingDirectory("cache/").Delete(true);
         }
 
         private static void ClearUnindexed ()
@@ -239,23 +185,7 @@ namespace Crimson.Core
             }
         }
 
-        // =========== API ===========
-
-        public record GetCachedQueryResult
-        {
-            public readonly bool Exists = false;
-            public readonly CacheKey? CacheKey;
-            public readonly char[]? Contents;
-
-            public GetCachedQueryResult (bool exists, CacheKey? localPath = null, char[]? contents = null)
-            {
-                Exists = exists;
-                CacheKey = localPath;
-                Contents = contents;
-            }
-        }
-
-        public static GetCachedQueryResult Get (AbstractCURI curi)
+        public GetResult Get (AbstractCURI curi)
         {
             //
             //
@@ -270,22 +200,22 @@ namespace Crimson.Core
             CacheKey key = GetCacheKey(curi);
 
             if (!Index.Contents.ContainsKey(key))
-                return new GetCachedQueryResult(exists: false);
+                return new GetResult(exists: false);
 
             char[] contents = ReadCached(key);
-            return new GetCachedQueryResult(exists: true, localPath: key, contents: contents);
+            return new GetResult(exists: true, localPath: key, contents: contents);
         }
 
-        public static GetCachedQueryResult GetOrInstall (AbstractCURI curi)
+        public static GetResult GetOrInstall (AbstractCURI curi)
         {
-            GetCachedQueryResult result = Get(curi);
+            GetResult result = Get(curi);
             if (result.Exists) return result;
 
             Install(curi, true);
             return Get(curi);
         }
 
-        public static void Clear (ClearMode clearMode)
+        public void Clear (ClearMode clearMode)
         {
             switch (clearMode)
             {
@@ -308,9 +238,9 @@ namespace Crimson.Core
             UNINDEXED
         }
 
-        public static void Install (AbstractCURI sourceCURI, bool overwrite = false)
+        public void Install (AbstractCURI sourceCURI, bool overwrite = false)
         {
-            GetCachedQueryResult getResult = Get(sourceCURI);
+            GetResult getResult = Get(sourceCURI);
             if (!overwrite && getResult.Exists)
             {
                 LOGGER.Info($"{sourceCURI} is already installed and the 'overwrite' flag is not specified.");
@@ -340,7 +270,7 @@ namespace Crimson.Core
             WriteIndex();
         }
 
-        public static void Refresh (AbstractCURI? sourceCURI, bool all = false)
+        public void Refresh (AbstractCURI? sourceCURI, bool all = false)
         {
             if (all)
             {

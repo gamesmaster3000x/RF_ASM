@@ -6,6 +6,7 @@ namespace Berry.src
 {
     public class Berry
     {
+
         public static int Main (string[] args)
         {
             WebApplication app = BuildApp();

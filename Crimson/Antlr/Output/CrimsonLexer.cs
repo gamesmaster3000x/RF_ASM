@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Crimson.AntlrBuild {
+namespace CrimsonCore.AntlrBuild {
 using System;
 using System.IO;
 using System.Text;
@@ -239,4 +239,4 @@ public partial class CrimsonLexer : Lexer {
 
 
 }
-} // namespace Crimson.AntlrBuild
+} // namespace CrimsonCore.AntlrBuild

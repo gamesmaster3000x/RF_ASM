@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.Exceptions
+namespace CrimsonCore.Exceptions
 {
-    internal abstract class CrimsonException : Exception
+    public abstract class CrimsonCoreException : Exception
     {
-        public CrimsonException (Crimson.PanicCode code)
+        public CrimsonCoreException (CrimsonCore.PanicCode code)
         {
             Code = code;
         }
 
-        public Crimson.PanicCode Code { get; private set; }
+        public CrimsonCore.PanicCode Code { get; private set; }
 
         public virtual IList<string> GetDetailedMessage ()
         {

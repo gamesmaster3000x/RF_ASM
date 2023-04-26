@@ -1,10 +1,10 @@
-﻿using Crimson.Exceptions;
-using Crimson.Generalising.Structures;
-using Crimson.Specialising;
-using Crimson.Linking;
-using Crimson.Parsing.Statements;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Generalising.Structures;
+using CrimsonCore.Specialising;
+using CrimsonCore.Linking;
+using CrimsonCore.Parsing.Statements;
 
-namespace Crimson.Parsing.Tokens.Values
+namespace CrimsonCore.Parsing.Tokens.Values
 {
     public class FunctionCallResolvableValueCToken : ComplexValueCToken
     {

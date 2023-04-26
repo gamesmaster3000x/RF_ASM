@@ -1,4 +1,4 @@
-﻿namespace Crimson.Specialising
+﻿namespace CrimsonCore.Specialising
 {
     public class Fragment
     {
@@ -7,7 +7,7 @@
         private int _indentation;
         public string? ResultHolder { get; set; }
 
-        public Fragment(int indentation)
+        public Fragment (int indentation)
         {
             _statements = new List<AbstractSpecificAssemblyStatement>();
             _indents = new List<int>();
@@ -15,20 +15,20 @@
         }
 
 
-        public void Add(AbstractSpecificAssemblyStatement statement)
+        public void Add (AbstractSpecificAssemblyStatement statement)
         {
             if (statement == null) throw new ArgumentNullException("Cannot add a null BasicStatement to a Fragment");
             _statements.Add(statement);
             _indents.Add(_indentation);
         }
 
-        public void Add(IList<AbstractSpecificAssemblyStatement> statements)
+        public void Add (IList<AbstractSpecificAssemblyStatement> statements)
         {
             foreach (var s in statements)
                 Add(s);
         }
 
-        public void Add(Fragment fragment)
+        public void Add (Fragment fragment)
         {
             for (int i = 0; i < fragment._statements.Count; i++)
             {
@@ -37,7 +37,7 @@
             }
         }
 
-        public List<string> GetLines()
+        public List<string> GetLines ()
         {
             List<string> lines = new List<string>();
             for (int i = 0; i < _statements.Count; i++)
@@ -50,7 +50,7 @@
             return lines;
         }
 
-        public Fragment WithIndentation(int indentation)
+        public Fragment WithIndentation (int indentation)
         {
             _indentation = indentation;
             return this;

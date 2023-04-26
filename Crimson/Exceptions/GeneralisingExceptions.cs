@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.Exceptions
+namespace CrimsonCore.Exceptions
 {
     internal class GeneralisingException : ArgumentException
     {
-        public GeneralisingException(string message) : base(message)
+        public GeneralisingException (string message) : base(message)
         {
 
         }
 
-        public GeneralisingException(string message, Exception cause) : base(message, cause)
+        public GeneralisingException (string message, Exception cause) : base(message, cause)
         {
 
         }

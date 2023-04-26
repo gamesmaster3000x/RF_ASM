@@ -1,9 +1,9 @@
-﻿using Crimson.Generalising.Structures;
-using Crimson.Generalising;
-using Crimson.Linking;
-using Crimson.Parsing.Tokens.Values;
+﻿using CrimsonCore.Generalising.Structures;
+using CrimsonCore.Parsing.Tokens.Values;
+using CrimsonCore.Generalising;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Statements
+namespace CrimsonCore.Parsing.Statements
 {
     internal class ReturnCStatement : AbstractCrimsonStatement
     {

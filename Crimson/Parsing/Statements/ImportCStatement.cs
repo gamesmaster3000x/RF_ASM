@@ -1,12 +1,12 @@
-﻿using Crimson.Core;
-using Crimson.Exceptions;
-using Crimson.CURI;
-using Crimson.Parsing.Tokens;
+﻿using CrimsonCore.Core;
+using CrimsonCore.Exceptions;
 using NLog;
 using System;
 using static System.Formats.Asn1.AsnWriter;
+using CrimsonCore.Parsing.Tokens;
+using CrimsonCore.CURI;
 
-namespace Crimson.Parsing.Statements
+namespace CrimsonCore.Parsing.Statements
 {
     public class ImportCStatement
     {

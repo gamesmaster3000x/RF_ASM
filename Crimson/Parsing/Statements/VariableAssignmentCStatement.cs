@@ -1,13 +1,13 @@
-﻿using Crimson.Exceptions;
-using Crimson.Specialising;
-using Crimson.Generalising;
-using Crimson.Generalising.Structures;
-using Crimson.Linking;
-using Crimson.Parsing.Tokens;
-using Crimson.Parsing.Tokens.Values;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Specialising;
 using System;
+using CrimsonCore.Linking;
+using CrimsonCore.Generalising.Structures;
+using CrimsonCore.Parsing.Tokens.Values;
+using CrimsonCore.Generalising;
+using CrimsonCore.Parsing.Tokens;
 
-namespace Crimson.Parsing.Statements
+namespace CrimsonCore.Parsing.Statements
 {
     public class VariableAssignmentCStatement : AbstractCrimsonStatement
     {

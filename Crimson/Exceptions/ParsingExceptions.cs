@@ -1,6 +1,6 @@
-﻿using Crimson.Core;
-using Crimson.CURI;
-using Crimson.Parsing.Statements;
+﻿using CrimsonCore.Core;
+using CrimsonCore.CURI;
+using CrimsonCore.Parsing.Statements;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,38 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.Exceptions
+namespace CrimsonCore.Exceptions
 {
-    internal class ClearModeException : CrimsonException
-    {
-        public CrimsonOptions.Clear Clear { get; private set; }
 
-        public ClearModeException (CrimsonOptions.Clear clear) : base(Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
-        {
-            Clear = clear;
-        }
-
-        public override IList<string> GetDetailedMessage ()
-        {
-            List<string> strings = new List<string>()
-            {
-                $"Illegal ClearMode comination (there can only be 1). ",
-                $"Found {(Clear.Erase ? "-e" : "")}" +
-                        $" {(Clear.Directories ? "-d" : "")}" +
-                        $" {(Clear.Indexed ? "-i" : "")}"
-
-            };
-            return strings;
-        }
-    }
-
-    internal class StatementParseException : CrimsonException
+    internal class StatementParseException : CrimsonCoreException
     {
         public string Message { get; private set; }
         public AbstractCrimsonStatement? Statement { get; private set; }
         public Exception? Cause { get; private set; }
 
-        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
+        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
         {
             Message = message;
             Statement = statement;
@@ -59,13 +37,13 @@ namespace Crimson.Exceptions
         }
     }
 
-    internal class CURIException : CrimsonException
+    internal class CURIException : CrimsonCoreException
     {
         public override string Message { get; }
         public AbstractCURI CURI { get; private set; }
         public CURIExceptionReason Reason { get; private set; }
 
-        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(Crimson.PanicCode.CURI)
+        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(CrimsonCore.PanicCode.CURI)
         {
             Message = message;
             CURI = uri;
@@ -98,16 +76,16 @@ namespace Crimson.Exceptions
         }
     }
 
-    internal class CrimsonParserException : CrimsonException
+    internal class CrimsonParserException : CrimsonCoreException
     {
-        public CrimsonParserException (string message) : base(Crimson.PanicCode.COMPILE_PARSE_STATEMENT)
+        public CrimsonParserException (string message) : base(CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
         {
         }
     }
 
-    internal class ScopeGenerationException : CrimsonException
+    internal class ScopeGenerationException : CrimsonCoreException
     {
-        public ScopeGenerationException () : base(Crimson.PanicCode.COMPILE_PARSE_SCOPE)
+        public ScopeGenerationException () : base(CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE)
         {
 
         }

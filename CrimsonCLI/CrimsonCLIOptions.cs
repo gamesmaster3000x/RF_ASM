@@ -1,11 +1,12 @@
 ﻿
 using CommandLine;
-using Crimson.Exceptions;
-using Crimson.CURI;
+using CrimsonCore.Core;
+using CrimsonCore.CURI;
+using CrimsonCore.Exceptions;
 
-namespace Crimson.Core
+namespace CrimsonCLI
 {
-    public class CrimsonOptions
+    public class CrimsonCLIOptions
     {
 
         /// <summary>
@@ -161,6 +162,32 @@ namespace Crimson.Core
                 Default = false,
                 HelpText = "Refresh all items in the index.")]
             public bool All { get; set; }
+        }
+
+
+
+
+        internal class ClearModeException : CrimsonCoreException
+        {
+            public CrimsonCLIOptions.Clear Clear { get; private set; }
+
+            public ClearModeException (CrimsonCLIOptions.Clear clear) : base(CrimsonCore.CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
+            {
+                Clear = clear;
+            }
+
+            public override IList<string> GetDetailedMessage ()
+            {
+                List<string> strings = new List<string>()
+            {
+                $"Illegal ClearMode comination (there can only be 1). ",
+                $"Found {(Clear.Erase ? "-e" : "")}" +
+                        $" {(Clear.Directories ? "-d" : "")}" +
+                        $" {(Clear.Indexed ? "-i" : "")}"
+
+            };
+                return strings;
+            }
         }
     }
 }

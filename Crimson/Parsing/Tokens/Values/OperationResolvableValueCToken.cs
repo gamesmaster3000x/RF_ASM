@@ -1,9 +1,9 @@
-﻿using Crimson.Exceptions;
-using Crimson.Specialising;
-using Crimson.Linking;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Specialising;
 using System.Net.Http;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Tokens.Values
+namespace CrimsonCore.Parsing.Tokens.Values
 {
     public class OperationResolvableValueCToken : ComplexValueCToken
     {

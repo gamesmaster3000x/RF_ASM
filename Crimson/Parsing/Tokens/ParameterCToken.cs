@@ -1,8 +1,8 @@
-﻿namespace Crimson.Parsing.Tokens
+﻿namespace CrimsonCore.Parsing.Tokens
 {
     internal class ParameterCToken
     {
-        public ParameterCToken(string identifier)
+        public ParameterCToken (string identifier)
         {
             Identifier = identifier;
         }

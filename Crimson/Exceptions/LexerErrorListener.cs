@@ -1,7 +1,7 @@
 ﻿using Antlr4.Runtime;
 using NLog;
 
-namespace Crimson.Exceptions
+namespace CrimsonCore.Exceptions
 {
     internal class LexerErrorListener : IAntlrErrorListener<int>
     {
@@ -15,7 +15,7 @@ namespace Crimson.Exceptions
 
         public void SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            Crimson.Panic($"A lexer error has occurred lexing {Name}", Crimson.PanicCode.COMPILE_PARSE, null!);
+            CrimsonCore.Panic($"A lexer error has occurred lexing {Name}", CrimsonCore.PanicCode.COMPILE_PARSE, null!);
         }
     }
 }

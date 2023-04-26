@@ -1,11 +1,11 @@
-﻿using Crimson.Generalising;
-using Crimson.Linking;
-using Crimson.Parsing;
-using Crimson.Specialising;
+﻿using CrimsonCore.Generalising;
+using CrimsonCore.Linking;
+using CrimsonCore.Parsing;
+using CrimsonCore.Specialising;
 using NLog;
 using System.Net;
 
-namespace Crimson.Core
+namespace CrimsonCore.Core
 {
     /// <summary>
     /// The root of all compilation. Initiates and delegates tasks for the compilation process.
@@ -14,11 +14,11 @@ namespace Crimson.Core
     {
         private static Logger LOGGER = LogManager.GetCurrentClassLogger();
 
-        public static CrimsonOptions.Compile? Options { get; private set; } = null;
+        public static CrimsonCoreOptions.Compile? Options { get; private set; } = null;
 
         private Compiler () { }
 
-        public static async void Compile (CrimsonOptions.Compile options, Library library, Linker linker, Generaliser generaliser, ISpecialiser flattener)
+        public static async void Compile (CrimsonCoreOptions.Compile options, Library library, Linker linker, Generaliser generaliser, ISpecialiser flattener)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Crimson.Core
             }
             catch (Exception e)
             {
-                Crimson.Panic("An uncaught exception occurred during the compilation process.", Crimson.PanicCode.COMPILE_PARSE, e);
+                CrimsonCore.Panic("An uncaught exception occurred during the compilation process.", CrimsonCore.PanicCode.COMPILE_PARSE, e);
                 throw;
             }
         }

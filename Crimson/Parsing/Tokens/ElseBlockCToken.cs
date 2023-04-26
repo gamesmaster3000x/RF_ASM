@@ -1,7 +1,7 @@
-﻿using Crimson.Specialising;
-using Crimson.Linking;
+﻿using CrimsonCore.Specialising;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Tokens
+namespace CrimsonCore.Parsing.Tokens
 {
     internal class ElseBlockCToken : ICrimsonToken, IHasScope
     {

@@ -4,13 +4,13 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
-using Crimson.AntlrBuild;
-using Crimson.Exceptions;
-using Crimson.CURI;
-using Crimson.Parsing;
+using CrimsonCore.AntlrBuild;
+using CrimsonCore.Exceptions;
 using NLog;
+using CrimsonCore.Parsing;
+using CrimsonCore.CURI;
 
-namespace Crimson.Core
+namespace CrimsonCore.Core
 {
     /// <summary>
     /// Generates CompilationUnits from input text with the power of ANTLR.
@@ -78,7 +78,7 @@ namespace Crimson.Core
                 }
                 catch (Exception ex)
                 {
-                    Crimson.Panic("Unable to GetScopes", Crimson.PanicCode.COMPILE_PARSE, ex);
+                    CrimsonCore.Panic("Unable to GetScopes", CrimsonCore.PanicCode.COMPILE_PARSE, ex);
                     throw;
                 }
             }
@@ -102,7 +102,7 @@ namespace Crimson.Core
             {
                 LOGGER.Info($"Loading scope from {uri}");
 
-                CachedBerryClient.GetCachedQueryResult result = CachedBerryClient.GetOrInstall(uri);
+                IScopeProvider.GetResult result = CrimsonCore.ScopeProvider.GetOrInstall(uri);
                 if (!result.Exists) throw new NullReferenceException($"Library was unable to get cached or fetch new contents of {uri}.");
 
                 Scope scope = ParseScopeText(uri, result.Contents!);
@@ -140,7 +140,7 @@ namespace Crimson.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"Error loading scope from {uri}", Crimson.PanicCode.COMPILE_PARSE_SCOPE, ex);
+                CrimsonCore.Panic($"Error loading scope from {uri}", CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }
@@ -163,7 +163,7 @@ namespace Crimson.Core
                 }
                 catch (Exception ex)
                 {
-                    Crimson.Panic($"An error occurred while async loading {uri}", Crimson.PanicCode.COMPILE_PARSE_SCOPE_ASYNC, ex);
+                    CrimsonCore.Panic($"An error occurred while async loading {uri}", CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE_ASYNC, ex);
                     throw;
                 }
             };
@@ -236,7 +236,7 @@ namespace Crimson.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"Error loading scope dependencies for {root}", Crimson.PanicCode.COMPILE_PARSE_SCOPE_DEPS, ex);
+                CrimsonCore.Panic($"Error loading scope dependencies for {root}", CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE_DEPS, ex);
                 throw;
             }
         }
@@ -267,7 +267,7 @@ namespace Crimson.Core
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"An error ocurred while parsing a scope originating from {source}", Crimson.PanicCode.COMPILE_PARSE_SCOPE, ex);
+                CrimsonCore.Panic($"An error ocurred while parsing a scope originating from {source}", CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }

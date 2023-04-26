@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Crimson.AntlrBuild {
+namespace CrimsonCore.AntlrBuild {
 
 using Antlr4.Runtime.Misc;
 using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
@@ -568,4 +568,4 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <remarks>The default implementation does nothing.</remarks>
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
-} // namespace Crimson.AntlrBuild
+} // namespace CrimsonCore.AntlrBuild

@@ -1,7 +1,7 @@
-﻿namespace Crimson.Parsing
+﻿namespace CrimsonCore.Parsing
 {
     internal interface IHasScope
     {
-        Scope GetScope();
+        Scope GetScope ();
     }
 }

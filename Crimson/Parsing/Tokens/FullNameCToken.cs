@@ -1,8 +1,8 @@
 ﻿using Antlr4.Runtime;
-using Crimson.Exceptions;
-using Crimson.Linking;
+using CrimsonCore.Exceptions;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Tokens
+namespace CrimsonCore.Parsing.Tokens
 {
     public class FullNameCToken : ICrimsonToken
     {

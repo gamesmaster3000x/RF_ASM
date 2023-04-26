@@ -7,12 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedFoxVM", "RedFoxVM\RedFox
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedFoxAssembly", "RedFoxAssembly\RedFoxAssembly.csproj", "{9C2593E0-C1DD-4F85-B328-1FE10475BBC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crimson", "Crimson\Crimson.csproj", "{47108A9A-41EF-46E8-87D8-FE55E3869286}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrimsonCore", "Crimson\CrimsonCore.csproj", "{47108A9A-41EF-46E8-87D8-FE55E3869286}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3CFD1EAE-9D7B-4508-BE8C-7B7949F5D3A0} = {3CFD1EAE-9D7B-4508-BE8C-7B7949F5D3A0}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Berry", "Berry\Berry.csproj", "{3CFD1EAE-9D7B-4508-BE8C-7B7949F5D3A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrimsonCLI", "CrimsonCLI\CrimsonCLI.csproj", "{7BC237ED-0E62-4F7A-9A3F-BFEE23013DD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{3CFD1EAE-9D7B-4508-BE8C-7B7949F5D3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CFD1EAE-9D7B-4508-BE8C-7B7949F5D3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CFD1EAE-9D7B-4508-BE8C-7B7949F5D3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BC237ED-0E62-4F7A-9A3F-BFEE23013DD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BC237ED-0E62-4F7A-9A3F-BFEE23013DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BC237ED-0E62-4F7A-9A3F-BFEE23013DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BC237ED-0E62-4F7A-9A3F-BFEE23013DD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

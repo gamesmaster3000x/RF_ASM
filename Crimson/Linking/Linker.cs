@@ -1,9 +1,9 @@
-﻿using Crimson.Core;
-using Crimson.Parsing.Statements;
-using Crimson.Parsing;
+﻿using CrimsonCore.Parsing.Statements;
 using NLog;
+using CrimsonCore.Parsing;
+using CrimsonCore.Core;
 
-namespace Crimson.Linking
+namespace CrimsonCore.Linking
 {
     /// <summary>
     /// Converts a CompilationUnit to a LinkedUnit.

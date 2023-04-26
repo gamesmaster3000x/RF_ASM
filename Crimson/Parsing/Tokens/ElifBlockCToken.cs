@@ -1,8 +1,8 @@
-﻿using Crimson.Specialising;
-using Crimson.Linking;
-using Crimson.Parsing.Statements;
+﻿using CrimsonCore.Specialising;
+using CrimsonCore.Linking;
+using CrimsonCore.Parsing.Statements;
 
-namespace Crimson.Parsing.Tokens
+namespace CrimsonCore.Parsing.Tokens
 {
     internal class ElseIfBlockCToken : ICrimsonToken
     {

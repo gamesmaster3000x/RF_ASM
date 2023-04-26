@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CURI
+namespace CrimsonCore.CURI
 {
     public interface ICURIFactory
     {
@@ -59,6 +59,6 @@ namespace Crimson.CURI
         /// <param name="relativeOrAbsoluteUri">The URI to create a CURI from. For example http://example.com/file.txt</param>
         /// <param name="anchor"> In case the URI path is relative, this is the anchor point which it should be relative to.</param>
         /// <returns></returns>
-        AbstractCURI Make(Uri relativeOrAbsoluteUri, AbstractCURI? anchor);
+        AbstractCURI Make (Uri relativeOrAbsoluteUri, AbstractCURI? anchor);
     }
 }

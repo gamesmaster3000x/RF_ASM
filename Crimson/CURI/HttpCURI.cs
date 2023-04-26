@@ -1,11 +1,11 @@
-﻿using Crimson.Exceptions;
+﻿using CrimsonCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CURI
+namespace CrimsonCore.CURI
 {
     internal class HttpCURI : AbstractCURI
     {
@@ -33,7 +33,7 @@ namespace Crimson.CURI
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", Crimson.PanicCode.CURI_STREAM, ex);
+                CrimsonCore.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", CrimsonCore.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

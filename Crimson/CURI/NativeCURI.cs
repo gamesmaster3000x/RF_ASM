@@ -1,5 +1,5 @@
-﻿using Crimson.Core;
-using Crimson.Exceptions;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Core;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CURI
+namespace CrimsonCore.CURI
 {
     /// <summary>
     /// <para>
@@ -56,7 +56,7 @@ namespace Crimson.CURI
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", Crimson.PanicCode.CURI_STREAM, ex);
+                CrimsonCore.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", CrimsonCore.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

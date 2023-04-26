@@ -1,16 +1,16 @@
-﻿using Crimson.Generalising;
-using Crimson.Linking;
+﻿using CrimsonCore.Generalising;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Tokens.Values
+namespace CrimsonCore.Parsing.Tokens.Values
 {
     public abstract class SimpleValueCToken : ICrimsonToken
     {
-        public SimpleValueCToken()
+        public SimpleValueCToken ()
         {
         }
-        public abstract void Link(LinkingContext ctx);
-        public abstract string GetText();
-        public abstract bool CanEvaluate();
-        public abstract object Evaluate(GeneralisationContext context);
+        public abstract void Link (LinkingContext ctx);
+        public abstract string GetText ();
+        public abstract bool CanEvaluate ();
+        public abstract object Evaluate (GeneralisationContext context);
     }
 }

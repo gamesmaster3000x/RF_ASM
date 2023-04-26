@@ -1,10 +1,10 @@
 ﻿using static System.Formats.Asn1.AsnWriter;
 using System.Numerics;
-using Crimson.Generalising;
-using Crimson.Linking;
-using Crimson.Parsing.Statements;
+using CrimsonCore.Parsing.Statements;
+using CrimsonCore.Linking;
+using CrimsonCore.Generalising;
 
-namespace Crimson.Parsing.Tokens.Values
+namespace CrimsonCore.Parsing.Tokens.Values
 {
     public class IdentifierSimpleValueCToken : SimpleValueCToken
     {
@@ -12,12 +12,12 @@ namespace Crimson.Parsing.Tokens.Values
         public ScopeVariableCStatement? ScopeVariable { get; private set; }
         public GlobalVariableCStatement? GlobalVariable { get; private set; }
 
-        public IdentifierSimpleValueCToken(FullNameCToken identifier)
+        public IdentifierSimpleValueCToken (FullNameCToken identifier)
         {
             Identifier = identifier;
         }
 
-        public override void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
             // TODO Scope.FindScopeVariable(MemberName);
             ScopeVariable = ctx.CurrentScope.FindScopeVariable(Identifier.MemberName!);
@@ -27,22 +27,22 @@ namespace Crimson.Parsing.Tokens.Values
                 GlobalVariable = ctx.GetGlobalVariable(Identifier.MemberName);
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return GetText();
         }
 
-        public override string GetText()
+        public override string GetText ()
         {
             return Identifier.ToString();
         }
 
-        public override bool CanEvaluate()
+        public override bool CanEvaluate ()
         {
             return true;
         }
 
-        public override object Evaluate(GeneralisationContext context)
+        public override object Evaluate (GeneralisationContext context)
         {
             if (context.Globals.TryGetValue(Identifier.ToString(), out GlobalVariableCStatement global))
             {

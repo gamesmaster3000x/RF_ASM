@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.Generalising
+namespace CrimsonCore.Generalising
 {
     public interface IGeneralAssemblyStructure
     {
-        public IEnumerable<IGeneralAssemblyStructure> GetSubStructures();
+        public IEnumerable<IGeneralAssemblyStructure> GetSubStructures ();
     }
 }

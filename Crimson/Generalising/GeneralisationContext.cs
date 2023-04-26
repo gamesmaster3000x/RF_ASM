@@ -1,6 +1,6 @@
-﻿using Crimson.Parsing.Statements;
+﻿using CrimsonCore.Parsing.Statements;
 
-namespace Crimson.Generalising
+namespace CrimsonCore.Generalising
 {
     public class GeneralisationContext
     {
@@ -8,7 +8,7 @@ namespace Crimson.Generalising
         public Dictionary<string, FunctionCStatement> Functions { get; }
         public Dictionary<string, StructureCStatement> Structures { get; }
 
-        public GeneralisationContext(Dictionary<string, FunctionCStatement> functions, Dictionary<string, StructureCStatement> structures, Dictionary<string, GlobalVariableCStatement> globals)
+        public GeneralisationContext (Dictionary<string, FunctionCStatement> functions, Dictionary<string, StructureCStatement> structures, Dictionary<string, GlobalVariableCStatement> globals)
         {
             StackPointerStack = new Stack<int>();
             Functions = functions;
@@ -24,7 +24,7 @@ namespace Crimson.Generalising
         /// Starts a new stack frame to be used by the scope allocation head. 
         /// Pushes the old offset onto the C# stack pointer stack to save it for later.
         /// </summary>
-        public void EnterScope()
+        public void EnterScope ()
         {
             StackPointerStack.Push(_virtualStackPointer);
             _virtualStackPointer = 0;
@@ -34,7 +34,7 @@ namespace Crimson.Generalising
         /// Called when leaving a scope.
         /// Resets the virtual stack pointer's position to its value before the exiting scope was entered.
         /// </summary>
-        public void LeaveScope()
+        public void LeaveScope ()
         {
             _virtualStackPointer = StackPointerStack.Pop();
         }
@@ -57,7 +57,7 @@ namespace Crimson.Generalising
         /// </summary>
         /// <param name="size">The amount of memory to reserve, in bytes.</param>
         /// <returns>The starting address at which the block was allocated.</returns>
-        public int AllocStack(int size)
+        public int AllocStack (int size)
         {
             int addr = _globalAllocationHead;
             _globalAllocationHead += size;
@@ -79,7 +79,7 @@ namespace Crimson.Generalising
         /// </summary>
         /// <param name="size">The amount of memory to reserve, in bytes.</param>
         /// <returns>The starting address at which the block was allocated.</returns>
-        public int AllocGlobal(int size)
+        public int AllocGlobal (int size)
         {
             int addr = _globalAllocationHead;
             _globalAllocationHead += size;
@@ -92,7 +92,7 @@ namespace Crimson.Generalising
 
         public class DuplicateNameException : Exception
         {
-            public DuplicateNameException(string msg) : base(msg)
+            public DuplicateNameException (string msg) : base(msg)
             {
             }
         }

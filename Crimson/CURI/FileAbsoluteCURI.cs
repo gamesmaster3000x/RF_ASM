@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.CURI
+namespace CrimsonCore.CURI
 {
     internal class FileAbsoluteCURI : AbstractCURI
     {
@@ -22,17 +22,17 @@ namespace Crimson.CURI
             }
         }
 
-        public FileAbsoluteCURI(Uri uri) : base(uri)
+        public FileAbsoluteCURI (Uri uri) : base(uri)
         {
             if (!Uri.UriSchemeFile.Equals(uri.Scheme)) throw new UriFormatException($"{GetType()} may only take URIs of scheme {Uri.UriSchemeFile}. Found '{uri.Scheme}'.");
         }
 
-        public override bool Equals(AbstractCURI? other)
+        public override bool Equals (AbstractCURI? other)
         {
             return other?.Uri?.Equals(Uri) ?? false;
         }
 
-        public override Stream GetStream()
+        public override Stream GetStream ()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Crimson.CURI
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", Crimson.PanicCode.CURI_STREAM, ex);
+                CrimsonCore.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", CrimsonCore.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }
@@ -53,7 +53,7 @@ namespace Crimson.CURI
             /// <param name="absoluteOrRelativeUri"></param>
             /// <param name="anchor"></param>
             /// <returns>A <see cref="FileAbsoluteCURI"/> of the <paramref name="absoluteOrRelativeUri"/>.</returns>
-            public AbstractCURI Make(Uri absoluteOrRelativeUri, AbstractCURI? anchor)
+            public AbstractCURI Make (Uri absoluteOrRelativeUri, AbstractCURI? anchor)
             {
                 return new FileAbsoluteCURI(absoluteOrRelativeUri);
             }

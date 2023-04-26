@@ -1,6 +1,6 @@
-﻿using static Crimson.Parsing.Tokens.Comparator;
+﻿using static CrimsonCore.Parsing.Tokens.Comparator;
 
-namespace Crimson.Parsing.Tokens
+namespace CrimsonCore.Parsing.Tokens
 {
     public class Comparator
     {
@@ -13,7 +13,7 @@ namespace Crimson.Parsing.Tokens
             EQUAL_TO
         }
 
-        public static Values Get(string value)
+        public static Values Get (string value)
         {
             switch (value)
             {
@@ -27,7 +27,7 @@ namespace Crimson.Parsing.Tokens
             throw new ArgumentException($"{value} cannot be parsed to a Comparator");
         }
 
-        public static string ToString(Values comparator)
+        public static string ToString (Values comparator)
         {
             switch (comparator)
             {

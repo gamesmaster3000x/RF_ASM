@@ -1,9 +1,9 @@
-﻿using Crimson.Exceptions;
-using Crimson.Parsing;
-using Crimson.Parsing.Statements;
-using Crimson.Parsing.Tokens;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Parsing;
+using CrimsonCore.Parsing.Statements;
+using CrimsonCore.Parsing.Tokens;
 
-namespace Crimson.Linking
+namespace CrimsonCore.Linking
 {
     internal class LinkerHelper
     {
@@ -15,7 +15,7 @@ namespace Crimson.Linking
         /// <param name="ctx"></param>
         /// <returns></returns>
         /// <exception cref="LinkingException"></exception>
-        internal static FunctionCStatement LinkFunctionCall(FullNameCToken identifier, LinkingContext ctx)
+        internal static FunctionCStatement LinkFunctionCall (FullNameCToken identifier, LinkingContext ctx)
         {
             if (identifier == null) throw new LinkingException("Cannot link a null identifer");
 
@@ -57,7 +57,7 @@ namespace Crimson.Linking
             throw new LinkingException($"The idenifier {identifier} with no member name somehow got through the parsing process?");
         }
 
-        internal static FullNameCToken LinkIdentifier(FullNameCToken identifier, LinkingContext ctx)
+        internal static FullNameCToken LinkIdentifier (FullNameCToken identifier, LinkingContext ctx)
         {
             if (identifier == null) throw new LinkingException("Cannot link a null identifer");
 

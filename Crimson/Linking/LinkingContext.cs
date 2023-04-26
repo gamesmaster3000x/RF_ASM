@@ -1,10 +1,10 @@
-﻿using Crimson.Core;
-using Crimson.Exceptions;
-using Crimson.Parsing;
-using Crimson.Parsing.Statements;
-using Crimson.Parsing.Tokens;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Core;
+using CrimsonCore.Parsing;
+using CrimsonCore.Parsing.Statements;
+using CrimsonCore.Parsing.Tokens;
 
-namespace Crimson.Linking
+namespace CrimsonCore.Linking
 {
     public class LinkingContext
     {

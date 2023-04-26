@@ -1,10 +1,10 @@
-﻿using Crimson.Exceptions;
-using Crimson.Parsing;
-using Crimson.Parsing.Statements;
+﻿using CrimsonCore.Exceptions;
+using CrimsonCore.Parsing;
+using CrimsonCore.Parsing.Statements;
 using NLog;
 using System.Text.RegularExpressions;
 
-namespace Crimson.Core
+namespace CrimsonCore.Core
 {
     /// <summary>
     /// A collection of CompilationUnit keyed with their absolute path within the file system.

@@ -1,37 +1,37 @@
-﻿using Crimson.Generalising;
-using Crimson.Linking;
+﻿using CrimsonCore.Generalising;
+using CrimsonCore.Linking;
 
-namespace Crimson.Parsing.Tokens.Values
+namespace CrimsonCore.Parsing.Tokens.Values
 {
     public class RawResolvableValueCToken : SimpleValueCToken
     {
         public string Content { get; }
 
-        public RawResolvableValueCToken(string s)
+        public RawResolvableValueCToken (string s)
         {
             Content = s;
         }
 
-        public override void Link(LinkingContext ctx)
+        public override void Link (LinkingContext ctx)
         {
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return GetText();
         }
 
-        public override string GetText()
+        public override string GetText ()
         {
             return Content;
         }
 
-        public override object Evaluate(GeneralisationContext context)
+        public override object Evaluate (GeneralisationContext context)
         {
             return Content;
         }
 
-        public override bool CanEvaluate()
+        public override bool CanEvaluate ()
         {
             return true;
         }

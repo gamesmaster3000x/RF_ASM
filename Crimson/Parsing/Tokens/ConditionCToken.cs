@@ -1,20 +1,20 @@
-﻿using Crimson.Linking;
-using Crimson.Parsing.Tokens.Values;
-using Crimson.Specialising;
+﻿using CrimsonCore.Linking;
+using CrimsonCore.Parsing.Tokens.Values;
+using CrimsonCore.Specialising;
 
-namespace Crimson.Parsing.Tokens
+namespace CrimsonCore.Parsing.Tokens
 {
     internal class ConditionCToken : ICrimsonToken
     {
         public OperationResolvableValueCToken Operation { get; }
 
-        public ConditionCToken(OperationResolvableValueCToken operation)
+        public ConditionCToken (OperationResolvableValueCToken operation)
         {
             Operation = operation;
         }
 
 
-        public Fragment GetCrimsonBasic()
+        public Fragment GetCrimsonBasic ()
         {
 
             /*
@@ -43,7 +43,7 @@ namespace Crimson.Parsing.Tokens
             return combined;
         }
 
-        public void Link(LinkingContext ctx)
+        public void Link (LinkingContext ctx)
         {
             Operation.Link(ctx);
         }

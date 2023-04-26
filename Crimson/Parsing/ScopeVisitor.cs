@@ -1,14 +1,15 @@
 ﻿using Antlr4.Runtime.Misc;
-using Crimson.AntlrBuild;
-using Crimson.Exceptions;
-using Crimson.Parsing.Tokens.Values;
-using Crimson.Parsing.Statements;
-using Crimson.Parsing.Tokens;
+using CrimsonCore.AntlrBuild;
+using CrimsonCore.Exceptions;
+using CrimsonCore.Parsing.Tokens.Values;
 using NLog;
 using System.Text.RegularExpressions;
-using static Crimson.Parsing.Tokens.Comparator;
+using static CrimsonCore.Parsing.Tokens.Comparator;
+using CrimsonCore.Parsing.Statements;
+using CrimsonCore.Parsing.Tokens;
+using CrimsonCore.Parsing.Tokens.Values;
 
-namespace Crimson.Parsing
+namespace CrimsonCore.Parsing
 {
     internal class ScopeVisitor : CrimsonBaseVisitor<object>
     {
@@ -39,9 +40,7 @@ namespace Crimson.Parsing
                 // Add operation handlers
                 IList<CrimsonParser.OperationHandlerContext> operationHandlersCtxs = context._opHandlers;
                 foreach (CrimsonParser.OperationHandlerContext unitStatementCtx in operationHandlersCtxs)
-                {
                     OperationHandlerCStatement unitStatement = VisitOperationHandler(unitStatementCtx);
-                }
 
                 // Visit Compilation-Unit statements
                 IList<CrimsonParser.StatementContext> unitStatementCtxs = context._statements;
@@ -57,7 +56,7 @@ namespace Crimson.Parsing
             }
             catch (Exception ex)
             {
-                Crimson.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", Crimson.PanicCode.COMPILE_PARSE_SCOPE, ex);
+                CrimsonCore.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }

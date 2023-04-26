@@ -1,17 +1,19 @@
-﻿namespace Crimson.Generalising.Structures
+﻿using CrimsonCore.Generalising;
+
+namespace CrimsonCore.Generalising.Structures
 {
     public class ReturnAssemblyStructure : IGeneralAssemblyStructure
     {
-        public ReturnAssemblyStructure()
+        public ReturnAssemblyStructure ()
         {
         }
 
-        public IEnumerable<IGeneralAssemblyStructure> GetSubStructures()
+        public IEnumerable<IGeneralAssemblyStructure> GetSubStructures ()
         {
             return Enumerable.Empty<IGeneralAssemblyStructure>();
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return "RET";
         }

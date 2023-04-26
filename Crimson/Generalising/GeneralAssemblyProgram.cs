@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crimson.Generalising
+namespace CrimsonCore.Generalising
 {
     public class GeneralAssemblyProgram
     {
         public List<IGeneralAssemblyStructure> Structures { get; private set; }
 
-        public GeneralAssemblyProgram()
+        public GeneralAssemblyProgram ()
         {
             Structures = new List<IGeneralAssemblyStructure>();
         }
 
 
-        public void AddStructure(IGeneralAssemblyStructure structure)
+        public void AddStructure (IGeneralAssemblyStructure structure)
         {
             Structures.Add(structure);
         }
