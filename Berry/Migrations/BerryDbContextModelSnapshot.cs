@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Berry.Migrations
 {
-    [DbContext(typeof(BerryDBContext))]
-    partial class BerryDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(BerryDbContext))]
+    partial class BerryDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0-preview.3.23174.2");
 
-            modelBuilder.Entity("Berry.src.Model.Dependency", b =>
+            modelBuilder.Entity("Berry.DB.BerryEntry", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -34,14 +34,14 @@ namespace Berry.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.ToTable("Dependencies");
+                    b.ToTable("Berries", (string)null);
                 });
 
-            modelBuilder.Entity("Berry.src.Model.User", b =>
+            modelBuilder.Entity("Berry.DB.UserEntry", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -49,9 +49,9 @@ namespace Berry.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 #pragma warning restore 612, 618
         }

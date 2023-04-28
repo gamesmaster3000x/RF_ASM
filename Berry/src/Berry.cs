@@ -1,6 +1,8 @@
 using Berry.DB;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Berry.src
 {
@@ -37,10 +39,19 @@ namespace Berry.src
             SqliteConnectionStringBuilder connectionStringBuilder = new SqliteConnectionStringBuilder()
             {
                 DataSource = "berry.sqlite",
-                Mode = SqliteOpenMode.ReadWriteCreate,
+                // Mode = SqliteOpenMode.ReadWriteCreate, // Defaults to RWC anyway
                 // Password = "INSECURE_PASSWORD", // Not supported by e_sqlite
             };
-            _ = builder.Services.AddDbContext<BerryDBContext>(options => _ = options.UseSqlite(connectionStringBuilder.ToString()));
+            string connectionString = connectionStringBuilder.ToString();
+            _ = builder.Services.AddDbContext<BerryDbContext>(options =>
+            {
+                _ = options.UseSqlite(connectionString);
+            });
+
+            var optionsBuilder = new DbContextOptionsBuilder<BerryDbContext>();
+            optionsBuilder.UseSqlite("DataSource=berry.sqlite");
+
+
 
 
             var app = builder.Build();
@@ -56,12 +67,37 @@ namespace Berry.src
             {
                 _ = app.UseExceptionHandler("/Error");
             }
-            _ = app.MapRazorPages();
-            _ = app.UseRouting();
-            _ = app.UseStaticFiles();
-            _ = app.UseAuthorization();
-            _ = app.UseHsts();
+            else
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var context = services.GetRequiredService<BerryDbContext>();
+                // context.Database.EnsureCreated();
+                // DbInitializer.Initialize(context);
+            }
             _ = app.UseHttpsRedirection();
+            _ = app.UseStaticFiles();
+
+            _ = app.UseRouting();
+            _ = app.UseAuthorization();
+
+            _ = app.MapRazorPages();
+            _ = app.UseHsts();
+        }
+
+        private static void InitialiseDatabase (BerryDbContext berryDbContext)
+        {
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Berry.Models.initialise.sql"))
+            using (var reader = new StreamReader(stream!))
+            {
+                string query = reader.ReadToEnd();
+                _ = berryDbContext.Database.ExecuteSql($"{query}");
+            }
         }
 
         private static void MapRoutes (WebApplication app)

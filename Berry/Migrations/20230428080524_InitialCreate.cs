@@ -5,16 +5,16 @@
 namespace Berry.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialiseDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Dependencies",
+                name: "Berries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Version = table.Column<string>(type: "TEXT", nullable: false),
@@ -22,20 +22,20 @@ namespace Berry.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dependencies", x => x.Id);
+                    table.PrimaryKey("PK_Berries", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.ID);
                 });
         }
 
@@ -43,7 +43,7 @@ namespace Berry.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Dependencies");
+                name: "Berries");
 
             migrationBuilder.DropTable(
                 name: "Users");
