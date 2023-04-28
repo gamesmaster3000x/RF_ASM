@@ -1,7 +1,10 @@
 using Berry.DB;
+using Berry.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NLog.Config;
+using NLog;
 using System.Reflection;
 
 namespace Berry.src
@@ -39,8 +42,6 @@ namespace Berry.src
             SqliteConnectionStringBuilder connectionStringBuilder = new SqliteConnectionStringBuilder()
             {
                 DataSource = "berry.sqlite",
-                // Mode = SqliteOpenMode.ReadWriteCreate, // Defaults to RWC anyway
-                // Password = "INSECURE_PASSWORD", // Not supported by e_sqlite
             };
             string connectionString = connectionStringBuilder.ToString();
             _ = builder.Services.AddDbContext<BerryDbContext>(options =>
@@ -77,8 +78,7 @@ namespace Berry.src
                 var services = scope.ServiceProvider;
 
                 var context = services.GetRequiredService<BerryDbContext>();
-                // context.Database.EnsureCreated();
-                // DbInitializer.Initialize(context);
+                Initialiser.Initialise(context);
             }
             _ = app.UseHttpsRedirection();
             _ = app.UseStaticFiles();
