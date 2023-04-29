@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Berry.Models
 {
-    public class Initialiser
+    public class DbInitialiser
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
