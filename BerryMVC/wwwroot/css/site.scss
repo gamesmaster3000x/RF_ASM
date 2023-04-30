@@ -19,8 +19,6 @@ $hunter: #4B644A;
 $ash: #c7d6d5;
 $quartz: #9C92A3;
 
-$berryLogo: "../res/light/BerryLogo (Light).svg";
-
 html {
   width: 100%;
   height: 100%;
@@ -28,6 +26,7 @@ html {
   flex-flow: column wrap;
   font-family: 'Nunito Sans', sans-serif;
   justify-content: space-between;  
+  transition: all 500ms;
 
   header {
     position: sticky;
@@ -74,7 +73,6 @@ html {
     right: 0;
     top: 0;
     bottom: 0;
-    background-image: url($berryLogo);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -89,11 +87,18 @@ html {
   }
 }
 
+a.mode-toggle {
+  i {
+
+  }
+}
+
 // ======================= Themes =======================
 
 @include color-mode("light") {
 
   --bs-body-bg: #{$magnolia};
+  --logo-url: url(../res/light/BerryLogo_Light.svg);
 
   html {
     // background-color: $magnolia;
@@ -101,6 +106,11 @@ html {
 
   body::before {
     filter: blur(16px) brightness(50%);
+    background-image: var(--logo-url);
+  }
+
+  img.logo-image {
+    content:var(--logo-url)
   }
 
   footer a {
@@ -111,6 +121,7 @@ html {
 @include color-mode("dark") {
 
   --bs-body-bg: #{$english-violet};
+  --logo-url: url(../res/light/BerryLogo_Dark.svg);
 
   html {
     // background-color: $english-violet;
@@ -118,6 +129,11 @@ html {
 
   body::before {
     filter: blur(16px) brightness(30%);
+    background-image: var(--logo-url);
+  }
+
+  img.logo-image {
+    content:var(--logo-url)
   }
 
   footer a {

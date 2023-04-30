@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components;
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />
@@ -15,10 +15,10 @@
 <body>
 
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
+        <div class="container-fluid" style="width: 100%;">
             <ul class="navbar-nav">
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <img src="~/res/light/BerryLogo (Light).svg" runat="server" alt="Berry Logo" width="30" class="d-inline-block align-text-center">
+                    <img class="logo-image" runat="server" width="30" class="d-inline-block align-text-center">
                     Berry
                 </a>
                 <li class="nav-item">
@@ -26,6 +26,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Browse"><i class="bi bi-search"></i> Browse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mode-toggle" onclick="onclick_modeToggle()"><i class="bi bi-search"></i></a>
                 </li>
             </ul>
         </div>

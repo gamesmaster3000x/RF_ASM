@@ -12031,6 +12031,7 @@ html {
   flex-flow: column wrap;
   font-family: "Nunito Sans", sans-serif;
   justify-content: space-between;
+  transition: all 500ms;
 }
 html header {
   position: sticky;
@@ -12071,7 +12072,6 @@ html body::before {
   right: 0;
   top: 0;
   bottom: 0;
-  background-image: url("../res/light/BerryLogo (Light).svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -12085,9 +12085,14 @@ html footer {
 
 [data-bs-theme=light] {
   --bs-body-bg: #FAF0FA;
+  --logo-url: url(../res/light/BerryLogo_Light.svg);
 }
 [data-bs-theme=light] body::before {
   filter: blur(16px) brightness(50%);
+  background-image: var(--logo-url);
+}
+[data-bs-theme=light] img.logo-image {
+  content: var(--logo-url);
 }
 [data-bs-theme=light] footer a {
   color: var(--text-colour);
@@ -12095,9 +12100,14 @@ html footer {
 
 [data-bs-theme=dark] {
   --bs-body-bg: #433D51;
+  --logo-url: url(../res/light/BerryLogo_Dark.svg);
 }
 [data-bs-theme=dark] body::before {
   filter: blur(16px) brightness(30%);
+  background-image: var(--logo-url);
+}
+[data-bs-theme=dark] img.logo-image {
+  content: var(--logo-url);
 }
 [data-bs-theme=dark] footer a {
   color: var(--text-colour);

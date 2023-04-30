@@ -4,6 +4,7 @@ using BerryMVC.Data;
 using BerryMVC.Common;
 using NLog;
 using LogLevel = NLog.LogLevel;
+using Microsoft.Data.Sqlite;
 
 namespace BerryMVC
 {
@@ -16,13 +17,26 @@ namespace BerryMVC
             ConfigureNLog();
 
             var builder = WebApplication.CreateBuilder(args);
+            SqliteConnectionStringBuilder sqliteConnectionStringBuilder = new SqliteConnectionStringBuilder()
+            {
+                DataSource = "berry.sqlite",
+            };
             builder.Services.AddDbContext<BerryMVCContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("BerryMVCContext") ?? throw new InvalidOperationException("Connection string 'BerryMVCContext' not found.")));
+                options
+                .UseSqlite(sqliteConnectionStringBuilder.ToString())
+                );
 
             // Add services to the container.
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             var app = builder.Build();
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -42,13 +56,6 @@ namespace BerryMVC
                 var context = services.GetRequiredService<BerryMVCContext>();
                 DbInitialiser.Initialise(context);
             }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
