@@ -58,8 +58,14 @@ namespace BerryMVC
             }
 
             app.MapControllerRoute(
-                name: "default",
+                name: "home",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "browse",
+                pattern: "{controller=Browse}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "api",
+                pattern: "{controller=Browse}/");
 
             app.Run();
         }

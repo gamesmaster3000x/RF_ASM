@@ -1,24 +1,24 @@
-﻿using BerryMVC.Models;
+﻿using BerryMVC.Data;
+using BerryMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace BerryMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> LOGGER;
+        private readonly BerryMVCContext _berryMVCContext;
 
-        public HomeController (ILogger<HomeController> logger)
+        public HomeController (ILogger<HomeController> logger, BerryMVCContext berryMVCContext)
         {
-            _logger = logger;
+            LOGGER = logger;
+            _berryMVCContext = berryMVCContext;
         }
 
+        // GET: BerryModels
         public IActionResult Index ()
-        {
-            return View();
-        }
-
-        public IActionResult Browse ()
         {
             return View();
         }

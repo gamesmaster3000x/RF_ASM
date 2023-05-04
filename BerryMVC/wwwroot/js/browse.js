@@ -18,7 +18,13 @@ function updateInputResult() {
 
     var concatenated = "";
     if (nonnull) {
-        concatenated = "".concat(inputVendor.value, ":", inputArtifact.value, "@", inputVersion.value);
+        concatenated = "".concat(
+            inputVendor.value || "*", 
+            ":", 
+            inputArtifact.value || "*", 
+            "@", 
+            inputVersion.value || "*"
+            );
     }
     inputResult.value = concatenated;
 }

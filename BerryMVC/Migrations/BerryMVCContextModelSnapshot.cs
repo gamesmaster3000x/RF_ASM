@@ -22,11 +22,15 @@ namespace BerryMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ArtifactName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<byte[]>("ContentsB64")
                         .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("VendorName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

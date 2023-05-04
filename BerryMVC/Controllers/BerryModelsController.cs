@@ -14,21 +14,21 @@ namespace BerryMVC.Controllers
     {
         private readonly BerryMVCContext _context;
 
-        public BerryModelsController(BerryMVCContext context)
+        public BerryModelsController (BerryMVCContext context)
         {
             _context = context;
         }
 
         // GET: BerryModels
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index ()
         {
-              return _context.BerryModel != null ? 
-                          View(await _context.BerryModel.ToListAsync()) :
-                          Problem("Entity set 'BerryMVCContext.BerryModel'  is null.");
+            return _context.BerryModel != null ?
+                        View(await _context.BerryModel.ToListAsync()) :
+                        Problem("Entity set 'BerryMVCContext.BerryModel'  is null.");
         }
 
         // GET: BerryModels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details (int? id)
         {
             if (id == null || _context.BerryModel == null)
             {
@@ -46,7 +46,7 @@ namespace BerryMVC.Controllers
         }
 
         // GET: BerryModels/Create
-        public IActionResult Create()
+        public IActionResult Create ()
         {
             return View();
         }
@@ -56,7 +56,7 @@ namespace BerryMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Version,ContentsB64")] BerryModel berryModel)
+        public async Task<IActionResult> Create ([Bind("ID,Name,Version,ContentsB64")] BerryModel berryModel)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace BerryMVC.Controllers
         }
 
         // GET: BerryModels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit (int? id)
         {
             if (id == null || _context.BerryModel == null)
             {
@@ -88,7 +88,7 @@ namespace BerryMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Version,ContentsB64")] BerryModel berryModel)
+        public async Task<IActionResult> Edit (int id, [Bind("ID,Name,Version,ContentsB64")] BerryModel berryModel)
         {
             if (id != berryModel.ID)
             {
@@ -119,7 +119,7 @@ namespace BerryMVC.Controllers
         }
 
         // GET: BerryModels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete (int? id)
         {
             if (id == null || _context.BerryModel == null)
             {
@@ -139,7 +139,7 @@ namespace BerryMVC.Controllers
         // POST: BerryModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed (int id)
         {
             if (_context.BerryModel == null)
             {
@@ -150,14 +150,14 @@ namespace BerryMVC.Controllers
             {
                 _context.BerryModel.Remove(berryModel);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BerryModelExists(int id)
+        private bool BerryModelExists (int id)
         {
-          return (_context.BerryModel?.Any(e => e.ID == id)).GetValueOrDefault();
+            return (_context.BerryModel?.Any(e => e.ID == id)).GetValueOrDefault();
         }
     }
 }
