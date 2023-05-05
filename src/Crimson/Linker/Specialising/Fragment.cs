@@ -1,4 +1,4 @@
-﻿namespace CrimsonCore.Specialising
+﻿namespace Linker.Specialising
 {
     public class Fragment
     {

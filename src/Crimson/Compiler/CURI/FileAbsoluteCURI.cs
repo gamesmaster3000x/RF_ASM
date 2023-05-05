@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.CURI
+namespace Compiler.CURI
 {
     internal class FileAbsoluteCURI : AbstractCURI
     {

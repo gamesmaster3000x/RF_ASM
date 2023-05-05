@@ -2,7 +2,7 @@
 using CrimsonCore.Exceptions;
 using CrimsonCore.Linking;
 
-namespace CrimsonCore.Parsing.Tokens
+namespace Compiler.Parsing.Tokens
 {
     public class FullNameCToken : ICrimsonToken
     {

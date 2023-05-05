@@ -1,7 +1,6 @@
-﻿using CrimsonCore.Specialising;
-using NLog;
+﻿using NLog;
 
-namespace CrimsonCore.Specialising.RFASM
+namespace Linker.Specialising.RFASM
 {
     internal class RFASMProgram : AbstractSpecificAssemblyProgram
     {

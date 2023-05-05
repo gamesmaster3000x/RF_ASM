@@ -1,4 +1,6 @@
-﻿namespace CrimsonCore.Generalising.Structures
+﻿using Compiler.Generalising;
+
+namespace Compiler.Generalising.Structures
 {
     public class LabelAssemblyStructure : IGeneralAssemblyStructure
     {

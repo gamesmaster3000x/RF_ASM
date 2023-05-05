@@ -1,7 +1,7 @@
-﻿using CrimsonCore.Generalising;
+﻿using Compiler.Generalising;
 using CrimsonCore.Linking;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     /// <summary>
     /// A collection of ICrimsonTokens which make a coherent "phrase".

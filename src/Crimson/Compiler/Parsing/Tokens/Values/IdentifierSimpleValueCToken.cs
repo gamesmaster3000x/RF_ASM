@@ -1,10 +1,10 @@
 ﻿using static System.Formats.Asn1.AsnWriter;
 using System.Numerics;
-using CrimsonCore.Parsing.Statements;
 using CrimsonCore.Linking;
-using CrimsonCore.Generalising;
+using Compiler.Parsing.Statements;
+using Compiler.Generalising;
 
-namespace CrimsonCore.Parsing.Tokens.Values
+namespace Compiler.Parsing.Tokens.Values
 {
     public class IdentifierSimpleValueCToken : SimpleValueCToken
     {

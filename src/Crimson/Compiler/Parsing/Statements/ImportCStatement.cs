@@ -3,10 +3,10 @@ using CrimsonCore.Exceptions;
 using NLog;
 using System;
 using static System.Formats.Asn1.AsnWriter;
-using CrimsonCore.Parsing.Tokens;
-using CrimsonCore.CURI;
+using Compiler.CURI;
+using Compiler.Parsing.Tokens;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     public class ImportCStatement
     {

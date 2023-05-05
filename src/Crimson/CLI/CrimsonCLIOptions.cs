@@ -1,10 +1,9 @@
-﻿
-using CommandLine;
+﻿using CommandLine;
+using Compiler.CURI;
+using Compiler.Exceptions;
 using CrimsonCore.Core;
-using CrimsonCore.CURI;
-using CrimsonCore.Exceptions;
 
-namespace CrimsonCLI
+namespace CLI
 {
     public class CrimsonCLIOptions
     {
@@ -169,9 +168,9 @@ namespace CrimsonCLI
 
         internal class ClearModeException : CrimsonCoreException
         {
-            public CrimsonCLIOptions.Clear Clear { get; private set; }
+            public Clear Clear { get; private set; }
 
-            public ClearModeException (CrimsonCLIOptions.Clear clear) : base(CrimsonCore.CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
+            public ClearModeException (Clear clear) : base(Compiler.CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
             {
                 Clear = clear;
             }

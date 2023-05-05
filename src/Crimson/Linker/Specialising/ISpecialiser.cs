@@ -1,7 +1,7 @@
 ﻿using CrimsonCore.Core;
 using CrimsonCore.Generalising;
 
-namespace CrimsonCore.Specialising
+namespace Linker.Specialising
 {
     /// <summary>
     /// 

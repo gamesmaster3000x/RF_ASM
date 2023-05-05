@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.Specialising
+namespace Linker.Specialising
 {
     public abstract class AbstractSpecificAssemblyProgram
     {

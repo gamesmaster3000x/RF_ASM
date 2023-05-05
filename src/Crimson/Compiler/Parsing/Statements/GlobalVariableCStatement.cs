@@ -1,10 +1,10 @@
 ﻿using CrimsonCore.Exceptions;
 using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Generalising;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Tokens;
+using Compiler.Parsing.Tokens;
+using Compiler.Generalising;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     /// <summary>
     /// A uhm... global variable... Is a member of a package, rather than a function.

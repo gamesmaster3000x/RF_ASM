@@ -1,12 +1,11 @@
 ﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Generalising;
-using CrimsonCore.Generalising.Structures;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Tokens;
-using CrimsonCore.Parsing.Tokens.Values;
+using Compiler.Parsing.Tokens.Values;
+using Compiler.Parsing.Tokens;
+using Compiler.Generalising;
+using Compiler.Generalising.Structures;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     public class FunctionCallCStatement : AbstractCrimsonStatement
     {

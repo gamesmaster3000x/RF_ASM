@@ -1,5 +1,4 @@
 ﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Core;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -7,8 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Compiler.Core;
 
-namespace CrimsonCore.CURI
+namespace Compiler.CURI
 {
     /// <summary>
     /// <para>

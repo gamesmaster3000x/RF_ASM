@@ -1,6 +1,6 @@
-﻿using static CrimsonCore.Parsing.Tokens.Comparator;
+﻿using static Compiler.Parsing.Tokens.Comparator;
 
-namespace CrimsonCore.Parsing.Tokens
+namespace Compiler.Parsing.Tokens
 {
     public class Comparator
     {

@@ -1,11 +1,11 @@
 ﻿using CrimsonCore.Specialising;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Tokens.Values;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Generalising;
-using CrimsonCore.Parsing.Tokens;
+using Compiler.Parsing.Tokens.Values;
+using Compiler.Parsing.Tokens;
+using Compiler.Generalising.Structures;
+using Compiler.Generalising;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     /// <summary>
     /// A function, defined with the function keyword. Is a member of a package.

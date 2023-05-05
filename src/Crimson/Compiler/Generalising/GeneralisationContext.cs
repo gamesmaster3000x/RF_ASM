@@ -1,6 +1,6 @@
-﻿using CrimsonCore.Parsing.Statements;
+﻿using Compiler.Parsing.Statements;
 
-namespace CrimsonCore.Generalising
+namespace Compiler.Generalising
 {
     public class GeneralisationContext
     {

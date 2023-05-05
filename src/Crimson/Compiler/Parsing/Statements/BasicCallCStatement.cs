@@ -1,8 +1,8 @@
-﻿using CrimsonCore.Generalising;
-using CrimsonCore.Generalising.Structures;
+﻿using Compiler.Generalising;
+using Compiler.Generalising.Structures;
 using CrimsonCore.Linking;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     internal class BasicCallCStatement : AbstractCrimsonStatement
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.Exceptions
+namespace Compiler.Exceptions
 {
     internal class GeneralisingException : ArgumentException
     {

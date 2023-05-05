@@ -2,9 +2,9 @@
 using CrimsonCore.Generalising.Structures;
 using CrimsonCore.Specialising;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Statements;
+using Compiler.Parsing.Statements;
 
-namespace CrimsonCore.Parsing.Tokens.Values
+namespace Compiler.Parsing.Tokens.Values
 {
     public class FunctionCallResolvableValueCToken : ComplexValueCToken
     {

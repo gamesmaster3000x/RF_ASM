@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.Generalising.Structures
+namespace Compiler.Generalising.Structures
 {
     public class CommentAssemblyStructure : IGeneralAssemblyStructure
     {

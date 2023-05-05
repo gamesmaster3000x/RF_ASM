@@ -3,7 +3,7 @@ using CrimsonCore.Specialising;
 using System.Net.Http;
 using CrimsonCore.Linking;
 
-namespace CrimsonCore.Parsing.Tokens.Values
+namespace Compiler.Parsing.Tokens.Values
 {
     public class OperationResolvableValueCToken : ComplexValueCToken
     {

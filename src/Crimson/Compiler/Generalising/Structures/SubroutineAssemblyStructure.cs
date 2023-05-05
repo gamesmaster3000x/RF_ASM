@@ -1,7 +1,7 @@
 ﻿using CrimsonCore.Generalising.Structures;
 using System.Xml.Linq;
 
-namespace CrimsonCore.Generalising.Structures
+namespace Compiler.Generalising.Structures
 {
     internal class SubroutineAssemblyStructure : IGeneralAssemblyStructure
     {

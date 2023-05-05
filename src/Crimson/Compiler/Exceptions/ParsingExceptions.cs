@@ -1,6 +1,6 @@
-﻿using CrimsonCore.Core;
-using CrimsonCore.CURI;
-using CrimsonCore.Parsing.Statements;
+﻿using Compiler.CURI;
+using Compiler.Parsing.Statements;
+using CrimsonCore.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.Exceptions
+namespace Compiler.Exceptions
 {
 
     internal class StatementParseException : CrimsonCoreException

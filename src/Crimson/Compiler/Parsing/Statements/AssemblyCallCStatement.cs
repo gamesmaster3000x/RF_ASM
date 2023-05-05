@@ -1,9 +1,9 @@
 ﻿using CrimsonCore.Specialising;
-using CrimsonCore.Generalising;
-using CrimsonCore.Generalising.Structures;
 using CrimsonCore.Linking;
+using Compiler.Generalising.Structures;
+using Compiler.Generalising;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     internal class AssemblyCallCStatement : AbstractCrimsonStatement
     {

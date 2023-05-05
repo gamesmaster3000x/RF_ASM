@@ -1,9 +1,8 @@
 ﻿using CrimsonCore.Exceptions;
 using CrimsonCore.Parsing.Statements;
 using CrimsonCore.Specialising;
-using CrimsonCore.Generalising;
 
-namespace CrimsonCore.Generalising.Structures
+namespace Compiler.Generalising.Structures
 {
     /// <summary>
     /// A constant value in the assembly, for example:

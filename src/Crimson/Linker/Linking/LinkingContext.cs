@@ -4,7 +4,7 @@ using CrimsonCore.Parsing;
 using CrimsonCore.Parsing.Statements;
 using CrimsonCore.Parsing.Tokens;
 
-namespace CrimsonCore.Linking
+namespace Linker.Linking
 {
     public class LinkingContext
     {

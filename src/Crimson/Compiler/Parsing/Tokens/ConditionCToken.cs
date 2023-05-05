@@ -1,8 +1,8 @@
-﻿using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Tokens.Values;
+﻿using Compiler.Parsing.Tokens.Values;
+using CrimsonCore.Linking;
 using CrimsonCore.Specialising;
 
-namespace CrimsonCore.Parsing.Tokens
+namespace Compiler.Parsing.Tokens
 {
     internal class ConditionCToken : ICrimsonToken
     {

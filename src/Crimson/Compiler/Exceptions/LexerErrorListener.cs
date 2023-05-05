@@ -1,7 +1,7 @@
 ﻿using Antlr4.Runtime;
 using NLog;
 
-namespace CrimsonCore.Exceptions
+namespace Compiler.Exceptions
 {
     internal class LexerErrorListener : IAntlrErrorListener<int>
     {

@@ -1,6 +1,4 @@
-﻿using CrimsonCore.Generalising;
-
-namespace CrimsonCore.Generalising.Structures
+﻿namespace Compiler.Generalising.Structures
 {
     public class ReturnAssemblyStructure : IGeneralAssemblyStructure
     {

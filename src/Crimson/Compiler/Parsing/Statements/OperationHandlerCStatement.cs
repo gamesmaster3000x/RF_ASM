@@ -1,11 +1,11 @@
 ﻿using CrimsonCore.Generalising.Structures;
 using CrimsonCore.Specialising;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Tokens.Values;
-using CrimsonCore.Generalising;
-using CrimsonCore.Parsing.Tokens;
+using Compiler.Parsing.Tokens;
+using Compiler.Generalising;
+using Compiler.Parsing.Tokens.Values;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     public class OperationHandlerCStatement : AbstractCrimsonStatement
     {

@@ -1,10 +1,11 @@
 ﻿using CrimsonCore.Specialising;
-using CrimsonCore.Parsing.Tokens;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Generalising;
 using CrimsonCore.Linking;
+using Compiler.Parsing.Tokens;
+using Compiler.Parsing;
+using Compiler.Generalising;
+using Compiler.Generalising.Structures;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     internal class WhileBlockCStatement : AbstractCrimsonStatement, IHasScope
     {

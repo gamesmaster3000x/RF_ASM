@@ -3,7 +3,7 @@ using NLog;
 using CrimsonCore.Parsing;
 using CrimsonCore.Core;
 
-namespace CrimsonCore.Linking
+namespace Linker.Linking
 {
     /// <summary>
     /// Converts a CompilationUnit to a LinkedUnit.

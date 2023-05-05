@@ -1,12 +1,12 @@
 ﻿using CrimsonCore.Exceptions;
 using CrimsonCore.Generalising.Structures;
 using CrimsonCore.Specialising;
-using CrimsonCore.Parsing.Tokens.Values;
-using CrimsonCore.Generalising;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing.Tokens;
+using Compiler.Parsing.Tokens.Values;
+using Compiler.Parsing.Tokens;
+using Compiler.Generalising;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     public class ScopeVariableCStatement : AbstractCrimsonStatement, INamed
     {

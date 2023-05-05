@@ -4,14 +4,14 @@
 using NLog;
 using CrimsonCore.Specialising.RFASM;
 using System.Reflection;
-using CrimsonCore.Core;
-using CrimsonCore.Exceptions;
 using CrimsonCore.Specialising;
-using CrimsonCore.Generalising;
 using CrimsonCore.Linking;
 using NLog.Config;
+using Compiler.Generalising;
+using Compiler.Core;
+using Compiler.Exceptions;
 
-namespace CrimsonCore
+namespace Compiler
 {
 
     public class CrimsonCore
@@ -96,7 +96,7 @@ namespace CrimsonCore
         private static void ConfigureNLog ()
         {
             Console.WriteLine("Configuring NLog...");
-            NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
+            LoggingConfiguration config = new LoggingConfiguration();
             var fileTarget = new NLog.Targets.FileTarget("CrimsonFileLogTarget")
             {
                 FileName = "Crimson_${shortdate}.log",

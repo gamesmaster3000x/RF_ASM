@@ -8,17 +8,16 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using CrimsonCore.Core;
-using CrimsonCore;
-using CrimsonCore.CURI;
-using static CrimsonCore.Core.IScopeProvider;
+using static Compiler.Core.IScopeProvider;
+using Compiler.CURI;
+using Compiler.Core;
 
-namespace CrimsonCLI
+namespace CLI
 {
     public class CachedBerryClient : IScopeProvider
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public static FileInfo INDEX { get; private set; } = CrimsonCore.CrimsonCore.GetRoamingFile("cache/index.json");
+        public static FileInfo INDEX { get; private set; } = Compiler.CrimsonCore.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
         public record CacheIndex
@@ -41,7 +40,7 @@ namespace CrimsonCLI
             }
             catch (Exception ex)
             {
-                CrimsonCore.CrimsonCore.Panic("Unable to static-construct cache!", CrimsonCore.CrimsonCore.PanicCode.CACHE, ex);
+                Compiler.CrimsonCore.Panic("Unable to static-construct cache!", Compiler.CrimsonCore.PanicCode.CACHE, ex);
                 throw;
             }
         }
@@ -95,7 +94,7 @@ namespace CrimsonCLI
                 }
                 catch (Exception ex)
                 {
-                    CrimsonCore.CrimsonCore.Panic($"Unable to deserialise cache index {INDEX}", CrimsonCore.CrimsonCore.PanicCode.CACHE_JSON, ex);
+                    Compiler.CrimsonCore.Panic($"Unable to deserialise cache index {INDEX}", Compiler.CrimsonCore.PanicCode.CACHE_JSON, ex);
                     throw;
                 }
                 return index;
@@ -115,7 +114,7 @@ namespace CrimsonCLI
                 }
                 catch (Exception ex)
                 {
-                    CrimsonCore.CrimsonCore.Panic($"Unable to write to cache index {INDEX}", CrimsonCore.CrimsonCore.PanicCode.CACHE_JSON, ex);
+                    Compiler.CrimsonCore.Panic($"Unable to write to cache index {INDEX}", Compiler.CrimsonCore.PanicCode.CACHE_JSON, ex);
                     throw;
                 }
         }
@@ -151,7 +150,7 @@ namespace CrimsonCLI
 
         private static void Erase ()
         {
-            CrimsonCore.CrimsonCore.GetRoamingDirectory("cache/").Delete(true);
+            Compiler.CrimsonCore.GetRoamingDirectory("cache/").Delete(true);
         }
 
         private static void ClearUnindexed ()

@@ -3,11 +3,11 @@ using CrimsonCore.Generalising.Structures;
 using CrimsonCore.Parsing.Tokens;
 using NLog;
 using System.Text.RegularExpressions;
-using CrimsonCore.Parsing;
-using CrimsonCore.Parsing.Statements;
-using CrimsonCore.Core;
+using Compiler.Core;
+using Compiler.Parsing;
+using Compiler.Parsing.Statements;
 
-namespace CrimsonCore.Generalising
+namespace Compiler.Generalising
 {
     internal class Generaliser
     {

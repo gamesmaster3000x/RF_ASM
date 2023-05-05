@@ -1,6 +1,6 @@
-﻿using CrimsonCore.Generalising;
+﻿using Compiler.Generalising;
 
-namespace CrimsonCore.Generalising.Structures
+namespace Compiler.Generalising.Structures
 {
     public class JumpAssemblyStructure : IGeneralAssemblyStructure
     {

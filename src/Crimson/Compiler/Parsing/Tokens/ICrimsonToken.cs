@@ -1,6 +1,6 @@
 ﻿using CrimsonCore.Linking;
 
-namespace CrimsonCore.Parsing.Tokens
+namespace Compiler.Parsing.Tokens
 {
     /// <summary>
     /// ICrimsonStatements are made up of ICrimsonTokens. An ICrimsonToken cannot stand on its own.

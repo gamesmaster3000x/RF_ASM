@@ -2,12 +2,12 @@
 using CrimsonCore.Specialising;
 using System;
 using CrimsonCore.Linking;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Parsing.Tokens.Values;
-using CrimsonCore.Generalising;
-using CrimsonCore.Parsing.Tokens;
+using Compiler.Parsing.Tokens.Values;
+using Compiler.Parsing.Tokens;
+using Compiler.Generalising;
+using Compiler.Generalising.Structures;
 
-namespace CrimsonCore.Parsing.Statements
+namespace Compiler.Parsing.Statements
 {
     public class VariableAssignmentCStatement : AbstractCrimsonStatement
     {

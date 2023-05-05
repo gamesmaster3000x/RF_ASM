@@ -1,9 +1,9 @@
 ﻿
 using CommandLine;
 using CrimsonCore.Exceptions;
-using CrimsonCore.CURI;
+using Compiler.CURI;
 
-namespace CrimsonCore.Core
+namespace Compiler.Core
 {
     public class CrimsonCoreOptions
     {

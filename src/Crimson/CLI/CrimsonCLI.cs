@@ -4,9 +4,9 @@ using CommandLine;
 using NLog.Config;
 using NLog;
 using System.Reflection;
-using static CrimsonCore.CrimsonCore;
+using static Compiler.CrimsonCore;
 
-namespace CrimsonCLI
+namespace CLI
 {
     public class CrimsonCLI
     {

@@ -7,10 +7,10 @@ using Antlr4.Runtime;
 using CrimsonCore.AntlrBuild;
 using CrimsonCore.Exceptions;
 using NLog;
-using CrimsonCore.Parsing;
-using CrimsonCore.CURI;
+using Compiler.CURI;
+using Compiler.Parsing;
 
-namespace CrimsonCore.Core
+namespace Compiler.Core
 {
     /// <summary>
     /// Generates CompilationUnits from input text with the power of ANTLR.

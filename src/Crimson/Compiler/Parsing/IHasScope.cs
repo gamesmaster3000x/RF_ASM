@@ -1,4 +1,4 @@
-﻿namespace CrimsonCore.Parsing
+﻿namespace Compiler.Parsing
 {
     internal interface IHasScope
     {

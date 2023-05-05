@@ -1,11 +1,11 @@
-﻿using CrimsonCore.Generalising;
+﻿using Compiler.Generalising;
+using Compiler.Parsing;
 using CrimsonCore.Linking;
-using CrimsonCore.Parsing;
 using CrimsonCore.Specialising;
 using NLog;
 using System.Net;
 
-namespace CrimsonCore.Core
+namespace Compiler.Core
 {
     /// <summary>
     /// The root of all compilation. Initiates and delegates tasks for the compilation process.

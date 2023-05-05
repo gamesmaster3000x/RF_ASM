@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.CURI
+namespace Compiler.CURI
 {
     /// <summary>
     ///     A CURI which inherits the scheme of its anchor and creates a new path by combining the paths of its anchor and its path.

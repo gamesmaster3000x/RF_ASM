@@ -1,15 +1,14 @@
 ﻿using Antlr4.Runtime.Misc;
 using CrimsonCore.AntlrBuild;
 using CrimsonCore.Exceptions;
-using CrimsonCore.Parsing.Tokens.Values;
 using NLog;
 using System.Text.RegularExpressions;
-using static CrimsonCore.Parsing.Tokens.Comparator;
-using CrimsonCore.Parsing.Statements;
-using CrimsonCore.Parsing.Tokens;
-using CrimsonCore.Parsing.Tokens.Values;
+using static Compiler.Parsing.Tokens.Comparator;
+using Compiler.Parsing.Statements;
+using Compiler.Parsing.Tokens;
+using Compiler.Parsing.Tokens.Values;
 
-namespace CrimsonCore.Parsing
+namespace Compiler.Parsing
 {
     internal class ScopeVisitor : CrimsonBaseVisitor<object>
     {

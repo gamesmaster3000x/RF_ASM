@@ -1,13 +1,13 @@
 ﻿using CrimsonCore.Exceptions;
 using NLog;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Parsing.Statements;
-using CrimsonCore.Generalising;
 using CrimsonCore.Linking;
-using CrimsonCore.CURI;
-using CrimsonCore.Core;
+using Compiler.Core;
+using Compiler.CURI;
+using Compiler.Parsing.Statements;
+using Compiler.Generalising;
+using Compiler.Generalising.Structures;
 
-namespace CrimsonCore.Parsing
+namespace Compiler.Parsing
 {
     /// <summary>
     /// An unlinked collection of statements which is the direct result of the parsing of a Crimson source file. A Linker may be used to convert this into a LinkedUnit.

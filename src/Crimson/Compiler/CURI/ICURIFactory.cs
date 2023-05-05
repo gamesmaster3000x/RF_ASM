@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrimsonCore.CURI
+namespace Compiler.CURI
 {
     public interface ICURIFactory
     {

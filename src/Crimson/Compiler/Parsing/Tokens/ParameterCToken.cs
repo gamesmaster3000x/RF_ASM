@@ -1,4 +1,4 @@
-﻿namespace CrimsonCore.Parsing.Tokens
+﻿namespace Compiler.Parsing.Tokens
 {
     internal class ParameterCToken
     {

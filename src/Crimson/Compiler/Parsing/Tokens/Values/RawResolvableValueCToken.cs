@@ -1,7 +1,7 @@
-﻿using CrimsonCore.Generalising;
+﻿using Compiler.Generalising;
 using CrimsonCore.Linking;
 
-namespace CrimsonCore.Parsing.Tokens.Values
+namespace Compiler.Parsing.Tokens.Values
 {
     public class RawResolvableValueCToken : SimpleValueCToken
     {
