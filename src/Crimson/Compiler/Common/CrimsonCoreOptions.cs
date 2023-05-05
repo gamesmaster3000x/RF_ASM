@@ -1,8 +1,6 @@
-﻿
-using CommandLine;
-using Compiler.CURI;
+﻿using Compiler.Common.CURI;
 
-namespace Compiler.Core
+namespace Compiler.Common
 {
     public class CrimsonCoreOptions
     {

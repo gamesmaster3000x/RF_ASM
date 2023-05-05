@@ -1,10 +1,6 @@
-﻿using Compiler.Core;
-using Compiler.Exceptions;
-using NLog;
-using System;
-using static System.Formats.Asn1.AsnWriter;
-using Compiler.CURI;
-using Compiler.Parsing.Tokens;
+﻿using Compiler.Parsing.Tokens;
+using Compiler.Common.CURI;
+using Compiler.Common.Exceptions;
 
 namespace Compiler.Parsing.Statements
 {

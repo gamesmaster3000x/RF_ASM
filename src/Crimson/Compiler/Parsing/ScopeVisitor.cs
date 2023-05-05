@@ -1,12 +1,11 @@
 ﻿using Antlr4.Runtime.Misc;
 using Compiler.AntlrBuild;
-using Compiler.Exceptions;
 using NLog;
 using System.Text.RegularExpressions;
-using static Compiler.Parsing.Tokens.Comparator;
 using Compiler.Parsing.Statements;
 using Compiler.Parsing.Tokens;
 using Compiler.Parsing.Tokens.Values;
+using Compiler.Common.Exceptions;
 
 namespace Compiler.Parsing
 {

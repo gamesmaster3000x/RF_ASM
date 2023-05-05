@@ -1,10 +1,10 @@
-﻿using Compiler.Exceptions;
+﻿using Compiler.Common.Exceptions;
 using Compiler.Parsing;
 using Compiler.Parsing.Statements;
 using NLog;
 using System.Text.RegularExpressions;
 
-namespace Compiler.Core
+namespace Compiler.Common
 {
     /// <summary>
     /// A collection of CompilationUnit keyed with their absolute path within the file system.

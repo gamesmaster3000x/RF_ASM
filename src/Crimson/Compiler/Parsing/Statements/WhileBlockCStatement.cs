@@ -1,7 +1,6 @@
 ﻿
 using Compiler.Mapping;
 using Compiler.Parsing.Tokens;
-using Compiler.Parsing;
 using Compiler.Generalising;
 using Compiler.Generalising.Structures;
 

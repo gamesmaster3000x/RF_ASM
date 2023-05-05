@@ -1,8 +1,8 @@
 ﻿using Compiler.Generalising.Structures;
 using NLog;
-using Compiler.Core;
 using Compiler.Parsing;
 using Compiler.Parsing.Statements;
+using Compiler.Common;
 
 namespace Compiler.Generalising
 {

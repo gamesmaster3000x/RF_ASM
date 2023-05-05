@@ -1,7 +1,4 @@
-﻿using Compiler.Exceptions;
-
-using System;
-using Compiler.Mapping;
+﻿using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;

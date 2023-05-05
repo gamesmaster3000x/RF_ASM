@@ -1,7 +1,6 @@
 ﻿using CommandLine;
-using Compiler.CURI;
-using Compiler.Exceptions;
-using Compiler.Core;
+using Compiler.Common.CURI;
+using Compiler.Common.Exceptions;
 
 namespace CLI
 {

@@ -1,14 +1,7 @@
-﻿using Compiler.CURI;
-using Compiler.Parsing.Statements;
-using Compiler.Core;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Compiler.Parsing.Statements;
+using Compiler.Common.CURI;
 
-namespace Compiler.Exceptions
+namespace Compiler.Common.Exceptions
 {
 
     internal class StatementParseException : CrimsonCoreException

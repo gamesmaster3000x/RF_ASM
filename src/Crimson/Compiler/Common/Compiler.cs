@@ -4,7 +4,7 @@ using Compiler.Parsing;
 using NLog;
 using System.Net;
 
-namespace Compiler.Core
+namespace Compiler.Common
 {
     /// <summary>
     /// The root of all compilation. Initiates and delegates tasks for the compilation process.
@@ -15,9 +15,9 @@ namespace Compiler.Core
 
         public static CrimsonCoreOptions Options { get; private set; } = null;
 
-        private Compiler () { }
+        private Compiler() { }
 
-        public static async void Compile (CrimsonCoreOptions options, Library library, Mapper mapper, Generaliser generaliser)
+        public static async void Compile(CrimsonCoreOptions options, Library library, Mapper mapper, Generaliser generaliser)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Compiler.Core
             }
         }
 
-        private static void DumpGeneralisedProgram (GeneralAssemblyProgram generalProgram)
+        private static void DumpGeneralisedProgram(GeneralAssemblyProgram generalProgram)
         {
             if (Options.DumpIntermediates)
             {

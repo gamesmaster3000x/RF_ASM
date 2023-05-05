@@ -1,6 +1,4 @@
-﻿using Compiler.Generalising;
-
-namespace Compiler.Generalising.Structures
+﻿namespace Compiler.Generalising.Structures
 {
     internal class ScopeAssemblyStructure : IGeneralAssemblyStructure
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BerryMVC.Models
+﻿namespace BerryMVC.Models
 {
     public class BerryModel
     {

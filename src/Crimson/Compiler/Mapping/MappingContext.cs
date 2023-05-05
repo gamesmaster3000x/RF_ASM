@@ -1,5 +1,5 @@
-﻿using Compiler.Core;
-using Compiler.Exceptions;
+﻿using Compiler.Common;
+using Compiler.Common.Exceptions;
 using Compiler.Parsing;
 using Compiler.Parsing.Statements;
 using Compiler.Parsing.Tokens;

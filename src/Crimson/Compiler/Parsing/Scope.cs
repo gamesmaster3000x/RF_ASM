@@ -1,11 +1,11 @@
 ﻿using NLog;
-using Compiler.Core;
-using Compiler.CURI;
 using Compiler.Parsing.Statements;
 using Compiler.Generalising;
 using Compiler.Generalising.Structures;
 using Compiler.Mapping;
-using Compiler.Exceptions;
+using Compiler.Common.CURI;
+using Compiler.Common;
+using Compiler.Common.Exceptions;
 
 namespace Compiler.Parsing
 {

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Compiler.CURI
+namespace Compiler.Common.CURI
 {
     /// <summary>
     ///     A CURI which inherits the scheme of its anchor and creates a new path by combining the paths of its anchor and its path.
@@ -13,7 +13,7 @@ namespace Compiler.CURI
         {
             get
             {
-                string source = WebUtility.UrlDecode(Core.Compiler.Options.SourceCURI.Uri.AbsolutePath);
+                string source = WebUtility.UrlDecode(Compiler.Options.SourceCURI.Uri.AbsolutePath);
                 string? dir = Path.GetDirectoryName(source);
 
                 string uri = WebUtility.UrlDecode(Uri.AbsolutePath);

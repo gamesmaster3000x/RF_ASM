@@ -1,6 +1,4 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-using System.Numerics;
-using Compiler.Mapping;
+﻿using Compiler.Mapping;
 using Compiler.Parsing.Statements;
 using Compiler.Generalising;
 

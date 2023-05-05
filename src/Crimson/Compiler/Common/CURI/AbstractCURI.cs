@@ -1,8 +1,6 @@
-﻿using Compiler.Exceptions;
-using NLog;
-using Compiler.Core;
+﻿using NLog;
 
-namespace Compiler.CURI
+namespace Compiler.Common.CURI
 {
     /// <summary>
     /// <para>
@@ -31,7 +29,7 @@ namespace Compiler.CURI
         /// </para>
         /// </summary>
         /// <returns></returns>
-        public abstract Stream GetStream ();
+        public abstract Stream GetStream();
 
         /// <summary>
         /// <para>
@@ -43,13 +41,13 @@ namespace Compiler.CURI
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public abstract bool Equals (AbstractCURI? other);
+        public abstract bool Equals(AbstractCURI? other);
 
         public virtual Uri Uri { get; set; }
 
-        protected AbstractCURI (Uri uri) => Uri = uri;
+        protected AbstractCURI(Uri uri) => Uri = uri;
 
-        public string ToShortString ()
+        public string ToShortString()
         {
             List<string> parts = new List<string>();
 
@@ -65,7 +63,7 @@ namespace Compiler.CURI
             return $"{Uri.Scheme}://{Uri.UserInfo}@{Uri.Host}:{Uri.Port}{string.Join("", parts)}";
         }
 
-        public override string ToString ()
+        public override string ToString()
         {
             return Uri.ToString();
         }
@@ -87,7 +85,7 @@ namespace Compiler.CURI
             { RelativeCURI.SCHEME, new RelativeCURI.Factory() }
         };
 
-        public static AbstractCURI? Create (string relativeOrAbsoluteUri, AbstractCURI? anchor)
+        public static AbstractCURI? Create(string relativeOrAbsoluteUri, AbstractCURI? anchor)
         {
             if (string.IsNullOrWhiteSpace(relativeOrAbsoluteUri))
                 return null;
@@ -100,7 +98,7 @@ namespace Compiler.CURI
             throw new UriFormatException($"Unable to parse illegal URI string '{trimmedText}' ({relativeOrAbsoluteUri})");
         }
 
-        public static AbstractCURI Create (Uri relativeOrAbsoluteUri, AbstractCURI? anchor)
+        public static AbstractCURI Create(Uri relativeOrAbsoluteUri, AbstractCURI? anchor)
         {
             if (Factories.TryGetValue(relativeOrAbsoluteUri.Scheme, out ICURIFactory? factory))
                 return factory!.Make(relativeOrAbsoluteUri, anchor);

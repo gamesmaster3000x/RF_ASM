@@ -1,6 +1,5 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
-using NLog.Targets;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.Statements;
 using RedFoxAssembly.Exceptions;

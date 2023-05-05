@@ -1,7 +1,5 @@
 ﻿using Antlr4.Runtime;
 using NLog;
-using RedFoxAssembly.Core;
-using RedFoxAssembly.Core;
 using RedFoxAssembly.Exceptions;
 
 namespace RedFoxAssembly.Antlr

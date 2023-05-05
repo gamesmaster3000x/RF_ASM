@@ -1,4 +1,4 @@
-﻿using Compiler.Exceptions;
+﻿using Compiler.Common.Exceptions;
 using Compiler.Parsing;
 using Compiler.Parsing.Statements;
 using Compiler.Parsing.Tokens;

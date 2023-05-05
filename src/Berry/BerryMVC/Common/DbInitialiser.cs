@@ -2,7 +2,6 @@
 using BerryMVC.Models;
 using Microsoft.EntityFrameworkCore;
 using NLog;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace BerryMVC.Common

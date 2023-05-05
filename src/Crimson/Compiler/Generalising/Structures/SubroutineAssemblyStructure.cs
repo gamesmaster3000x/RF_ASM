@@ -1,7 +1,4 @@
-﻿using Compiler.Generalising.Structures;
-using System.Xml.Linq;
-
-namespace Compiler.Generalising.Structures
+﻿namespace Compiler.Generalising.Structures
 {
     internal class SubroutineAssemblyStructure : IGeneralAssemblyStructure
     {

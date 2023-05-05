@@ -1,6 +1,4 @@
-﻿using Compiler.Exceptions;
-
-using System.Net.Http;
+﻿using Compiler.Common.Exceptions;
 using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens.Values

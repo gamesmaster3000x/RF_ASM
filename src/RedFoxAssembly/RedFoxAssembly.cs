@@ -1,7 +1,6 @@
 ﻿using CommandLine;
 using NLog;
 using Antlr4.Runtime;
-using System.IO.Abstractions;
 using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.Statements;
 using RedFoxAssembly.Core;

@@ -1,12 +1,5 @@
-﻿using NLog.Targets;
-using RedFoxAssembly.Core;
+﻿using RedFoxAssembly.Core;
 using RedFoxAssembly.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static RedFoxAssembly.Statements.IData;
 
 namespace RedFoxAssembly.Statements
 {

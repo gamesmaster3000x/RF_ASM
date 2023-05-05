@@ -1,6 +1,4 @@
-﻿using static Compiler.Parsing.Tokens.Comparator;
-
-namespace Compiler.Parsing.Tokens
+﻿namespace Compiler.Parsing.Tokens
 {
     public class Comparator
     {

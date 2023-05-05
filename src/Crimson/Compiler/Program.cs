@@ -5,9 +5,9 @@ using NLog;
 using System.Reflection;
 using NLog.Config;
 using Compiler.Generalising;
-using Compiler.Core;
-using Compiler.Exceptions;
 using Compiler.Mapping;
+using Compiler.Common.Exceptions;
+using Compiler.Common;
 
 namespace Compiler
 {
@@ -52,7 +52,7 @@ namespace Compiler
                 Mapper linker = new Mapper();
                 Generaliser generaliser = new Generaliser();
 
-                Core.Compiler.Compile(options, generator, linker, generaliser);
+                Common.Compiler.Compile(options, generator, linker, generaliser);
             }
             catch (Exception ex)
             {

@@ -1,7 +1,6 @@
 ﻿using BerryMVC.Data;
 using BerryMVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace BerryMVC.Controllers

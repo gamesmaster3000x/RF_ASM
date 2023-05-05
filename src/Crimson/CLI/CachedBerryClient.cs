@@ -1,9 +1,9 @@
 ﻿using NLog;
 using System.Text;
 using System.Text.Json;
-using static Compiler.Core.IScopeProvider;
-using Compiler.CURI;
-using Compiler.Core;
+using static Compiler.Common.IScopeProvider;
+using Compiler.Common.CURI;
+using Compiler.Common;
 
 namespace CLI
 {

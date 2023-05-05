@@ -1,9 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.RegularExpressions;
-using Antlr4.Runtime;
-using CommandLine;
 using NLog;
-using RedFoxAssembly.AntlrBuild;
 using RedFoxAssembly.Statements;
 
 namespace RedFoxAssembly.Core

@@ -1,5 +1,4 @@
 ﻿using Compiler.Parsing.Tokens;
-using Compiler.Core;
 
 namespace Compiler.Parsing.Statements
 {

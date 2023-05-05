@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Antlr4.Runtime;
 using Compiler.AntlrBuild;
 using NLog;
-using Compiler.CURI;
 using Compiler.Parsing;
-using Compiler.Exceptions;
+using Compiler.Common.CURI;
+using Compiler.Common.Exceptions;
 
-namespace Compiler.Core
+namespace Compiler.Common
 {
     /// <summary>
     /// Generates CompilationUnits from input text with the power of ANTLR.

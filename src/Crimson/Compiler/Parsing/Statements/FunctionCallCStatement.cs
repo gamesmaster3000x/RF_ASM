@@ -1,9 +1,9 @@
-﻿using Compiler.Exceptions;
-using Compiler.Mapping;
+﻿using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
 using Compiler.Generalising.Structures;
+using Compiler.Common.Exceptions;
 
 namespace Compiler.Parsing.Statements
 {

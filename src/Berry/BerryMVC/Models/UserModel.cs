@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace BerryMVC.Models
+﻿namespace BerryMVC.Models
 {
     /// <summary>
     /// 

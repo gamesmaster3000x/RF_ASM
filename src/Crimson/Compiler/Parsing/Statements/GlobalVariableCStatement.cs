@@ -1,5 +1,4 @@
-﻿using Compiler.Exceptions;
-using Compiler.Generalising.Structures;
+﻿using Compiler.Generalising.Structures;
 using Compiler.Mapping;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;

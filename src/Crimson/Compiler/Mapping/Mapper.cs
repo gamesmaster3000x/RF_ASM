@@ -1,7 +1,6 @@
-﻿using Compiler.Parsing.Statements;
-using NLog;
+﻿using NLog;
 using Compiler.Parsing;
-using Compiler.Core;
+using Compiler.Common;
 
 namespace Compiler.Mapping
 {

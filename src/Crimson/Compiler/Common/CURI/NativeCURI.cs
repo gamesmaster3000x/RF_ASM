@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Compiler.CURI
+namespace Compiler.Common.CURI
 {
     /// <summary>
     /// <para>
@@ -20,7 +20,7 @@ namespace Compiler.CURI
         {
             get
             {
-                string native = WebUtility.UrlDecode(Core.Compiler.Options.NativeCURI.Uri.AbsolutePath);
+                string native = WebUtility.UrlDecode(Compiler.Options.NativeCURI.Uri.AbsolutePath);
 
                 string abs = WebUtility.UrlDecode(Uri.AbsolutePath);
 
