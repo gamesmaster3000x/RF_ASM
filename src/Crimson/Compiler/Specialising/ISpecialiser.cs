@@ -1,5 +1,4 @@
-﻿using CrimsonCore.Core;
-using CrimsonCore.Generalising;
+﻿using Compiler.Generalising;
 
 namespace Linker.Specialising
 {

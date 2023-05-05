@@ -40,7 +40,7 @@ namespace Compiler.CURI
             }
             catch (Exception ex)
             {
-                CrimsonCore.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", CrimsonCore.PanicCode.CURI_STREAM, ex);
+                Program.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", Program.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

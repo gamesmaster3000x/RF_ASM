@@ -1,7 +1,7 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Specialising;
+﻿using Compiler.Exceptions;
+
 using System.Net.Http;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens.Values
 {
@@ -19,7 +19,7 @@ namespace Compiler.Parsing.Tokens.Values
             RightToken = rightToken;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             LeftToken.Link(ctx);
             RightToken.Link(ctx);

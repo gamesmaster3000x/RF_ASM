@@ -1,12 +1,4 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Core;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace Compiler.CURI
 {
@@ -21,7 +13,7 @@ namespace Compiler.CURI
         {
             get
             {
-                string source = WebUtility.UrlDecode(Compiler.Options.SourceCURI.Uri.AbsolutePath);
+                string source = WebUtility.UrlDecode(Core.Compiler.Options.SourceCURI.Uri.AbsolutePath);
                 string? dir = Path.GetDirectoryName(source);
 
                 string uri = WebUtility.UrlDecode(Uri.AbsolutePath);
@@ -64,7 +56,7 @@ namespace Compiler.CURI
             }
             catch (Exception ex)
             {
-                CrimsonCore.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", CrimsonCore.PanicCode.CURI_STREAM, ex);
+                Program.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", Program.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

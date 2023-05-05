@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Linking;
+﻿using Compiler.Generalising.Structures;
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Generalising;
 
@@ -14,9 +14,9 @@ namespace Compiler.Parsing.Statements
 
         public SimpleValueCToken Value { get; }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            Linked = true;
+            Mapped = true;
         }
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)

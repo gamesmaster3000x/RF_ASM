@@ -2,19 +2,17 @@
 #define CORE_DEBUG
 
 using NLog;
-using CrimsonCore.Specialising.RFASM;
 using System.Reflection;
-using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
 using NLog.Config;
 using Compiler.Generalising;
 using Compiler.Core;
 using Compiler.Exceptions;
+using Compiler.Mapping;
 
 namespace Compiler
 {
 
-    public class CrimsonCore
+    public class Program
     {
 
         private static Logger? LOGGER;
@@ -26,7 +24,7 @@ namespace Compiler
         public static string AssemblyLocation { get => Assembly.GetExecutingAssembly().Location; }
         private static LoggingConfiguration LogConfig { get; set; }
 
-        static CrimsonCore ()
+        static Program ()
         {
             LogFactory = new LogFactory();
             string _assemblyFolder = Path.GetDirectoryName(AssemblyLocation);
@@ -51,11 +49,10 @@ namespace Compiler
                 ConfigureNLog();
 
                 Library generator = new Library();
-                Linker linker = new Linker();
+                Mapper linker = new Mapper();
                 Generaliser generaliser = new Generaliser();
-                ISpecialiser specialiser = new RFASMSpecialiser(); //TODO Don't default specialiser to RFASM
 
-                Compiler.Compile(options, generator, linker, generaliser, specialiser);
+                Core.Compiler.Compile(options, generator, linker, generaliser);
             }
             catch (Exception ex)
             {

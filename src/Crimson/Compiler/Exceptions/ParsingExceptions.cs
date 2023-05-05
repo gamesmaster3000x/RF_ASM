@@ -1,6 +1,6 @@
 ﻿using Compiler.CURI;
 using Compiler.Parsing.Statements;
-using CrimsonCore.Core;
+using Compiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,7 +17,7 @@ namespace Compiler.Exceptions
         public AbstractCrimsonStatement? Statement { get; private set; }
         public Exception? Cause { get; private set; }
 
-        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
+        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Program.PanicCode.COMPILE_PARSE_STATEMENT)
         {
             Message = message;
             Statement = statement;
@@ -43,7 +43,7 @@ namespace Compiler.Exceptions
         public AbstractCURI CURI { get; private set; }
         public CURIExceptionReason Reason { get; private set; }
 
-        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(CrimsonCore.PanicCode.CURI)
+        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(Program.PanicCode.CURI)
         {
             Message = message;
             CURI = uri;
@@ -78,14 +78,14 @@ namespace Compiler.Exceptions
 
     internal class CrimsonParserException : CrimsonCoreException
     {
-        public CrimsonParserException (string message) : base(CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
+        public CrimsonParserException (string message) : base(Program.PanicCode.COMPILE_PARSE_STATEMENT)
         {
         }
     }
 
     internal class ScopeGenerationException : CrimsonCoreException
     {
-        public ScopeGenerationException () : base(CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE)
+        public ScopeGenerationException () : base(Program.PanicCode.COMPILE_PARSE_SCOPE)
         {
 
         }

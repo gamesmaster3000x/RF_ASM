@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BerryMVC", "src\Berry\BerryMVC\BerryMVC.csproj", "{8FABE162-D05F-46E0-B79E-135BAC4C800C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crimson", "Crimson", "{32E5BDDE-641C-46AC-9697-D01FD4366C05}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Berry", "Berry", "{DDDCA9CE-A510-4CF3-85F1-FFBB6AAB9D6E}"
 EndProject

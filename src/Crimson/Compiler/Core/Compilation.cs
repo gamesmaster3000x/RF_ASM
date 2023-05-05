@@ -1,6 +1,6 @@
-﻿using Compiler.Parsing;
+﻿using Compiler.Exceptions;
+using Compiler.Parsing;
 using Compiler.Parsing.Statements;
-using CrimsonCore.Exceptions;
 using NLog;
 using System.Text.RegularExpressions;
 

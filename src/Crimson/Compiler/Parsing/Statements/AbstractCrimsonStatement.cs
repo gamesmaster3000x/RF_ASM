@@ -1,5 +1,5 @@
 ﻿using Compiler.Generalising;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Statements
 {
@@ -8,9 +8,9 @@ namespace Compiler.Parsing.Statements
     /// </summary>
     public abstract class AbstractCrimsonStatement
     {
-        public bool Linked { get; set; }
+        public bool Mapped { get; set; }
 
-        public abstract void Link (LinkingContext context);
+        public abstract void Link (MappingContext context);
 
         public abstract IGeneralAssemblyStructure Generalise (GeneralisationContext context);
 

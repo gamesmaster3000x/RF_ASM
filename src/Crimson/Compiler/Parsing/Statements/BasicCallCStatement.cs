@@ -1,6 +1,6 @@
 ﻿using Compiler.Generalising;
 using Compiler.Generalising.Structures;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Statements
 {
@@ -12,9 +12,9 @@ namespace Compiler.Parsing.Statements
         {
             AssemblyText = assemblyText;
         }
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            Linked = true;
+            Mapped = true;
         }
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)

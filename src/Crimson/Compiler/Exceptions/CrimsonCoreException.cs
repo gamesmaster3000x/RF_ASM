@@ -8,12 +8,12 @@ namespace Compiler.Exceptions
 {
     public abstract class CrimsonCoreException : Exception
     {
-        public CrimsonCoreException (CrimsonCore.PanicCode code)
+        public CrimsonCoreException (Program.PanicCode code)
         {
             Code = code;
         }
 
-        public CrimsonCore.PanicCode Code { get; private set; }
+        public Program.PanicCode Code { get; private set; }
 
         public virtual IList<string> GetDetailedMessage ()
         {

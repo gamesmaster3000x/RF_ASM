@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime.Misc;
-using CrimsonCore.AntlrBuild;
-using CrimsonCore.Exceptions;
+using Compiler.AntlrBuild;
+using Compiler.Exceptions;
 using NLog;
 using System.Text.RegularExpressions;
 using static Compiler.Parsing.Tokens.Comparator;
@@ -55,7 +55,7 @@ namespace Compiler.Parsing
             }
             catch (Exception ex)
             {
-                CrimsonCore.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", CrimsonCore.PanicCode.COMPILE_PARSE_SCOPE, ex);
+                Program.Panic($"{GetType()} was unable to parse the given {(context == null ? "NULL" : context.GetType())}", Program.PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }

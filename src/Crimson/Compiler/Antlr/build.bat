@@ -4,7 +4,7 @@
 set "java_path=java"
 set "input_file=Input/Crimson.g4"
 set "output_dir=Output"
-set "package=CrimsonCore.AntlrBuild"
+set "package=Compiler.AntlrBuild"
 
 REM ######## Below this line are the statements to complete the build. Configure the build above. ########
 :prepare

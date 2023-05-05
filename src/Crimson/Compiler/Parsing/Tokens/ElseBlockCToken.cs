@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens
 {
@@ -14,7 +14,7 @@ namespace Compiler.Parsing.Tokens
 
         public Scope GetScope () => Scope;
 
-        public void Link (LinkingContext ctx)
+        public void Link (MappingContext ctx)
         {
             Scope.Link(ctx);
             return;

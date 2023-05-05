@@ -1,4 +1,4 @@
-﻿using CrimsonCore.Exceptions;
+﻿using Compiler.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace Compiler.CURI
             }
             catch (Exception ex)
             {
-                CrimsonCore.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", CrimsonCore.PanicCode.CURI_STREAM, ex);
+                Program.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", Program.PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

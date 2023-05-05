@@ -1,6 +1,6 @@
-﻿using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿using Compiler.Generalising.Structures;
+
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
 
@@ -23,10 +23,10 @@ namespace Compiler.Parsing.Statements
             return new EmptyAssemblyStructure();
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             Name = ctx.GetUniqueFunctionName(Name);
-            Linked = true;
+            Mapped = true;
         }
 
         public FullNameCToken GetName ()

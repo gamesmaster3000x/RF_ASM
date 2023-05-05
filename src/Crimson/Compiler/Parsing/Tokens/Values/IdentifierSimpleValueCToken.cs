@@ -1,6 +1,6 @@
 ﻿using static System.Formats.Asn1.AsnWriter;
 using System.Numerics;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 using Compiler.Parsing.Statements;
 using Compiler.Generalising;
 
@@ -17,7 +17,7 @@ namespace Compiler.Parsing.Tokens.Values
             Identifier = identifier;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             // TODO Scope.FindScopeVariable(MemberName);
             ScopeVariable = ctx.CurrentScope.FindScopeVariable(Identifier.MemberName!);

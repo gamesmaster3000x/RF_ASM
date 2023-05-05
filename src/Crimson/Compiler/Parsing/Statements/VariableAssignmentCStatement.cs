@@ -1,7 +1,7 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Specialising;
+﻿using Compiler.Exceptions;
+
 using System;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
@@ -31,12 +31,12 @@ namespace Compiler.Parsing.Statements
             Complex = value;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            Name = LinkerHelper.LinkIdentifier(Name, ctx);
+            Name = MapperHelper.LinkIdentifier(Name, ctx);
             Simple?.Link(ctx);
             Complex?.Link(ctx);
-            Linked = true;
+            Mapped = true;
         }
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)

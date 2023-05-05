@@ -1,5 +1,5 @@
 ﻿using Compiler.Parsing.Tokens;
-using CrimsonCore.Core;
+using Compiler.Core;
 
 namespace Compiler.Parsing.Statements
 {

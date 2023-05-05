@@ -1,6 +1,6 @@
-﻿using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿using Compiler.Generalising.Structures;
+
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
 using Compiler.Parsing.Tokens.Values;
@@ -24,9 +24,9 @@ namespace Compiler.Parsing.Statements
             return null;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            TargetFunction = LinkerHelper.LinkFunctionCall(FunctionIdentifier, ctx);
+            TargetFunction = MapperHelper.LinkFunctionCall(FunctionIdentifier, ctx);
         }
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)

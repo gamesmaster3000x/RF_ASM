@@ -1,19 +1,19 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Core;
-using CrimsonCore.Parsing;
-using CrimsonCore.Parsing.Statements;
-using CrimsonCore.Parsing.Tokens;
+﻿using Compiler.Core;
+using Compiler.Exceptions;
+using Compiler.Parsing;
+using Compiler.Parsing.Statements;
+using Compiler.Parsing.Tokens;
 
-namespace Linker.Linking
+namespace Compiler.Mapping
 {
-    public class LinkingContext
+    public class MappingContext
     {
 
         public Scope CurrentScope { get; private set; }
         internal Dictionary<string, Scope> Links { get; private set; }
         public Compilation Compilation { get; private set; }
 
-        public LinkingContext (Scope currentScope, Dictionary<string, Scope> links, Compilation compilation)
+        public MappingContext (Scope currentScope, Dictionary<string, Scope> links, Compilation compilation)
         {
             CurrentScope = currentScope;
             Links = links;
@@ -31,7 +31,7 @@ namespace Linker.Linking
         /// be affected by edits to the new context's links.
         /// </summary>
         /// <param name="ctx"></param>
-        public LinkingContext (Scope currentScope, LinkingContext ctx)
+        public MappingContext (Scope currentScope, MappingContext ctx)
         {
             CurrentScope = currentScope;
 

@@ -4,7 +4,7 @@ using CommandLine;
 using NLog.Config;
 using NLog;
 using System.Reflection;
-using static Compiler.CrimsonCore;
+using static Compiler.Program;
 
 namespace CLI
 {

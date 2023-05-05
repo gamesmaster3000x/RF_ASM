@@ -1,7 +1,7 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿using Compiler.Exceptions;
+using Compiler.Generalising.Structures;
+
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
@@ -23,12 +23,12 @@ namespace Compiler.Parsing.Statements
             if (!identifier.HasMember()) throw new CrimsonParserException($"Identifier {identifier} for internal variable must have a member name.");
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             Identifier = ctx.GetUniqueScopeVariableName(Identifier);
             Size.Link(ctx);
             Identifier.Link(ctx);
-            Linked = true;
+            Mapped = true;
         }
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)

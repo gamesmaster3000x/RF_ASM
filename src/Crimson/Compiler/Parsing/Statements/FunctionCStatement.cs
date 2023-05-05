@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising.Structures;
@@ -24,15 +24,15 @@ namespace Compiler.Parsing.Statements
             Scope.Name = Name.ToString();
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            if (Linked) return;
+            if (Mapped) return;
             Name = ctx.GetUniqueFunctionName(Name);
 
             ((ICrimsonToken) FunctionHeader).Link(ctx);
             Scope.Link(ctx);
 
-            Linked = true;
+            Mapped = true;
         }
 
         public override IGeneralAssemblyStructure Generalise (GeneralisationContext context)
@@ -72,10 +72,10 @@ namespace Compiler.Parsing.Statements
                 Identifier = identifier;
             }
 
-            void ICrimsonToken.Link (LinkingContext ctx)
+            void ICrimsonToken.Link (MappingContext ctx)
             {
                 Size.Link(ctx);
-                Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
+                Identifier = MapperHelper.LinkIdentifier(Identifier, ctx);
             }
         }
 
@@ -90,9 +90,9 @@ namespace Compiler.Parsing.Statements
                 Parameters = parameters;
             }
 
-            void ICrimsonToken.Link (LinkingContext ctx)
+            void ICrimsonToken.Link (MappingContext ctx)
             {
-                Identifier = LinkerHelper.LinkIdentifier(Identifier, ctx);
+                Identifier = MapperHelper.LinkIdentifier(Identifier, ctx);
                 foreach (var p in Parameters)
                     ((ICrimsonToken) p).Link(ctx);
             }

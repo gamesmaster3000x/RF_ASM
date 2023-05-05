@@ -1,7 +1,7 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿using Compiler.Exceptions;
+using Compiler.Generalising.Structures;
+
+using Compiler.Mapping;
 using Compiler.Parsing.Statements;
 
 namespace Compiler.Parsing.Tokens.Values
@@ -15,7 +15,7 @@ namespace Compiler.Parsing.Tokens.Values
             FunctionCall = functionCall;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             FunctionCall.Link(ctx);
         }

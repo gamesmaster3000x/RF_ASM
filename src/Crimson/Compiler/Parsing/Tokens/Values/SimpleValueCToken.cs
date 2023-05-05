@@ -1,5 +1,5 @@
 ﻿using Compiler.Generalising;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens.Values
 {
@@ -8,7 +8,7 @@ namespace Compiler.Parsing.Tokens.Values
         public SimpleValueCToken ()
         {
         }
-        public abstract void Link (LinkingContext ctx);
+        public abstract void Link (MappingContext ctx);
         public abstract string GetText ();
         public abstract bool CanEvaluate ();
         public abstract object Evaluate (GeneralisationContext context);

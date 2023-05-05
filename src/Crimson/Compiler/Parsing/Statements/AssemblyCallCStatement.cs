@@ -1,7 +1,6 @@
-﻿using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
-using Compiler.Generalising.Structures;
+﻿using Compiler.Generalising.Structures;
 using Compiler.Generalising;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Statements
 {
@@ -20,9 +19,9 @@ namespace Compiler.Parsing.Statements
             return structure;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            Linked = true;
+            Mapped = true;
         }
 
         public override string ToString ()

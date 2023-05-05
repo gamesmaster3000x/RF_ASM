@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Linking;
+﻿using Compiler.Exceptions;
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens.Values;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
@@ -58,16 +58,16 @@ namespace Compiler.Parsing.Statements
             return scope;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
-            if (Linked) return;
+            if (Mapped) return;
 
-            targetFunction = LinkerHelper.LinkFunctionCall(Identifier, ctx);
+            targetFunction = MapperHelper.LinkFunctionCall(Identifier, ctx);
 
             foreach (var a in arguments)
                 a.Link(ctx);
 
-            Linked = true;
+            Mapped = true;
         }
     }
 }

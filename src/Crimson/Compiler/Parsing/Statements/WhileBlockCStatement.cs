@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens;
 using Compiler.Parsing;
 using Compiler.Generalising;
@@ -21,11 +21,11 @@ namespace Compiler.Parsing.Statements
 
         public Scope GetScope () => Scope;
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             Condition.Link(ctx);
             Scope.Link(ctx);
-            Linked = true;
+            Mapped = true;
         }
 
         /*

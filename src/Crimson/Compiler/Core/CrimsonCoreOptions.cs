@@ -1,6 +1,5 @@
 ﻿
 using CommandLine;
-using CrimsonCore.Exceptions;
 using Compiler.CURI;
 
 namespace Compiler.Core

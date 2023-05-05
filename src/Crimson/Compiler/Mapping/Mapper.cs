@@ -1,14 +1,14 @@
-﻿using CrimsonCore.Parsing.Statements;
+﻿using Compiler.Parsing.Statements;
 using NLog;
-using CrimsonCore.Parsing;
-using CrimsonCore.Core;
+using Compiler.Parsing;
+using Compiler.Core;
 
-namespace Linker.Linking
+namespace Compiler.Mapping
 {
     /// <summary>
     /// Converts a CompilationUnit to a LinkedUnit.
     /// </summary>
-    internal class Linker
+    internal class Mapper
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
@@ -18,6 +18,8 @@ namespace Linker.Linking
         /// Links the FunctionCalls in a Compilation.
         /// </summary>
         /// <param name="compilation"></param>
+        /// 
+        [Obsolete]
         public async Task Link (Compilation compilation)
         {
             LOGGER.Info("Linking compilation " + compilation);
@@ -29,7 +31,7 @@ namespace Linker.Linking
 
                 // Generate linking context for the current unit (based on the aliases of imports)
                 // This means mapping "ALIAS" to "UNIT" so that each statement can remap itself
-                LinkingContext ctx = new LinkingContext(scope, new Dictionary<string, Scope>(), compilation);
+                MappingContext ctx = new MappingContext(scope, new Dictionary<string, Scope>(), compilation);
 
                 // Add links from the current unit
                 scope.Link(ctx);
@@ -39,6 +41,11 @@ namespace Linker.Linking
             }
 
             return;
+        }
+
+        internal void Map (Compilation compilation)
+        {
+            throw new NotImplementedException();
         }
     }
 }

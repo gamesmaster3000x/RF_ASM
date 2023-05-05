@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using Compiler.CURI;
 using Compiler.Exceptions;
-using CrimsonCore.Core;
+using Compiler.Core;
 
 namespace CLI
 {
@@ -170,7 +170,7 @@ namespace CLI
         {
             public Clear Clear { get; private set; }
 
-            public ClearModeException (Clear clear) : base(Compiler.CrimsonCore.PanicCode.COMPILE_PARSE_STATEMENT)
+            public ClearModeException (Clear clear) : base(Compiler.Program.PanicCode.COMPILE_PARSE_STATEMENT)
             {
                 Clear = clear;
             }

@@ -1,7 +1,6 @@
 ﻿using Compiler.Generalising;
+using Compiler.Mapping;
 using Compiler.Parsing;
-using CrimsonCore.Linking;
-using CrimsonCore.Specialising;
 using NLog;
 using System.Net;
 
@@ -18,7 +17,7 @@ namespace Compiler.Core
 
         private Compiler () { }
 
-        public static async void Compile (CrimsonCoreOptions options, Library library, Linker linker, Generaliser generaliser, ISpecialiser flattener)
+        public static async void Compile (CrimsonCoreOptions options, Library library, Mapper mapper, Generaliser generaliser)
         {
             try
             {
@@ -46,7 +45,8 @@ namespace Compiler.Core
                  */
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" L I N K I N G ");
-                await linker.Link(compilation);
+                mapper.Map(compilation);
+                // await mapper.Link(compilation);
 
 
                 /*
@@ -64,41 +64,17 @@ namespace Compiler.Core
                 DumpGeneralisedProgram(generalProgram);
 
                 /*
-                 * == SPECIALISING STAGE == 
-                 * 
-                 * Convert the generic program into one targetting the desired assembly language.
-                 * For each language, you'll need a different ISpecialiser.
-                 */
-                LOGGER.Info("\n\n");
-                LOGGER.Info(" S P E C I A L I S I N G ");
-                AbstractSpecificAssemblyProgram specialisedProgram = flattener.Specialise(generalProgram);
-
-                /*
                  * == CLEANUP == 
                  */
-                LOGGER.Info("\n\n");
-                DumpSpecialisedProgram(specialisedProgram);
 
                 LOGGER.Info("\n\n");
                 LOGGER.Info("Done!");
             }
             catch (Exception e)
             {
-                CrimsonCore.Panic("An uncaught exception occurred during the compilation process.", CrimsonCore.PanicCode.COMPILE_PARSE, e);
+                Program.Panic("An uncaught exception occurred during the compilation process.", Program.PanicCode.COMPILE_PARSE, e);
                 throw;
             }
-        }
-
-        private static void DumpSpecialisedProgram (AbstractSpecificAssemblyProgram specialisedProgram)
-        {
-            if (Options.DumpIntermediates)
-            {
-                string target = WebUtility.UrlDecode(Options.TargetCURI.Uri.AbsolutePath);
-                string basicTarget = Path.ChangeExtension(target, specialisedProgram.GetExtension());
-                specialisedProgram.Write(basicTarget);
-            }
-            else
-                LOGGER.Info("Skipping specialised program dump...");
         }
 
         private static void DumpGeneralisedProgram (GeneralAssemblyProgram generalProgram)

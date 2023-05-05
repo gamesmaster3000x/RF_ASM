@@ -1,11 +1,11 @@
-﻿using CrimsonCore.Exceptions;
-using NLog;
-using CrimsonCore.Linking;
+﻿using NLog;
 using Compiler.Core;
 using Compiler.CURI;
 using Compiler.Parsing.Statements;
 using Compiler.Generalising;
 using Compiler.Generalising.Structures;
+using Compiler.Mapping;
+using Compiler.Exceptions;
 
 namespace Compiler.Parsing
 {
@@ -189,12 +189,12 @@ namespace Compiler.Parsing
         /// For Scope, this is being called when the Scope is within another Scope. This means that it will need to add its own links.
         /// </summary>
         /// <param name="ctx"></param>
-        public async override void Link (LinkingContext ctx)
+        public async override void Link (MappingContext ctx)
         {
             LOGGER.Debug($"Linking Scope: {FamilyToString()}");
 
             // Partially shallow-copy the old context (links in a lower level should not get carried up to higher levels)
-            LinkingContext newContext = new LinkingContext(this, ctx);
+            MappingContext newContext = new MappingContext(this, ctx);
 
             Dictionary<string, Scope> dictionary = await GetLinks(newContext.Compilation);
             foreach (var link in dictionary)

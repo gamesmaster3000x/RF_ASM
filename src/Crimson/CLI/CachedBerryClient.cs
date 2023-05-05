@@ -1,13 +1,6 @@
 ﻿using NLog;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using static Compiler.Core.IScopeProvider;
 using Compiler.CURI;
 using Compiler.Core;
@@ -17,7 +10,7 @@ namespace CLI
     public class CachedBerryClient : IScopeProvider
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public static FileInfo INDEX { get; private set; } = Compiler.CrimsonCore.GetRoamingFile("cache/index.json");
+        public static FileInfo INDEX { get; private set; } = Compiler.Program.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
         public record CacheIndex
@@ -40,7 +33,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Compiler.CrimsonCore.Panic("Unable to static-construct cache!", Compiler.CrimsonCore.PanicCode.CACHE, ex);
+                Compiler.Program.Panic("Unable to static-construct cache!", Compiler.Program.PanicCode.CACHE, ex);
                 throw;
             }
         }
@@ -94,7 +87,7 @@ namespace CLI
                 }
                 catch (Exception ex)
                 {
-                    Compiler.CrimsonCore.Panic($"Unable to deserialise cache index {INDEX}", Compiler.CrimsonCore.PanicCode.CACHE_JSON, ex);
+                    Compiler.Program.Panic($"Unable to deserialise cache index {INDEX}", Compiler.Program.PanicCode.CACHE_JSON, ex);
                     throw;
                 }
                 return index;
@@ -114,7 +107,7 @@ namespace CLI
                 }
                 catch (Exception ex)
                 {
-                    Compiler.CrimsonCore.Panic($"Unable to write to cache index {INDEX}", Compiler.CrimsonCore.PanicCode.CACHE_JSON, ex);
+                    Compiler.Program.Panic($"Unable to write to cache index {INDEX}", Compiler.Program.PanicCode.CACHE_JSON, ex);
                     throw;
                 }
         }
@@ -150,7 +143,7 @@ namespace CLI
 
         private static void Erase ()
         {
-            Compiler.CrimsonCore.GetRoamingDirectory("cache/").Delete(true);
+            Compiler.Program.GetRoamingDirectory("cache/").Delete(true);
         }
 
         private static void ClearUnindexed ()

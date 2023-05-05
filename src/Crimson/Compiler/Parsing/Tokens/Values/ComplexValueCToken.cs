@@ -1,6 +1,5 @@
-﻿using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
-using Compiler.Parsing.Tokens;
+﻿
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens.Values
 {
@@ -11,6 +10,6 @@ namespace Compiler.Parsing.Tokens.Values
         {
         }
 
-        public abstract void Link (LinkingContext ctx);
+        public abstract void Link (MappingContext ctx);
     }
 }

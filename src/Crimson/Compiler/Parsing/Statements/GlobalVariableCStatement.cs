@@ -1,6 +1,6 @@
-﻿using CrimsonCore.Exceptions;
-using CrimsonCore.Generalising.Structures;
-using CrimsonCore.Linking;
+﻿using Compiler.Exceptions;
+using Compiler.Generalising.Structures;
+using Compiler.Mapping;
 using Compiler.Parsing.Tokens;
 using Compiler.Generalising;
 
@@ -15,10 +15,10 @@ namespace Compiler.Parsing.Statements
 
         public GlobalVariableCStatement (VariableAssignmentCStatement assignment) => Assignment = assignment;
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
             Assignment.Name = ctx.GetUniqueGlobalVariableName(Assignment.Name);
-            Linked = true;
+            Mapped = true;
         }
 
         public FullNameCToken GetName ()

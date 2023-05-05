@@ -1,4 +1,4 @@
-﻿using CrimsonCore.Generalising.Structures;
+﻿using Compiler.Generalising.Structures;
 using System.Xml.Linq;
 
 namespace Compiler.Generalising.Structures

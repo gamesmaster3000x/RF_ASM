@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Core;
-using CrimsonCore.Exceptions;
+﻿using Compiler.Core;
+using Compiler.Exceptions;
 using NLog;
 using System;
 using static System.Formats.Asn1.AsnWriter;

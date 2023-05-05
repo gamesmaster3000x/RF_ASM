@@ -15,7 +15,7 @@ namespace Compiler.Exceptions
 
         public void SyntaxError (TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            CrimsonCore.Panic($"A parser error has occurred parsing {Name}", CrimsonCore.PanicCode.COMPILE_PARSE, null!);
+            Program.Panic($"A parser error has occurred parsing {Name}", Program.PanicCode.COMPILE_PARSE, null!);
         }
     }
 }

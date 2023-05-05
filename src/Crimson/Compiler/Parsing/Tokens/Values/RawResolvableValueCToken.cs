@@ -1,5 +1,5 @@
 ﻿using Compiler.Generalising;
-using CrimsonCore.Linking;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens.Values
 {
@@ -12,7 +12,7 @@ namespace Compiler.Parsing.Tokens.Values
             Content = s;
         }
 
-        public override void Link (LinkingContext ctx)
+        public override void Link (MappingContext ctx)
         {
         }
 

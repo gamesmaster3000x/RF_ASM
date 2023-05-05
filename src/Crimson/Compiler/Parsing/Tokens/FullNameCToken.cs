@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
-using CrimsonCore.Exceptions;
-using CrimsonCore.Linking;
+using Compiler.Exceptions;
+using Compiler.Mapping;
 
 namespace Compiler.Parsing.Tokens
 {
@@ -42,7 +42,7 @@ namespace Compiler.Parsing.Tokens
             return !string.IsNullOrWhiteSpace(LibraryName);
         }
 
-        public void Link (LinkingContext ctx)
+        public void Link (MappingContext ctx)
         {
             // Not dealt with here because this should result in a Function/FunctionCall/etc...
             // Use LinkerHelper for this purpose

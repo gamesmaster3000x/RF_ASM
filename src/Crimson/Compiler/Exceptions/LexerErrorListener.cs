@@ -15,7 +15,7 @@ namespace Compiler.Exceptions
 
         public void SyntaxError (TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            CrimsonCore.Panic($"A lexer error has occurred lexing {Name}", CrimsonCore.PanicCode.COMPILE_PARSE, null!);
+            Program.Panic($"A lexer error has occurred lexing {Name}", Program.PanicCode.COMPILE_PARSE, null!);
         }
     }
 }

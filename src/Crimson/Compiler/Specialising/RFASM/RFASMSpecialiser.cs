@@ -1,6 +1,5 @@
 ﻿using NLog;
-using CrimsonCore.Generalising;
-using CrimsonCore.Specialising.RFASM;
+using Compiler.Generalising;
 
 namespace Linker.Specialising.RFASM
 {

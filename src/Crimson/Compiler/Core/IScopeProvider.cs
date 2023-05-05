@@ -83,7 +83,7 @@ namespace Compiler.Core
 
         public static FileInfo GetCachedFileInfo (CacheKey key)
         {
-            return CrimsonCore.GetRoamingFile($"cache/{key.LocalPath}");
+            return Program.GetRoamingFile($"cache/{key.LocalPath}");
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using CrimsonCore.Specialising;
-using CrimsonCore.Linking;
+﻿
+using Compiler.Mapping;
 using Compiler.Parsing.Statements;
 
 namespace Compiler.Parsing.Tokens
@@ -17,7 +17,7 @@ namespace Compiler.Parsing.Tokens
 
         public IfBlockCStatement IfBlock { get; }
 
-        public void Link (LinkingContext ctx)
+        public void Link (MappingContext ctx)
         {
             IfBlock.Link(ctx);
         }
