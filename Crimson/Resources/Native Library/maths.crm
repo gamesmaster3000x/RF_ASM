@@ -1,8 +1,0 @@
-
-function int pwr (int number, int exponent) {
-    while (exponent > 0)
-    {
-	    number = number * number;
-		exponent = exponent - 1;
-    }
-}
