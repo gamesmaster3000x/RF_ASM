@@ -1,14 +1,15 @@
-﻿using Compiler.Parsing.Statements;
+﻿using Compiler.Parsing.Syntax.Functions;
+using Compiler.Parsing.Syntax.Variables;
 
 namespace Compiler.Generalising
 {
     public class GeneralisationContext
     {
-        public Dictionary<string, GlobalVariableCStatement> Globals { get; }
-        public Dictionary<string, FunctionCStatement> Functions { get; }
-        public Dictionary<string, StructureCStatement> Structures { get; }
+        public Dictionary<string, GlobalVariable> Globals { get; }
+        public Dictionary<string, Function> Functions { get; }
+        public Dictionary<string, Mask> Structures { get; }
 
-        public GeneralisationContext (Dictionary<string, FunctionCStatement> functions, Dictionary<string, StructureCStatement> structures, Dictionary<string, GlobalVariableCStatement> globals)
+        public GeneralisationContext (Dictionary<string, Function> functions, Dictionary<string, Mask> structures, Dictionary<string, GlobalVariable> globals)
         {
             StackPointerStack = new Stack<int>();
             Functions = functions;

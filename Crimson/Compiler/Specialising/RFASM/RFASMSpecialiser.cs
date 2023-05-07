@@ -1,7 +1,7 @@
 ﻿using NLog;
 using Compiler.Generalising;
 
-namespace Linker.Specialising.RFASM
+namespace Compiler.Specialising.RFASM
 {
     internal class RFASMSpecialiser : ISpecialiser
     {

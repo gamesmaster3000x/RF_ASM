@@ -5,6 +5,7 @@ using NLog.Config;
 using NLog;
 using System.Reflection;
 using static Compiler.Program;
+using Compiler;
 
 namespace CLI
 {
@@ -36,7 +37,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Panic("An uncaught error occurred during program execution.", PanicCode.ARGUMENTS, ex);
+                Panicker.Panic("An uncaught error occurred during program execution.", PanicCode.ARGUMENTS, ex);
                 throw;
             }
             return 0;
@@ -120,7 +121,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Panic("Error executing verb 'install'.", PanicCode.CACHE_INSTALL, ex);
+                Panicker.Panic("Error executing verb 'install'.", PanicCode.CACHE_INSTALL, ex);
                 throw;
             }
         }
@@ -134,7 +135,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
+                Panicker.Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
                 throw;
             }
         }
@@ -148,7 +149,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
+                Panicker.Panic("Error executing verb 'clear'.", PanicCode.CACHE_CLEAR, ex);
                 throw;
             }
         }

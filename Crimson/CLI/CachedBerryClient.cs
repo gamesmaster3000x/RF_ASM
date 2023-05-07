@@ -4,6 +4,7 @@ using System.Text.Json;
 using static Compiler.Common.IScopeProvider;
 using Compiler.Common.CURI;
 using Compiler.Common;
+using Compiler;
 
 namespace CLI
 {
@@ -33,7 +34,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Compiler.Program.Panic("Unable to static-construct cache!", Compiler.Program.PanicCode.CACHE, ex);
+                Panicker.Panic("Unable to static-construct cache!", PanicCode.CACHE, ex);
                 throw;
             }
         }
@@ -87,7 +88,7 @@ namespace CLI
                 }
                 catch (Exception ex)
                 {
-                    Compiler.Program.Panic($"Unable to deserialise cache index {INDEX}", Compiler.Program.PanicCode.CACHE_JSON, ex);
+                    Panicker.Panic($"Unable to deserialise cache index {INDEX}", PanicCode.CACHE_JSON, ex);
                     throw;
                 }
                 return index;
@@ -107,7 +108,7 @@ namespace CLI
                 }
                 catch (Exception ex)
                 {
-                    Compiler.Program.Panic($"Unable to write to cache index {INDEX}", Compiler.Program.PanicCode.CACHE_JSON, ex);
+                    Panicker.Panic($"Unable to write to cache index {INDEX}", PanicCode.CACHE_JSON, ex);
                     throw;
                 }
         }

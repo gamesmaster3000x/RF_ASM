@@ -1,8 +1,7 @@
 ﻿using Compiler.Common;
 using Compiler.Common.Exceptions;
-using Compiler.Parsing;
-using Compiler.Parsing.Statements;
-using Compiler.Parsing.Tokens;
+using Compiler.Parsing.Syntax;
+using Compiler.Parsing.Syntax.Variables;
 
 namespace Compiler.Mapping
 {
@@ -58,43 +57,43 @@ namespace Compiler.Mapping
         // ===== NAMING =====
 
         private Dictionary<string, int> _gvarCounts = new Dictionary<string, int>();
-        public FullNameCToken GetUniqueGlobalVariableName (FullNameCToken commonName)
+        public FullName GetUniqueGlobalVariableName (FullName commonName)
         {
             string name = commonName.ToString();
             if (!_gvarCounts.ContainsKey(name))
                 _gvarCounts[name] = 0;
             _gvarCounts[name]++;
-            return new FullNameCToken($"gvar_{name}_{_gvarCounts[name] - 1}");
+            return new FullName($"gvar_{name}_{_gvarCounts[name] - 1}");
         }
 
         private Dictionary<string, int> _struCounts = new Dictionary<string, int>();
-        public FullNameCToken GetUniqueStructureName (FullNameCToken commonName)
+        public FullName GetUniqueStructureName (FullName commonName)
         {
             string name = commonName.ToString();
             if (!_struCounts.ContainsKey(name))
                 _struCounts[name] = 0;
             _struCounts[name]++;
-            return new FullNameCToken($"stru_{name}_{_struCounts[name] - 1}");
+            return new FullName($"stru_{name}_{_struCounts[name] - 1}");
         }
 
         private Dictionary<string, int> _funcCounts = new Dictionary<string, int>();
-        public FullNameCToken GetUniqueFunctionName (FullNameCToken commonName)
+        public FullName GetUniqueFunctionName (FullName commonName)
         {
             string name = commonName.ToString();
             if (!_funcCounts.ContainsKey(name))
                 _funcCounts[name] = 0;
             _funcCounts[name]++;
-            return new FullNameCToken($"func_{name}_{_funcCounts[name] - 1}");
+            return new FullName($"func_{name}_{_funcCounts[name] - 1}");
         }
 
         private Dictionary<string, int> _svarCounts = new Dictionary<string, int>();
-        public FullNameCToken GetUniqueScopeVariableName (FullNameCToken commonName)
+        public FullName GetUniqueScopeVariableName (FullName commonName)
         {
             string name = commonName.ToString();
             if (!_svarCounts.ContainsKey(name))
                 _svarCounts[name] = 0;
             _svarCounts[name]++;
-            return new FullNameCToken($"svar_{name}_{_svarCounts[name] - 1}");
+            return new FullName($"svar_{name}_{_svarCounts[name] - 1}");
         }
 
         // =====  =====
@@ -104,7 +103,7 @@ namespace Compiler.Mapping
             return $"LinkingContext (scope:{CurrentScope}; links:[{string.Join(",", Links)}])";
         }
 
-        internal GlobalVariableCStatement? GetGlobalVariable (string memberName)
+        internal GlobalVariable? GetGlobalVariable (string memberName)
         {
             // TODO Check LinkingContext.GetGlobalVariable() works
 

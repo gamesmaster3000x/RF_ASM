@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using Compiler;
 using Compiler.Common.CURI;
 using Compiler.Common.Exceptions;
 
@@ -169,7 +170,7 @@ namespace CLI
         {
             public Clear Clear { get; private set; }
 
-            public ClearModeException (Clear clear) : base(Compiler.Program.PanicCode.COMPILE_PARSE_STATEMENT)
+            public ClearModeException (Clear clear) : base(PanicCode.COMPILE_PARSE_STATEMENT)
             {
                 Clear = clear;
             }

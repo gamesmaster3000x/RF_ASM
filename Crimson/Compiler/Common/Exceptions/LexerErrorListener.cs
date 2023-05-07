@@ -15,7 +15,7 @@ namespace Compiler.Common.Exceptions
 
         public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            Program.Panic($"A lexer error has occurred lexing {Name}", Program.PanicCode.COMPILE_PARSE, null!);
+            Panicker.Panic($"A lexer error has occurred lexing {Name}", PanicCode.COMPILE_PARSE, null!);
         }
     }
 }

@@ -25,7 +25,7 @@ statement
     | globalVariableDeclaration     #GlobalVariableStatement
     | scopeVariableDeclaration      #ScopeVariableStatement
     | functionDeclaration           #FunctionDeclarationStatement
-    | structureDeclaration          #StructureDeclarationStatement
+    | maskDeclaration               #MaskDeclarationStatement
     ;
 assignVariable
     : name=ShortName DirectEquals (complex=complexValue | simple=simpleValue) size=datasize SemiColon     #AssignVariableDirect
@@ -101,13 +101,17 @@ parameterList
     | OpenBracket parameter (Comma parameter)* CloseBracket 
     ;
 
-// Structures
-structureDeclaration
-    : Structure name=fullName body=structureBody
+// Data structures
+maskDeclaration
+    : Mask name=fullName multiBody=multiMaskBody #MultiMask
+	| Mask name=fullName monoSize=datasize   #MonoMask
     ;
-structureBody
-    : OpenBrace scopeVariableDeclaration* CloseBrace
+multiMaskBody
+    : OpenBracket (parameters+=multiMaskParameter)* CloseBracket
     ;
+multiMaskParameter
+	: name=ShortName size=datasize
+	;
 array
     : OpenSquare blockSize=datasize CloseSquare
     ;
@@ -131,7 +135,7 @@ Function: 'function';
 Global: 'global';
 Scope: 'scope';
 Return: 'return';
-Structure: 'structure';
+Mask: 'mask';
 Using: 'using';
 OpHandler: 'ophandler';
 As: 'as';

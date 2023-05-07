@@ -213,19 +213,19 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionDeclarationStatement([NotNull] CrimsonParser.FunctionDeclarationStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>StructureDeclarationStatement</c>
+	/// Enter a parse tree produced by the <c>MaskDeclarationStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStructureDeclarationStatement([NotNull] CrimsonParser.StructureDeclarationStatementContext context) { }
+	public virtual void EnterMaskDeclarationStatement([NotNull] CrimsonParser.MaskDeclarationStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>StructureDeclarationStatement</c>
+	/// Exit a parse tree produced by the <c>MaskDeclarationStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStructureDeclarationStatement([NotNull] CrimsonParser.StructureDeclarationStatementContext context) { }
+	public virtual void ExitMaskDeclarationStatement([NotNull] CrimsonParser.MaskDeclarationStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>AssignVariableDirect</c>
 	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
@@ -495,29 +495,57 @@ public partial class CrimsonBaseListener : ICrimsonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParameterList([NotNull] CrimsonParser.ParameterListContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.structureDeclaration"/>.
+	/// Enter a parse tree produced by the <c>MultiMask</c>
+	/// labeled alternative in <see cref="CrimsonParser.maskDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context) { }
+	public virtual void EnterMultiMask([NotNull] CrimsonParser.MultiMaskContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.structureDeclaration"/>.
+	/// Exit a parse tree produced by the <c>MultiMask</c>
+	/// labeled alternative in <see cref="CrimsonParser.maskDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context) { }
+	public virtual void ExitMultiMask([NotNull] CrimsonParser.MultiMaskContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CrimsonParser.structureBody"/>.
+	/// Enter a parse tree produced by the <c>MonoMask</c>
+	/// labeled alternative in <see cref="CrimsonParser.maskDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStructureBody([NotNull] CrimsonParser.StructureBodyContext context) { }
+	public virtual void EnterMonoMask([NotNull] CrimsonParser.MonoMaskContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CrimsonParser.structureBody"/>.
+	/// Exit a parse tree produced by the <c>MonoMask</c>
+	/// labeled alternative in <see cref="CrimsonParser.maskDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStructureBody([NotNull] CrimsonParser.StructureBodyContext context) { }
+	public virtual void ExitMonoMask([NotNull] CrimsonParser.MonoMaskContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.multiMaskBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMultiMaskBody([NotNull] CrimsonParser.MultiMaskBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.multiMaskBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMultiMaskBody([NotNull] CrimsonParser.MultiMaskBodyContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CrimsonParser.multiMaskParameter"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMultiMaskParameter([NotNull] CrimsonParser.MultiMaskParameterContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CrimsonParser.multiMaskParameter"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMultiMaskParameter([NotNull] CrimsonParser.MultiMaskParameterContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// <para>The default implementation does nothing.</para>

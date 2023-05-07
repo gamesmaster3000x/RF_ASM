@@ -1,6 +1,6 @@
 ﻿using NLog;
-using Compiler.Parsing;
 using Compiler.Common;
+using Compiler.Parsing.Syntax;
 
 namespace Compiler.Mapping
 {
@@ -33,7 +33,7 @@ namespace Compiler.Mapping
                 MappingContext ctx = new MappingContext(scope, new Dictionary<string, Scope>(), compilation);
 
                 // Add links from the current unit
-                scope.Link(ctx);
+                scope.Map(ctx);
 
                 // Just so that I can put a breakpoint here
                 continue;

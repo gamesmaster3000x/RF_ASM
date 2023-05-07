@@ -1,6 +1,6 @@
 ﻿using Compiler.Generalising;
 
-namespace Linker.Specialising
+namespace Compiler.Specialising
 {
     /// <summary>
     /// 

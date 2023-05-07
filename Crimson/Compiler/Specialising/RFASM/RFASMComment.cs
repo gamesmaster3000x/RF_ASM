@@ -1,4 +1,4 @@
-﻿namespace Linker.Specialising.RFASM
+﻿namespace Compiler.Specialising.RFASM
 {
     internal class RFASMComment : RFASMStatement
     {

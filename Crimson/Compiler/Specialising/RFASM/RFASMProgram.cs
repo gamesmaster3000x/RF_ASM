@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace Linker.Specialising.RFASM
+namespace Compiler.Specialising.RFASM
 {
     internal class RFASMProgram : AbstractSpecificAssemblyProgram
     {

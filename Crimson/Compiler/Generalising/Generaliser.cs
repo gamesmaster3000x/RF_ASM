@@ -1,8 +1,9 @@
 ﻿using Compiler.Generalising.Structures;
 using NLog;
-using Compiler.Parsing;
-using Compiler.Parsing.Statements;
 using Compiler.Common;
+using Compiler.Parsing.Syntax;
+using Compiler.Parsing.Syntax.Functions;
+using Compiler.Parsing.Syntax.Variables;
 
 namespace Compiler.Generalising
 {
@@ -14,9 +15,9 @@ namespace Compiler.Generalising
         {
             GeneralAssemblyProgram program = new GeneralAssemblyProgram();
 
-            Dictionary<string, FunctionCStatement> functions = new Dictionary<string, FunctionCStatement>();
-            Dictionary<string, StructureCStatement> structures = new Dictionary<string, StructureCStatement>();
-            Dictionary<string, GlobalVariableCStatement> globals = new Dictionary<string, GlobalVariableCStatement>();
+            Dictionary<string, Function> functions = new Dictionary<string, Function>();
+            Dictionary<string, Mask> structures = new Dictionary<string, Mask>();
+            Dictionary<string, GlobalVariable> globals = new Dictionary<string, GlobalVariable>();
 
             /*
              * Create 3 universal lists which contain all of the statements.
@@ -59,7 +60,7 @@ namespace Compiler.Generalising
             // Add main (entry) function
             program.AddStructure(new CommentAssemblyStructure(""));
             program.AddStructure(new CommentAssemblyStructure("============================== Entry Function =============================="));
-            FunctionCStatement entryFunction = compilation.GetEntryFunction();
+            Function entryFunction = compilation.GetEntryFunction();
             LOGGER.Info($"Found entry Function {entryFunction.Name}");
             IGeneralAssemblyStructure entryBs = entryFunction.Generalise(context);
             program.AddStructure(entryBs);

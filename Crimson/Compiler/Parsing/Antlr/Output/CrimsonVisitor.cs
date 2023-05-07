@@ -121,12 +121,12 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionDeclarationStatement([NotNull] CrimsonParser.FunctionDeclarationStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>StructureDeclarationStatement</c>
+	/// Visit a parse tree produced by the <c>MaskDeclarationStatement</c>
 	/// labeled alternative in <see cref="CrimsonParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStructureDeclarationStatement([NotNull] CrimsonParser.StructureDeclarationStatementContext context);
+	Result VisitMaskDeclarationStatement([NotNull] CrimsonParser.MaskDeclarationStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>AssignVariableDirect</c>
 	/// labeled alternative in <see cref="CrimsonParser.assignVariable"/>.
@@ -262,17 +262,31 @@ public interface ICrimsonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParameterList([NotNull] CrimsonParser.ParameterListContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.structureDeclaration"/>.
+	/// Visit a parse tree produced by the <c>MultiMask</c>
+	/// labeled alternative in <see cref="CrimsonParser.maskDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStructureDeclaration([NotNull] CrimsonParser.StructureDeclarationContext context);
+	Result VisitMultiMask([NotNull] CrimsonParser.MultiMaskContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CrimsonParser.structureBody"/>.
+	/// Visit a parse tree produced by the <c>MonoMask</c>
+	/// labeled alternative in <see cref="CrimsonParser.maskDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStructureBody([NotNull] CrimsonParser.StructureBodyContext context);
+	Result VisitMonoMask([NotNull] CrimsonParser.MonoMaskContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.multiMaskBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiMaskBody([NotNull] CrimsonParser.MultiMaskBodyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CrimsonParser.multiMaskParameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiMaskParameter([NotNull] CrimsonParser.MultiMaskParameterContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CrimsonParser.array"/>.
 	/// </summary>

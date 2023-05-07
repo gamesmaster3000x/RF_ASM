@@ -26,7 +26,7 @@
             }
             catch (Exception ex)
             {
-                Program.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", Program.PanicCode.CURI_STREAM, ex);
+                Panicker.Panic($"{GetType().Name}: An error occurred while fetching {Uri}.", PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

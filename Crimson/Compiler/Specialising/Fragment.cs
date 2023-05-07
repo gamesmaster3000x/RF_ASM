@@ -1,4 +1,4 @@
-﻿namespace Linker.Specialising
+﻿namespace Compiler.Specialising
 {
     public class Fragment
     {
