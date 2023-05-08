@@ -1,14 +1,22 @@
 ﻿# Crimson Compiler
 Produces a Berry (`.bry` file) from a collection of Crimson (`.crm`) source files.
 
-## Contents
-A Berry contains several things:
+## Stages
+Compilation occurs in several stages:
+
+| Stage        | Purpose |
+| -            | -       |
+| Parsing      | Create an in-code representation of the source code (an abstract syntax tree). |
+| Mapping      | Convert textual references within the syntax tree to their associated objects within the tree. |
+| Generalising | Convert the abstract syntax tree into fragments of non-language-dependent assembly. |
+| Specialising | Assemble the fragments into target-specific machine code (e.g. RFASM or x86) |
+| Packing      | Pack the machine code fragments into a Berry which can later be given to a linker. |
+
+## Structure of a Berry
+A Berry (`.bry` file) contains several things:
  - Machine code, already specialised for an architecture.
  - The metadata needed to link it the machine code.
  - The source code for that machine code.
-
-## Structure
-The structure of a Berry (`.bry` file).
 
 ```jsonc
 /* 

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace Compiler.API.Berry
+namespace Compiler.Packing
 {
     [JsonConverter(typeof(Converter))]
     public class FunctionEntry
