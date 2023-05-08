@@ -78,7 +78,7 @@ namespace Compiler.Common
 
         public static FileInfo GetCachedFileInfo(CacheKey key)
         {
-            return Program.GetRoamingFile($"cache/{key.LocalPath}");
+            return RoamingHelper.GetRoamingFile($"cache/{key.LocalPath}");
         }
     }
 }
