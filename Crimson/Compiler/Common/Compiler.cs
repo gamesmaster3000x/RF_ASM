@@ -1,6 +1,6 @@
-﻿using Compiler.Generalising;
+﻿using Compiler.Generaliser;
 using Compiler.Mapping;
-using Compiler.Parsing.Syntax;
+using Compiler.Parser.Syntax;
 using NLog;
 using System.Net;
 

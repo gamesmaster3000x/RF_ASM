@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Compiler.Parsing;
-using Compiler.Mapping;
-using Compiler.Packing;
 using NLog.Config;
 using NLog;
+using Compiler.Packer;
+using Compiler.Parser;
+using Compiler.Mapper;
 
 ShowSplash();
 ShowCredits();
@@ -16,12 +16,12 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<IParser, DefaultParser>();
         services.AddSingleton<Mapper>();
         services.AddSingleton<Packer>();
-        services.AddSingleton<IBerryCli, DefaultParser>();
+        //services.AddSingleton<IBerryCli, DefaultParser>();
     })
     .Build();
 
 IParser parser = host.Services.GetRequiredService<IParser>();
-parser.Parse();
+//parser.Parse();
 
 host.Run();
 

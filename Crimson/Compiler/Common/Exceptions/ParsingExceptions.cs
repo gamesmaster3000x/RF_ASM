@@ -1,6 +1,6 @@
 ﻿using Compiler.Common.CURI;
+using Compiler.Parser.Syntax.Values;
 using Compiler.Parsing.Syntax;
-using Compiler.Parsing.Syntax.Values;
 
 namespace Compiler.Common.Exceptions
 {

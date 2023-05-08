@@ -1,7 +1,7 @@
 ﻿using Compiler.Common.Exceptions;
 using NLog;
 
-namespace Compiler
+namespace Compiler.Common
 {
     public static partial class Panicker
     {

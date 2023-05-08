@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using Compiler;
+using Compiler.Common;
 using Compiler.Common.CURI;
 using Compiler.Common.Exceptions;
 

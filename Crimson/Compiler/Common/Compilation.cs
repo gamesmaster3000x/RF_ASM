@@ -1,6 +1,6 @@
 ﻿using Compiler.Common.Exceptions;
-using Compiler.Parsing.Syntax;
-using Compiler.Parsing.Syntax.Functions;
+using Compiler.Parser.Syntax;
+using Compiler.Parser.Syntax.Functions;
 using NLog;
 using System.Text.RegularExpressions;
 

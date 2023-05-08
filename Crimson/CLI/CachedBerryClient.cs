@@ -11,7 +11,7 @@ namespace CLI
     public class CachedBerryClient : IScopeProvider
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public static FileInfo INDEX { get; private set; } = Compiler.RoamingHelper.GetRoamingFile("cache/index.json");
+        public static FileInfo INDEX { get; private set; } = RoamingHelper.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
         public record CacheIndex

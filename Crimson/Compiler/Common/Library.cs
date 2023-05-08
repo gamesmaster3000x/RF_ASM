@@ -4,8 +4,8 @@ using Compiler.AntlrBuild;
 using NLog;
 using Compiler.Common.CURI;
 using Compiler.Common.Exceptions;
-using Compiler.Parsing.Syntax;
 using Compiler.Parsing.ScopeVisitor;
+using Compiler.Parser.Syntax;
 
 namespace Compiler.Common
 {

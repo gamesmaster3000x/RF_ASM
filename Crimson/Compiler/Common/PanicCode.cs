@@ -1,4 +1,4 @@
-﻿namespace Compiler
+﻿namespace Compiler.Common
 {
     public enum PanicCode
     {

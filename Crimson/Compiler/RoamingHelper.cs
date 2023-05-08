@@ -1,6 +1,6 @@
 ﻿namespace Compiler
 {
-    internal static class RoamingHelper
+    internal class RoamingHelper
     {
 
         public static DirectoryInfo GetRoamingDirectory (string path)
