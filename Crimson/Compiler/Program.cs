@@ -20,10 +20,14 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
-IParser parser = host.Services.GetRequiredService<IParser>();
-//parser.Parse();
+CompileWithArgs(host);
 
 host.Run();
+
+static void CompileWithArgs (IHost host)
+{
+    IParser parser = host.Services.GetRequiredService<IParser>();
+}
 
 
 static void ShowSplash ()

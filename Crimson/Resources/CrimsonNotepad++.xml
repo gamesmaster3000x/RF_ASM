@@ -13,7 +13,7 @@
             <Keywords name="Numbers, suffix1"></Keywords>
             <Keywords name="Numbers, suffix2"></Keywords>
             <Keywords name="Numbers, range"></Keywords>
-            <Keywords name="Operators1">* / = ; *= == ( )</Keywords>
+            <Keywords name="Operators1">* / = ; *= == ( ) &lt;? &gt;?</Keywords>
             <Keywords name="Operators2"></Keywords>
             <Keywords name="Folders in code1, open"></Keywords>
             <Keywords name="Folders in code1, middle"></Keywords>
@@ -26,7 +26,7 @@
             <Keywords name="Folders in comment, close"></Keywords>
             <Keywords name="Keywords1">function&#x000D;&#x000A;structure</Keywords>
             <Keywords name="Keywords2">#using&#x000D;&#x000A;#ophandler&#x000D;&#x000A;as</Keywords>
-            <Keywords name="Keywords3">global&#x000D;&#x000A;scope</Keywords>
+            <Keywords name="Keywords3">global&#x000D;&#x000A;scope&#x000D;&#x000A;hidden</Keywords>
             <Keywords name="Keywords4">A~&#x000D;&#x000A;B~</Keywords>
             <Keywords name="Keywords5">if&#x000D;&#x000A;while&#x000D;&#x000A;else&#x000D;&#x000A;return</Keywords>
             <Keywords name="Keywords6">:</Keywords>

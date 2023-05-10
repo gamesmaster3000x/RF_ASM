@@ -8,5 +8,6 @@ namespace Compiler.Parser
 {
     internal class DefaultParser : IParser
     {
+
     }
 }
