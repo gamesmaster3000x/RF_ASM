@@ -13,10 +13,7 @@ Compilation occurs in several stages:
 | Packing      | Pack the machine code fragments into a Berry which can later be given to a linker. |
 
 ## Structure of a Berry
-A Berry (`.bry` file) contains several things:
- - Machine code, already specialised for an architecture.
- - The metadata needed to link it the machine code.
- - The source code for that machine code.
+A Berry (`.bry` file) contains Crimson source code, broken into segments (e.g. functions) which is ready to be linked.
 
 ```jsonc
 /* 
@@ -33,35 +30,31 @@ A Berry (`.bry` file) contains several things:
  *     JSON data
  */
 {
-    // The width of an instruction or address in bytes (i.e. the size of an integer)
-    "data_width": 4,
-
-    // The machine code this Berry is targetting (e.g. RFASM/RFVM, x86, AMD-64)
-    "target": "rfvm",
-
-    // An array of the functions this Berry would like to link with (indices used in 'items' below)
-    "links": [
-        "func_myfunc1", // Function in this Berry (declared in 'items' below)
-        "func_stevenfunc", // Functions in another Berry
-        "gvar_mygvar", // Global variable in this Berry (declared in 'items' below)
-        "gvar_stevengvar" // Global variable in another Berry (who is this 'Steven' guy?)
-    ],
-
     "items": {
-        "functions" {
-            "func_myfunc1": {
-                // The machine code for the function (b64 encoded, not linked)
-                "bin": "VGhpcyBpcyB0aGUgbWFjaGluZSBjb2RlIGZvciB0aGUgZnVuY3Rpb24h",
-                // The source code for the function (b64 encoded)
-                "src": "QW5kIHRoaXMgaXMgdGhlIHNvdXJjZSBjb2RlIGZvciB0aGUgZnVuY3Rpb24h",
-                // Bytes 14, 16 and 25 in the DECODED (non-b64) machine code should be linked
-                // to link 0 (func_myfunc1); bytes 25 and 42 to link 3 (gvar_stevengvar)
-                "links": "0:14,16,25;3:25,42;" 
-            }
+
+        
+        "example_scope.myfunc1": {
+            "access": "local",
+            "in": {
+                "var_name": "type_name",
+                "other_var": 4
+            },
+            "out": "example_scope.my_struct",
+
+            // B64 of minified code
+            // Looks something like "my_func(param);cool_stuff(5);"
+            "src": "QW5kIHRoaXMgaXMgdGhlIHNvdXJjZSBjb2RlIGZvciB0aGUgZnVuY3Rpb24h",
         },
-        "global_variables": {
-            // Reserve 4 bytes for mygvar (it's 4 bytes wide)
-            "gvar_mygvar": 4
+
+        // This global variable is in a nested scope!
+        "example_scope.inner_scope.my_gvar": {
+            "access": "global"
+            "type": "example_scope.my_struct"
+        },
+
+        // This struct is hidden
+        "example_scope.my_struct": {
+            "access": "hidden"
         }
     }
 }
