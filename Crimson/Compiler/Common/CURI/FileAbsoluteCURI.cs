@@ -33,7 +33,7 @@ namespace Compiler.Common.CURI
             }
             catch (Exception ex)
             {
-                Program.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", Program.PanicCode.CURI_STREAM, ex);
+                Panicker.Panic($"{GetType().Name}: An error occurred getting the contents of {AbsolutePath}.", PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }

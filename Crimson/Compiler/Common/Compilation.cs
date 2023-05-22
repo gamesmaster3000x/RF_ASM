@@ -1,6 +1,6 @@
 ﻿using Compiler.Common.Exceptions;
-using Compiler.Parsing;
-using Compiler.Parsing.Statements;
+using Compiler.Parser.Syntax;
+using Compiler.Parser.Syntax.Functions;
 using NLog;
 using System.Text.RegularExpressions;
 
@@ -33,19 +33,19 @@ namespace Compiler.Common
             return $"Compilation(RootUnit={Library.Root}; Library={Library})";
         }
 
-        public FunctionCStatement GetEntryFunction ()
+        public Function GetEntryFunction ()
         {
             string baseName = Compiler.Options!.EntryFunctionName!;
             Scope rootUnit = Library.Root!;
             string pattern = $"^func_{baseName}_[0-9]+$"; //  Match name_090923 (anchored to start and end)
             Regex regex = new Regex(pattern);
 
-            IList<FunctionCStatement> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
+            IList<Function> funcs = rootUnit.Functions.Values.Where(func => regex.IsMatch(func.Name.ToString())).ToList();
             if (funcs.Count == 0)
                 throw new GeneralisingException($"No valid entry function found. Invalid contenders were: [{string.Join(',', rootUnit.Functions.Values.Select(f => f.Name))}]. Searched for Crimson name '{Compiler.Options.EntryFunctionName}' using Regex: '{pattern}'.");
             else if (funcs.Count == 1)
             {
-                FunctionCStatement entry = funcs.Single();
+                Function entry = funcs.Single();
                 return entry;
             }
             else if (funcs.Count > 1)

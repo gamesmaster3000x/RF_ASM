@@ -1,5 +1,6 @@
-﻿using Compiler.Parsing.Statements;
-using Compiler.Common.CURI;
+﻿using Compiler.Common.CURI;
+using Compiler.Parser.Syntax.Values;
+using Compiler.Parsing.Syntax;
 
 namespace Compiler.Common.Exceptions
 {
@@ -7,10 +8,10 @@ namespace Compiler.Common.Exceptions
     internal class StatementParseException : CrimsonCoreException
     {
         public string Message { get; private set; }
-        public AbstractCrimsonStatement? Statement { get; private set; }
+        public object Statement { get; private set; }
         public Exception? Cause { get; private set; }
 
-        public StatementParseException (string message, AbstractCrimsonStatement? statement, Exception? cause) : base(Program.PanicCode.COMPILE_PARSE_STATEMENT)
+        public StatementParseException (string message, object statement, Exception? cause) : base(PanicCode.COMPILE_PARSE_STATEMENT)
         {
             Message = message;
             Statement = statement;
@@ -30,13 +31,42 @@ namespace Compiler.Common.Exceptions
         }
     }
 
+    internal class MultiMaskParametersException : CrimsonCoreException
+    {
+        private string MaskName { get; }
+        private Dictionary<string, ISimpleValue> MaskParameters { get; }
+
+        public MultiMaskParametersException (string maskName, Dictionary<string, ISimpleValue> maskParameters) : base(PanicCode.COMPILE_PARSE_STATEMENT_MASK) //TODO mask param excep
+        {
+            MaskName = maskName;
+            MaskParameters = maskParameters;
+        }
+
+        public override IList<string> GetDetailedMessage ()
+        {
+            IList<string> strings = new List<string>()
+            {
+                $"Unable to parse the parameters for the multi-mask '{MaskName}'.",
+                $"A multi-mask must have at least 1 parameter, but only {MaskParameters.Count}.",
+                "",
+                $"Parameters: "
+            };
+            foreach (var p in MaskParameters)
+            {
+                strings.Add($"{p.Key}<{p.Value}>");
+            }
+            strings.Add("");
+            return strings;
+        }
+    }
+
     internal class CURIException : CrimsonCoreException
     {
         public override string Message { get; }
         public AbstractCURI CURI { get; private set; }
         public CURIExceptionReason Reason { get; private set; }
 
-        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(Program.PanicCode.CURI)
+        public CURIException (string message, AbstractCURI uri, CURIExceptionReason reason) : base(PanicCode.CURI)
         {
             Message = message;
             CURI = uri;
@@ -71,14 +101,14 @@ namespace Compiler.Common.Exceptions
 
     internal class CrimsonParserException : CrimsonCoreException
     {
-        public CrimsonParserException (string message) : base(Program.PanicCode.COMPILE_PARSE_STATEMENT)
+        public CrimsonParserException (string message) : base(PanicCode.COMPILE_PARSE_STATEMENT)
         {
         }
     }
 
     internal class ScopeGenerationException : CrimsonCoreException
     {
-        public ScopeGenerationException () : base(Program.PanicCode.COMPILE_PARSE_SCOPE)
+        public ScopeGenerationException () : base(PanicCode.COMPILE_PARSE_SCOPE)
         {
 
         }

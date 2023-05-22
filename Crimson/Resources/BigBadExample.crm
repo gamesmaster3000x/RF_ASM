@@ -1,0 +1,73 @@
+// This example is meant to show off all of Crimson's features and syntax!
+
+// A scope is a named region of code.
+// This scope is called example
+global example {
+
+	// Variables within scopes have "accessors", which are declared as 'get_accessor:set_accessor'
+	// These control from where the variable can be get/set from
+	global:global a<1>; // Get/Set from any scope as 'example.a'
+	local:local   b<1>; // Get/Set from this scope or child scopes as 'b'
+	hidden:hidden c<1>; // Get/Set from only this scope as 'c'
+	global:hidden d<1>; // Get from anywhere as ('example.d'), but only set from within the current scope (as 'd')
+	
+	mask Int<4>;
+	mask Frac(numerator<$Int>, denominator<$Int>)
+	
+	// A function is an executable scope
+	function (a<$Int>, b<3>) -> (c<$Frac>, d<5>) -> (c) global main  {
+	
+		// Functions may be nested within other functions, but they must be the first statements
+		function (a<$Int>, b<3>) -> (c<$Frac>, d<5>) -> (c) global nested_function {
+		}
+		
+		function (a<$Int>, b<3>) -> (c<$Frac>, d<5>) -> (c) global second_nested_function {
+		}
+		
+		
+		
+		
+	}
+	
+	// Error! - Functions cannot have . in their name
+	function () -> () -> () hidden bad.name {
+	}
+	
+	// This scope (example.happy_scope) is nested within another scope
+	happy_scope {
+		// Error! - Scopes which are not functions cannot call functions directly in their body
+		nested_function();
+	}
+	
+	// This function is not global
+	function () -> () -> () local helper {
+		
+		// These both call example.main.nested_function()
+		// The preceeding . tells the compiler that this call is relative to the current scope (example.helper)
+		.main.nested_function();
+		example.main.nested_function()
+		
+		// Error! - This will try to call main.nested_function(), not example.main.nested_function()!
+		main.nested_function();
+		
+		// Error! - Child functions may not be more accessible than their parents (global > helper)
+		function () global unhappy {
+			
+		}
+	}
+	
+	function (a<$Frac>) -> (b<$Int>) -> (a) local pointers {
+	
+		// This sets the value of the whole $Frac sized memory block at 'a' on the to 0
+		a = 0<$Frac>;
+		
+		// Pretend 'a' is an $Int and set the value which would correspond to the numerator
+		a$Frac.numerator = 1<$Int>;
+	
+		// 'b' is an integer sized block of memory on the stack
+		// Use 'b' as a pointer to somewhere (in this case, address 0x0128) 
+		// and set the data at that pointer to an $Int sized block with value 4
+		b = 0x0128;
+		b *= 4<$Int>;
+	}
+}

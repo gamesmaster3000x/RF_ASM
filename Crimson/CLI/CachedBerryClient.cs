@@ -4,13 +4,14 @@ using System.Text.Json;
 using static Compiler.Common.IScopeProvider;
 using Compiler.Common.CURI;
 using Compiler.Common;
+using Compiler;
 
 namespace CLI
 {
     public class CachedBerryClient : IScopeProvider
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
-        public static FileInfo INDEX { get; private set; } = Compiler.Program.GetRoamingFile("cache/index.json");
+        public static FileInfo INDEX { get; private set; } = RoamingHelper.GetRoamingFile("cache/index.json");
 
         public static CacheIndex Index { get; private set; }
         public record CacheIndex
@@ -33,7 +34,7 @@ namespace CLI
             }
             catch (Exception ex)
             {
-                Compiler.Program.Panic("Unable to static-construct cache!", Compiler.Program.PanicCode.CACHE, ex);
+                Panicker.Panic("Unable to static-construct cache!", PanicCode.CACHE, ex);
                 throw;
             }
         }
@@ -87,7 +88,7 @@ namespace CLI
                 }
                 catch (Exception ex)
                 {
-                    Compiler.Program.Panic($"Unable to deserialise cache index {INDEX}", Compiler.Program.PanicCode.CACHE_JSON, ex);
+                    Panicker.Panic($"Unable to deserialise cache index {INDEX}", PanicCode.CACHE_JSON, ex);
                     throw;
                 }
                 return index;
@@ -107,7 +108,7 @@ namespace CLI
                 }
                 catch (Exception ex)
                 {
-                    Compiler.Program.Panic($"Unable to write to cache index {INDEX}", Compiler.Program.PanicCode.CACHE_JSON, ex);
+                    Panicker.Panic($"Unable to write to cache index {INDEX}", PanicCode.CACHE_JSON, ex);
                     throw;
                 }
         }
@@ -143,7 +144,7 @@ namespace CLI
 
         private static void Erase ()
         {
-            Compiler.Program.GetRoamingDirectory("cache/").Delete(true);
+            Compiler.RoamingHelper.GetRoamingDirectory("cache/").Delete(true);
         }
 
         private static void ClearUnindexed ()

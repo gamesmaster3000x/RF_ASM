@@ -2,9 +2,10 @@
 using Antlr4.Runtime;
 using Compiler.AntlrBuild;
 using NLog;
-using Compiler.Parsing;
 using Compiler.Common.CURI;
 using Compiler.Common.Exceptions;
+using Compiler.Parsing.ScopeVisitor;
+using Compiler.Parser.Syntax;
 
 namespace Compiler.Common
 {
@@ -74,7 +75,7 @@ namespace Compiler.Common
                 }
                 catch (Exception ex)
                 {
-                    Program.Panic("Unable to GetScopes", Program.PanicCode.COMPILE_PARSE, ex);
+                    Panicker.Panic("Unable to GetScopes", PanicCode.COMPILE_PARSE, ex);
                     throw;
                 }
             }
@@ -136,7 +137,7 @@ namespace Compiler.Common
             }
             catch (Exception ex)
             {
-                Program.Panic($"Error loading scope from {uri}", Program.PanicCode.COMPILE_PARSE_SCOPE, ex);
+                Panicker.Panic($"Error loading scope from {uri}", PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }
@@ -159,7 +160,7 @@ namespace Compiler.Common
                 }
                 catch (Exception ex)
                 {
-                    Program.Panic($"An error occurred while async loading {uri}", Program.PanicCode.COMPILE_PARSE_SCOPE_ASYNC, ex);
+                    Panicker.Panic($"An error occurred while async loading {uri}", PanicCode.COMPILE_PARSE_SCOPE_ASYNC, ex);
                     throw;
                 }
             };
@@ -232,7 +233,7 @@ namespace Compiler.Common
             }
             catch (Exception ex)
             {
-                Program.Panic($"Error loading scope dependencies for {root}", Program.PanicCode.COMPILE_PARSE_SCOPE_DEPS, ex);
+                Panicker.Panic($"Error loading scope dependencies for {root}", PanicCode.COMPILE_PARSE_SCOPE_DEPS, ex);
                 throw;
             }
         }
@@ -263,7 +264,7 @@ namespace Compiler.Common
             }
             catch (Exception ex)
             {
-                Program.Panic($"An error ocurred while parsing a scope originating from {source}", Program.PanicCode.COMPILE_PARSE_SCOPE, ex);
+                Panicker.Panic($"An error ocurred while parsing a scope originating from {source}", PanicCode.COMPILE_PARSE_SCOPE, ex);
                 throw;
             }
         }

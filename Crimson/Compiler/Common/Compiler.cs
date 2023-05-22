@@ -1,6 +1,6 @@
-﻿using Compiler.Generalising;
+﻿using Compiler.Generaliser;
 using Compiler.Mapping;
-using Compiler.Parsing;
+using Compiler.Parser.Syntax;
 using NLog;
 using System.Net;
 
@@ -46,7 +46,7 @@ namespace Compiler.Common
                 LOGGER.Info("\n\n");
                 LOGGER.Info(" L I N K I N G ");
                 mapper.Map(compilation);
-                // await mapper.Link(compilation);
+                // await mapper.Map(compilation);
 
 
                 /*
@@ -72,7 +72,7 @@ namespace Compiler.Common
             }
             catch (Exception e)
             {
-                Program.Panic("An uncaught exception occurred during the compilation process.", Program.PanicCode.COMPILE_PARSE, e);
+                Panicker.Panic("An uncaught exception occurred during the compilation process.", PanicCode.COMPILE_PARSE, e);
                 throw;
             }
         }

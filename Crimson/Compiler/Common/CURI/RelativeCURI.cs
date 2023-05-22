@@ -56,7 +56,7 @@ namespace Compiler.Common.CURI
             }
             catch (Exception ex)
             {
-                Program.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", Program.PanicCode.CURI_STREAM, ex);
+                Panicker.Panic($"{GetType().Name}: An error occurred while awaiting a read operation on {AbsolutePath}.", PanicCode.CURI_STREAM, ex);
                 throw;
             }
         }
