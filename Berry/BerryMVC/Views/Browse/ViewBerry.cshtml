@@ -1,0 +1,38 @@
+﻿@model BerryMVC.Models.BerryModel
+
+@{
+    ViewData["Title"] = Model.FullName;
+
+    string defaultVendor = "steven";
+    string defaultArtifact = "bestlibraryever";
+    string defaultVersion = "0.0.0-alpha";
+}
+
+@functions {
+    string FormatDependency(string vendor, string artifact, string version) {
+        return $"{vendor}:{artifact}@{version}";
+    }
+}
+
+<body>
+    <table>
+    @{
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.VendorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ArtifactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ContentsB64)
+            </td>
+        </tr>
+    }
+    </table>
+
+    <script src="~/js/browse.js" asp-append-version="true"></script>
+</body>

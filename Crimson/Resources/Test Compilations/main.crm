@@ -1,51 +1,61 @@
-// Import packages:
-// - Package "utils" from the file "utils.crm", with the name "utils"
-// - Package "console" from the system library, with the name "stdout"
+{
+	// Import packages:
+	// - Package "utils" from the file "utils.crm", with the name "utils"
+	// - Package "console" from the system library, with the name "stdout"
 
-#using "utils/utils.crm" as utils
-#using "${NATIVE}/console.crm" as stdout
-#using "${NATIVE}/heap.crm" as heap
+	#using "file://root.crimson/utils/utils.crm" as utils;
+	#using "file://native.crimson/console.crm" as stdout;
+	#using "file://native.crimson/heap.crm" as heap;
 
-// Declare ophandlers:
-//
-#ophandler (int * int) -> {utils.multiply}
+	// Declare ophandlers:
+	//
+	#ophandler * -> utils.multiply;
 
-global int counter = 0;
-
-function ptr main () {
+	global counter = 0<4>;
 	
-	int a = utils.multiply(8);
-	int b = utils.times();
-	if (true == true) {
-		counter = 5;
-	} else if (b == true) {
-		int c = utils.times(5, 3);
-		int d = heap.alloc();
-	} else {
-		return b;
+	global int = 4<1>;
+	global ptr = 4<1>;
+
+	function main () {
+
+		B~ "example basic call";
+		A~ "example assemby call";
+		
+		scope a<int>;
+		scope b<int>;
+		a *= utils.multiply(8)<int>;
+		b *= utils.times()<int>;
+		if (true == true) {
+			counter = 5<int>;
+		} else if (b == true) {
+			c = utils.times(5, 3)<int>;
+			d = heap.alloc()<int>;
+		} else {
+			return b;
+		}
+		
+		call(4, 7, 5);
+
+		// Allocate memory on the heap for 'i' and get a pointer to it
+		scope i<ptr>;
+		i = heap.alloc(4)<int>;
+
+		// Set memory at pointer 'i'
+		// Don't need <> because it already exists!
+		i *= 4<int>;
+			
+		// Note usage of functions from imported packages
+		stdout.write(i);
+		
+		scope ret<ptr>;
+		ret = heap.alloc(4)<int>;
+		ret *= utils.multiply(i, 5)<int>;
+		return ret;
 	}
-	
-	call(4, 7, 5);
 
-    // Allocate memory on the heap for 'i' and get a pointer to it
-    ptr i = heap.alloc(4);
-
-    // Set memory at pointer 'i'
-    i *= 4;
-        
-    // Note usage of functions from imported packages
-    stdout.write(i);
-	
-	ptr ret = heap.alloc(4);
-	ret *= utils.utils.multiply(i, 5);
-    return ret;
-}
-
-function ptr call () {
-	ptr test = heap.alloc(69);
-	return test;
-}
-
-structure Person {
-	ptr age = heap.alloc(5);
+	function call () {
+		scope test<int>;
+		test = heap.alloc(69)<int>;
+		return test;
+	}
 }
